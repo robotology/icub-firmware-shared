@@ -345,16 +345,25 @@ typedef enum
     icubCanProto_controlmode_position                   = 0x01,
     icubCanProto_controlmode_velocity                   = 0x02,
     icubCanProto_controlmode_torque                     = 0x03,
-    icubCanProto_controlmode_impedance_pos              = 0x04,
-    icubCanProto_controlmode_impedance_vel              = 0x05,
+    icubCanProto_controlmode_impedance_pos              = 0x04,  //TBR to remove
+    icubCanProto_controlmode_impedance_vel              = 0x05,  //TBR to remove
     icubCanProto_controlmode_current                    = 0x06,
-    icubCanProto_controlmode_calib_abs_pos_sens         = 0x10,
-    icubCanProto_controlmode_calib_hard_stops           = 0x20,
-    icubCanProto_controlmode_handle_hard_stops          = 0x30,
-    icubCanProto_controlmode_margin_reached             = 0x40,
-    icubCanProto_controlmode_calib_abs_and_incremental  = 0x41,
-    icubCanProto_controlmode_openloop                   = 0x50
+    icubCanProto_controlmode_mixed                      = 0x07,
+    icubCanProto_controlmode_direct                     = 0x08,
+    icubCanProto_controlmode_openloop                   = 0x50,
+    icubCanProto_controlmode_calibration                = 0x60,
+    icubCanProto_controlmode_hwFault                    = 0xA0,
+    icubCanProto_controlmode_notConfigured              = 0xB0,
+    icubCanProto_controlmode_configured                 = 0xB1,
+    icubCanProto_controlmode_unknownError               = 0xFF
 } icubCanProto_controlmode_t;
+
+typedef enum
+{
+    icubCanProto_interactionmode_stiff                  = 0x00,
+    icubCanProto_interactionmode_compliant              = 0x01,
+    icubCanProto_interactionmode_unknownError           = 0xFF
+} icubCanProto_interactionmode_t;
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
