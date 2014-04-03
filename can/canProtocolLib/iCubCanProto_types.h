@@ -40,6 +40,7 @@ extern "C" {
 
 
 // - external dependencies --------------------------------------------------------------------------------------------
+#include "stdint.h"
 #include "iCubCanProto_classes.h"
 
 
