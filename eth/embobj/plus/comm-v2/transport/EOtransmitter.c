@@ -199,7 +199,7 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     
 #if defined(USE_DEBUG_EOTRANSMITTER)
     // DEBUG
-    retptr->DEBUG.txropframeistoobigforthepacket = 0;
+    retptr->debug.txropframeistoobigforthepacket = 0;
 #endif
     
     return(retptr);
@@ -541,7 +541,7 @@ extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outp
         eo_packet_Capacity_Get(p->txpacket, &capacity);   
         if(size > capacity)
         {
-            p->DEBUG.txropframeistoobigforthepacket ++;
+            p->debug.txropframeistoobigforthepacket ++;
         }
     }
 #endif

@@ -118,7 +118,7 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
     // now we need to allocate the buffer for the ropframereply
 
 #if defined(USE_DEBUG_EORECEIVER)    
-    memset(&retptr->DEBUG, 0, sizeof(EOreceiverDEBUG_t));
+    memset(&retptr->debug, 0, sizeof(EOreceiverDEBUG_t));
 #endif  
     
     eo_ropframe_Load(retptr->ropframereply, retptr->bufferropframereply, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframereply);
@@ -174,7 +174,7 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
     {
 #if defined(USE_DEBUG_EORECEIVER)         
         {   // DEBUG
-            p->DEBUG.rxinvalidropframes ++;
+            p->debug.rxinvalidropframes ++;
         }
 #endif       
         if(NULL != thereisareply)
@@ -200,7 +200,7 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
         {
 #if defined(USE_DEBUG_EORECEIVER)             
             {   // DEBUG
-                p->DEBUG.errorsinsequencenumber ++;
+                p->debug.errorsinsequencenumber ++;
             }
 #endif            
             eo_receiver_callback_incaseoferror_in_sequencenumberReceived(remipv4addr, rec_seqnum, p->rx_seqnum+1);
@@ -238,7 +238,7 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
                 {   // DEBUG
                     if(eores_OK != res)
                     {
-                        p->DEBUG.lostreplies ++;
+                        p->debug.lostreplies ++;
                     }
                 }
                 #endif            
