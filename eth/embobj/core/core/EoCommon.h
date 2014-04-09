@@ -481,8 +481,8 @@ typedef     void        (*eOvoid_fp_uint8_uint8_voidp_t)            (uint8_t, ui
 typedef     void*       (*eOvoidp_fp_uint8_uint32_voidp_t)          (uint8_t, uint32_t, void*);
 typedef     eOresult_t  (*eOres_fp_uint8_voidp_uint16_t)            (uint8_t, void*, uint16_t);
 typedef     eOresult_t  (*eOres_fp_uint8_uint8_voidp_uint16_t)      (uint8_t, uint8_t, void*, uint16_t);
-typedef     int8_t      (*eOint8_fp_uint8_cvoidp_t)                 (int8_t, const void*);
-typedef     int8_t      (*eOint8_fp_uint8_t)                        (int8_t);
+typedef     int8_t      (*eOint8_fp_uint8_cvoidp_t)                 (uint8_t, const void*);
+typedef     int8_t      (*eOint8_fp_uint8_t)                        (uint8_t);
 typedef     eObool_t    (*eObool_fp_uint32_t)                       (uint32_t);
 
 
@@ -497,32 +497,6 @@ typedef struct
     void             *argoffn;
 } eOcallbackData_t;
 
-/** @typedef    typedef struct eObasicabstraction_hal_sys_fn_t
-    @brief      eObasicabstr_hal_sys_fn_t contains the basic system functions typically given by a HAL which can be used for instance
-                by the objects of the single-task execution environment (or SEE) to run. They have similar name and APIs as the
-                ones in the HAL.
- **/  
-typedef struct
-{
-    eOvoid_fp_void_t                    hal_base_init;                  /**< initialise the hal **/
-    eOvoid_fp_void_t                    hal_sys_systeminit;             /**< initialise the system */
-    eOvoid_fp_voidfpvoiduint32uint8_t   hal_sys_systick_sethandler;     /**< starts a tick function w/ a given period at a given priority**/
-    eOvoid_fp_vuint32p_uint32_t         hal_sys_atomic_bitwiseAND;      /**< performs atomic bitwise AND on a uint32_t passed as volatile pointer **/
-    eOvoid_fp_vuint32p_uint32_t         hal_sys_atomic_bitwiseOR;       /**< performs atomic bitwise OR on a uint32_t passed as volatile pointer **/
-    eOres_fp_voidp_uint32_t             hal_sys_criticalsection_take;   /**< takes a critical section on a dummy object (also for ISRs) with a dummy timeout**/
-    eOres_fp_voidp_t                    hal_sys_criticalsection_release;/**< releases the critical section on the dummy object **/
-    eOvoid_fp_void_t                    hal_sys_irq_disable;            /**< disable all irqs **/
-    eOvoid_fp_void_t                    hal_sys_irq_enable;             /**< enable all irqs **/
-} eObasicabstr_hal_sys_fn_t;
-
-
-/** @typedef    typedef struct eObasicabstr_fsal_fn_t
-    @brief      eObasicabstr_fsal_fn_t contains the basic functions sued to initialise a FSAL.
- **/  
-typedef struct
-{
-    eOvoid_fp_void_t                fsal_init;                       /**< initialise the fsal **/
-} eObasicabstr_fsal_fn_t;
 
 
 /** @typedef    typedef int32_t  eOq17_14_t
