@@ -17,8 +17,8 @@
 */
 
 // - include guard ----------------------------------------------------------------------------------------------------
-#ifndef _EODISAGNOSTICS_H_
-#define _EODISAGNOSTICS_H_
+#ifndef _EODIAGNOSTICS_H_
+#define _EODIAGNOSTICS_H_
 
 #ifdef __cplusplus
 extern "C" {
