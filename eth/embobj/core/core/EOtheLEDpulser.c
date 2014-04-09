@@ -29,7 +29,6 @@
 #include "EOMmutex.h"
 #include "EOVtheCallbackManager_hid.h"
 
-#include "hal.h"
 
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern public interface
@@ -55,10 +54,10 @@
 // - definition (and initialisation) of extern variables, but better using _get(), _set() 
 // --------------------------------------------------------------------------------------------------------------------
 
-static int8_t s_eo_ledpulser_fake_led_init(int8_t id, const void* cfg);
-static int8_t s_eo_ledpulser_fake_led_on(int8_t id);
-static int8_t s_eo_ledpulser_fake_led_off(int8_t id);
-static int8_t s_eo_ledpulser_fake_led_toggle(int8_t id);
+static int8_t s_eo_ledpulser_fake_led_init(uint8_t id, const void* cfg);
+static int8_t s_eo_ledpulser_fake_led_on(uint8_t id);
+static int8_t s_eo_ledpulser_fake_led_off(uint8_t id);
+static int8_t s_eo_ledpulser_fake_led_toggle(uint8_t id);
 
 
 const eOledpulser_cfg_t eo_ledpulser_DefaultCfg = 
@@ -147,8 +146,8 @@ extern EOtheLEDpulser * eo_ledpulser_Initialise(const eOledpulser_cfg_t *ledpuls
         if((ledpulsercfg->led_enable_mask & ledbit) == ledbit)
         {            
             s_theledpulser.timer[i] = eo_timer_New(); 
-            s_theledpulser.config.led_init((hal_led_t)i, NULL);
-            s_theledpulser.config.led_off((hal_led_t)i);
+            s_theledpulser.config.led_init(i, NULL);
+            s_theledpulser.config.led_off(i);
         }
         else
         {
@@ -193,7 +192,7 @@ extern void eo_ledpulser_On(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     s_theledpulser.ticks[id] = 0;
     
-    s_theledpulser.config.led_on((hal_led_t)id);      
+    s_theledpulser.config.led_on((uint8_t)id);      
 }
 
 extern void eo_ledpulser_Off(EOtheLEDpulser* p, eOledpulser_led_t id)
@@ -215,7 +214,7 @@ extern void eo_ledpulser_Off(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     s_theledpulser.ticks[id] = 0;
     
-    s_theledpulser.config.led_off((hal_led_t)id);      
+    s_theledpulser.config.led_off((uint8_t)id);      
 }
 
 extern void eo_ledpulser_Toggle(EOtheLEDpulser* p, eOledpulser_led_t id)
@@ -237,7 +236,7 @@ extern void eo_ledpulser_Toggle(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     s_theledpulser.ticks[id] = 0;
     
-    s_theledpulser.config.led_toggle((hal_led_t)id);      
+    s_theledpulser.config.led_toggle((uint8_t)id);      
 }
 
 extern void eo_ledpulser_Start(EOtheLEDpulser* p, eOledpulser_led_t id, eOreltime_t pulseperiod, uint16_t pulsesnumberof)
@@ -266,7 +265,7 @@ extern void eo_ledpulser_Start(EOtheLEDpulser* p, eOledpulser_led_t id, eOreltim
         s_theledpulser.ticks[id] = 2*pulsesnumberof;
     }
     
-    s_theledpulser.config.led_on((hal_led_t)id);
+    s_theledpulser.config.led_on((uint8_t)id);
     
     eo_action_SetCallback(s_theledpulser.action, s_eo_ledpulser_callback, (void*)id, eov_callbackman_GetTask(eov_callbackman_GetHandle()));
     
@@ -288,7 +287,7 @@ extern void eo_ledpulser_Stop(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     eo_timer_Stop(s_theledpulser.timer[id]);
  
-    s_theledpulser.config.led_off((hal_led_t)id);      
+    s_theledpulser.config.led_off((uint8_t)id);      
 }
 
 
@@ -323,32 +322,32 @@ static void s_eo_ledpulser_callback(void* p)
     
     if(0 == pulser->ticks[id])
     {
-        s_theledpulser.config.led_off((hal_led_t)id);
+        s_theledpulser.config.led_off((uint8_t)id);
         eo_timer_Stop(pulser->timer[id]);
     }
     else
     {
-        s_theledpulser.config.led_toggle((hal_led_t)id);
+        s_theledpulser.config.led_toggle((uint8_t)id);
     }
     
 }
 
-static int8_t s_eo_ledpulser_fake_led_init(int8_t id, const void* cfg)
+static int8_t s_eo_ledpulser_fake_led_init(uint8_t id, const void* cfg)
 {
     return(-1);
 }
 
-static int8_t s_eo_ledpulser_fake_led_on(int8_t id)
+static int8_t s_eo_ledpulser_fake_led_on(uint8_t id)
 {
     return(-1);
 }
 
-static int8_t s_eo_ledpulser_fake_led_off(int8_t id)
+static int8_t s_eo_ledpulser_fake_led_off(uint8_t id)
 {
     return(-1);
 }
 
-static int8_t s_eo_ledpulser_fake_led_toggle(int8_t id)
+static int8_t s_eo_ledpulser_fake_led_toggle(uint8_t id)
 {
     return(-1);
 }

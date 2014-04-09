@@ -76,11 +76,11 @@ enum { eo_ledpulser_leds_number = 6 };
  **/ 
 typedef struct
 {
-    uint8_t                 led_enable_mask; /**< to enable leds one and five: 1 << eo_ledpulser_led_one | 1 << eo_ledpulser_led_five */
-    eOint8_fp_uint8_cvoidp_t led_init;
-    eOint8_fp_uint8_t       led_on;
-    eOint8_fp_uint8_t       led_off;
-    eOint8_fp_uint8_t       led_toggle;
+    uint8_t                     led_enable_mask; /**< to enable leds one and five: 1 << eo_ledpulser_led_one | 1 << eo_ledpulser_led_five */
+    eOint8_fp_uint8_cvoidp_t    led_init;
+    eOint8_fp_uint8_t           led_on;
+    eOint8_fp_uint8_t           led_off;
+    eOint8_fp_uint8_t           led_toggle;
 } eOledpulser_cfg_t;
 
     
