@@ -49,7 +49,7 @@ extern "C" {
 
 #define EOK_ROP_VERSION_0   0
 
-
+#define eo_rop_signaturedummy   EOK_uint32dummy
   
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
