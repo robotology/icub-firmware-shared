@@ -493,9 +493,14 @@ extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, 
 }
 
 
-extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOnvID32_t id)
+extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOprotID32_t id)
 {
     // just verifies that the entity, index, and tag have numbers which are consistent with their maximum number
+    
+    if(id == eo_prot_ID32dummy)
+    {
+        return(eobool_false);
+    }
     
     eOprotEntity_t ent = eoprot_ID2entity(id);
     eOprotIndex_t  ind = eoprot_ID2index(id);
@@ -532,6 +537,10 @@ extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOnvID32_t id)
     return(s_eoprot_entity_tag_is_valid(epi, ent, tag));
 }
 
+extern uint16_t eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
+{
+    return(s_eoprot_endpoint_numberofvariables_get(brd, ep));
+}
 
 extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotProgNumber_t prog)
 {

@@ -54,7 +54,10 @@ extern "C" {
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
-// empty-section
+
+#define eo_prot_ID32dummy       EOK_uint32dummy
+#define eo_prot_PROGnumdummy    EOK_uint32dummy
+#define eo_prot_BRDdummy        EOK_uint08dummy
 
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
@@ -372,13 +375,22 @@ extern uint16_t eoprot_entity_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, e
 extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity);
 
 
-/** @fn         extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOnvID32_t id)
+/** @fn         extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOprotID32_t id)
     @brief      it tells if a given ID is valid on that board.
     @param      brd             the number of the board.
     @param      id              the ID.
     @return     eobool_true or eobool_false.
  **/
-extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOnvID32_t id);
+extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOprotID32_t id);
+
+
+/** @fn         extern uint16_t eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
+    @brief      it retrieves number of variables contained inside a given endpoint of a given board.
+    @param      brd             the number of the board.
+    @param      ep              the endpoint.
+    @return     the number or 0 in case of invalid parameters or endpoint not present on the board.
+ **/
+extern uint16_t eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep);
 
 
 /** @fn         extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotProgNumber_t prog)
