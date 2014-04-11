@@ -296,6 +296,13 @@ extern eOresult_t eoprot_config_endpoint_entities(eOprotBRD_t brd, eOprotEndpoin
 extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uint32_t isvarproxied_fn);
 
 
+/** @fn         extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep)
+    @brief      it tells if a given board has a given endpoint configured.
+    @param      brd                 the number of board 
+    @param      ep                  the endpoint
+    @return     eobool_true or eobool_false.
+ **/
+extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep);
 
 /** @fn         extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
     @brief      it tells the size of the ram used for a given board and endpoint.
@@ -339,6 +346,16 @@ extern void* eoprot_variable_ramof_get(eOprotBRD_t brd, eOprotID32_t id);
 extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id);
 
 extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id);
+
+
+/** @fn         extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
+    @brief      it tells if the entity on a given (board, endpoint, entity) is configured.
+    @param      brd             the number of the board.
+    @param      ep              the endpoint.
+    @param      entity          the entity.
+    @return     eobool_true if configured, eobool_false if not configured or if parameters are invalid.
+ **/
+extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity);
 
 
 /** @fn         extern void* eoprot_entity_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity, eOprotIndex_t index)

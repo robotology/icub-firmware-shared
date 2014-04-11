@@ -233,6 +233,34 @@ extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uin
     return(res);        
 }
 
+extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep)
+{
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if((brd >= eoprot_boards_maxnumberof))
+    {
+        return(eobool_false);
+    }
+
+    if(ep > eoprot_endpoints_numberof)
+    {
+        return(eobool_false);
+    }
+    
+    uint8_t epi = eoprot_ep_ep2index(ep);
+    
+    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    {
+        return(eobool_false);
+    }
+    
+    
+    return(eobool_true);
+}
+
 extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
     uint16_t size = 0;
@@ -393,6 +421,39 @@ extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
 }
 
 
+extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
+{    
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }  
+    
+    if(brd >= eoprot_boards_maxnumberof)
+    {
+        return(eobool_false);
+    }
+    
+    if(ep > eoprot_endpoints_numberof)
+    {
+        return(eobool_false);
+    }  
+
+    uint8_t epi = eoprot_ep_ep2index(ep);
+    
+    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    {
+        return(eobool_false);
+    }
+
+    
+    if(entity < eoprot_ep_entities_numberof[epi])
+    {   // is supported if we have a valid entity number
+        return(eobool_true);
+    }
+
+    return(eobool_false);    
+}
+
 extern void* eoprot_entity_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity, eOprotIndex_t index)
 { 
     if(eoprot_board_localboard == brd)
@@ -469,7 +530,7 @@ extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, 
     
     if(brd >= eoprot_boards_maxnumberof)
     {
-        return(eobool_false);
+        return(0);
     }
     
     if(ep > eoprot_endpoints_numberof)
