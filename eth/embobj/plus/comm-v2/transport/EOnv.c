@@ -183,7 +183,7 @@ extern uint16_t eo_nv_Size(const EOnv *nv)
     return(s_eo_nv_get_size2(nv));
 }
 
-// fills data with capacity bytes, ... but if an array typ then size is not capacity ...
+
 extern eOresult_t eo_nv_Get(const EOnv *nv, eOnvStorage_t strg, void *data, uint16_t *size)
 {
     eOresult_t res = eores_NOK_generic;
