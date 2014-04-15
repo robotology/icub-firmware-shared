@@ -23,8 +23,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
+ 
+ 
 /** @file       EOaction.h
     @brief      This header file implements public interface to a generic action.
     @author     marco.accame@iit.it
