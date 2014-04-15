@@ -55,8 +55,21 @@ extern "C" {
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_CANRECERROR     0x08 //in data[4]  
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_CANRECHWOVERRUN 0x40 //in data[4]
 
+//definition of board types.
+#define ICUBCANPROTO_BOARDTYPE__DSP     0
+#define ICUBCANPROTO_BOARDTYPE__PIC     1
+#define ICUBCANPROTO_BOARDTYPE__2DC     2
+#define ICUBCANPROTO_BOARDTYPE__4DC     3
+#define ICUBCANPROTO_BOARDTYPE__BLL     4
+#define ICUBCANPROTO_BOARDTYPE__SKIN    5 
+#define ICUBCANPROTO_BOARDTYPE__STRAIN  6 
+#define ICUBCANPROTO_BOARDTYPE__MAIS    7 
+#define ICUBCANPROTO_BOARDTYPE__2FOC    8 
+#define ICUBCANPROTO_BOARDTYPE__6SG     9
+#define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
+
 
 /** @typedef    typedef enum icubCanProto_boardType_t
     @brief      contains board type can be mounted on robot.
@@ -65,17 +78,17 @@ extern "C" {
  **/
 typedef enum
 {
-    icubCanProto_boardType__dsp     = 0,
-    icubCanProto_boardType__pic     = 1,
-    icubCanProto_boardType__2dc     = 2,
-    icubCanProto_boardType__4dc     = 3,
-    icubCanProto_boardType__bll     = 4,
-    icubCanProto_boardType__skin    = 5,
-    icubCanProto_boardType__strain  = 6,
-    icubCanProto_boardType__mais    = 7,
-    icubCanProto_boardType__2foc    = 8,
-    icubCanProto_boardType__6sg     = 9,
-    icubCanProto_boardType__unknown = 255
+    icubCanProto_boardType__dsp     = ICUBCANPROTO_BOARDTYPE__DSP,
+    icubCanProto_boardType__pic     = ICUBCANPROTO_BOARDTYPE__PIC,
+    icubCanProto_boardType__2dc     = ICUBCANPROTO_BOARDTYPE__2DC,
+    icubCanProto_boardType__4dc     = ICUBCANPROTO_BOARDTYPE__4DC,
+    icubCanProto_boardType__bll     = ICUBCANPROTO_BOARDTYPE__BLL,
+    icubCanProto_boardType__skin    = ICUBCANPROTO_BOARDTYPE__SKIN,
+    icubCanProto_boardType__strain  = ICUBCANPROTO_BOARDTYPE__STRAIN,
+    icubCanProto_boardType__mais    = ICUBCANPROTO_BOARDTYPE__MAIS,
+    icubCanProto_boardType__2foc    = ICUBCANPROTO_BOARDTYPE__2FOC,
+    icubCanProto_boardType__6sg     = ICUBCANPROTO_BOARDTYPE__6SG,
+    icubCanProto_boardType__unknown = ICUBCANPROTO_BOARDTYPE__UNKNOWN
 } icubCanProto_boardType_t;
 
 
