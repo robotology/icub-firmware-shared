@@ -93,7 +93,7 @@ extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram)
     }
 }
 #else
-__weak extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) {}
+EO_weak extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) {}
 #endif
 
 
@@ -101,14 +101,14 @@ __weak extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) {}
 
 // -- skin
 
-__weak extern void eoprot_fun_INIT_sk_skin_wholeitem(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_sk_skin_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_sk_skin_wholeitem(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_sk_skin_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_sk_skin_config_sigmode(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_sk_skin_config_sigmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_sk_skin_config_sigmode(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_sk_skin_config_sigmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_sk_skin_status_arrayof10canframes(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_sk_skin_status_arrayof10canframes(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_sk_skin_status_arrayof10canframes(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_sk_skin_status_arrayof10canframes(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)

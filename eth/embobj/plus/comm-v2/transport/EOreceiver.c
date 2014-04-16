@@ -277,7 +277,7 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
 
 
 #if !defined(OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived)
-__weak extern void eo_receiver_callback_incaseoferror_in_sequencenumberReceived(eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum)
+EO_weak extern void eo_receiver_callback_incaseoferror_in_sequencenumberReceived(eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum)
 {
 
 }

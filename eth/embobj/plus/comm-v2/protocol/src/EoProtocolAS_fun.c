@@ -94,7 +94,7 @@ extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram)
     }
 }
 #else
-__weak extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram) {}
+EO_weak extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram) {}
 #endif
 
 
@@ -103,61 +103,61 @@ __weak extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram) {}
 
 // -- strain 
 
-__weak extern void eoprot_fun_INIT_as_strain_wholeitem(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_strain_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_strain_wholeitem(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_strain_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_strain_config(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_strain_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_strain_config(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_strain_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_strain_status(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_strain_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_strain_status(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_strain_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_strain_status_fullscale(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_strain_status_fullscale(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_strain_status_fullscale(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_strain_status_fullscale(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_strain_status_calibratedvalues(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_strain_status_calibratedvalues(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_strain_status_calibratedvalues(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_strain_status_calibratedvalues(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_strain_status_uncalibratedvalues(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_strain_status_uncalibratedvalues(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_strain_status_uncalibratedvalues(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_strain_status_uncalibratedvalues(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
 
 
 // -- mais
 
-__weak extern void eoprot_fun_INIT_as_mais_wholeitem(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_wholeitem(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_mais_config(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_config(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_mais_config_mode(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_config_mode(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_config_mode(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_config_mode(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_mais_config_datarate(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_config_datarate(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_mais_config_resolution(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_config_resolution(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_config_resolution(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_config_resolution(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_mais_status(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_status(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_mais_status_the15values(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_mais_status_the15values(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_mais_status_the15values(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_mais_status_the15values(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
 
 
 // -- extorque
 
-__weak extern void eoprot_fun_INIT_as_extorque_wholeitem(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_extorque_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_extorque_wholeitem(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_extorque_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_extorque_config(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_extorque_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_extorque_config(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_extorque_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
 
 

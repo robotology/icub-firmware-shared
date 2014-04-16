@@ -93,7 +93,7 @@ extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram)
     }
 }
 #else
-__weak extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram) {}
+EO_weak extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram) {}
 #endif
 
 
@@ -101,27 +101,27 @@ __weak extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram) {}
 
 // -- comm
     
-__weak extern void eoprot_fun_INIT_mn_comm_wholeitem(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_mn_comm_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_mn_comm_wholeitem(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_mn_comm_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_mn_comm_cmmnds_ropsigcfg(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_mn_comm_cmmnds_ropsigcfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_mn_comm_cmmnds_ropsigcfg(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_mn_comm_cmmnds_ropsigcfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
   
 // -- appl
     
 
-__weak extern void eoprot_fun_INIT_mn_appl_wholeitem(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_mn_appl_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_mn_appl_wholeitem(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_mn_appl_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_mn_appl_config(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_mn_appl_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_mn_appl_config(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_mn_appl_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_mn_appl_status(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_mn_appl_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_mn_appl_status(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_mn_appl_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
-__weak extern void eoprot_fun_INIT_mn_appl_cmmnds_go2state(const EOnv* nv) {}
-__weak extern void eoprot_fun_UPDT_mn_appl_cmmnds_go2state(const EOnv* nv, const eOropdescriptor_t* rd) {}
+EO_weak extern void eoprot_fun_INIT_mn_appl_cmmnds_go2state(const EOnv* nv) {}
+EO_weak extern void eoprot_fun_UPDT_mn_appl_cmmnds_go2state(const EOnv* nv, const eOropdescriptor_t* rd) {}
 
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
