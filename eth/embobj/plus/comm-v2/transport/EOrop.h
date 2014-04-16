@@ -49,7 +49,7 @@ extern "C" {
 
 #define EOK_ROP_VERSION_0   0
 
-#define eo_rop_signaturedummy   EOK_uint32dummy
+
   
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
@@ -152,6 +152,7 @@ typedef enum
     eo_rop_dir_outgoing     = 1
 } eOropDirection;
 
+typedef void (*eOvoid_fp_cnvp_cropdesp_t)                   (const EOnv*, const eOropdescriptor_t*);
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 

@@ -46,6 +46,8 @@ extern "C" {
 
 #include "EoCommon.h"
 
+#include "EOnv.h"
+#include "EOrop.h"
 
 #include "EoAnalogSensors.h"
 #include "EoManagement.h"
@@ -55,10 +57,15 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
+// can be defined or undefined
+//#define EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+//#undef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+
+
+
 #define eo_prot_ID32dummy       EOK_uint32dummy
 #define eo_prot_PROGnumdummy    EOK_uint32dummy
 #define eo_prot_BRDdummy        EOK_uint08dummy
-
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
@@ -303,6 +310,30 @@ extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uin
     @return     eobool_true or eobool_false.
  **/
 extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep);
+
+
+/** @fn         extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp_uint32_voidp_t raminitialise)
+    @brief      it configures the ram initialisation function functions associated to a given endpoint.
+                it does so for every board.
+                it the raminitialise function is NULL, then it is left the default one.
+    @param      ep                  the endpoint
+    @param      raminitialise       the function called at initialisation of endpoint
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp_uint32_voidp_t raminitialise);
+
+
+/** @fn         extern eOresult_t eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
+    @brief      it overrides the call back functions associated to a given variable ID with functions init() and update().
+                it does so for every board.
+                it any of these function is NULL, then it is left the default one.
+    @param      id                  the id of the variable
+    @param      init                the callback called at initialisation
+    @param      update              teh callaback called at update of the variable 
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update);
+
 
 /** @fn         extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
     @brief      it tells the size of the ram used for a given board and endpoint.

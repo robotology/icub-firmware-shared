@@ -49,13 +49,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-
-#define EOPROT_EP_SK_FUN_OVERRIDE
-
-#if defined(EOPROT_EP_SK_FUN_OVERRIDE)
-#include "EoProtocolSK_overridden_fun.h"
-#endif
-
+// empty-section
 
 
 
@@ -78,7 +72,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_sk_fptr = NULL; 
+#endif
 
 
 
@@ -87,34 +84,34 @@
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-#if !defined(OVERRIDE_eoprot_sk_fun_INITIALISE)
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) 
+{
+    if(NULL != eoprot_fun_INITIALISE_sk_fptr)
+    {
+        eoprot_fun_INITIALISE_sk_fptr(ip, ram);
+    }
+}
+#else
 __weak extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) {}
 #endif
 
+
+#if    !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+
 // -- skin
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_wholeitem)
 __weak extern void eoprot_fun_INIT_sk_skin_wholeitem(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_wholeitem)
 __weak extern void eoprot_fun_UPDT_sk_skin_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_config_sigmode)
 __weak extern void eoprot_fun_INIT_sk_skin_config_sigmode(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_config_sigmode)
 __weak extern void eoprot_fun_UPDT_sk_skin_config_sigmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_status_arrayof10canframes)
 __weak extern void eoprot_fun_INIT_sk_skin_status_arrayof10canframes(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_status_arrayof10canframes)
 __weak extern void eoprot_fun_UPDT_sk_skin_status_arrayof10canframes(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
 
+#endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

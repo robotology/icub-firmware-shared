@@ -69,7 +69,7 @@
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id);
+static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id); // actually brd is not used ...
 
 static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep);
 static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, eOprotEntity_t entity, eOprotIndex_t index);
@@ -88,7 +88,7 @@ static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id);
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static eOprotBRD_t s_eoprot_localboard = 255;
+static eOprotBRD_t s_eoprot_localboard = eo_prot_BRDdummy; // initted as 255. however, in runtime we assign a specific number to it.
 
 extern const uint8_t* eoprot_board_numberofeachentity[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
 extern void* eoprot_board_ramofeachendpoint[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
@@ -261,6 +261,77 @@ extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t 
     return(eobool_true);
 }
 
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+extern eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_mn_fptr; 
+extern eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_mc_fptr; 
+extern eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_as_fptr; 
+extern eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_sk_fptr; 
+#endif
+
+extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp_uint32_voidp_t raminitialise)
+{
+#if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+    return(eores_NOK_generic);
+#else
+    
+    switch(ep)
+    {
+        case eoprot_endpoint_management:
+            if(eoprot_fun_INITIALISE_mn != raminitialise) { eoprot_fun_INITIALISE_mn_fptr = raminitialise; } // to avoid infinite recursion
+        break;
+ 
+        case eoprot_endpoint_motioncontrol:
+            if(eoprot_fun_INITIALISE_mc != raminitialise) { eoprot_fun_INITIALISE_mc_fptr = raminitialise; } // to avoid infinite recursion
+        break;  
+
+        case eoprot_endpoint_analogsensors:
+            if(eoprot_fun_INITIALISE_as != raminitialise) { eoprot_fun_INITIALISE_as_fptr = raminitialise; } // to avoid infinite recursion
+        break;
+
+        case eoprot_endpoint_skin:
+            if(eoprot_fun_INITIALISE_sk != raminitialise) { eoprot_fun_INITIALISE_sk_fptr = raminitialise; } // to avoid infinite recursion
+        break;
+        
+        default:
+            
+        break;
+    };
+    
+        
+    return(eores_OK);   
+    
+#endif    
+}
+
+
+extern eOresult_t eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
+{
+#if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+    return(eores_NOK_generic);
+#else
+    EOnv_rom_t* nvrom = (EOnv_rom_t*)s_eoprot_eonvrom_get(0, id); // s_eoprot_eonvrom_get() does not use brd param
+    
+    if(NULL == nvrom)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    if(NULL != init)
+    {
+        nvrom->init = init;
+    }
+    
+    if(NULL != update)
+    {
+        nvrom->update = update;
+    }    
+    
+    return(eores_OK);
+    
+#endif    
+}
+
+
 extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
     uint16_t size = 0;
@@ -379,7 +450,7 @@ extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id)
     
     if(brd >= eoprot_boards_maxnumberof)
     {
-        return(eobool_false);
+        return(0);
     }
     
     if(ep > eoprot_endpoints_numberof)
@@ -700,7 +771,7 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
     return(prog);
 }    
 
-#warning --> IF NEEDED, WRITE FUNCTIONS WHICH CONVERT FROM ID32 to PROG and vice-versa
+
 extern eOprotID32_t eoprot_prognum2id(eOprotBRD_t brd, eOprotProgNumber_t prog)
 {
     return(EOK_uint32dummy);   
@@ -723,15 +794,16 @@ extern eOprotProgNumber_t eoprot_id2prognum(eOprotBRD_t brd, eOprotID32_t id)
 
 static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id)
 {
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if(brd >= eoprot_boards_maxnumberof)
-    {
-        return(NULL);
-    }
+// we dont verify brd validity because the eonvrom is common to every board
+//     if(eoprot_board_localboard == brd)
+//     {
+//         brd = s_eoprot_localboard;
+//     } 
+//     
+//     if(brd >= eoprot_boards_maxnumberof)
+//     {
+//         return(NULL);
+//     }
     
     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
     
@@ -742,7 +814,7 @@ static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id)
     
     uint8_t epi = eoprot_ep_ep2index(ep);
     
-    brd =  brd;
+//    brd =  brd;
     return(s_eoprot_rom_get_nvrom(epi, id));
 }
 
@@ -795,7 +867,7 @@ static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, 
     
     if(brd >= eoprot_boards_maxnumberof)
     {
-        return(0);
+        return(EOK_uint16dummy);
     }
     
     if(entity >= eoprot_ep_entities_numberof[epi])

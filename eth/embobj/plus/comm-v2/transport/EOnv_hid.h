@@ -50,23 +50,15 @@ extern "C" {
 // - definition of the hidden struct implementing the object ----------------------------------------------------------
 
 
-
-typedef void (*eOvoid_fp_cnvp_t)                            (const EOnv*);
-typedef void (*eOvoid_fp_cnvp_cropdesp_t)                   (const EOnv*, const eOropdescriptor_t*);
-
-typedef eOresult_t (*eOres_fp_cnvp_t)                       (const EOnv*);
-typedef eOresult_t (*eOres_fp_cnvp_cropdesp_t)              (const EOnv*, const eOropdescriptor_t*);
-
-
-typedef const struct EOnv_rom_T         // 16 bytes on arm 
+typedef struct EOnv_rom_T           // 16 bytes on arm 
 {
-    uint16_t                            capacity;   // the capacity of the nv
-    eOenum08_t                          rwmode;     
-    uint8_t                             dummy;    
-    const void*                         resetval;   // the reset value of the nv 
-    eOvoid_fp_cnvp_t                    init;       // called at startup to init the nv value in a particular mode or to init data structures associated to the nv
-    eOvoid_fp_cnvp_cropdesp_t           update;     // called after the nv value is changed by the protocol parser or by any other object (in this latter case ropdes is NULL)   
-} EOnv_rom_t;                           //EO_VERIFYsizeof(EOnv_rom_t, 16); 
+    uint16_t                        capacity;   // the capacity of the nv
+    eOenum08_t                      rwmode;     
+    uint8_t                         dummy;    
+    const void*                     resetval;   // the reset value of the nv 
+    eOvoid_fp_cnvp_t                init;       // called at startup to init the nv value in a particular mode or to init data structures associated to the nv
+    eOvoid_fp_cnvp_cropdesp_t       update;     // called after the nv value is changed by the protocol parser or by any other object (in this latter case ropdes is NULL)   
+} EOnv_rom_t;                       //EO_VERIFYsizeof(EOnv_rom_t, 16); 
 
 
 
@@ -79,7 +71,7 @@ struct EOnv_hid                    // 24 bytes ... multiple of 8
     eOnvID32_t                      id32;
     EOnv_rom_t*                     rom;        // pointer to the constant part common to every device which uses this nv
     void*                           ram;        // the ram which keeps the LOCAL value of nv 
-    EOVmutexDerived*                mtx;        // the mutex which protects concurrent access to the ram of this nv (or rem ...) 
+    EOVmutexDerived*                mtx;        // the mutex which protects concurrent access to the ram of this nv 
 };  //EO_VERIFYsizeof(EOnv, 24);   
 
 

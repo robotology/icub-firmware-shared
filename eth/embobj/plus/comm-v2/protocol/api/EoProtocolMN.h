@@ -139,12 +139,13 @@ typedef struct                  // 104+24+0 = 128
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
+
+extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram);
 
 
 // - declaration of extern overridable functions ----------------------------------------------------------------------
+// but if EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME is defined, then these functions are not defined.
 
-extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram);
 
 // - comm
 

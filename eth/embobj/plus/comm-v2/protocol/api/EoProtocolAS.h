@@ -190,12 +190,11 @@ typedef struct                  // 56*1+48*1+8*1 = 112
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
-
-
-// - declaration of extern overridable functions ----------------------------------------------------------------------
 
 extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram);
+
+// - declaration of extern overridable functions ----------------------------------------------------------------------
+// but if EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME is defined, then these functions are not defined.
 
 // -- strain 
 

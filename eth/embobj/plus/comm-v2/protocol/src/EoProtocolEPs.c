@@ -94,13 +94,13 @@ extern const uint8_t eoprot_ep_entities_numberof[] =
     eoprot_entities_sk_numberof
 };  EO_VERIFYsizeof(eoprot_ep_entities_numberof, eoprot_endpoints_numberof*sizeof(uint8_t)); 
 
-extern const EOnv_rom_t * const * eoprot_ep_folded_descriptors[] = 
+extern EOPROT_ROMmap EOnv_rom_t * const * eoprot_ep_folded_descriptors[] = 
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     eoprot_mn_rom_folded_descriptors,
     eoprot_mc_rom_folded_descriptors,
     eoprot_as_rom_folded_descriptors,
     eoprot_sk_rom_folded_descriptors
-};  EO_VERIFYsizeof(eoprot_ep_folded_descriptors, eoprot_endpoints_numberof*sizeof(const EOnv_rom_t * const *)); 
+};  EO_VERIFYsizeof(eoprot_ep_folded_descriptors, eoprot_endpoints_numberof*sizeof(EOPROT_ROMmap EOnv_rom_t * const *)); 
 
 extern const uint16_t* eoprot_ep_entities_sizeof[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.

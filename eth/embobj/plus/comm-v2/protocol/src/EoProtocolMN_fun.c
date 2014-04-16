@@ -49,13 +49,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-
-#define EOPROT_EP_MN_FUN_OVERRIDE
-
-#if defined(EOPROT_EP_MN_FUN_OVERRIDE)
-#include "EoProtocolMN_overridden_fun.h"
-#endif
-
+// empty-section
 
 
 
@@ -78,7 +72,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_mn_fptr = NULL; 
+#endif
 
 
 
@@ -87,56 +84,47 @@
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-#if !defined(OVERRIDE_eoprot_mn_fun_INITIALISE)
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram) 
+{
+    if(NULL != eoprot_fun_INITIALISE_mn_fptr)
+    {
+        eoprot_fun_INITIALISE_mn_fptr(ip, ram);
+    }
+}
+#else
 __weak extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram) {}
 #endif
 
+
+#if    !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+
 // -- comm
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mn_comm_wholeitem)
 __weak extern void eoprot_fun_INIT_mn_comm_wholeitem(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_comm_wholeitem)
 __weak extern void eoprot_fun_UPDT_mn_comm_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mn_comm_cmmnds_ropsigcfg)
 __weak extern void eoprot_fun_INIT_mn_comm_cmmnds_ropsigcfg(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_comm_cmmnds_ropsigcfg)
 __weak extern void eoprot_fun_UPDT_mn_comm_cmmnds_ropsigcfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
+
   
 // -- appl
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mn_appl_wholeitem)
+
 __weak extern void eoprot_fun_INIT_mn_appl_wholeitem(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_appl_wholeitem)
 __weak extern void eoprot_fun_UPDT_mn_appl_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mn_appl_config)
 __weak extern void eoprot_fun_INIT_mn_appl_config(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_appl_config)
 __weak extern void eoprot_fun_UPDT_mn_appl_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mn_appl_status)
 __weak extern void eoprot_fun_INIT_mn_appl_status(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_appl_status)
 __weak extern void eoprot_fun_UPDT_mn_appl_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mn_appl_cmmnds_go2state)
 __weak extern void eoprot_fun_INIT_mn_appl_cmmnds_go2state(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_appl_cmmnds_go2state)
 __weak extern void eoprot_fun_UPDT_mn_appl_cmmnds_go2state(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
+
+#endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

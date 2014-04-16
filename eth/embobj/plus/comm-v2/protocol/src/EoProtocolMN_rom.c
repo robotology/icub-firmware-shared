@@ -92,66 +92,96 @@ static const eOmn_appl_t eoprot_mn_rom_appl_defaultvalue = { 0 };
 
 // - descriptors for the variables of a comm
 
-static EOnv_rom_t eoprot_mn_rom_descriptor_comm_wholeitem =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_comm_wholeitem =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_comm_defaultvalue),
     EO_INIT(.rwmode)    eoprot_rwm_mn_comm_wholeitem,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_comm_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_mn_comm_wholeitem,
     EO_INIT(.update)    eoprot_fun_UPDT_mn_comm_wholeitem
+#endif
 };
 
-static EOnv_rom_t eoprot_mn_rom_descriptor_comm_cmmnds_ropsigcfg =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_comm_cmmnds_ropsigcfg =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_comm_defaultvalue.cmmnds.ropsigcfg),
     EO_INIT(.rwmode)    eoprot_rwm_mn_comm_cmmnds_ropsigcfg,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_comm_defaultvalue.cmmnds.ropsigcfg,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_mn_comm_cmmnds_ropsigcfg,
     EO_INIT(.update)    eoprot_fun_UPDT_mn_comm_cmmnds_ropsigcfg
+#endif
 };
 
 // - descriptors for the variables of a appl
 
-static EOnv_rom_t eoprot_mn_rom_descriptor_appl_wholeitem =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_wholeitem =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_appl_defaultvalue),
     EO_INIT(.rwmode)    eoprot_rwm_mn_appl_wholeitem,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_appl_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_mn_appl_wholeitem,
     EO_INIT(.update)    eoprot_fun_UPDT_mn_appl_wholeitem
+#endif
 };
 
-static EOnv_rom_t eoprot_mn_rom_descriptor_appl_config =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_config =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_appl_defaultvalue.config),
     EO_INIT(.rwmode)    eoprot_rwm_mn_appl_config,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_appl_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_mn_appl_config,
     EO_INIT(.update)    eoprot_fun_UPDT_mn_appl_config
+#endif
 };
 
-static EOnv_rom_t eoprot_mn_rom_descriptor_appl_status =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_status =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_appl_defaultvalue.status),
     EO_INIT(.rwmode)    eoprot_rwm_mn_appl_status,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_appl_defaultvalue.status,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_mn_appl_status,
     EO_INIT(.update)    eoprot_fun_UPDT_mn_appl_status
+#endif
 };
 
-static EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_go2state =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_go2state =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_appl_defaultvalue.cmmnds.go2state),
     EO_INIT(.rwmode)    eoprot_rwm_mn_appl_cmmnds_go2state,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_appl_defaultvalue.cmmnds.go2state,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_mn_appl_cmmnds_go2state,
     EO_INIT(.update)    eoprot_fun_UPDT_mn_appl_cmmnds_go2state
+#endif
 };
 
 
@@ -162,7 +192,7 @@ static EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_go2state =
 
 // -- the folded array of descriptors: to be changed if any new tag is added
 
-const EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[] =
+EOPROT_ROMmap EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[] =
 {
     // here are eoprot_mn_tags_comm_numberof descriptors for the comms (equal for every comm)
     &eoprot_mn_rom_descriptor_comm_wholeitem,
@@ -174,7 +204,7 @@ const EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[] =
     &eoprot_mn_rom_descriptor_appl_status,
     &eoprot_mn_rom_descriptor_appl_cmmnds_go2state
          
-};  EO_VERIFYsizeof(eoprot_mn_rom_folded_descriptors, sizeof(EOnv_rom_t*)*(eoprot_tags_mn_comm_numberof+eoprot_tags_mn_appl_numberof));
+};  EO_VERIFYsizeof(eoprot_mn_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof+eoprot_tags_mn_appl_numberof));
 
 
 // the other constants: to be changed when a new entity is added

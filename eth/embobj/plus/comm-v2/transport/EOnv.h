@@ -105,6 +105,7 @@ typedef enum
 } eOnvUpdate_t;
 
 
+typedef void (*eOvoid_fp_cnvp_t)                            (const EOnv*);
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 

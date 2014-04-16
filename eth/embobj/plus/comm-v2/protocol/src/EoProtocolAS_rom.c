@@ -75,6 +75,7 @@ EO_VERIFYproposition(eoprot_as_tagsnum_et, eoprot_tags_as_extorque_numberof == e
 EO_VERIFYproposition(eoprot_as_tagsmax_et, eoprot_tags_as_extorque_numberof <= eoprot_tags_maxnumberof);
 
 
+
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
@@ -97,168 +98,248 @@ static const eOas_extorque_t eoprot_as_rom_extorque_defaultvalue = { 0 };
 
 // - descriptors for the variables of a strain
 
-static EOnv_rom_t eoprot_as_rom_descriptor_strain_wholeitem =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_wholeitem =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_strain_defaultvalue),
     EO_INIT(.rwmode)    eoprot_rwm_as_strain_config,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_strain_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else    
     EO_INIT(.init)      eoprot_fun_INIT_as_strain_wholeitem,
     EO_INIT(.update)    eoprot_fun_UPDT_as_strain_wholeitem
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_strain_config =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_config =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_strain_defaultvalue.config),
     EO_INIT(.rwmode)    eoprot_rwm_as_strain_config,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_strain_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_strain_config,
     EO_INIT(.update)    eoprot_fun_UPDT_as_strain_config
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_strain_status =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_status =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_strain_defaultvalue.status),
     EO_INIT(.rwmode)    eoprot_rwm_as_strain_status,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_strain_defaultvalue.status,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_strain_status,
     EO_INIT(.update)    eoprot_fun_UPDT_as_strain_status
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_strain_status_fullscale =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_status_fullscale =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_strain_defaultvalue.status.fullscale),
     EO_INIT(.rwmode)    eoprot_rwm_as_strain_status_fullscale,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_strain_defaultvalue.status.fullscale,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_strain_status_fullscale,
     EO_INIT(.update)    eoprot_fun_UPDT_as_strain_status_fullscale
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_strain_status_calibratedvalues =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_status_calibratedvalues =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_strain_defaultvalue.status.calibratedvalues),
     EO_INIT(.rwmode)    eoprot_rwm_as_strain_status_calibratedvalues,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_strain_defaultvalue.status.calibratedvalues,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_strain_status_calibratedvalues,
     EO_INIT(.update)    eoprot_fun_UPDT_as_strain_status_calibratedvalues
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_strain_status_uncalibratedvalues =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_status_uncalibratedvalues =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_strain_defaultvalue.status.uncalibratedvalues),
     EO_INIT(.rwmode)    eoprot_rwm_as_strain_status_uncalibratedvalues,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_strain_defaultvalue.status.uncalibratedvalues,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_strain_status_uncalibratedvalues,
     EO_INIT(.update)    eoprot_fun_UPDT_as_strain_status_uncalibratedvalues
+#endif
 };
 
 // - descriptors for the variables of a mais
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_wholeitem =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_wholeitem =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_wholeitem,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_wholeitem,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_wholeitem
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_config =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_config =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue.config),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_config,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_config,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_config
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_config_mode =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_config_mode =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue.config.mode),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_config_mode,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue.config.mode,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_config_mode,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_config_mode
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_config_datarate =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_config_datarate =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue.config.datarate),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_config_datarate,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue.config.datarate,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_config_datarate,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_config_datarate
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_config_resolution =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_config_resolution =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue.config.resolution),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_config_resolution,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue.config.resolution,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_config_resolution,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_config_resolution
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_status =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_status =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue.status),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_status,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue.status,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_status,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_status
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_mais_status_the15values =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_mais_status_the15values =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_mais_defaultvalue.status.the15values),
     EO_INIT(.rwmode)    eoprot_rwm_as_mais_status_the15values,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_mais_defaultvalue.status.the15values,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_mais_status_the15values,
     EO_INIT(.update)    eoprot_fun_UPDT_as_mais_status_the15values
+#endif
 };
 
 // - descriptors for the variables of an extorque
 
-static EOnv_rom_t eoprot_as_rom_descriptor_extorque_wholeitem =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_extorque_wholeitem =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_extorque_defaultvalue),
     EO_INIT(.rwmode)    eoprot_rwm_as_extorque_config,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_extorque_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_extorque_wholeitem,
     EO_INIT(.update)    eoprot_fun_UPDT_as_extorque_wholeitem
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_extorque_config =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_extorque_config =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_extorque_defaultvalue.config),
     EO_INIT(.rwmode)    eoprot_rwm_as_extorque_config,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_extorque_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_extorque_config,
     EO_INIT(.update)    eoprot_fun_UPDT_as_extorque_config
+#endif
 };
 
-static EOnv_rom_t eoprot_as_rom_descriptor_extorque_inputs =
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_extorque_inputs =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_extorque_defaultvalue.inputs),
     EO_INIT(.rwmode)    eoprot_rwm_as_extorque_inputs,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_extorque_defaultvalue.inputs,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_as_extorque_inputs,
     EO_INIT(.update)    eoprot_fun_UPDT_as_extorque_inputs
+#endif
 };
 
 
@@ -268,7 +349,7 @@ static EOnv_rom_t eoprot_as_rom_descriptor_extorque_inputs =
 
 // -- the folded array of descriptors: to be changed if any new tag is added
 
-const EOnv_rom_t * const eoprot_as_rom_folded_descriptors[] =
+EOPROT_ROMmap EOnv_rom_t * const eoprot_as_rom_folded_descriptors[] =
 {
     // here are eoprot_tags_as_strain_numberof descriptors for the strains (equal for every strain)
     &eoprot_as_rom_descriptor_strain_wholeitem,
@@ -292,7 +373,7 @@ const EOnv_rom_t * const eoprot_as_rom_folded_descriptors[] =
     &eoprot_as_rom_descriptor_extorque_config,    
     &eoprot_as_rom_descriptor_extorque_inputs
          
-};  EO_VERIFYsizeof(eoprot_as_rom_folded_descriptors, sizeof(EOnv_rom_t*)*(eoprot_tags_as_strain_numberof+eoprot_tags_as_mais_numberof+eoprot_tags_as_extorque_numberof));
+};  EO_VERIFYsizeof(eoprot_as_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_strain_numberof+eoprot_tags_as_mais_numberof+eoprot_tags_as_extorque_numberof));
 
 
 // the other constants: to be changed when a new entity is added

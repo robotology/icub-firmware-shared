@@ -52,13 +52,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-
-#define EOPROT_EP_MC_FUN_OVERRIDE
-
-#if defined(EOPROT_EP_MC_FUN_OVERRIDE)
-#include "EoProtocolMC_overridden_fun.h"
-#endif
-
+// empty-section
 
 
 
@@ -81,7 +75,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_mc_fptr = NULL; 
+#endif
 
 
 
@@ -90,192 +87,108 @@
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-#if !defined(OVERRIDE_eoprot_mc_fun_INITIALISE)
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+extern void eoprot_fun_INITIALISE_mc(eOprotIP_t ip, void *ram) 
+{
+    if(NULL != eoprot_fun_INITIALISE_mc_fptr)
+    {
+        eoprot_fun_INITIALISE_mc_fptr(ip, ram);
+    }
+}
+#else
 __weak extern void eoprot_fun_INITIALISE_mc(eOprotIP_t ip, void *ram) {}
 #endif
 
+
+#if    !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+
 // -- joint
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_wholeitem)
+
 __weak extern void eoprot_fun_INIT_mc_joint_wholeitem(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_wholeitem)
-__weak extern void eoprot_fun_UPDT_mc_joint_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd)  {}
-#endif
-      
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config)
+__weak extern void eoprot_fun_UPDT_mc_joint_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd)  {}    
+
 __weak extern void eoprot_fun_INIT_mc_joint_config(const EOnv* nv)  {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config)
 __weak extern void eoprot_fun_UPDT_mc_joint_config(const EOnv* nv, const eOropdescriptor_t* rd)  {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidposition)
 __weak extern void eoprot_fun_INIT_mc_joint_config_pidposition(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidposition)
 __weak extern void eoprot_fun_UPDT_mc_joint_config_pidposition(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidvelocity)
 __weak extern void eoprot_fun_INIT_mc_joint_config_pidvelocity(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidvelocity)
 __weak extern void eoprot_fun_UPDT_mc_joint_config_pidvelocity(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidtorque)
 __weak extern void eoprot_fun_INIT_mc_joint_config_pidtorque(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidtorque)
 __weak extern void eoprot_fun_UPDT_mc_joint_config_pidtorque(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
-   
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_limitsofjoint)
+
 __weak extern void eoprot_fun_INIT_mc_joint_config_limitsofjoint(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_limitsofjoint)
 __weak extern void eoprot_fun_UPDT_mc_joint_config_limitsofjoint(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_impedance)
 __weak extern void eoprot_fun_INIT_mc_joint_config_impedance(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_impedance)
 __weak extern void eoprot_fun_UPDT_mc_joint_config_impedance(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_motionmonitormode)
 __weak extern void eoprot_fun_INIT_mc_joint_config_motionmonitormode(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_motionmonitormode)
 __weak extern void eoprot_fun_UPDT_mc_joint_config_motionmonitormode(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status)
 __weak extern void eoprot_fun_INIT_mc_joint_status(const EOnv* nv)  {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status)
 __weak extern void eoprot_fun_UPDT_mc_joint_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_basic)
 __weak extern void eoprot_fun_INIT_mc_joint_status_basic(const EOnv* nv) {}
-#endif
-
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_basic)
 __weak extern void eoprot_fun_UPDT_mc_joint_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_ofpid)
 __weak extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_ofpid)
 __weak extern void eoprot_fun_UPDT_mc_joint_status_ofpid(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_inputs)
 __weak extern void eoprot_fun_INIT_mc_joint_inputs(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_inputs)
 __weak extern void eoprot_fun_UPDT_mc_joint_inputs(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_inputs_externallymeasuredtorque)
 __weak extern void eoprot_fun_INIT_mc_joint_inputs_externallymeasuredtorque(const EOnv* nv) {}
-#endif   
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_inputs_externallymeasuredtorque)
 __weak extern void eoprot_fun_UPDT_mc_joint_inputs_externallymeasuredtorque(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_cmmnds_calibration)
 __weak extern void eoprot_fun_INIT_mc_joint_cmmnds_calibration(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_cmmnds_calibration)
 __weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_calibration(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_cmmnds_setpoint)
 __weak extern void eoprot_fun_INIT_mc_joint_cmmnds_setpoint(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_cmmnds_setpoint)
 __weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_setpoint(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_cmmnds_stoptrajectory)
 __weak extern void eoprot_fun_INIT_mc_joint_cmmnds_stoptrajectory(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_cmmnds_stoptrajectory)
 __weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_stoptrajectory(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_cmmnds_controlmode)
 __weak extern void eoprot_fun_INIT_mc_joint_cmmnds_controlmode(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_cmmnds_controlmode)
 __weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_controlmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
+
  
 // -- motor    
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_wholeitem)
 __weak extern void eoprot_fun_INIT_mc_motor_wholeitem(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_wholeitem)
 __weak extern void eoprot_fun_UPDT_mc_motor_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif  
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config)
 __weak extern void eoprot_fun_INIT_mc_motor_config(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config)
 __weak extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor)
 __weak extern void eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor)
 __weak extern void eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status)
 __weak extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_status)
 __weak extern void eoprot_fun_UPDT_mc_motor_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status_basic)
 __weak extern void eoprot_fun_INIT_mc_motor_status_basic(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_status_basic)
 __weak extern void eoprot_fun_UPDT_mc_motor_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
+
 
 // -- controller
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_controller_wholeitem)
 __weak extern void eoprot_fun_INIT_mc_controller_wholeitem(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_controller_wholeitem)
 __weak extern void eoprot_fun_UPDT_mc_controller_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif    
-    
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_controller_config)
+
 __weak extern void eoprot_fun_INIT_mc_controller_config(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_controller_config)
 __weak extern void eoprot_fun_UPDT_mc_controller_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_controller_status)
 __weak extern void eoprot_fun_INIT_mc_controller_status(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_controller_status)
 __weak extern void eoprot_fun_UPDT_mc_controller_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
+
+
+#endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

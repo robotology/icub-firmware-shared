@@ -56,7 +56,7 @@
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[];
+extern EOPROT_ROMmap EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[];
 extern const uint8_t eoprot_sk_rom_tags_numberof[eoprot_entities_sk_numberof];
 extern const uint16_t eoprot_sk_rom_entities_sizeof[eoprot_entities_sk_numberof];
 extern const uint32_t* eoprot_sk_rom_entities_defval[eoprot_entities_sk_numberof];

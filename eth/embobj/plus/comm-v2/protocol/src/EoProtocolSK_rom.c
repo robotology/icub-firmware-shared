@@ -69,6 +69,8 @@ EO_VERIFYproposition(eoprot_sk_tagsnum_sk, eoprot_tags_sk_skin_numberof == eopro
 EO_VERIFYproposition(eoprot_sk_tagsmax_sk, eoprot_tags_sk_skin_numberof <= eoprot_tags_maxnumberof);
 
 
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
@@ -86,36 +88,51 @@ static const eOsk_skin_t eoprot_sk_rom_skin_defaultvalue = { 0 };
 
 // - descriptors for the variables of a skin
 
-static EOnv_rom_t eoprot_sk_rom_descriptor_skin_wholeitem =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_wholeitem =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue),
     EO_INIT(.rwmode)    eoprot_rwm_sk_skin_wholeitem,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_sk_skin_wholeitem,
     EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_wholeitem
+#endif
 };
 
 
-static EOnv_rom_t eoprot_sk_rom_descriptor_skin_config_sigmode =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_config_sigmode =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.config.sigmode),
     EO_INIT(.rwmode)    eoprot_rwm_sk_skin_config_sigmode,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.config.sigmode,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_sk_skin_config_sigmode,
     EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_config_sigmode
+#endif
 };
 
 
-static EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayof10canframes =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayof10canframes =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.status.arrayof10canframes),
     EO_INIT(.rwmode)    eoprot_rwm_sk_skin_status_arrayof10canframes,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.status.arrayof10canframes,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
     EO_INIT(.init)      eoprot_fun_INIT_sk_skin_status_arrayof10canframes,
     EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_status_arrayof10canframes
+#endif
 };
 
 
@@ -125,14 +142,14 @@ static EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayof10canframes =
 
 // -- the folded array of descriptors: to be changed if any new tag is added
 
-const EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[] =
+EOPROT_ROMmap EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[] =
 {
     // here are eoprot_tags_sk_skin_numberof descriptors for the skins (equal for every skin)
     &eoprot_sk_rom_descriptor_skin_wholeitem,
     &eoprot_sk_rom_descriptor_skin_config_sigmode,
     &eoprot_sk_rom_descriptor_skin_status_arrayof10canframes
          
-};  EO_VERIFYsizeof(eoprot_sk_rom_folded_descriptors, sizeof(EOnv_rom_t*)*(eoprot_tags_sk_skin_numberof));
+};  EO_VERIFYsizeof(eoprot_sk_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof));
 
 
 // the other constants: to be changed when a new entity is added
