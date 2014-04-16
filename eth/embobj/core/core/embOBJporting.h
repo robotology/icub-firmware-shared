@@ -64,9 +64,7 @@ extern "C" {
 	#define __weak	
     #define EO_TAILOR_CODE_FOR_WINDOWS
     #define EO_WARNING(a)   __pragma(message("EOWARNING-> "##a))
-//	#define EOCFG_NVSEP_MC_OVERRIDE
-//	#define EOCFG_NVSEP_SK_OVERRIDE
-//	#define EOCFG_NVSEP_AS_OVERRIDE
+    #define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
 //#pragma message(a)
 #elif defined(__linux__) & defined(__GNUC__)
     // gcc-linux
@@ -77,10 +75,10 @@ extern "C" {
     #pragma pack(8)
     #define snprintf        snprintf
     #define float32_t       float
-    #define __weak          __attribute__((weak))
+    #define EO_weak          __attribute__((weak))
     #define EO_TAILOR_CODE_FOR_LINUX
     #define EO_WARNING(a)   _Pragma(message("EOWARNING-> "##a))
-    #define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
+    //#define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
     #define _PEDANT_WARNING_ON_COMPILATION_CALLBACK_
     #define _STATS_DEBUG_FOR_CYCLE_TIME_
 
@@ -93,6 +91,7 @@ extern "C" {
     #pragma pack(8)
     // or pack(4) ???
     #define snprintf        snprintf  
+    #define EO_weak         __weak
     #define float32_t       float
     #define EO_TAILOR_CODE_FOR_ARM
 #elif defined(_DSPIC_) & defined(__GNUC__)
@@ -114,7 +113,7 @@ extern "C" {
     #pragma pack(8)
     #define snprintf        snprintf
     #define float32_t       float
-    #define __weak __attribute__((weak))
+    #define EO_weak         __attribute__((weak))
 #else
     #error architecture not defined 
 #endif
