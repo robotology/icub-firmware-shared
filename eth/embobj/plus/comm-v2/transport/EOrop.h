@@ -49,6 +49,8 @@ extern "C" {
 
 #define EOK_ROP_VERSION_0   0
 
+#define eo_rop_SIGNATUREdummy EOK_uint32dummy
+
 
   
 
