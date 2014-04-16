@@ -119,7 +119,7 @@ extern EOconfirmationManager* eo_confman_New(const eOconfman_cfg_t *cfg)
     
     memcpy(&retptr->config, cfg, sizeof(eOconfman_cfg_t));
     
-    retptr->confrequests = (0 == cfg->maxnumberofconfreqrops) ? (NULL) : (eo_vector_New(sizeof(eOropdescriptor_t), cfg->maxnumberofconfreqrops, NULL, NULL, NULL, NULL));
+    retptr->confrequests = (0 == cfg->maxnumberofconfreqrops) ? (NULL) : (eo_vector_New(sizeof(eOropdescriptor_t), cfg->maxnumberofconfreqrops, NULL, 0, NULL, NULL));
 
     retptr->mtx = (NULL == cfg->mutex_fn_new) ? (NULL) : (cfg->mutex_fn_new());
     
