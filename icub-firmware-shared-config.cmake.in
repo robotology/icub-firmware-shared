@@ -1,0 +1,14 @@
+# Copyright: (C) 2014 iCub Facility, Istituto Italiano di Tecnologia
+# Authors: Daniele E. Domenichelli <daniele.domenichelli@iit.it>
+# CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
+
+
+set(ICUB_FIRMWARE_SHARED_VERSION @ICUB_FIRMWARE_SHARED_VERSION@)
+
+@PACKAGE_INIT@
+
+set_and_check(ICUB_FIRMWARE_SHARED_canProtocolLib_INCLUDE_DIR @PACKAGE_ICUB_FIRMWARE_SHARED_canProtocolLib_INCLUDE_DIR@)
+
+# if(NOT TARGET YARP_fw::embObj)
+#     include(${CMAKE_CURRENT_LIST_DIR}/icub-firmware-shared-targets.cmake)
+# endif()
