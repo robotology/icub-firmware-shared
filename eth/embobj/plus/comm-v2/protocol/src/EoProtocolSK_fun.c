@@ -49,7 +49,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#define EOPROT_EP_SK_FUN_OVERRIDE
+
+#if defined(EOPROT_EP_SK_FUN_OVERRIDE)
+#include "EoProtocolSK_overridden_fun.h"
+#endif
+
 
 
 
@@ -93,7 +99,9 @@ extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram)
     }
 }
 #else
+#if !defined(OVERRIDE_eoprot_sk_fun_INITIALISE)
 EO_weak extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) {}
+#endif
 #endif
 
 
@@ -101,14 +109,26 @@ EO_weak extern void eoprot_fun_INITIALISE_sk(eOprotIP_t ip, void *ram) {}
 
 // -- skin
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_wholeitem)
 EO_weak extern void eoprot_fun_INIT_sk_skin_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_wholeitem)
 EO_weak extern void eoprot_fun_UPDT_sk_skin_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_config_sigmode)
 EO_weak extern void eoprot_fun_INIT_sk_skin_config_sigmode(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_config_sigmode)
 EO_weak extern void eoprot_fun_UPDT_sk_skin_config_sigmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_status_arrayof10canframes)
 EO_weak extern void eoprot_fun_INIT_sk_skin_status_arrayof10canframes(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_status_arrayof10canframes)
 EO_weak extern void eoprot_fun_UPDT_sk_skin_status_arrayof10canframes(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)

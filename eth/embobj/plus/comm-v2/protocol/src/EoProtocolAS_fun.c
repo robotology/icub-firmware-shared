@@ -49,7 +49,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#define EOPROT_EP_AS_FUN_OVERRIDE
+
+#if defined(EOPROT_EP_AS_FUN_OVERRIDE)
+#include "EoProtocolAS_overridden_fun.h"
+#endif
 
 
 
@@ -94,7 +99,9 @@ extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram)
     }
 }
 #else
+#if !defined(OVERRIDE_eoprot_as_fun_INITIALISE)
 EO_weak extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram) {}
+#endif
 #endif
 
 
@@ -103,63 +110,123 @@ EO_weak extern void eoprot_fun_INITIALISE_as(eOprotIP_t ip, void *ram) {}
 
 // -- strain 
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_strain_wholeitem)
 EO_weak extern void eoprot_fun_INIT_as_strain_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_strain_wholeitem)
 EO_weak extern void eoprot_fun_UPDT_as_strain_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_strain_config)
 EO_weak extern void eoprot_fun_INIT_as_strain_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_strain_config)
 EO_weak extern void eoprot_fun_UPDT_as_strain_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_strain_status)
 EO_weak extern void eoprot_fun_INIT_as_strain_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_strain_status)
 EO_weak extern void eoprot_fun_UPDT_as_strain_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_strain_status_fullscale)
 EO_weak extern void eoprot_fun_INIT_as_strain_status_fullscale(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_strain_status_fullscale)
 EO_weak extern void eoprot_fun_UPDT_as_strain_status_fullscale(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_strain_status_calibratedvalues)
 EO_weak extern void eoprot_fun_INIT_as_strain_status_calibratedvalues(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_strain_status_calibratedvalues)
 EO_weak extern void eoprot_fun_UPDT_as_strain_status_calibratedvalues(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_strain_status_uncalibratedvalues)
 EO_weak extern void eoprot_fun_INIT_as_strain_status_uncalibratedvalues(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_strain_status_uncalibratedvalues)
 EO_weak extern void eoprot_fun_UPDT_as_strain_status_uncalibratedvalues(const EOnv* nv, const eOropdescriptor_t* rd) {}
-
+#endif
 
 
 // -- mais
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_wholeitem)
 EO_weak extern void eoprot_fun_INIT_as_mais_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_wholeitem)
 EO_weak extern void eoprot_fun_UPDT_as_mais_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_config)
 EO_weak extern void eoprot_fun_INIT_as_mais_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_config)
 EO_weak extern void eoprot_fun_UPDT_as_mais_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_config_mode)
 EO_weak extern void eoprot_fun_INIT_as_mais_config_mode(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_config_mode)
 EO_weak extern void eoprot_fun_UPDT_as_mais_config_mode(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_config_datarate)
 EO_weak extern void eoprot_fun_INIT_as_mais_config_datarate(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_config_datarate)
 EO_weak extern void eoprot_fun_UPDT_as_mais_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_config_resolution)
 EO_weak extern void eoprot_fun_INIT_as_mais_config_resolution(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_config_resolution)
 EO_weak extern void eoprot_fun_UPDT_as_mais_config_resolution(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_status)
 EO_weak extern void eoprot_fun_INIT_as_mais_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_status)
 EO_weak extern void eoprot_fun_UPDT_as_mais_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_mais_status_the15values)
 EO_weak extern void eoprot_fun_INIT_as_mais_status_the15values(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_mais_status_the15values)
 EO_weak extern void eoprot_fun_UPDT_as_mais_status_the15values(const EOnv* nv, const eOropdescriptor_t* rd) {}
-
+#endif
 
 
 // -- extorque
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_extorque_wholeitem)
 EO_weak extern void eoprot_fun_INIT_as_extorque_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_extorque_wholeitem)
 EO_weak extern void eoprot_fun_UPDT_as_extorque_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_extorque_config)
 EO_weak extern void eoprot_fun_INIT_as_extorque_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_extorque_config)
 EO_weak extern void eoprot_fun_UPDT_as_extorque_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_extorque_inputs)
 EO_weak extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_extorque_inputs)
 EO_weak extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd) {}
-
-
+#endif
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
