@@ -3,12 +3,21 @@
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
 
 
-set(ICUB_FIRMWARE_SHARED_VERSION @ICUB_FIRMWARE_SHARED_VERSION@)
+set(icub-firmware-shared_VERSION @icub-firmware-shared_VERSION@)
 
 @PACKAGE_INIT@
 
-set_and_check(ICUB_FIRMWARE_SHARED_canProtocolLib_INCLUDE_DIR @PACKAGE_ICUB_FIRMWARE_SHARED_canProtocolLib_INCLUDE_DIR@)
+set_and_check(icub-firmware-shared_canProtocolLib_INCLUDE_DIR "@PACKAGE_icub-firmware-shared_canProtocolLib_INCLUDE_DIR@")
+set_and_check(icub-firmware-shared_embobj_INCLUDE_DIR "@PACKAGE_icub-firmware-shared_embobj_INCLUDE_DIR@")
+
+set(_components canProtocolLib
+                embobj)
 
 # if(NOT TARGET YARP_fw::embObj)
 #     include(${CMAKE_CURRENT_LIST_DIR}/icub-firmware-shared-targets.cmake)
 # endif()
+
+set(icub-firmware-shared_canProtocolLib_FOUND @WITH_CANPROTOCOLLIB@)
+set(icub-firmware-shared_embobj_FOUND @WITH_EMBOBJ@)
+
+check_required_components(icub-firmware-shared)
