@@ -159,7 +159,7 @@ const uint8_t eoprot_sk_rom_tags_numberof[] =
     eoprot_tags_sk_skin_numberof
 };  EO_VERIFYsizeof(eoprot_sk_rom_tags_numberof, eoprot_entities_sk_numberof*sizeof(uint8_t)); 
 
-extern const uint16_t eoprot_sk_rom_entities_sizeof[] = 
+const uint16_t eoprot_sk_rom_entities_sizeof[] = 
 {
     sizeof(eOsk_skin_t)
 };  EO_VERIFYsizeof(eoprot_sk_rom_entities_sizeof, eoprot_entities_sk_numberof*sizeof(uint16_t));

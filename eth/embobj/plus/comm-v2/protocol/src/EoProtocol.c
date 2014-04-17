@@ -84,20 +84,23 @@ static uint16_t s_eoprot_rom_entity_offset_of_tag(uint8_t epi, uint8_t ent, eOpr
 static uint16_t s_eoprot_rom_get_sizeofvar(uint8_t epi, eOprotID32_t id);
 static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id);
 
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
 static eOprotBRD_t s_eoprot_localboard = eo_prot_BRDdummy; // initted as 255. however, in runtime we assign a specific number to it.
 
-extern const uint8_t* eoprot_board_numberofeachentity[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
-extern void* eoprot_board_ramofeachendpoint[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
-extern eObool_fp_uint32_t eoprot_board_isvarproxied_fns[eoprot_boards_maxnumberof] = { NULL };
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
 
+
+const uint8_t* eoprot_board_numberofeachentity[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
+void* eoprot_board_ramofeachendpoint[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
+eObool_fp_uint32_t eoprot_board_isvarproxied_fns[eoprot_boards_maxnumberof] = { NULL };
 
 const eOprot_nvset_Interface_t eoprot_eonvset_Interface =
 {

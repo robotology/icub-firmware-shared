@@ -215,7 +215,7 @@ const uint8_t eoprot_mn_rom_tags_numberof[] =
     eoprot_tags_mn_appl_numberof
 };  EO_VERIFYsizeof(eoprot_mn_rom_tags_numberof, eoprot_entities_mn_numberof*sizeof(uint8_t));
 
-extern const uint16_t eoprot_mn_rom_entities_sizeof[] = 
+const uint16_t eoprot_mn_rom_entities_sizeof[] = 
 {
     sizeof(eOmn_comm_t), 
     sizeof(eOmn_appl_t)
