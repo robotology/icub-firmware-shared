@@ -6,11 +6,11 @@
 project(embobj NONE)
 if(WITH_EMBOBJ)
     install(DIRECTORY embobj
-            DESTINATION ${icub-firmware-shared_INCLUDE_DIR})
+            DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
     install(DIRECTORY robotconfig
-            DESTINATION ${icub-firmware-shared_INCLUDE_DIR})
+            DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
 endif()
 
-set_property(GLOBAL APPEND PROPERTY icub-firmware-shared_TARGETS embobj)
-set_property(GLOBAL PROPERTY icub-firmware-shared_embobj_BUILD_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set_property(GLOBAL PROPERTY icub-firmware-shared_embobj_INSTALL_INCLUDE_DIR ${icub-firmware-shared_INCLUDE_DIR})
+set_property(GLOBAL APPEND PROPERTY icub_firmware_shared_TARGETS embobj)
+set_property(GLOBAL PROPERTY icub_firmware_shared_embobj_BUILD_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set_property(GLOBAL PROPERTY icub_firmware_shared_embobj_INSTALL_INCLUDE_DIR ${icub_firmware_shared_INCLUDE_DIR})
