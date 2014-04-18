@@ -136,6 +136,39 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayof10ca
 };
 
 
+
+static EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg =
+{
+    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.commands.boardscfg),
+    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmd_boardscfg,
+    EO_INIT(.dummy)     0,
+    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.commands.boardscfg,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_commands_boardscfg,
+    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_commands_boardscfg
+#endif
+};
+
+
+static EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg =
+{
+    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.commands.trianglescfg),
+    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmd_trianglescfg,
+    EO_INIT(.dummy)     0,
+    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.commands.trianglescfg,
+    #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_commands_trianglescfg,
+    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_commands_trianglescfg
+#endif
+};
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -147,8 +180,9 @@ EOPROT_ROMmap EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[] =
     // here are eoprot_tags_sk_skin_numberof descriptors for the skins (equal for every skin)
     &eoprot_sk_rom_descriptor_skin_wholeitem,
     &eoprot_sk_rom_descriptor_skin_config_sigmode,
-    &eoprot_sk_rom_descriptor_skin_status_arrayof10canframes
-         
+    &eoprot_sk_rom_descriptor_skin_status_arrayof10canframes,
+    &eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg,
+    &eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg
 };  EO_VERIFYsizeof(eoprot_sk_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof));
 
 

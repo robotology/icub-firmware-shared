@@ -72,9 +72,19 @@ enum { eosk_entities_numberof = 1 };
 typedef enum
 {
     eosk_sigmode_dontsignal                         = 0,
-    eosk_sigmode_signal                             = 1  
+    eosk_sigmode_signal_oldway                      = 1,
+    eosk_sigmode_signal                             = 2
 } eOsk_sigmode_t;
 
+#define EOSK_SKINTYPE_WITHTEMPCOMP                     0 /**< new version of skin with temperature compensation */
+#define EOSK_SKINTYPE_PALMFINGERTIP                    1 /**< skin for palm and fingertip */
+#define EOSK_SKINTYPE_WITHOUTTEMPCOMP                  2 /**< old version of skin without temperature compensation */
+typedef enum
+{
+    eosk_skintype_withtempcomp                      = EOSK_SKINTYPE_WITHTEMPCOMP,  
+    eosk_skintype_palmfingertip                     = EOSK_SKINTYPE_PALMFINGERTIP,  
+    eosk_skintype_withouttempcomp                   = EOSK_SKINTYPE_WITHOUTTEMPCOMP   
+} eOsk_skintype_t;
 
 // -- all the possible data service structures
 
@@ -104,10 +114,29 @@ typedef struct                  // size is: 164+4+0 = 168
  **/
 typedef uint8_t  eOsk_skinId_t;
 
+
+
+typedef struct
+{
+    eOenum08_t                  skintype;                               /**< use values from eOsk_skintype_t */
+    uint8_t                     period;
+    uint8_t                     noload;
+    uint8_t                     filler1;
+} eOsk_board_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4);
+
+
+typedef struct                      
+{
+    uint8_t                    enable;
+    uint8_t                    shift;
+    uint16_t                   CDCoffset;
+} eOsk_triangle_config_t;                //EO_VERIFYsizeof(eOsk_triangle_config_t, 4);
+
+
 typedef struct                      
 {
     eOenum08_t                  sigmode;                                   /**< use values from eOsk_sigmode_t */
-    uint8_t                     filler03[3];                           
+    uint8_t                     filler[7];
 } eOsk_config_t;                //EO_VERIFYsizeof(eOsk_config_t, 4);
 
 
@@ -115,6 +144,30 @@ typedef struct
 {
     uint8_t                     filler04[4];                           
 } eOsk_inputs_t;                //EO_VERIFYsizeof(eOsk_inputs_t, 4);
+
+typedef struct                      
+{
+    uint8_t                     boardaddr;
+    uint8_t                     idstart;
+    uint8_t                     idend;
+    uint8_t                     filler01;
+    eOsk_triangle_config_t      cfg;
+} eOsk_cmd_trianglesCfg_t;               //EO_VERIFYsizeof(eOsk_cmd_tiangleCfg_t, 8);
+
+
+typedef struct                      
+{
+    uint8_t                     addrstart;
+    uint8_t                     addrend;
+    uint8_t                     filler[2];
+    eOsk_board_config_t         cfg;
+} eOsk_cmd_boardsCfg_t;               //EO_VERIFYsizeof(eOsk_cmd_boardCfg_t, 8);
+
+typedef struct                      
+{
+    eOsk_cmd_boardsCfg_t         boardscfg;
+    eOsk_cmd_trianglesCfg_t      trianglescfg;
+} eOsk_command_t;               //EO_VERIFYsizeof(eOsk_command_t, 16);
 
 
 typedef struct                  // size is: 164+4+0 = 168                     
@@ -126,8 +179,8 @@ typedef struct                  // size is: 164+4+0 = 168
 
 typedef struct                  // size is: 4+4+168+0 = 176
 {
-    eOsk_config_t               config;
-    eOsk_inputs_t               inputs;    
+    eOsk_config_t               config; //4
+    eOsk_command_t              commands;    
     eOsk_status_t               status;
 } eOsk_skin_t;                  //EO_VERIFYsizeof(eOsk_skin_t, 176);
 
