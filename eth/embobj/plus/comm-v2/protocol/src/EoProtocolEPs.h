@@ -63,7 +63,7 @@ extern const uint8_t eoprot_ep_board_numberofthem;
 extern const uint8_t eoprot_ep_entities_numberof[eoprot_endpoints_numberof];
 extern EOPROT_ROMmap EOnv_rom_t * const * eoprot_ep_folded_descriptors[eoprot_endpoints_numberof];
 extern const uint16_t* eoprot_ep_entities_sizeof[eoprot_endpoints_numberof]; 
-extern const uint32_t** eoprot_ep_entities_defval[eoprot_endpoints_numberof]; 
+extern const void** eoprot_ep_entities_defval[eoprot_endpoints_numberof]; 
 extern const uint8_t* eoprot_ep_tags_numberof[eoprot_endpoints_numberof];
 
 

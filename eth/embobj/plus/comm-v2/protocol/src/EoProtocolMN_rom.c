@@ -221,11 +221,12 @@ const uint16_t eoprot_mn_rom_entities_sizeof[] =
     sizeof(eOmn_appl_t)
 };  EO_VERIFYsizeof(eoprot_mn_rom_entities_sizeof, eoprot_entities_mn_numberof*sizeof(uint16_t));
 
-const uint32_t* eoprot_mn_rom_entities_defval[] = 
+
+const void* eoprot_mn_rom_entities_defval[] = 
 {
-    (const uint32_t*)&eoprot_mn_rom_comm_defaultvalue, 
-    (const uint32_t*)&eoprot_mn_rom_appl_defaultvalue
-};  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(uint32_t*)); 
+    (const void*)&eoprot_mn_rom_comm_defaultvalue, 
+    (const void*)&eoprot_mn_rom_appl_defaultvalue
+};  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(const void*)); 
 
 
 

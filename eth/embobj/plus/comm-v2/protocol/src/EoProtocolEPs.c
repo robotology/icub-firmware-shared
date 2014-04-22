@@ -110,12 +110,13 @@ const uint16_t* eoprot_ep_entities_sizeof[] =
     eoprot_sk_rom_entities_sizeof
 };  EO_VERIFYsizeof(eoprot_ep_entities_sizeof, eoprot_endpoints_numberof*sizeof(uint16_t*)); 
 
-const uint32_t** eoprot_ep_entities_defval[] =
+// eoprot_ep_entities_defval[i][j] contains the default value (as a void*) of endpoint i-th entity j-th 
+const void** eoprot_ep_entities_defval[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
-    (const uint32_t**)&eoprot_mn_rom_entities_defval,
-    (const uint32_t**)&eoprot_mc_rom_entities_defval,
-    (const uint32_t**)&eoprot_as_rom_entities_defval,
-    (const uint32_t**)&eoprot_sk_rom_entities_defval   
+    (const void**)&eoprot_mn_rom_entities_defval,
+    (const void**)&eoprot_mc_rom_entities_defval,
+    (const void**)&eoprot_as_rom_entities_defval,
+    (const void**)&eoprot_sk_rom_entities_defval   
 };
 
 const uint8_t* eoprot_ep_tags_numberof[] =

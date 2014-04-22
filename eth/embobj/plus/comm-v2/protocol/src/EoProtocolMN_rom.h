@@ -59,7 +59,7 @@
 extern EOPROT_ROMmap EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[];
 extern const uint8_t eoprot_mn_rom_tags_numberof[eoprot_entities_mn_numberof];
 extern const uint16_t eoprot_mn_rom_entities_sizeof[eoprot_entities_mn_numberof];
-extern const uint32_t* eoprot_mn_rom_entities_defval[eoprot_entities_mn_numberof];
+extern const void* eoprot_mn_rom_entities_defval[eoprot_entities_mn_numberof];
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------

@@ -392,12 +392,12 @@ const uint16_t eoprot_as_rom_entities_sizeof[] =
     sizeof(eOas_extorque_t)
 };  EO_VERIFYsizeof(eoprot_as_rom_entities_sizeof, eoprot_entities_as_numberof*sizeof(uint16_t)); 
 
-const uint32_t* eoprot_as_rom_entities_defval[] = 
+const void* eoprot_as_rom_entities_defval[] = 
 {
-    (const uint32_t*)&eoprot_as_rom_strain_defaultvalue, 
-    (const uint32_t*)&eoprot_as_rom_mais_defaultvalue,
-	(const uint32_t*)&eoprot_as_rom_extorque_defaultvalue
-};  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(uint32_t*)); 
+    (const void*)&eoprot_as_rom_strain_defaultvalue, 
+    (const void*)&eoprot_as_rom_mais_defaultvalue,
+	(const void*)&eoprot_as_rom_extorque_defaultvalue
+};  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(const void*)); 
 
 
 // --------------------------------------------------------------------------------------------------------------------

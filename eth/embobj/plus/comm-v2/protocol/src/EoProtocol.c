@@ -923,20 +923,23 @@ static eObool_t s_eoprot_entity_tag_is_valid(uint8_t epi, eOprotEntity_t entity,
 }
 
 
-
-// ciao
-
 // returns the offset of the variable with a given tag from the start of the entity
 static uint16_t s_eoprot_rom_entity_offset_of_tag(uint8_t epi, uint8_t ent, eOprotTag_t tag)
 {
-    uint32_t i, tag_aux=0;
-    const uint32_t *entityrom = eoprot_ep_entities_defval[epi][ent];
+    uint32_t i, tag_aux = 0;
     for(i=0; i<ent; i++)
     {
-        tag_aux +=eoprot_ep_tags_numberof[epi][i];
+        tag_aux += eoprot_ep_tags_numberof[epi][i];
     }
-    uint32_t tmp = ((uint32_t) eoprot_ep_folded_descriptors[epi][tag_aux+tag]->resetval) - ((uint32_t) entityrom);
-    return((uint16_t)tmp); 
+    // one contains the address of the default value of the entire entity (eg: &MYdefentity = 0x08001200).
+    uint8_t *one = (uint8_t*) eoprot_ep_entities_defval[epi][ent];
+    // two contains the address of the default value of the variable, but inside the default value of the entire entity (eg: &MYdefentity.var = 0x08001220)  
+    uint8_t *two = (uint8_t*) eoprot_ep_folded_descriptors[epi][tag_aux+tag]->resetval;
+    // if we want to know how many bytes they are fare aways we simply cast them to pointers of 1 byte and make the difference.
+    // the C standard assures that the result is an integer containing the distance between the pointers expressed in object pointed. in our case 1 byte.
+    int res = two - one;
+    // and now we cast result to 16 bits because we dont have big entities.
+    return((uint16_t)res); 
 }
 
 static uint16_t s_eoprot_rom_get_offset(uint8_t epi, eOprotEntity_t entity, eOprotTag_t tag)
