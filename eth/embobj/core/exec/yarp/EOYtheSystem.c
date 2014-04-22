@@ -1,3 +1,7 @@
+
+#if 1
+// marco.accame on 22 apr 2014: use old mode w/ linux calls
+
 /*
  * Copyright (C) 2013 iCub Facility - Istituto Italiano di Tecnologia
  * Author:  Marco Accame
@@ -324,9 +328,9 @@ static void s_eoy_sys_stop(void)
 // - end-of-file (leave a blank line after)
 // --------------------------------------------------------------------------------------------------------------------
 
-#if 0
+#else
 
-// new file to be used to remove linux calls ...
+// marco.accame on 22 apr 2014: use new mode w/ yarp calls
 
 /*
  * Copyright (C) 2013 iCub Facility - Istituto Italiano di Tecnologia
@@ -433,9 +437,6 @@ static EOYtheSystem s_eoy_system =
     EO_INIT(.start)         0
 };
 
-//#if   defined(EO_TAILOR_CODE_FOR_LINUX)
-//static struct timespec start_time;
-//#endif
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions
@@ -456,16 +457,7 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
     {
         syscfg = &s_eoy_sys_defaultconfig;
     }
-
-    //eo_errman_Assert(eo_errman_GetHandle(), (NULL != syscfg), s_eobj_ownname, "syscfg is NULL");
- 
-
-    // mpoolcfg can be NULL: in such a case we use eo_mempool_alloc_dynamic mode
-    // errmancfg can be NULL
-    // tmrmancfg can be NULL: in such a case we use default values
-    // cbkmancfg can be NULL: in such a case we use default values
-
-    
+   
     // mempool and error manager initialised inside here.
     s_eoy_system.thevsys = eov_sys_hid_Initialise(mpoolcfg,
                                                   errmancfg,        // error man 
@@ -477,7 +469,7 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
 
     // initialise y-environment
     
-    s_eoy_system.start = yarp_time_now();
+    s_eoy_system.start = feat_yarp_time_now();
 
     return(&s_eoy_system);  
 }
@@ -548,7 +540,7 @@ static eOabstime_t s_eoy_sys_abstime_get(void)
 {
     eOabstime_t time = 0xEABABABABABABABF;
 
-    double delta = yarp_time_now() - s_eoy_system.start;
+    double delta = feat_yarp_time_now() - s_eoy_system.start;
 
     delta *= (1e6);
     time = (eOabstime_t)floor(delta);
@@ -567,7 +559,7 @@ static eOnanotime_t s_eoy_sys_nanotime_get(void)
 {
     eOnanotime_t nanotime = 0;
 
-    double delta = yarp_time_now() - s_eoy_system.start;
+    double delta = feat_yarp_time_now() - s_eoy_system.start;
 
     delta *= 1e9;
     nanotime = (eOnanotime_t)floor(delta);
