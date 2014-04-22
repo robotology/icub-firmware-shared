@@ -55,21 +55,8 @@ extern "C" {
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_CANRECERROR     0x08 //in data[4]  
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_CANRECHWOVERRUN 0x40 //in data[4]
 
-//definition of board types.
-#define ICUBCANPROTO_BOARDTYPE__DSP     0
-#define ICUBCANPROTO_BOARDTYPE__PIC     1
-#define ICUBCANPROTO_BOARDTYPE__2DC     2
-#define ICUBCANPROTO_BOARDTYPE__4DC     3
-#define ICUBCANPROTO_BOARDTYPE__BLL     4
-#define ICUBCANPROTO_BOARDTYPE__SKIN    5 
-#define ICUBCANPROTO_BOARDTYPE__STRAIN  6 
-#define ICUBCANPROTO_BOARDTYPE__MAIS    7 
-#define ICUBCANPROTO_BOARDTYPE__2FOC    8 
-#define ICUBCANPROTO_BOARDTYPE__6SG     9
-#define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
-
 
 /** @typedef    typedef enum icubCanProto_boardType_t
     @brief      contains board type can be mounted on robot.
@@ -78,17 +65,17 @@ extern "C" {
  **/
 typedef enum
 {
-    icubCanProto_boardType__dsp     = ICUBCANPROTO_BOARDTYPE__DSP,
-    icubCanProto_boardType__pic     = ICUBCANPROTO_BOARDTYPE__PIC,
-    icubCanProto_boardType__2dc     = ICUBCANPROTO_BOARDTYPE__2DC,
-    icubCanProto_boardType__4dc     = ICUBCANPROTO_BOARDTYPE__4DC,
-    icubCanProto_boardType__bll     = ICUBCANPROTO_BOARDTYPE__BLL,
-    icubCanProto_boardType__skin    = ICUBCANPROTO_BOARDTYPE__SKIN,
-    icubCanProto_boardType__strain  = ICUBCANPROTO_BOARDTYPE__STRAIN,
-    icubCanProto_boardType__mais    = ICUBCANPROTO_BOARDTYPE__MAIS,
-    icubCanProto_boardType__2foc    = ICUBCANPROTO_BOARDTYPE__2FOC,
-    icubCanProto_boardType__6sg     = ICUBCANPROTO_BOARDTYPE__6SG,
-    icubCanProto_boardType__unknown = ICUBCANPROTO_BOARDTYPE__UNKNOWN
+    icubCanProto_boardType__dsp     = 0,
+    icubCanProto_boardType__pic     = 1,
+    icubCanProto_boardType__2dc     = 2,
+    icubCanProto_boardType__4dc     = 3,
+    icubCanProto_boardType__bll     = 4,
+    icubCanProto_boardType__skin    = 5,
+    icubCanProto_boardType__strain  = 6,
+    icubCanProto_boardType__mais    = 7,
+    icubCanProto_boardType__2foc    = 8,
+    icubCanProto_boardType__6sg     = 9,
+    icubCanProto_boardType__unknown = 255
 } icubCanProto_boardType_t;
 
 
@@ -378,6 +365,47 @@ typedef enum
     icubCanProto_interactionmode_unknownError           = 0xFF
 } icubCanProto_interactionmode_t;
 
+
+#define ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP    0    /**< with temperature compensator */
+#define ICUBCANPROTO_SKINTYPE__PALMFINGERTIP   1    /**< for palms and fingertips */
+#define ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP 2    /**< without temperature compensator */
+/** @typedef    typedef enum icubCanProto_skinType_t
+    @brief      contains skyn types
+    @warning    if you change values of item of this enum, pay attention to 
+ **/
+typedef enum
+{
+    icubCanProto_skinType__withtempcomp       = ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP,
+    icubCanProto_skinType__palmfingertip      = ICUBCANPROTO_SKINTYPE__PALMFINGERTIP,
+    icubCanProto_skinType__withouttempcomp    = ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP
+} icubCanProto_skinType_t;
+
+
+typedef struct
+{
+    icubCanProto_skinType_t     skintype;
+    uint8_t                     period;
+    uint8_t                     noload;
+} icubCanProto_skinboard_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4);
+
+typedef struct                      
+{
+    uint8_t                    idstart;
+    uint8_t                    idend;
+    uint8_t                    flags;
+    uint8_t                    shift;
+    uint16_t                   CDCoffset;
+} icubCanProto_skintriangles_config_t;  
+
+
+/** @typedef    typedef enum icubCanProto_as_sigmode_t
+    @brief      contains signal mode for a general analog sensor
+ **/
+typedef enum
+{
+    icubCanProto_as_sigmode_signal             = 0,
+    icubCanProto_as_sigmode_dontsignal         = 1
+} icubCanProto_as_sigmode_t;
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 

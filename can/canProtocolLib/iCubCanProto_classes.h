@@ -50,6 +50,7 @@ extern "C" {
 #define ICUBCANPROTO_CLASS_PERIODIC_MOTORCONTROL              0x01
 #define ICUBCANPROTO_CLASS_POLLING_ANALOGSENSOR               0x02
 #define ICUBCANPROTO_CLASS_PERIODIC_ANALOGSENSOR              0x03
+#define ICUBCANPROTO_CLASS_PERIODIC_SKIN                      0x04
 #define ICUBCANPROTO_CLASS_BOOTLOADER                         0x07
 
 #define ICUBCANPROTO_CLASS_MAXNUM                             0x05

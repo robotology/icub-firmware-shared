@@ -49,7 +49,9 @@ extern "C" {
 // ICUBCANPROTO_CLASS_POLLING_ANALOGSENSOR 
 /****************************************************************************/
 #define ICUBCANPROTO_POL_SK_CMD__TACT_SETUP         76 //0x4C
+#define ICUBCANPROTO_POL_SK_CMD__SET_BRD_CFG        77 //0x4D
 #define ICUBCANPROTO_POL_SK_CMD__TACT_SETUP2        78 //0x4E
+#define ICUBCANPROTO_POL_SK_CMD__SET_TRIANG_CFG     79 //0x4F
 
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
