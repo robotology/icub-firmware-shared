@@ -78,7 +78,7 @@ extern "C" {
     #define EO_weak          __attribute__((weak))
     #define EO_TAILOR_CODE_FOR_LINUX
     #define EO_WARNING(a)   _Pragma(message("EOWARNING-> "##a))
-    //#define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
+    #define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
     #define _PEDANT_WARNING_ON_COMPILATION_CALLBACK_
     #define _STATS_DEBUG_FOR_CYCLE_TIME_
 
