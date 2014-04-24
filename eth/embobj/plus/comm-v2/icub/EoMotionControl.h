@@ -81,10 +81,24 @@ enum { eomc_entities_numberof = 3 };
                 in order to force the structure to a specific size, because this structure are transported in Ethernet protocol,
                 so fixed size is basic for parsing and forming messages.
  **/
-enum {  eomc_ctrlmval_idle          = 0x00, eomc_ctrlmval_position      = 0x01, eomc_ctrlmval_velocity      = 0x02, 
-        eomc_ctrlmval_torque        = 0x03, eomc_ctrlmval_impedance_pos = 0x04, eomc_ctrlmval_impedance_vel = 0x05, 
-        eomc_ctrlmval_current       = 0x06, eomc_ctrlmval_velocity_pos  = 0x07,
-        eomc_ctrlmval_openloop      = 0x50, eomc_ctrlmval_everything_off= -16/*0xf0*/, eomc_ctrlmval_calib         = -2/*0xfe*/
+enum {  eomc_ctrlmval_idle          = 0x00, 
+        eomc_ctrlmval_position      = 0x01, 
+        eomc_ctrlmval_velocity      = 0x02, 
+        eomc_ctrlmval_torque        = 0x03, 
+        eomc_ctrlmval_impedance_pos = 0x04, //to be removed
+        eomc_ctrlmval_impedance_vel = 0x05, //to be removed
+        eomc_ctrlmval_current       = 0x06, 
+        eomc_ctrlmval_velocity_pos  = 0x07, //to be removed
+        eomc_ctrlmval_mixed         = 0x08,
+        eomc_ctrlmval_direct        = 0x09, 
+        eomc_ctrlmval_hwFault       = 0x0A, 
+        eomc_ctrlmval_notConfigured = 0x0B, 
+        eomc_ctrlmval_configured    = 0x0C, 
+        eomc_ctrlmval_forceIdle    = 0x0D, 
+        eomc_ctrlmval_openloop      = 0x50, 
+        eomc_ctrlmval_everything_off= -16,   /*0xf0*/  //to be removed
+        eomc_ctrlmval_calib         = -2,    /*0xfe*/
+        eomc_ctrlmval_unknownError  = -1     /*0xff*/
      };
 
 
@@ -97,14 +111,18 @@ enum {  eomc_ctrlmval_idle          = 0x00, eomc_ctrlmval_position      = 0x01, 
  **/
 typedef enum
 {
+    eomc_controlmode_cmd_idle                       = eomc_ctrlmval_idle
+    eomc_controlmode_cmd_force_idle                 = eomc_ctrlmval_forceIdle
     eomc_controlmode_cmd_position                   = eomc_ctrlmval_position,
     eomc_controlmode_cmd_velocity                   = eomc_ctrlmval_velocity,      /**< velocity control loop */ 
     eomc_controlmode_cmd_torque                     = eomc_ctrlmval_torque,
-    eomc_controlmode_cmd_impedance_pos              = eomc_ctrlmval_impedance_pos,
-    eomc_controlmode_cmd_impedance_vel              = eomc_ctrlmval_impedance_vel,
+    eomc_controlmode_cmd_impedance_pos              = eomc_ctrlmval_impedance_pos, //to be removed
+    eomc_controlmode_cmd_impedance_vel              = eomc_ctrlmval_impedance_vel, //to be removed
     eomc_controlmode_cmd_current                    = eomc_ctrlmval_current,
     eomc_controlmode_cmd_openloop                   = eomc_ctrlmval_openloop,
-    eomc_controlmode_cmd_switch_everything_off      = eomc_ctrlmval_everything_off      /**< it imposes a zero current on the motor and also turns the pwm off */    
+    eomc_controlmode_cmd_switch_everything_off      = eomc_ctrlmval_everything_off,    //to be removed   /**< it imposes a zero current on the motor and also turns the pwm off */    
+    eomc_controlmode_cmd_mixed                      = eomc_ctrlmval_mixed,
+    eomc_controlmode_cmd_direct                     = eomc_ctrlmval_direct, 
 } eOmc_controlmode_command_t;
 
 
@@ -123,17 +141,41 @@ typedef enum
     eomc_controlmode_position                   = eomc_ctrlmval_position,
     eomc_controlmode_velocity                   = eomc_ctrlmval_velocity,      /**< velocity control loop */    
     eomc_controlmode_torque                     = eomc_ctrlmval_torque,
-    eomc_controlmode_impedance_pos              = eomc_ctrlmval_impedance_pos,
-    eomc_controlmode_impedance_vel              = eomc_ctrlmval_impedance_vel,
+    eomc_controlmode_impedance_pos              = eomc_ctrlmval_impedance_pos, //to be removed
+    eomc_controlmode_impedance_vel              = eomc_ctrlmval_impedance_vel, //to be removed
     eomc_controlmode_current                    = eomc_ctrlmval_current, 
-    eomc_controlmode_velocity_pos               = eomc_ctrlmval_velocity_pos,     /**< The controller is in position, but the controller switches to eomc_controlmode_velocity_pos
-                                                                 automatically when it receives a velocity set setpoint. 
-                                                                 In icub can proto there is not differences between velocity and velocity_pos */  
+    eomc_controlmode_velocity_pos               = eomc_ctrlmval_velocity_pos,   /*to be removed*/  /**< The controller is in position, but the controller switches to eomc_controlmode_velocity_pos
+                                                                                    automatically when it receives a velocity set setpoint. 
+                                                                                    In icub can proto there is not differences between velocity and velocity_pos */  
     eomc_controlmode_openloop                   = eomc_ctrlmval_openloop,
-    eomc_controlmode_calib                      = eomc_ctrlmval_calib      /**< it means joint is in calibration, without specifing wich type of calibartion joint is using. this value doesn't belong to icub can proto. */ 
+    eomc_controlmode_calib                      = eomc_ctrlmval_calib,      /**< it means joint is in calibration, without specifing wich type of calibartion joint is using. this value doesn't belong to icub can proto. */ 
+    eomc_controlmode_mixed                      = eomc_ctrlmval_mixed,
+    eomc_controlmode_direct                     = eomc_ctrlmval_direct,
+    eomc_controlmode_hwFault                    = eomc_ctrlmval_hwFault,
+    eomc_controlmode_notConfigured              = eomc_ctrlmval_notConfigured,
+    eomc_controlmode_configured                 = eomc_ctrlmval_configured
 } eOmc_controlmode_t;
 
 
+
+enum
+{
+    eomc_imodeval_stiff                  = 0x00,
+    eomc_imodeval_compliant              = 0x01,
+    eomc_imodeval_unknownError           = -1
+};
+
+
+
+
+/** @typedef    typedef enum eOmc_interactionmode_t
+    @brief      contains all the possible interaction modes
+ **/
+typedef enum
+{
+    eOmc_interactionmode_stiff                  = eomc_imodeval_stiff,
+    eOmc_interactionmode_compliant              = eomc_imodeval_compliant
+} eOmc_interactionmode_t;
 
 
 /** @typedef    typedef enum eOmc_motionmonitormode_t
@@ -432,7 +474,7 @@ typedef struct              // size is 1+3+8+0 = 12
         { 
             eOmeas_torque_t        value; 
         } torque;
-	    struct
+        struct
         { 
             eOmeas_current_t       value; 
         } current;
@@ -520,7 +562,7 @@ typedef struct                  // size is:  16+12+4 = 32
     eOmc_joint_status_ofpid_t   ofpid;              /**< the pid status   */ 
     uint8_t                     chamaleon04[4];     /**< these bytes are available for the application for debug purposes */
 } eOmc_joint_status_t;          //EO_VERIFYsizeof(eOmc_joint_status_t, 32);
-
+pippo
 
 
 typedef struct                  // size is 2+6 = 8
@@ -537,7 +579,8 @@ typedef struct                  // size is 16+12+1+1+2+0 = 32
     eOmc_setpoint_t             setpoint;                   /**< the setpoint of the joint */
     eObool_t                    stoptrajectory;             /**< it is an order to stop the current trajectory on the joint */
     eOenum08_t                  controlmode;                /**< use values from eOmc_controlmode_command_t */
-    uint8_t                     filler02[2];     
+    eOenum08_t                  interactionmode;            /**< use values from eOmc_interactionmode_t */
+    uint8_t                     filler02;
 } eOmc_joint_commands_t;        //EO_VERIFYsizeof(eOmc_joint_commands_t, 32);
 
 
