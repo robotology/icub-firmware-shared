@@ -111,8 +111,8 @@ enum {  eomc_ctrlmval_idle          = 0x00,
  **/
 typedef enum
 {
-    eomc_controlmode_cmd_idle                       = eomc_ctrlmval_idle
-    eomc_controlmode_cmd_force_idle                 = eomc_ctrlmval_forceIdle
+    eomc_controlmode_cmd_idle                       = eomc_ctrlmval_idle,
+    eomc_controlmode_cmd_force_idle                 = eomc_ctrlmval_forceIdle,
     eomc_controlmode_cmd_position                   = eomc_ctrlmval_position,
     eomc_controlmode_cmd_velocity                   = eomc_ctrlmval_velocity,      /**< velocity control loop */ 
     eomc_controlmode_cmd_torque                     = eomc_ctrlmval_torque,
@@ -562,7 +562,7 @@ typedef struct                  // size is:  16+12+4 = 32
     eOmc_joint_status_ofpid_t   ofpid;              /**< the pid status   */ 
     uint8_t                     chamaleon04[4];     /**< these bytes are available for the application for debug purposes */
 } eOmc_joint_status_t;          //EO_VERIFYsizeof(eOmc_joint_status_t, 32);
-pippo
+
 
 
 typedef struct                  // size is 2+6 = 8
