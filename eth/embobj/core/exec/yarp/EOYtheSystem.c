@@ -38,7 +38,9 @@
 #include "EOVtheSystem_hid.h" 
 
 #if     !defined(EOY_SYS_USE_FEATURE_INTERFACE)
+    #if !defined(_MSC_VER)
     #warning  marco.accame on 24 april 2014: remember to test w/ EOY_SYS_USE_FEATURE_INTERFACE defined so that te code is portable w/ YARP
+    #endif
 #endif
 
 
