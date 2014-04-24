@@ -248,7 +248,6 @@ static eOabstime_t s_eoy_sys_abstime_get(void)
 
 #else//defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
-    eOabstime_t time = 0xEABABABABABABABF;
 #if   defined(EO_TAILOR_CODE_FOR_LINUX)
     struct timespec curr_time, diff;
     clock_gettime(CLOCK_REALTIME, &curr_time);
