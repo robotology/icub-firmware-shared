@@ -77,7 +77,7 @@
 
 
 enum { eoprot_robot_darmstadt_numberofboards = 11 };
-enum { eoprot_robot_darmstadt_id = 0x0005 };
+enum { eoprot_robot_darmstadt_id = 0x00000005 };
 
 EO_VERIFYproposition(eoprot_robot_gasdfe, eoprot_boards_maxnumberof >= eoprot_robot_darmstadt_numberofboards);
 
@@ -240,38 +240,134 @@ extern const eOnvset_DEVcfg_t* eoprot_robot_DEVcfg_get(uint8_t n)
 
 #if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)  
 
+// nothing to override in endpoint management.
+// the robot just send rops set<>. it never sends rops ask<> to variables of this endpoint, nor it receives and sig<> 
 static void s_eoprot_robot_override_mn(void)
-{    
+{  
 
 }
 
-//static void xxeoprot_fun_INITIALISE_mc(uint32_t u, void* p)
-//{
-//    u = u;
-//}
 
 static void s_eoprot_robot_override_mc(void)
 {
-    // general ram initialise of mc endpoint called by every board.
+    eOprotID32_t id32 = eo_prot_ID32dummy;
     
-    //eoprot_config_endpoint_callback(eoprot_endpoint_motioncontrol, xxeoprot_fun_INITIALISE_mc);
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // -- general ram initialise of mc endpoint called by every board.
+    
+    // we dont do any general initialisation, even if we could do it with a xxeoprot_fun_INITIALISE_mc() function
+//    eoprot_config_endpoint_callback(eoprot_endpoint_motioncontrol, xxeoprot_fun_INITIALISE_mc);
     
     
-    // override of the callbacks of variables of mc. common to every board
-    eOprotID32_t id = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_pidvelocity);
-    eoprot_config_variable_callback(id, NULL, eoprot_fun_UPDT_mc_joint_config_pidvelocity);
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // -- override of the callbacks of variables of mc. common to every board. we use the id, even if the eoprot_config_variable_callback()
+    //    operates on any index.
     
-    #warning --> mettere le callback appropriate
+    // - joint entities
+    
+    // eoprot_tag_mc_joint_config: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config);
+    
+    // eoprot_tag_mc_joint_config_pidposition: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_pidposition);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_pidposition);
+ 
+    // eoprot_tag_mc_joint_config_impedance: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_impedance);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_impedance);
+
+    // eoprot_tag_mc_joint_config_pidtorque: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_pidtorque);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_pidtorque);  
+    
+    // eoprot_tag_mc_joint_status: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_status);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_status);
+        
+    // eoprot_tag_mc_joint_status_basic: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_status_basic);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_status_basic);
+ 
+    // eoprot_tag_mc_joint_cmmnds_setpoint: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_cmmnds_setpoint);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_cmmnds_setpoint);
+
+    // eoprot_tag_mc_joint_config_limitsofjoint: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_limitsofjoint);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_limitsofjoint);   
+    
+    // - motor entities
+    
+    // eoprot_tag_mc_motor_config: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, 0, eoprot_tag_mc_motor_config);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_motor_config);  
+    
+    // eoprot_tag_mc_motor_config_maxcurrentofmotor: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, 0, eoprot_tag_mc_motor_config_maxcurrentofmotor);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor);
+ 
+    // eoprot_tag_mc_motor_status_basic: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, 0, eoprot_tag_mc_motor_status_basic);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_motor_status_basic);
+        
 }
+
 
 static void s_eoprot_robot_override_as(void)
 {
+    eOprotID32_t id32 = eo_prot_ID32dummy;
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // -- general ram initialise of as endpoint called by every board.
+    
+    // we dont do any general initialisation, even if we could do it with a xxeoprot_fun_INITIALISE_as() function
+//    eoprot_config_endpoint_callback(eoprot_endpoint_analogsensors, xxeoprot_fun_INITIALISE_as);
+    
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // -- override of the callbacks of variables of as. common to every board. we use the id, even if the eoprot_config_variable_callback()
+    //    operates on any index.
+    
+    // - strain entities
 
+    // eoprot_tag_as_strain_status_calibratedvalues: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_analogsensors, eoprot_entity_as_strain, 0, eoprot_tag_as_strain_status_calibratedvalues);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_as_strain_status_calibratedvalues); 
+
+    // eoprot_tag_as_strain_status_uncalibratedvalues: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_analogsensors, eoprot_entity_as_strain, 0, eoprot_tag_as_strain_status_uncalibratedvalues);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_as_strain_status_uncalibratedvalues); 
+
+
+    // - mais entities
+
+    // eoprot_tag_as_mais_status_the15values: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_analogsensors, eoprot_entity_as_mais, 0, eoprot_tag_as_mais_status_the15values);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_as_mais_status_the15values); 
+    
 }
 
 static void s_eoprot_robot_override_sk(void)
 {
+    eOprotID32_t id32 = eo_prot_ID32dummy;
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // -- general ram initialise of sk endpoint called by every board.
+    
+    // we dont do any general initialisation, even if we could do it with a xxeoprot_fun_INITIALISE_sk() function
+//    eoprot_config_endpoint_callback(eoprot_endpoint_skin, xxeoprot_fun_INITIALISE_sk);
+    
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // -- override of the callbacks of variables of sk. common to every board. we use the id, even if the eoprot_config_variable_callback()
+    //    operates on any index.
+    
+    // - skin entities
 
+    // eoprot_tag_sk_skin_status_arrayof10canframes: use 0 index, but operation is on every indices, only UPDT
+    id32 = eoprot_ID_get(eoprot_endpoint_skin, eoprot_entity_sk_skin, 0, eoprot_tag_sk_skin_status_arrayof10canframes);
+    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_sk_skin_status_arrayof10canframes); 
 }
 
 #endif//defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)  
