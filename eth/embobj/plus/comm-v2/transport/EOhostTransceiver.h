@@ -75,6 +75,7 @@ typedef struct
     eOtransceiver_protection_t      transprotection;
     eOnvset_protection_t            nvsetprotection; 
     eOconfman_cfg_t*                confmancfg;
+    eOtransceiver_extfn_t           extfn;
 } eOhosttransceiver_cfg_t;
 
 

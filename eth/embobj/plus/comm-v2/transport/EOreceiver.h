@@ -73,18 +73,23 @@ typedef struct
     uint16_t                capacityofropreply;    
 } eOreceiver_sizes_t;
 
+typedef struct
+{
+    eOvoid_fp_uint32_uint64_uint64_t    onerrorseqnumber;  // remote ip address, received seq number, expected seq number   
+} eOreceiver_extfn_t;
 
 typedef struct
 {
     eOreceiver_sizes_t      sizes;
     EOagent*                agent;
+    eOreceiver_extfn_t      extfn;
 } eOreceiver_cfg_t;
 
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOreceiver_cfg_t eo_receiver_cfg_default; //= {256, 128, 128, NULL};
+extern const eOreceiver_cfg_t eo_receiver_cfg_default; //= {{256, 128, 128}, NULL, {NULL}};
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
@@ -123,16 +128,8 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
  **/
 extern eOresult_t eo_receiver_GetReply(EOreceiver *p, EOropframe **ropframereply);
 
+//extern eOresult_t eo_receiver_set_fn_on_seqnumber_error(EOreceiver *p, eOvoid_fp_uint32_uint64_uint64_t onerrorseqnumber);
 
-/** @fn         extern void eo_receiver_callback_incaseoferror_in_sequencenumberReceived(eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum)
-    @brief      it is called in case of error in sequence number. It can be overridden as it is weakly defined.
-                in case the EO_weak keywork is not supported by the compiler, the default function is removed by defiining the following macro:
-                OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
-    @param      remipv4addr         the ip address of the received packet.
-    @param      rec_seqnum          the received sequence number.
-    @param      exp_seqnum          the expected sequence number.
- **/
-extern void eo_receiver_callback_incaseoferror_in_sequencenumberReceived(eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum);
 
 
 

@@ -95,7 +95,11 @@ const eOboardtransceiver_cfg_t eo_boardtransceiver_cfg_default =
     EO_INIT(.mutex_fn_new)              NULL,
     EO_INIT(.transprotection)           eo_trans_protection_none,
     EO_INIT(.nvsetprotection)           eo_nvset_protection_none,
-    EO_INIT(.proxycfg)                  NULL 
+    EO_INIT(.proxycfg)                  NULL,
+    EO_INIT(.extfn)                         
+    {
+        EO_INIT(.onerrorseqnumber)      NULL
+    }
 };
 
 
@@ -152,6 +156,7 @@ extern EOtheBOARDtransceiver * eo_boardtransceiver_Initialise(const eOboardtrans
     txrxcfg.proxycfg                            = cfg->proxycfg;
     txrxcfg.mutex_fn_new                        = cfg->mutex_fn_new;
     txrxcfg.protection                          = cfg->transprotection;
+    memcpy(&txrxcfg.extfn, &cfg->extfn, sizeof(eOtransceiver_extfn_t));
     
     s_eo_theboardtrans.transceiver = eo_transceiver_New(&txrxcfg);
     
@@ -207,6 +212,10 @@ extern eOnvBRD_t eo_boardtransceiver_GetBoardNumber(EOtheBOARDtransceiver* p)
         return(eo_nv_BRDdummy);
     }          
 }
+
+
+
+
 
 
 // --------------------------------------------------------------------------------------------------------------------

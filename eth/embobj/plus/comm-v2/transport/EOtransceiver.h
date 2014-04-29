@@ -86,6 +86,11 @@ typedef struct
 
 typedef struct
 {
+    eOvoid_fp_uint32_uint64_uint64_t    onerrorseqnumber;    
+} eOtransceiver_extfn_t;
+
+typedef struct
+{
     eOtransceiver_sizes_t           sizes;
     eOipv4addr_t                    remipv4addr;           
     eOipv4port_t                    remipv4port;    
@@ -94,6 +99,7 @@ typedef struct
     eOproxy_cfg_t*                  proxycfg;
     eov_mutex_fn_mutexderived_new   mutex_fn_new;
     eOtransceiver_protection_t      protection;
+    eOtransceiver_extfn_t           extfn;
 } eOtransceiver_cfg_t;
 
 

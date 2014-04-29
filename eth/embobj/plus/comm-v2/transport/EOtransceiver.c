@@ -95,7 +95,11 @@ const eOtransceiver_cfg_t eo_transceiver_cfg_default =
     EO_INIT(.confmancfg)                    NULL,
     EO_INIT(.proxycfg)                      NULL,
     EO_INIT(.mutex_fn_new)                  NULL,
-    EO_INIT(.protection)                    eo_trans_protection_none
+    EO_INIT(.protection)                    eo_trans_protection_none,
+    EO_INIT(.extfn)                         
+    {
+        EO_INIT(.onerrorseqnumber)          NULL
+    }
 };
 
 
@@ -171,12 +175,12 @@ extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg)
  
     
     // create the receiver
-    
     memcpy(&rec_cfg, &eo_receiver_cfg_default, sizeof(eOreceiver_cfg_t));
     rec_cfg.sizes.capacityofropframereply   = cfg->sizes.capacityofropframereplies;
     rec_cfg.sizes.capacityofropinput        = cfg->sizes.capacityofrop;
     rec_cfg.sizes.capacityofropreply        = cfg->sizes.capacityofrop;
     rec_cfg.agent                           = retptr->agent;
+    rec_cfg.extfn.onerrorseqnumber          = cfg->extfn.onerrorseqnumber;
 
     retptr->receiver = eo_receiver_New(&rec_cfg);
 

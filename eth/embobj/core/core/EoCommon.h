@@ -463,6 +463,7 @@ typedef     eOresult_t  (*eOres_fp_voidp_uint32_uint32_cvoidp_t)    (void *, uin
 typedef     eOresult_t  (*eOres_fp_voidp_uint32_uint32_voidp_t)     (void *, uint32_t, uint32_t, void *);
 typedef     void        (*eOvoid_fp_voidfpvoiduint32_t)             (void (*)(void), uint32_t);
 typedef     void        (*eOvoid_fp_voidfpvoiduint32uint8_t)       	(void (*)(void), uint32_t, uint8_t);
+typedef     void        (*eOvoid_fp_uint32_uint64_uint64_t)         (uint32_t, uint64_t, uint64_t);
 typedef     uint16_t    (*eOuint16_fp_uint16_uint16_t)              (uint16_t, uint16_t);
 typedef     uint32_t    (*eOuint32_fp_uint8_uint16_t)               (uint8_t, uint16_t);
 typedef     uint32_t    (*eOuint32_fp_uint8_uint8_uint16_t)         (uint8_t, uint8_t, uint16_t);

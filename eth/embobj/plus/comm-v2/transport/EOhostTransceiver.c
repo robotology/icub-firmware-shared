@@ -96,7 +96,11 @@ const eOhosttransceiver_cfg_t eo_hosttransceiver_cfg_default =
     EO_INIT(.mutex_fn_new)              NULL,
     EO_INIT(.transprotection)           eo_trans_protection_none,
     EO_INIT(.nvsetprotection)           eo_nvset_protection_none,
-    EO_INIT(.confmancfg)                NULL
+    EO_INIT(.confmancfg)                NULL,
+    EO_INIT(.extfn)                         
+    {
+        EO_INIT(.onerrorseqnumber)      NULL
+    }    
 };
 
 
@@ -141,6 +145,7 @@ extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t 
     txrxcfg.proxycfg                            = NULL; // the host does not have a proxy
     txrxcfg.mutex_fn_new                        = cfg->mutex_fn_new;
     txrxcfg.protection                          = cfg->transprotection;
+    memcpy(&txrxcfg.extfn, &cfg->extfn, sizeof(eOtransceiver_extfn_t));
 
     
     

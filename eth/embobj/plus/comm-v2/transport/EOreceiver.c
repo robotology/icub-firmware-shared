@@ -66,7 +66,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+static void s_eo_receiver_on_error_seqnumber(EOreceiver* p, eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum);
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -83,7 +84,11 @@ const eOreceiver_cfg_t eo_receiver_cfg_default =
         EO_INIT(.capacityofropinput)        128, 
         EO_INIT(.capacityofropreply)        128
     }, 
-    EO_INIT(.agent)                     NULL
+    EO_INIT(.agent)                         NULL,
+    EO_INIT(.extfn)                         
+    {
+        EO_INIT(.onerrorseqnumber)          NULL
+    } 
 };
 
 
@@ -115,6 +120,7 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
     retptr->ipv4port            = 0;
     retptr->bufferropframereply = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereply, 1);
     retptr->rx_seqnum           = eok_uint64dummy;
+    retptr->on_error_seqnumber  = cfg->extfn.onerrorseqnumber;
     // now we need to allocate the buffer for the ropframereply
 
 #if defined(USE_DEBUG_EORECEIVER)    
@@ -202,8 +208,9 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
             {   // DEBUG
                 p->debug.errorsinsequencenumber ++;
             }
-#endif            
-            eo_receiver_callback_incaseoferror_in_sequencenumberReceived(remipv4addr, rec_seqnum, p->rx_seqnum+1);
+#endif       
+            s_eo_receiver_on_error_seqnumber(p, remipv4addr, rec_seqnum, p->rx_seqnum+1);
+            //eo_receiver_callback_incaseoferror_in_sequencenumberReceived(remipv4addr, rec_seqnum, p->rx_seqnum+1);
         }
         p->rx_seqnum = rec_seqnum;
     }
@@ -276,12 +283,13 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
 }
 
 
-#if !defined(OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived)
-EO_weak extern void eo_receiver_callback_incaseoferror_in_sequencenumberReceived(eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum)
+static void s_eo_receiver_on_error_seqnumber(EOreceiver* p, eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum)
 {
-
+    if(NULL != p->on_error_seqnumber)
+    {
+        p->on_error_seqnumber(remipv4addr, rec_seqnum, exp_seqnum);
+    } 
 }
-#endif
 
 
 extern eOresult_t eo_receiver_GetReply(EOreceiver *p, EOropframe **ropframereply)
@@ -300,7 +308,19 @@ extern eOresult_t eo_receiver_GetReply(EOreceiver *p, EOropframe **ropframereply
     *ropframereply  = p->ropframereply;
     
     return(eores_OK);
-}    
+}  
+
+
+// extern eOresult_t eo_receiver_set_fn_on_seqnumber_error(EOreceiver *p, eOvoid_fp_uint32_uint64_uint64_t onerrorseqnumber)
+// {
+//     if(NULL == p) 
+//     {
+//         return(eores_NOK_nullpointer);
+//     }
+//     p->on_error_seqnumber = onerrorseqnumber;
+//     
+//     return(eores_OK);
+// }
 
 
 

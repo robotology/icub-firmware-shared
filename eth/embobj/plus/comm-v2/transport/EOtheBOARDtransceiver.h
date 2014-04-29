@@ -61,6 +61,7 @@ typedef struct
     eOtransceiver_protection_t      transprotection;
     eOnvset_protection_t            nvsetprotection;
     eOproxy_cfg_t*                  proxycfg;
+    eOtransceiver_extfn_t           extfn;
 } eOboardtransceiver_cfg_t;
 
 
