@@ -66,6 +66,7 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__MAIS    7 
 #define ICUBCANPROTO_BOARDTYPE__2FOC    8 
 #define ICUBCANPROTO_BOARDTYPE__6SG     9
+#define ICUBCANPROTO_BOARDTYPE__JOG     10
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
@@ -87,6 +88,7 @@ typedef enum
     icubCanProto_boardType__mais    = ICUBCANPROTO_BOARDTYPE__MAIS,
     icubCanProto_boardType__2foc    = ICUBCANPROTO_BOARDTYPE__2FOC,
     icubCanProto_boardType__6sg     = ICUBCANPROTO_BOARDTYPE__6SG,
+    icubCanProto_boardType__jog     = ICUBCANPROTO_BOARDTYPE__JOG,
     icubCanProto_boardType__unknown = ICUBCANPROTO_BOARDTYPE__UNKNOWN
 } icubCanProto_boardType_t;
 
