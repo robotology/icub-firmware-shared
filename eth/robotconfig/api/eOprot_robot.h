@@ -69,21 +69,21 @@ extern "C" {
 extern eOresult_t eoprot_robot_Initialise(void);
 
 
-/** @fn         extern uint16_t eoprot_robot_id_get(void)
+/** @fn         extern uint32_t eoprot_robot_id_get(void)
     @brief      retrieves a unique id of the robot
     @return     the ID.
  **/
-extern uint16_t eoprot_robot_id_get(void);
+extern uint32_t eoprot_robot_id_get(void);
 
 
-/** @fn         extern uint16_t eoprot_robot_family_get(void)
+/** @fn         extern uint32_t eoprot_robot_family_get(void)
     @brief      retrieves a family descriptor of the robot
     @return     the family descriptor.
  **/
-extern uint16_t eoprot_robot_family_get(void);
+extern uint32_t eoprot_robot_family_get(void);
 
 
-/** @fn         extern uint16_t eoprot_robot_name_get(void)
+/** @fn         extern const char * eoprot_robot_name_get(void)
     @brief      retrieves a '/0' terminated string with the name of the robot
     @return     the nane.
  **/

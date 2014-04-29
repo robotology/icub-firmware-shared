@@ -61,7 +61,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern hidden interface 
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#include "eOprot_robot_hid.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -73,17 +74,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - typedef with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-
-
-
-typedef struct
-{
-    uint16_t                id;                     /*< a unique id of the robot */
-    uint16_t                family;                 /*< family to which the robot belongs */
-    char                    name[12];               /*< a descriptive name of the robot, e.g, "icub-ge04" */
-    const EOconstvector*    vectorof_devcfgptr;     /*< a const vector of eOnvset_DEVcfg_t* of size equal to the number of managed boards. */
-    // put a const-array of eOtransceiver_sizes_t for the host-transceiver, each one linked to the sizes of the ems-transceiver  
-} eOprot_ROBOTcfg_t;
 
 
 enum { eoprot_robot_darmstadt_numberofboards = 11 };
@@ -122,7 +112,9 @@ static const eOnvset_DEVcfg_t * const s_eoprot_robot_darmstadt_theDEVcfgptrs[] =
     &eoprot_b06_nvsetDEVcfg,
     &eoprot_b07_nvsetDEVcfg,
     &eoprot_b08_nvsetDEVcfg,
-    &eoprot_b08_nvsetDEVcfg   
+    &eoprot_b09_nvsetDEVcfg,
+    &eoprot_b10_nvsetDEVcfg,
+    &eoprot_b11_nvsetDEVcfg
 };  EO_VERIFYsizeof(s_eoprot_robot_darmstadt_theDEVcfgptrs, sizeof(eOnvset_DEVcfg_t*)*(eoprot_robot_darmstadt_numberofboards));
 
 
@@ -158,9 +150,10 @@ static const EOconstvector s_eoprot_robot_darmstadt_constvectofDEVcfgptr =
 const eOprot_ROBOTcfg_t eoprot_robot_ROBOTcfg =
 {
     EO_INIT(.id)                        eoprot_robot_darmstadt_id,
-    EO_INIT(.family)                    0x0002,
+    EO_INIT(.family)                    0x00000002,
     EO_INIT(.name)                      "icub-darmstadt",
     EO_INIT(.vectorof_devcfgptr)        &s_eoprot_robot_darmstadt_constvectofDEVcfgptr
+//    EO_INIT(.vectorof_transizesptr)     &s_eoprot_robot_darmstadt_constvectoftranssizesptr .... eOtransceiver_sizes_t
 };
 
 
@@ -197,12 +190,12 @@ extern eOresult_t eoprot_robot_Initialise(void)
     return(eores_OK);
 }
 
-extern uint16_t eoprot_robot_id_get(void)
+extern uint32_t eoprot_robot_id_get(void)
 {
     return(eoprot_robot_ROBOTcfg.id);
 }
 
-extern uint16_t eoprot_robot_family_get(void)
+extern uint32_t eoprot_robot_family_get(void)
 {
     return(eoprot_robot_ROBOTcfg.family);
 }
@@ -282,6 +275,7 @@ static void s_eoprot_robot_override_sk(void)
 }
 
 #endif//defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)  
+
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
 

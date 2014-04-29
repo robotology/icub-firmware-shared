@@ -60,7 +60,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern hidden interface 
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#include "eOprot_robot_hid.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -74,19 +75,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-
-typedef struct
-{
-    uint16_t                id;                     /*< a unique id of the robot */
-    uint16_t                family;                 /*< family to which the robot belongs */
-    char                    name[12];               /*< a descriptive name of the robot, e.g, "icub-ge04" */
-    const EOconstvector*    vectorof_devcfgptr;     /*< a const vector of eOnvset_DEVcfg_t* of size equal to the number of managed boards. */
-    // put a const-array of eOtransceiver_sizes_t for the host-transceiver, each one linked to the sizes of the ems-transceiver  
-} eOprot_ROBOTcfg_t;
-
-
 enum { eoprot_robot_ge04_numberofboards = 9 };
-enum { eoprot_robot_ge04_id = 0x0004 };
+enum { eoprot_robot_ge04_id = 0x00000004 };
 
 EO_VERIFYproposition(eoprot_robot_gasdfe, eoprot_boards_maxnumberof >= eoprot_robot_ge04_numberofboards);
 
@@ -121,7 +111,7 @@ static const eOnvset_DEVcfg_t * const s_eoprot_robot_ge04_theDEVcfgptrs[] =
     &eoprot_b06_nvsetDEVcfg,
     &eoprot_b07_nvsetDEVcfg,
     &eoprot_b08_nvsetDEVcfg,
-    &eoprot_b08_nvsetDEVcfg   
+    &eoprot_b09_nvsetDEVcfg   
 };  EO_VERIFYsizeof(s_eoprot_robot_ge04_theDEVcfgptrs, sizeof(eOnvset_DEVcfg_t*)*(eoprot_robot_ge04_numberofboards));
 
 
@@ -157,7 +147,7 @@ static const EOconstvector s_eoprot_robot_ge04_constvectofDEVcfgptr =
 const eOprot_ROBOTcfg_t eoprot_robot_ROBOTcfg =
 {
     EO_INIT(.id)                        eoprot_robot_ge04_id,
-    EO_INIT(.family)                    0x0001,
+    EO_INIT(.family)                    0x00000001,
     EO_INIT(.name)                      "icub-ge04",
     EO_INIT(.vectorof_devcfgptr)        &s_eoprot_robot_ge04_constvectofDEVcfgptr
 //    EO_INIT(.vectorof_transizesptr)     &s_eoprot_robot_ge04_constvectoftranssizesptr .... eOtransceiver_sizes_t
@@ -197,12 +187,12 @@ extern eOresult_t eoprot_robot_Initialise(void)
     return(eores_OK);
 }
 
-extern uint16_t eoprot_robot_id_get(void)
+extern uint32_t eoprot_robot_id_get(void)
 {
     return(eoprot_robot_ROBOTcfg.id);
 }
 
-extern uint16_t eoprot_robot_family_get(void)
+extern uint32_t eoprot_robot_family_get(void)
 {
     return(eoprot_robot_ROBOTcfg.family);
 }
@@ -268,7 +258,7 @@ static void s_eoprot_robot_override_mc(void)
     eOprotID32_t id = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_pidvelocity);
     eoprot_config_variable_callback(id, NULL, eoprot_fun_UPDT_mc_joint_config_pidvelocity);
     
-     #warning --> mettere le callback appropriate
+    #warning --> mettere le callback appropriate
 }
 
 static void s_eoprot_robot_override_as(void)
@@ -282,6 +272,7 @@ static void s_eoprot_robot_override_sk(void)
 }
 
 #endif//defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)  
+
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
 
