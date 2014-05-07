@@ -73,7 +73,7 @@ EO_VERIFYproposition(eoprot_b11_gasdfe, eoprot_boards_maxnumberof > eoprot_b11_b
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static uint16_t s_eoprot_b11_ep2index(eOnvEP8_t ep);
+static uint16_t s_eoprot_b11_ep2index(void* p, eOnvEP8_t ep);
 
 
 
@@ -121,6 +121,7 @@ const eOnvset_DEVcfg_t eoprot_b11_nvsetDEVcfg =
 {
     EO_INIT(.boardnum)                  eoprot_b11_boardnumber,
     EO_INIT(.dummy)                     {0, 0, 0},
+    EO_INIT(.param)                     NULL,
     EO_INIT(.fptr_device_initialise)    eoprot_b11_Initialise,     
     EO_INIT(.vectorof_epcfg)            &s_eoprot_b11_constvectofEPcfg,
     EO_INIT(.fptr_ep2indexofepcfg)      s_eoprot_b11_ep2index
@@ -146,18 +147,18 @@ const uint8_t eoprot_b11_sk_entities_numberofeach[eosk_entities_numberof] =
 // --------------------------------------------------------------------------------------------------------------------
 
 
-extern eOresult_t eoprot_b11_Initialise(eObool_t islocal)
+extern eOresult_t eoprot_b11_Initialise(void* p, eObool_t islocal)
 {
     // must initialise the mc, the mn, the ...
     
     eoprot_config_endpoint_entities(eoprot_b11_boardnumber, eoprot_endpoint_management, eoprot_b11_mn_entities_numberofeach);
     eoprot_config_endpoint_entities(eoprot_b11_boardnumber, eoprot_endpoint_skin, eoprot_b11_sk_entities_numberofeach);
     
-    eoprot_config_proxied_variables(eoprot_b11_boardnumber, eoprot_b11_isvariableproxied);
     
     if(eobool_true == islocal)
     {
         eoprot_config_board_local(eoprot_b11_boardnumber);
+        eoprot_config_proxied_variables(eoprot_b11_boardnumber, eoprot_b11_isvariableproxied);
     }
     
     return(eores_OK);
@@ -200,7 +201,7 @@ extern eObool_t eoprot_b11_isvariableproxied(eOnvID32_t id)
 EO_VERIFYproposition(s_eoprot_b11_mn_val, 0 == eoprot_endpoint_management);
 EO_VERIFYproposition(s_eoprot_b11_sk_val, 3 == eoprot_endpoint_skin);
 
-static uint16_t s_eoprot_b11_ep2index(eOnvEP8_t ep)
+static uint16_t s_eoprot_b11_ep2index(void* p, eOnvEP8_t ep)
 {    
     if(eoprot_endpoint_management == ep)
     {

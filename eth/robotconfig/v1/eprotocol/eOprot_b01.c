@@ -74,7 +74,7 @@ EO_VERIFYproposition(eoprot_b01_gasdfe, eoprot_boards_maxnumberof > eoprot_b01_b
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static uint16_t s_eoprot_b01_ep2index(eOnvEP8_t ep);
+static uint16_t s_eoprot_b01_ep2index(void* p, eOnvEP8_t ep);
 
 
 
@@ -130,6 +130,7 @@ const eOnvset_DEVcfg_t eoprot_b01_nvsetDEVcfg =
 {
     EO_INIT(.boardnum)                  eoprot_b01_boardnumber,
     EO_INIT(.dummy)                     {0, 0, 0},
+    EO_INIT(.param)                     NULL,
     EO_INIT(.fptr_device_initialise)    eoprot_b01_Initialise,     
     EO_INIT(.vectorof_epcfg)            &s_eoprot_b01_constvectofEPcfg,
     EO_INIT(.fptr_ep2indexofepcfg)      s_eoprot_b01_ep2index
@@ -164,20 +165,19 @@ const uint8_t eoprot_b01_as_entities_numberofeach[eoas_entities_numberof] =
 // --------------------------------------------------------------------------------------------------------------------
 
 
-extern eOresult_t eoprot_b01_Initialise(eObool_t islocal)
+extern eOresult_t eoprot_b01_Initialise(void* p, eObool_t islocal)
 {
     // must initialise the mc, the mn, the ...
     
     eoprot_config_endpoint_entities(eoprot_b01_boardnumber, eoprot_endpoint_management, eoprot_b01_mn_entities_numberofeach);
     eoprot_config_endpoint_entities(eoprot_b01_boardnumber, eoprot_endpoint_motioncontrol, eoprot_b01_mc_entities_numberofeach);
     eoprot_config_endpoint_entities(eoprot_b01_boardnumber, eoprot_endpoint_analogsensors, eoprot_b01_as_entities_numberofeach);
-    
-    eoprot_config_proxied_variables(eoprot_b01_boardnumber, eoprot_b01_isvariableproxied);
-    
+        
     
     if(eobool_true == islocal)
     {
         eoprot_config_board_local(eoprot_b01_boardnumber);
+        eoprot_config_proxied_variables(eoprot_b01_boardnumber, eoprot_b01_isvariableproxied);
     }
     
     return(eores_OK);
@@ -207,7 +207,7 @@ EO_VERIFYproposition(s_eoprot_b01_mc_val, 1 == eoprot_endpoint_motioncontrol);
 EO_VERIFYproposition(s_eoprot_b01_as_val, 2 == eoprot_endpoint_analogsensors);
 EO_VERIFYproposition(s_eoprot_b01_sk_val, 3 == eoprot_endpoint_skin);
 
-static uint16_t s_eoprot_b01_ep2index(eOnvEP8_t ep)
+static uint16_t s_eoprot_b01_ep2index(void* p, eOnvEP8_t ep)
 {    
     if(ep < eoprot_b01_endpoints_numberof)
     {

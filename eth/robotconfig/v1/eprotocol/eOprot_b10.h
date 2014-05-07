@@ -106,7 +106,7 @@ extern const uint8_t eoprot_b10_sk_entities_numberofeach[]; // = { eoprot_b10_sk
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-/** @fn         extern eOresult_t eoprot_b10_Initialise(eObool_t islocal)
+/** @fn         extern eOresult_t eoprot_b10_Initialise(void* p, eObool_t islocal)
     @brief      Initialises the endpoints of this board by loading the number of 
                 entities for each of them in the related endpoint file. As a result of that, 
                 the functions which require a brd argument will return the correct value if called 
@@ -116,7 +116,7 @@ extern const uint8_t eoprot_b10_sk_entities_numberofeach[]; // = { eoprot_b10_sk
                 from the use of EOnvset.
     @return     eores_OK if successful or eores_NOK_generic upon failure.
  **/
-extern eOresult_t eoprot_b10_Initialise(eObool_t islocal);
+extern eOresult_t eoprot_b10_Initialise(void* p, eObool_t islocal);
 
 
 /** @fn         extern eObool_t eoprot_b10_isvariableproxied(eOnvID32_t id)

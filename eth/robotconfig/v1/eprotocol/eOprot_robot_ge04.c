@@ -247,125 +247,218 @@ static void s_eoprot_robot_override_mn(void)
 
 static void s_eoprot_robot_override_mc(void)
 {
-    eOprotID32_t id32 = eo_prot_ID32dummy;
+    static const eOprot_callbacks_endpoint_descriptor_t mc_callbacks_descriptor_endp = 
+    { 
+        EO_INIT(.endpoint)          eoprot_endpoint_motioncontrol, 
+        EO_INIT(.raminitialise)     NULL // or any xxeoprot_fun_INITIALISE_mc 
+    };
     
+    static const eOprot_callbacks_variable_descriptor_t mc_callbacks_descriptors_vars[] = 
+    { 
+        // joint
+        {   // joint_config
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_config,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_config
+        },
+        {   // joint_config_pidposition
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_config_pidposition,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_config_pidposition
+        },
+        {   // joint_config_impedance
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_config_impedance,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_config_impedance
+        },
+        {   // joint_config_pidtorque
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_config_pidtorque,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_config_pidtorque
+        },
+        {   // joint_status
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_status,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_status
+        },
+        {   // joint_status_basic
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_status_basic,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_status_basic
+        },
+        {   // joint_cmmnds_setpoint
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_cmmnds_setpoint,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_cmmnds_setpoint
+        },
+        {   // joint_config_limitsofjoint
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_joint,
+            EO_INIT(.tag)           eoprot_tag_mc_joint_config_limitsofjoint,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_joint_config_limitsofjoint
+        },
+        // motor
+        {   // motor_config
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_motor,
+            EO_INIT(.tag)           eoprot_tag_mc_motor_config,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_motor_config
+        },        
+        {   // motor_config_maxcurrentofmotor
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_motor,
+            EO_INIT(.tag)           eoprot_tag_mc_motor_config_maxcurrentofmotor,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor
+        },
+        {   // motor_status_basic
+            EO_INIT(.endpoint)      eoprot_endpoint_motioncontrol,
+            EO_INIT(.entity)        eoprot_entity_mc_motor,
+            EO_INIT(.tag)           eoprot_tag_mc_motor_status_basic,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_mc_motor_status_basic
+        }                
+    };
+
+
     // ------------------------------------------------------------------------------------------------------------------------------------
     // -- general ram initialise of mc endpoint called by every board.
     
     // we dont do any general initialisation, even if we could do it with a xxeoprot_fun_INITIALISE_mc() function
-//    eoprot_config_endpoint_callback(eoprot_endpoint_motioncontrol, xxeoprot_fun_INITIALISE_mc);
-    
-    
+    //eoprot_config_callbacks_endpoint_set(&mc_callbacks_descriptor_endp);
+
+
     // ------------------------------------------------------------------------------------------------------------------------------------
     // -- override of the callbacks of variables of mc. common to every board. we use the id, even if the eoprot_config_variable_callback()
     //    operates on any index.
     
-    // - joint entities
+    uint32_t number = sizeof(mc_callbacks_descriptors_vars)/sizeof(mc_callbacks_descriptors_vars[0]);
+    uint32_t i = 0;
     
-    // eoprot_tag_mc_joint_config: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config);
-    
-    // eoprot_tag_mc_joint_config_pidposition: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_pidposition);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_pidposition);
- 
-    // eoprot_tag_mc_joint_config_impedance: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_impedance);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_impedance);
+    for(i=0; i<number; i++)
+    {
+        eoprot_config_callbacks_variable_set(&mc_callbacks_descriptors_vars[i]);
+    }
 
-    // eoprot_tag_mc_joint_config_pidtorque: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_pidtorque);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_pidtorque);  
-    
-    // eoprot_tag_mc_joint_status: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_status);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_status);
-        
-    // eoprot_tag_mc_joint_status_basic: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_status_basic);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_status_basic);
- 
-    // eoprot_tag_mc_joint_cmmnds_setpoint: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_cmmnds_setpoint);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_cmmnds_setpoint);
-
-    // eoprot_tag_mc_joint_config_limitsofjoint: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, 0, eoprot_tag_mc_joint_config_limitsofjoint);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_joint_config_limitsofjoint);   
-    
-    // - motor entities
-    
-    // eoprot_tag_mc_motor_config: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, 0, eoprot_tag_mc_motor_config);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_motor_config);  
-    
-    // eoprot_tag_mc_motor_config_maxcurrentofmotor: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, 0, eoprot_tag_mc_motor_config_maxcurrentofmotor);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor);
- 
-    // eoprot_tag_mc_motor_status_basic: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, 0, eoprot_tag_mc_motor_status_basic);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_mc_motor_status_basic);
-        
 }
 
 
 static void s_eoprot_robot_override_as(void)
 {
-    eOprotID32_t id32 = eo_prot_ID32dummy;
+    static const eOprot_callbacks_endpoint_descriptor_t as_callbacks_descriptor_endp = 
+    { 
+        EO_INIT(.endpoint)          eoprot_endpoint_analogsensors, 
+        EO_INIT(.raminitialise)     NULL // or any xxeoprot_fun_INITIALISE_as 
+    };
     
+    static const eOprot_callbacks_variable_descriptor_t as_callbacks_descriptors_vars[] = 
+    { 
+        // strain
+        {   // strain_status_calibratedvalues
+            EO_INIT(.endpoint)      eoprot_endpoint_analogsensors,
+            EO_INIT(.entity)        eoprot_entity_as_strain,
+            EO_INIT(.tag)           eoprot_tag_as_strain_status_calibratedvalues,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_as_strain_status_calibratedvalues
+        },
+        {   // strain_status_uncalibratedvalues
+            EO_INIT(.endpoint)      eoprot_endpoint_analogsensors,
+            EO_INIT(.entity)        eoprot_entity_as_strain,
+            EO_INIT(.tag)           eoprot_tag_as_strain_status_uncalibratedvalues,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_as_strain_status_uncalibratedvalues
+        },
+        // mais
+        {   // mais_status_the15values
+            EO_INIT(.endpoint)      eoprot_endpoint_analogsensors,
+            EO_INIT(.entity)        eoprot_entity_as_mais,
+            EO_INIT(.tag)           eoprot_tag_as_mais_status_the15values,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_as_mais_status_the15values
+        }           
+    };
+
+
     // ------------------------------------------------------------------------------------------------------------------------------------
     // -- general ram initialise of as endpoint called by every board.
     
     // we dont do any general initialisation, even if we could do it with a xxeoprot_fun_INITIALISE_as() function
-//    eoprot_config_endpoint_callback(eoprot_endpoint_analogsensors, xxeoprot_fun_INITIALISE_as);
-    
-    
+    //eoprot_config_callbacks_endpoint_set(&as_callbacks_descriptor_endp);
+
+
+
     // ------------------------------------------------------------------------------------------------------------------------------------
-    // -- override of the callbacks of variables of as. common to every board. we use the id, even if the eoprot_config_variable_callback()
+    // -- override of the callbacks of variables of mc. common to every board. we use the id, even if the eoprot_config_variable_callback()
     //    operates on any index.
     
-    // - strain entities
-
-    // eoprot_tag_as_strain_status_calibratedvalues: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_analogsensors, eoprot_entity_as_strain, 0, eoprot_tag_as_strain_status_calibratedvalues);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_as_strain_status_calibratedvalues); 
-
-    // eoprot_tag_as_strain_status_uncalibratedvalues: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_analogsensors, eoprot_entity_as_strain, 0, eoprot_tag_as_strain_status_uncalibratedvalues);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_as_strain_status_uncalibratedvalues); 
-
-
-    // - mais entities
-
-    // eoprot_tag_as_mais_status_the15values: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_analogsensors, eoprot_entity_as_mais, 0, eoprot_tag_as_mais_status_the15values);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_as_mais_status_the15values); 
+    uint32_t number = sizeof(as_callbacks_descriptors_vars)/sizeof(as_callbacks_descriptors_vars[0]);
+    uint32_t i = 0;
     
+    for(i=0; i<number; i++)
+    {
+        eoprot_config_callbacks_variable_set(&as_callbacks_descriptors_vars[i]);
+    }
+   
 }
+
 
 static void s_eoprot_robot_override_sk(void)
 {
-    eOprotID32_t id32 = eo_prot_ID32dummy;
+    static const eOprot_callbacks_endpoint_descriptor_t sk_callbacks_descriptor_endp = 
+    { 
+        EO_INIT(.endpoint)          eoprot_endpoint_skin, 
+        EO_INIT(.raminitialise)     NULL // or any xxeoprot_fun_INITIALISE_sk 
+    };
     
+    static const eOprot_callbacks_variable_descriptor_t sk_callbacks_descriptors_vars[] = 
+    { 
+        // skin
+        {   // strain_status_calibratedvalues
+            EO_INIT(.endpoint)      eoprot_endpoint_skin,
+            EO_INIT(.entity)        eoprot_entity_sk_skin,
+            EO_INIT(.tag)           eoprot_tag_sk_skin_status_arrayof10canframes,
+            EO_INIT(.init)          NULL,
+            EO_INIT(.update)        eoprot_fun_UPDT_sk_skin_status_arrayof10canframes
+        }    
+    };
+
+
     // ------------------------------------------------------------------------------------------------------------------------------------
     // -- general ram initialise of sk endpoint called by every board.
     
     // we dont do any general initialisation, even if we could do it with a xxeoprot_fun_INITIALISE_sk() function
-//    eoprot_config_endpoint_callback(eoprot_endpoint_skin, xxeoprot_fun_INITIALISE_sk);
-    
-    
+    //eoprot_config_callbacks_endpoint_set(&sk_callbacks_descriptor_endp);
+
+
     // ------------------------------------------------------------------------------------------------------------------------------------
-    // -- override of the callbacks of variables of sk. common to every board. we use the id, even if the eoprot_config_variable_callback()
+    // -- override of the callbacks of variables of mc. common to every board. we use the id, even if the eoprot_config_variable_callback()
     //    operates on any index.
     
-    // - skin entities
-
-    // eoprot_tag_sk_skin_status_arrayof10canframes: use 0 index, but operation is on every indices, only UPDT
-    id32 = eoprot_ID_get(eoprot_endpoint_skin, eoprot_entity_sk_skin, 0, eoprot_tag_sk_skin_status_arrayof10canframes);
-    eoprot_config_variable_callback(id32, NULL, eoprot_fun_UPDT_sk_skin_status_arrayof10canframes); 
+    uint32_t number = sizeof(sk_callbacks_descriptors_vars)/sizeof(sk_callbacks_descriptors_vars[0]);
+    uint32_t i = 0;
+    
+    for(i=0; i<number; i++)
+    {
+        eoprot_config_callbacks_variable_set(&sk_callbacks_descriptors_vars[i]);
+    }
 }
+
 
 #endif//defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)  
 
