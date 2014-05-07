@@ -85,6 +85,9 @@ static uint16_t s_eoprot_rom_get_sizeofvar(uint8_t epi, eOprotID32_t id);
 static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id);
 
 
+static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update);
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -271,13 +274,20 @@ extern eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_as_fptr;
 extern eOvoid_fp_uint32_voidp_t eoprot_fun_INITIALISE_sk_fptr; 
 #endif
 
-extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp_uint32_voidp_t raminitialise)
+extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_endpoint_descriptor_t* cbkdes)
 {
 #if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
     return(eores_NOK_generic);
 #else
     
-    switch(ep)
+    if(NULL == cbkdes)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    eOvoid_fp_uint32_voidp_t    raminitialise = cbkdes->raminitialise;
+    
+    switch(cbkdes->endpoint)
     {
         case eoprot_endpoint_management:
             if(eoprot_fun_INITIALISE_mn != raminitialise) { eoprot_fun_INITIALISE_mn_fptr = raminitialise; } // to avoid infinite recursion
@@ -306,31 +316,18 @@ extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp
 #endif    
 }
 
-
-extern eOresult_t eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
+extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_variable_descriptor_t *cbkdes)
 {
 #if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
     return(eores_NOK_generic);
-#else
-    EOnv_rom_t* nvrom = (EOnv_rom_t*)s_eoprot_eonvrom_get(0, id); // s_eoprot_eonvrom_get() does not use brd param
-    
-    if(NULL == nvrom)
+#else    
+    if(NULL == cbkdes)
     {
         return(eores_NOK_generic);
     }
+    eOprotID32_t id32 = eoprot_ID_get(cbkdes->endpoint, cbkdes->entity, 0, cbkdes->tag);
     
-    if(NULL != init)
-    {
-        nvrom->init = init;
-    }
-    
-    if(NULL != update)
-    {
-        nvrom->update = update;
-    }    
-    
-    return(eores_OK);
-    
+    return(s_eoprot_config_variable_callback(id32, cbkdes->init, cbkdes->update));  
 #endif    
 }
 
@@ -1009,6 +1006,32 @@ static uint16_t s_eoprot_rom_epid2index_of_folded_descriptors(uint8_t epi, eOpro
     return(ret);   
 }
 
+static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
+{
+#if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+    return(eores_NOK_generic);
+#else
+    EOnv_rom_t* nvrom = (EOnv_rom_t*)s_eoprot_eonvrom_get(0, id); // s_eoprot_eonvrom_get() does not use brd param
+    
+    if(NULL == nvrom)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    if(NULL != init)
+    {
+        nvrom->init = init;
+    }
+    
+    if(NULL != update)
+    {
+        nvrom->update = update;
+    }    
+    
+    return(eores_OK);
+    
+#endif    
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)

@@ -217,6 +217,29 @@ typedef struct
     eObool_fp_uint8_uint32_t            isvarproxied;
 } eOprot_nvset_Interface_t;
 
+
+
+// the callbacks are the same for every board and every index. they can be differentiated only by endpoint, entity and tag.
+// however, when called by the protocol they are associated to a single variable. To clarify, if we specify a myinit() function
+// for endpoint eoprot_endpoint_motioncontrol, entity eoprot_entity_mc_joint, and tag eoprot_tag_mc_joint_config, the same myinit()
+// will be called for every board and for every joint in the board to initialise the jointconfig.
+typedef struct
+{
+    eOprotEndpoint_t            endpoint;
+    eOprotEntity_t              entity;
+    eOprotTag_t                 tag;
+    eOvoid_fp_cnvp_t            init;           /**< useful to initialise the ram (or else) of the single variable */ 
+    eOvoid_fp_cnvp_cropdesp_t   update;         /**< useful to propagate a change of value of the variable to higher layers */  
+} eOprot_callbacks_variable_descriptor_t;
+
+
+
+typedef struct
+{
+    eOprotEndpoint_t            endpoint;
+    eOvoid_fp_uint32_voidp_t    raminitialise;  /**< useful to initialise the entire ram of the endpoint */   
+} eOprot_callbacks_endpoint_descriptor_t;
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
 extern const eOprot_nvset_Interface_t eoprot_eonvset_Interface;
@@ -312,27 +335,27 @@ extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uin
 extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep);
 
 
-/** @fn         extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp_uint32_voidp_t raminitialise)
+
+
+/** @fn         extern eOresult_t eoprot_config_endpoint_callback(const eOprot_callbacks_endpoint_descriptor_t* cbkdes)
     @brief      it configures the ram initialisation function functions associated to a given endpoint.
                 it does so for every board.
                 it the raminitialise function is NULL, then it is left the default one.
-    @param      ep                  the endpoint
-    @param      raminitialise       the function called at initialisation of endpoint
+    @param      cbkdes              pointer to the endpoint callback descriptor
     @return     eores_OK or eores_NOK_generic upon failure.
  **/
-extern eOresult_t eoprot_config_endpoint_callback(eOprotEndpoint_t ep, eOvoid_fp_uint32_voidp_t raminitialise);
+extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_endpoint_descriptor_t* cbkdes);
 
 
-/** @fn         extern eOresult_t eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
-    @brief      it overrides the call back functions associated to a given variable ID with functions init() and update().
-                it does so for every board.
-                it any of these function is NULL, then it is left the default one.
-    @param      id                  the id of the variable
-    @param      init                the callback called at initialisation
-    @param      update              teh callaback called at update of the variable 
+
+/** @fn         extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_variable_descriptor_t *cbkdes)
+    @brief      it overrides the callback functions associated to a given variable with functions init() and update().
+                it does so for every board. if any of these function is NULL, then it is left the default one.
+    @param      cbkdes              pointer to the variable callback descriptor
     @return     eores_OK or eores_NOK_generic upon failure.
  **/
-extern eOresult_t eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update);
+extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_variable_descriptor_t *cbkdes);
+
 
 
 /** @fn         extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
