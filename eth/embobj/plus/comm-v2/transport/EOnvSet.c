@@ -68,7 +68,7 @@
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t boardnum, eOuint16_fp_uint8_t fptr_ep2index, uint16_t nendpoints);
+static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t boardnum, eOuint16_fp_voidp_uint8_t fptr_ep2index, uint16_t nendpoints, void *param);
 static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, eOnvset_EPcfg_t *cfgofep, eOnvBRD_t boardnum);
 
 
@@ -120,12 +120,12 @@ extern eOresult_t eo_nvset_DEVpushback(EOnvSet* p, uint16_t ondevindex, eOnvset_
 {
     uint16_t i = 0;
     uint16_t nendpoints = eo_constvector_Size(cfgofdev->vectorof_epcfg);
-    s_eo_nvset_PushBackDEVholder(p, ownership, ipaddress, cfgofdev->boardnum, cfgofdev->fptr_ep2indexofepcfg, nendpoints);
+    s_eo_nvset_PushBackDEVholder(p, ownership, ipaddress, cfgofdev->boardnum, cfgofdev->fptr_ep2indexofepcfg, nendpoints, cfgofdev->param);
     
     if(NULL != cfgofdev->fptr_device_initialise)
     {
         eObool_t local = (eo_nvset_ownership_local == ownership) ? (eobool_true) : (eobool_false);
-        cfgofdev->fptr_device_initialise(local);
+        cfgofdev->fptr_device_initialise(cfgofdev->param, local);
     }
     
     for(i=0; i<nendpoints; i++)
@@ -137,7 +137,7 @@ extern eOresult_t eo_nvset_DEVpushback(EOnvSet* p, uint16_t ondevindex, eOnvset_
     return(eores_OK); 
 }
 
-static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t boardnum, eOuint16_fp_uint8_t fptr_ep2index, uint16_t nendpoints)
+static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t boardnum, eOuint16_fp_voidp_uint8_t fptr_ep2index, uint16_t nendpoints, void *param)
 {
     eOnvset_dev_t *dev = NULL;
  	if(NULL == p) 
@@ -167,6 +167,7 @@ static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ow
     dev->theendpoints_numberof  = nendpoints;
     dev->theendpoints           = eo_vector_New(sizeof(eOnvset_ep_t*), nendpoints, NULL, 0, NULL, NULL);    
     dev->fptr_ep2index          = fptr_ep2index;
+    dev->ep2index_param         = param;
     dev->mtx_device             = (eo_nvset_protection_one_per_device == p->protection) ? p->mtxderived_new() : NULL;
 
     eo_vector_PushBack(p->thedevices, &dev);
@@ -622,7 +623,7 @@ static eOresult_t s_eo_nvset_hid_get_device_endpoint_faster(EOnvSet* p, eOipv4ad
     uint16_t onendpointindex = EOK_uint16dummy;
     if((NULL != (*thedev)->fptr_ep2index))
     {
-        onendpointindex = (*thedev)->fptr_ep2index(ep8);
+        onendpointindex = (*thedev)->fptr_ep2index((*thedev)->ep2index_param, ep8);
     }
     // we dont do a full search because we must rely on the given function !!!
 //     // if the fptr_ep2index is not present or if it fails ... we must do a full search

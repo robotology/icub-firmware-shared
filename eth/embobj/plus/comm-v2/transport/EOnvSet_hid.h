@@ -68,7 +68,8 @@ typedef struct
     eOnvsetOwnership_t              ownership;
     uint16_t                        theendpoints_numberof;     
     EOvector*                       theendpoints;
-    eOuint16_fp_uint8_t             fptr_ep2index;   
+    eOuint16_fp_voidp_uint8_t       fptr_ep2index;   
+    void*                           ep2index_param;
     EOVmutexDerived*                mtx_device;      
 } eOnvset_dev_t;
 

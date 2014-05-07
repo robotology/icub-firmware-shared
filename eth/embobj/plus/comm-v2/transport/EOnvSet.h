@@ -72,11 +72,12 @@ typedef enum
  **/  
 typedef struct
 {
-    eOnvBRD_t               boardnum;
-    uint8_t                 dummy[3];
-    eOres_fp_uint8_t        fptr_device_initialise; /*< used to initialise whatever is needed before using the eOnvset_EPcfg_t. for instance the number of entities in the board */
-    const EOconstvector*    vectorof_epcfg;         /*< a const vector of eOnvset_EPcfg_t items, of size equal to the number of managed endpoints */
-    eOuint16_fp_uint8_t     fptr_ep2indexofepcfg;   /*< a function which maps a given ep to and index inside @e vectorof_epcfg. It returns EOK_uint16dummy if the ep is not managed */
+    eOnvBRD_t                   boardnum;
+    uint8_t                     dummy[3];
+    void*                       param;
+    eOres_fp_voidp_uint8_t      fptr_device_initialise; /*< used to initialise whatever is needed before using the eOnvset_EPcfg_t. for instance the number of entities in the board */
+    const EOconstvector*        vectorof_epcfg;         /*< a const vector of eOnvset_EPcfg_t items, of size equal to the number of managed endpoints */
+    eOuint16_fp_voidp_uint8_t   fptr_ep2indexofepcfg;   /*< a function which maps a given ep to and index inside @e vectorof_epcfg. It returns EOK_uint16dummy if the ep is not managed */
 } eOnvset_DEVcfg_t;
 
 
