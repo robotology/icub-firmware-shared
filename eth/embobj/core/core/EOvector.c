@@ -116,45 +116,52 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     retptr->capacity            = capacity;
     retptr->item_copy_fn        = item_copy;
     retptr->item_clear_fn       = item_clear;
-
-    // now we get memory for copying objects inside
-    if(1 == item_size)
+    
+    
+    if(eo_vectorcapacity_dynamic == retptr->capacity)
     {
-        align = eo_mempool_align_08bit;
-    }
-    else if(2 == item_size)
-    {
-        align = eo_mempool_align_16bit;
+        retptr->item_array_data = NULL;
     }
     else
-    {   // use 4-bytes alignment for everything else
-        align = eo_mempool_align_32bit;
-    }
-
-    // here is the memory from the correct memory pool
-    retptr->item_array_data  = eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
-    
-    
-    if(NULL != item_init)
     {
-        start = (uint8_t*) (retptr->item_array_data);
-        for(i=0; i<capacity; i++) 
+        // now we get memory for copying objects inside
+        if(1 == item_size)
         {
-            // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-            obj = &start[(uint32_t)i * item_size];
-            // construct each item 
-            item_init(obj, init_par);
+            align = eo_mempool_align_08bit;
         }
+        else if(2 == item_size)
+        {
+            align = eo_mempool_align_16bit;
+        }
+        else
+        {   // use 4-bytes alignment for everything else
+            align = eo_mempool_align_32bit;
+        }
+
+        // here is the memory from the correct memory pool
+        retptr->item_array_data  = eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
+        
+        
+        if(NULL != item_init)
+        {
+            start = (uint8_t*) (retptr->item_array_data);
+            for(i=0; i<capacity; i++) 
+            {
+                // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
+                obj = &start[(uint32_t)i * item_size];
+                // construct each item 
+                item_init(obj, init_par);
+            }
+        }
+        else 
+        {
+            // clean items all together
+            memset(retptr->item_array_data, 0, retptr->capacity*retptr->item_size);
+        } 
     }
-    else 
-    {
-        // clean items all together
-        memset(retptr->item_array_data, 0, retptr->capacity*retptr->item_size);
-    } 
 
     return(retptr);
-
-    
+   
 }
 
 
@@ -186,7 +193,11 @@ extern void eo_vector_PushBack(EOvector * vector, void *p)
         return;
     }
     
-    
+    if(eo_vectorcapacity_dynamic == vector->capacity)
+    {
+        vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size+1) * vector->item_size);
+    }
+            
     start = (uint8_t*) (vector->item_array_data);
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
     start = &start[(uint32_t)vector->size * vector->item_size]; 
@@ -263,10 +274,13 @@ extern void eo_vector_PopBack(EOvector * vector)
         // clean the removed item
         s_eo_vector_default_clear(start, vector->item_size);
     }
-
-                
+    
     vector->size --;
-
+    
+    if(eo_vectorcapacity_dynamic == vector->capacity)
+    {
+        vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+    }
 }
 
 
@@ -320,7 +334,11 @@ extern void eo_vector_Clear(EOvector * vector)
     }
     
     vector->size     = 0;
-
+    
+    if(eo_vectorcapacity_dynamic == vector->capacity)
+    {
+        vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+    }
 }
 
 
@@ -449,7 +467,8 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
     uint8_t *obj = NULL;
     eOsizecntnr_t first;
     eOsizecntnr_t last;
-
+    uint8_t added = 0;
+    
     eOsizecntnr_t i = 0;        
     
     
@@ -472,14 +491,16 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
     }
     
     if(size < vector->size)
-    {
+    {   // must remove some items
         first   = size;
         last    = vector->size;
+        added = 0;
     }
     else
-    {
+    {   // must add some items
         first   = vector->size;
         last    = size;
+        added = 1;      
     }
     
     // new size
@@ -487,6 +508,14 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
     
     
     // clear the removed elements or the added ones 
+    
+    if(1 == added)
+    {   // cannot write ot of memory
+        if(eo_vectorcapacity_dynamic == vector->capacity)
+        {
+            vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+        }  
+    }
     
     if(NULL != vector->item_clear_fn) 
     {
@@ -504,6 +533,14 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
         start = (uint8_t*) (vector->item_array_data);
         s_eo_vector_default_clear(&start[(uint32_t)(first*vector->item_size)], (last-first)*vector->item_size);
         //memset(&start[(uint32_t)(first*vector->item_size)], 0, (last-first)*vector->item_size);
+    }
+
+    if(0 == added)
+    {   // now i can reduce memory
+        if(eo_vectorcapacity_dynamic == vector->capacity)
+        {
+            vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+        }  
     }    
 
 }

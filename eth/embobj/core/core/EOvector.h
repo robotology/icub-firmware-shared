@@ -65,6 +65,8 @@ extern "C" {
  **/  
 typedef struct EOvector_hid EOvector;
 
+enum { eo_vectorcapacity_dynamic = EOK_uint16dummy };
+
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -80,7 +82,9 @@ typedef struct EOvector_hid EOvector;
     @brief      Creates a new EOvector object and reserves memory for the items that will be stored in its
                 inside, taking it from the memory pool.
     @param      item_size       The size in bytes of the item object managed by the EOvector.
-    @param      capacity        The max number of item objects stored by the EOvector.
+    @param      capacity        The max number of item objects stored by the EOvector. If its value is eo_vectorcapacity_dynamic
+                                then the capacity is unlimited. the container does not pre-allocates memory in here
+                                but just reallocs whet it needs at every function call.
     @param      item_init       Pointer to a specialised init function for the item object to be called at
                                 creation of the object for each contained item with arguments item_init(item, item_par). 
                                 If NULL, memory is just set to zero.
