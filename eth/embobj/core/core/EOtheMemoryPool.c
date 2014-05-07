@@ -80,6 +80,9 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
 
 static void * s_memallocator(uint32_t s);
 
+static void s_memfree(void *p);
+
+static void * s_memrealloc(void *p, uint32_t s);
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -293,8 +296,77 @@ extern uint32_t eo_mempool_SizeOfAllocated(EOtheMemoryPool *p)
     return(s_the_mempool.usedbytes);
 }
 
+extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size)
+{
+    void *ret = NULL;
+    
+    switch(s_the_mempool.allocmode)
+    {
+        case eo_mempool_alloc_dynamic:
+        {
+            ret = s_the_mempool.memallocator(size);
+        } break;
+        
+        default:
+        {
+ 
+        } break;
+
+    }
+
+    if(NULL == ret)
+    {
+        // manage the fatal error
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from heap in _new()");
+    }
+
+    return(ret);   
+}
 
 
+extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
+{
+    void *ret = NULL;
+    
+    switch(s_the_mempool.allocmode)
+    {
+        case eo_mempool_alloc_dynamic:
+        {
+            ret = s_memrealloc(m, size);
+        } break;
+        
+        default:
+        {
+ 
+        } break;
+
+    }
+
+    if(NULL == ret)
+    {
+        // manage the fatal error
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from heap in realloc()");
+    }
+
+    return(ret);   
+}
+
+
+extern void eo_mempool_Delete(EOtheMemoryPool *p, void *m)
+{
+    switch(s_the_mempool.allocmode)
+    {
+        case eo_mempool_alloc_dynamic:
+        {
+            s_memfree(m);
+        } break;
+        
+        default:
+        {
+ 
+        } break;
+    }    
+}
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -394,6 +466,16 @@ static void * s_memallocator(uint32_t s)
 }
 
 
+static void s_memfree(void *p)
+{
+    free(p);
+}
+
+
+static void * s_memrealloc(void *p, uint32_t s)
+{
+    return(realloc(p, s));
+}
 
 
 

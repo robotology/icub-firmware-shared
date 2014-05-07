@@ -174,6 +174,13 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
 
 extern uint32_t eo_mempool_SizeOfAllocated(EOtheMemoryPool *p);
 
+
+extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size);
+
+extern void eo_mempool_Delete(EOtheMemoryPool *p, void *m);
+
+extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size);
+
 /** @}            
     end of group eo_thememorypool  
  **/
