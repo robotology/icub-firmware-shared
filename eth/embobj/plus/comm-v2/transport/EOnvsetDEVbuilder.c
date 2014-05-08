@@ -420,7 +420,6 @@ static eOresult_t s_device_initialise(void* param, eObool_t islocal)
         eoprot_config_proxied_variables(p->boardnum, p->isvarproxied);
     }   
         
-#warning --> add a eoprot_config_proxied_variables(p->boardnum, eoprot_b01_isvariableproxied) 
     
     return(eores_OK);
 }
