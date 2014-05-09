@@ -58,7 +58,7 @@
 // - definition (and initialisation) of extern variables, but better using _get(), _set() 
 // --------------------------------------------------------------------------------------------------------------------
 
-extern const eOprotconfig_cfg_t eo_protconfig_cfg_default =
+const eOprotconfig_cfg_t eo_protconfig_cfg_default =
 {
     EO_INIT(.board)                                 eo_prot_BRDdummy,
     EO_INIT(.ep_management_is_present)              eobool_true,
