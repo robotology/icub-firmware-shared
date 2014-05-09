@@ -146,9 +146,9 @@ extern EOnvsetDEVbuilder* eo_nvsetdevbuilder_New(eOnvBRD_t board)
     
     p->devcfg->boardnum                     = eo_prot_BRDdummy;
     p->devcfg->param                        = NULL;
-    p->devcfg->fptr_device_initialise       = NULL;         // bel problema. la funzione necessita di dati interni alla classe. bisognerebbe aggiungere un void*  
+    p->devcfg->fptr_device_initialise       = NULL;          
     p->devcfg->vectorof_epcfg               = NULL;
-    p->devcfg->fptr_ep2indexofepcfg         = NULL;          // bel problema. la funzione necessita di dati interni alla classe. bisognerebbe aggiungere un void*
+    p->devcfg->fptr_ep2indexofepcfg         = NULL;          
     
     return(p);
 }
@@ -301,7 +301,7 @@ extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
     p->devcfg->param                        = p;
     p->devcfg->fptr_device_initialise       = s_device_initialise;  
     p->devcfg->vectorof_epcfg               = NULL;
-    p->devcfg->fptr_ep2indexofepcfg         = s_eoprot_ep2index;           // bel problema. la funzione necessita di dati interni alla classe. bisognerebbe aggiungere un void*
+    p->devcfg->fptr_ep2indexofepcfg         = s_eoprot_ep2index;           
     
     uint16_t numofeps = eo_vector_Size(p->theendpoints);
     p->theepcfgs = eo_vector_New(sizeof(eOnvset_EPcfg_t), numofeps, NULL, 0, NULL, NULL);
