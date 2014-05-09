@@ -66,14 +66,14 @@ extern const eOprotconfig_cfg_t eo_protconfig_cfg_default =
     EO_INIT(.en_mn_entity_appl_numberof)            1,
     
     EO_INIT(.ep_motioncontrol_is_present)           eobool_true,
-    EO_INIT(.en_mc_entity_joint_numberof)           16,
-    EO_INIT(.en_mc_entity_motor_numberof)           16,
+    EO_INIT(.en_mc_entity_joint_numberof)           12,
+    EO_INIT(.en_mc_entity_motor_numberof)           12,
     EO_INIT(.en_mc_entity_controller_numberof)      1,
     
     EO_INIT(.ep_analogsensors_is_present)           eobool_true,
-    EO_INIT(.en_as_entity_strain_numberof)          2,
+    EO_INIT(.en_as_entity_strain_numberof)          1,
     EO_INIT(.en_as_entity_mais_numberof)            1,
-    EO_INIT(.en_as_entity_extorque_numberof)        16,
+    EO_INIT(.en_as_entity_extorque_numberof)        12,
     
     EO_INIT(.ep_skin_is_present)                    eobool_true,   
     EO_INIT(.en_sk_entity_skin_numberof)            1
@@ -159,7 +159,7 @@ extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
         }          
     }    
     
-     // load mc ...
+     // load as ...
     if(eobool_true == p->config.ep_analogsensors_is_present)
     {
         eo_nvsetdevbuilder_ENDPOINTpushback(p->nvsetdevbuilder, eoprot_endpoint_analogsensors);
