@@ -580,7 +580,7 @@ typedef struct                  // size is 16+12+1+1+2+0 = 32
     eObool_t                    stoptrajectory;             /**< it is an order to stop the current trajectory on the joint */
     eOenum08_t                  controlmode;                /**< use values from eOmc_controlmode_command_t */
     eOenum08_t                  interactionmode;            /**< use values from eOmc_interactionmode_t */
-    uint8_t                     filler02;
+    uint8_t                     filler01;
 } eOmc_joint_commands_t;        //EO_VERIFYsizeof(eOmc_joint_commands_t, 32);
 
 

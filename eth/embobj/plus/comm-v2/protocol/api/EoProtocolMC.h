@@ -83,10 +83,11 @@ typedef enum
     eoprot_tag_mc_joint_cmmnds_calibration                          = 13,
     eoprot_tag_mc_joint_cmmnds_setpoint                             = 14,
     eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 15,
-    eoprot_tag_mc_joint_cmmnds_controlmode                          = 16 
+    eoprot_tag_mc_joint_cmmnds_controlmode                          = 16,
+    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 17     
 } eOprot_tag_mc_joint_t;
 
-enum { eoprot_tags_mc_joint_numberof = 17 };  // it MUST be equal to the number of tags    
+enum { eoprot_tags_mc_joint_numberof = 18 };  // it MUST be equal to the number of tags    
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_joint_t
@@ -112,10 +113,11 @@ typedef enum
     eoprot_rwm_mc_joint_cmmnds_calibration                          = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_setpoint                             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_stoptrajectory                       = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_cmmnds_controlmode                          = eo_nv_rwmode_RW
+    eoprot_rwm_mc_joint_cmmnds_controlmode                          = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_cmmnds_interactionmode                      = eo_nv_rwmode_RW
 } eOprot_rwm_mc_joint_t;    
 
-enum { eoprot_rwms_mc_joint_numberof = 17 };  // it MUST be equal to the number of rw modes  
+enum { eoprot_rwms_mc_joint_numberof = 18 };  // it MUST be equal to the number of rw modes  
 
 
 // - definition of the motor
@@ -269,6 +271,9 @@ extern void eoprot_fun_UPDT_mc_joint_cmmnds_stoptrajectory(const EOnv* nv, const
 
 extern void eoprot_fun_INIT_mc_joint_cmmnds_controlmode(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_cmmnds_controlmode(const EOnv* nv, const eOropdescriptor_t* rd);
+
+EO_weak extern void eoprot_fun_INIT_mc_joint_cmmnds_interactionmode(const EOnv* nv);
+EO_weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_interactionmode(const EOnv* nv, const eOropdescriptor_t* rd);
 
 // -- motor
 

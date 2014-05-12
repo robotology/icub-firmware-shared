@@ -231,6 +231,13 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_cmmnds_controlmode(const EOnv* nv) 
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_cmmnds_controlmode)
 EO_weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_controlmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_cmmnds_interactionmode)
+EO_weak extern void eoprot_fun_INIT_mc_joint_cmmnds_interactionmode(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_cmmnds_interactionmode)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_interactionmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
  
 // -- motor    
 
