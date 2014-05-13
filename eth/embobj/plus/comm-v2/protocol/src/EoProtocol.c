@@ -177,6 +177,21 @@ extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
     return(eores_OK);
 }
 
+extern eObool_t eoprot_board_can_be_managed(eOprotBRD_t brd)
+{
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }    
+    
+    if(brd >= eoprot_boards_maxnumberof)
+    {
+        return(eobool_false);
+    }  
+
+    return(eobool_true);    
+}
+
 extern eOresult_t eoprot_config_board_local(eOprotBRD_t brd)
 {
     eOresult_t res = eores_OK;

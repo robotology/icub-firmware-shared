@@ -304,8 +304,16 @@ extern eOprotTag_t eoprot_ID2tag(eOprotID32_t id);
 extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards);
 
 
+/** @fn         extern eObool_t eoprot_board_can_be_managed(eOprotBRD_t brd)
+    @brief      it tells if a given board can be managed by the protocol.
+    @param      brd                 the number of board 
+    @return     eobool_true or eobool_false.
+ **/
+extern eObool_t eoprot_board_can_be_managed(eOprotBRD_t brd);
+
+
 /** @fn         extern eOresult_t eoprot_config_board_local(eOprotBRD_t brd)
-    @brief      it configure the library to use a given number of boards.
+    @brief      it configure the library to consider a given board as the local one.
     @param      brd             the number of board to be set as the local one.
     @return     eores_OK or eores_NOK_generic upon failure.
  **/
