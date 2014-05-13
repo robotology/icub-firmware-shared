@@ -20,8 +20,9 @@
 // - external dependencies
 // --------------------------------------------------------------------------------------------------------------------
 
+// marco.accame: tested correct behaviour of eoy_sys_abstime_get() in pc104 on 13 may 2014
 #define EOY_SYS_USE_FEATURE_INTERFACE
-#undef EOY_SYS_USE_FEATURE_INTERFACE
+
 
 #include "stdlib.h"
 #include "EoCommon.h"
