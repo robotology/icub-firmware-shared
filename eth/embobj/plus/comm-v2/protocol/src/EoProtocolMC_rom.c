@@ -273,6 +273,21 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_ofpid =
 #endif
 };
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_interactionmodestatus =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.interactionmodestatus),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_interactionmodestatus,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.interactionmodestatus,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_interactionmodestatus,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_interactionmodestatus
+#endif
+};
+
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_inputs =
 {   
@@ -549,6 +564,7 @@ EOPROT_ROMmap EOnv_rom_t * const eoprot_mc_rom_folded_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_cmmnds_stoptrajectory,
     &eoprot_mc_rom_descriptor_joint_cmmnds_controlmode,
     &eoprot_mc_rom_descriptor_joint_cmmnds_interactionmode,
+    &eoprot_mc_rom_descriptor_joint_status_interactionmodestatus,
     
     // here are eoprot_tags_mc_motor_numberof descriptors for the motors (equal for every motor)
     &eoprot_mc_rom_descriptor_motor_wholeitem,

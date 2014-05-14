@@ -94,7 +94,7 @@ enum {  eomc_ctrlmval_idle          = 0x00,
         eomc_ctrlmval_hwFault       = 0x0A, 
         eomc_ctrlmval_notConfigured = 0x0B, 
         eomc_ctrlmval_configured    = 0x0C, 
-        eomc_ctrlmval_forceIdle    = 0x0D, 
+        eomc_ctrlmval_forceIdle     = 0x0D, 
         eomc_ctrlmval_openloop      = 0x50, 
         eomc_ctrlmval_everything_off= -16,   /*0xf0*/  //to be removed
         eomc_ctrlmval_calib         = -2,    /*0xfe*/
@@ -556,11 +556,12 @@ typedef struct                  // size is: 4+4+4+0 = 12
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint. 
  **/
-typedef struct                  // size is:  16+12+4 = 32
+typedef struct                  // size is:  16+12+1+3 = 32
 {
-    eOmc_joint_status_basic_t   basic;              /**< the basic status */
-    eOmc_joint_status_ofpid_t   ofpid;              /**< the pid status   */ 
-    uint8_t                     chamaleon04[4];     /**< these bytes are available for the application for debug purposes */
+    eOmc_joint_status_basic_t   basic;                      /**< the basic status */
+    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status   */ 
+    eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
+    uint8_t                     chamaleon03[3];             /**< these bytes are available for the application for debug purposes */
 } eOmc_joint_status_t;          //EO_VERIFYsizeof(eOmc_joint_status_t, 32);
 
 

@@ -84,10 +84,11 @@ typedef enum
     eoprot_tag_mc_joint_cmmnds_setpoint                             = 14,
     eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 15,
     eoprot_tag_mc_joint_cmmnds_controlmode                          = 16,
-    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 17     
+    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 17,
+    eoprot_tag_mc_joint_status_interactionmodestatus                = 18    
 } eOprot_tag_mc_joint_t;
 
-enum { eoprot_tags_mc_joint_numberof = 18 };  // it MUST be equal to the number of tags    
+enum { eoprot_tags_mc_joint_numberof = 19 };  // it MUST be equal to the number of tags    
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_joint_t
@@ -114,10 +115,11 @@ typedef enum
     eoprot_rwm_mc_joint_cmmnds_setpoint                             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_stoptrajectory                       = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_controlmode                          = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_cmmnds_interactionmode                      = eo_nv_rwmode_RW
+    eoprot_rwm_mc_joint_cmmnds_interactionmode                      = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_status_interactionmodestatus                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_joint_t;    
 
-enum { eoprot_rwms_mc_joint_numberof = 18 };  // it MUST be equal to the number of rw modes  
+enum { eoprot_rwms_mc_joint_numberof = 19 };  // it MUST be equal to the number of rw modes  
 
 
 // - definition of the motor
@@ -253,6 +255,10 @@ extern void eoprot_fun_UPDT_mc_joint_status_basic(const EOnv* nv, const eOropdes
 
 extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_status_ofpid(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_joint_status_interactionmodestatus(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
+   
 
 extern void eoprot_fun_INIT_mc_joint_inputs(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_inputs(const EOnv* nv, const eOropdescriptor_t* rd);

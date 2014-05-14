@@ -189,6 +189,13 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv) {}
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_ofpid)
 EO_weak extern void eoprot_fun_UPDT_mc_joint_status_ofpid(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_interactionmodestatus)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_interactionmodestatus(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_interactionmodestatus)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_inputs)
 EO_weak extern void eoprot_fun_INIT_mc_joint_inputs(const EOnv* nv) {}
