@@ -134,6 +134,8 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg->agent), s_eobj_ownname, "cfg->agent is NULL");
     
+    eo_errman_Assert(eo_errman_GetHandle(), (cfg->sizes.capacityoftxpacket > eo_ropframe_sizeforZEROrops), s_eobj_ownname, "capacityoftxpacket must be at least an empty ropframe"); 
+    
     // i get the memory for the object
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtransmitter), 1);
     
@@ -148,9 +150,9 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->confmanager             = eo_agent_GetConfirmationManager(cfg->agent);
     retptr->ipv4addr                = cfg->ipv4addr;
     retptr->ipv4port                = cfg->ipv4port;
-    retptr->bufferropframeregulars  = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeregulars, 1);
-    retptr->bufferropframeoccasionals = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeoccasionals, 1);
-    retptr->bufferropframereplies   = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereplies, 1);
+    retptr->bufferropframeregulars  = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeregulars, 1));
+    retptr->bufferropframeoccasionals = (0 == cfg->sizes.capacityofropframeoccasionals) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeoccasionals, 1));
+    retptr->bufferropframereplies   = (0 == cfg->sizes.capacityofropframereplies) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereplies, 1));
     retptr->listofregropinfo        = (0 == cfg->sizes.maxnumberofregularrops) ? (NULL) : (eo_list_New(sizeof(eo_transm_regrop_info_t), cfg->sizes.maxnumberofregularrops, NULL, 0, NULL, NULL));
     retptr->currenttime             = 0;
     retptr->tx_seqnum               = 0;
@@ -685,8 +687,12 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     if((NULL == p) || (NULL == ropdesc)) 
     {
         return(eores_NOK_nullpointer);
-    }  
-     
+    } 
+    
+    if(eobool_false == eo_ropframe_IsValid(intoropframe))
+    {   // marco.accame: i added it on 15 may 2014 to exit from function if the ropframe does not have any data
+        return(eores_NOK_generic);
+    }
     
     nvownership = eo_rop_get_ownership(ropdesc->ropcode, eo_ropconf_none, eo_rop_dir_outgoing);
       
