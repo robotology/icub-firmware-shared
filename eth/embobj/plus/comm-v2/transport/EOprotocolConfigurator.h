@@ -89,7 +89,7 @@ typedef struct
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-// able to accomodate worst case (12 joints/motors, 1 strain, 1 mais, 12 extorques, 1 skin)... even if it uses a lot of ram ...
+// able to accomodate worst case (12 joints/motors, 1 strain, 1 mais, 1 extorques, 1 skin)... even if it uses a lot of ram ...
 extern const eOprotconfig_cfg_t eo_protconfig_cfg_default; // = { ... }; 
 
 

@@ -73,7 +73,7 @@ const eOprotconfig_cfg_t eo_protconfig_cfg_default =
     EO_INIT(.ep_analogsensors_is_present)           eobool_true,
     EO_INIT(.en_as_entity_strain_numberof)          1,
     EO_INIT(.en_as_entity_mais_numberof)            1,
-    EO_INIT(.en_as_entity_extorque_numberof)        12,
+    EO_INIT(.en_as_entity_extorque_numberof)        1,
     
     EO_INIT(.ep_skin_is_present)                    eobool_true,   
     EO_INIT(.en_sk_entity_skin_numberof)            2
