@@ -96,7 +96,7 @@ typedef struct                  // 152*4+40*4+16 = 784
 
 // - analog sensors
 
-enum { eoprot_b03_as_strains_numberof = 1, eoprot_b03_as_maises_numberof = 0, eoprot_b03_as_extorque_numberof = 4 };
+enum { eoprot_b03_as_strains_numberof = 1, eoprot_b03_as_maises_numberof = 0, eoprot_b03_as_extorque_numberof = 1 };
          
 
 /** @typedef    typedef struct eOprot_b03_analogsensors_t;
@@ -105,7 +105,7 @@ enum { eoprot_b03_as_strains_numberof = 1, eoprot_b03_as_maises_numberof = 0, eo
 typedef struct                  // 56+4*8+0 = 88              
 {
     eOas_strain_t               strain; 
-    eOas_extorque_t             extorque[eoprot_b03_as_extorque_numberof];
+    eOas_extorque_t             extorquE[eoprot_b03_as_extorque_numberof];
 } eOprot_b03_analogsensors_t;   //EO_VERIFYsizeof(eOprot_b03_analogsensors_t, 88); 
 
 
