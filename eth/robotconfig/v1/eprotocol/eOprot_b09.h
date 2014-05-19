@@ -97,9 +97,9 @@ typedef struct                  // 152*2+40*2+16 = 400
 // - analog sensors
 
 #if     defined(ICUB_DARMSTADT01)
-    NUMOFSTRAINS    1
+#define     NUMOFSTRAINS    1
 #else
-    NUMOFSTRAINS    0
+#define     NUMOFSTRAINS    0
 #endif
 
 enum { eoprot_b09_as_strains_numberof = NUMOFSTRAINS, eoprot_b09_as_maises_numberof = 0, eoprot_b09_as_extorque_numberof = 1 };
