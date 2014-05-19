@@ -96,14 +96,23 @@ typedef struct                  // 152*2+40*2+16 = 400
 
 // - analog sensors
 
-enum { eoprot_b07_as_strains_numberof = 0, eoprot_b07_as_maises_numberof = 0, eoprot_b07_as_extorque_numberof = 1 };
+#if     defined(ICUB_DARMSTADT01)
+    NUMOFSTRAINS    1
+#else
+    NUMOFSTRAINS    0
+#endif
+    
+enum { eoprot_b07_as_strains_numberof = NUMOFSTRAINS, eoprot_b07_as_maises_numberof = 0, eoprot_b07_as_extorque_numberof = 1 };
          
 
 /** @typedef    typedef struct eOprot_b07_analogsensors_t;
     @brief      It is the container of strain, mais in the analog sensors endpoint.
  **/
-typedef struct                  // 2*8+0 = 16              
+typedef struct                  // 56+2*8 = 16              
 {
+#if     defined(ICUB_DARMSTADT01)
+    eOas_strain_t               strain;
+#endif    
     eOas_extorque_t             extorquE[eoprot_b07_as_extorque_numberof];
 } eOprot_b07_analogsensors_t;   //EO_VERIFYsizeof(eOprot_b07_analogsensors_t, 16); 
 
