@@ -50,12 +50,13 @@
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
 
-#define EOPROT_EP_AS_FUN_OVERRIDE
+#if !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
+    #define EOPROT_EP_AS_FUN_OVERRIDE
 
-#if defined(EOPROT_EP_AS_FUN_OVERRIDE)
-#include "EoProtocolAS_overridden_fun.h"
+    #if defined(EOPROT_EP_AS_FUN_OVERRIDE)
+    #include "EoProtocolAS_overridden_fun.h"
+    #endif
 #endif
-
 
 
 
