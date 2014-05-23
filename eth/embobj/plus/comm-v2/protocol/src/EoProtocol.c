@@ -168,7 +168,7 @@ extern eOprotTag_t eoprot_ID2tag(eOprotID32_t id)
 
 extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t ep)
 {
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(NULL);
     }  
@@ -182,6 +182,7 @@ extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t 
 extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
 {   
     // when and if we allow dynamic allocation of numboards ...
+    // in such a case the > is ok, we dont need the >=.
     if(numofboards > eoprot_boards_maxnumberof)
     {
         return(eores_NOK_generic);
@@ -233,7 +234,7 @@ extern eOresult_t eoprot_config_endpoint_entities(eOprotBRD_t brd, eOprotEndpoin
         return(eores_NOK_generic);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(eores_NOK_generic);
     }
@@ -278,7 +279,7 @@ extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t 
         return(eobool_false);
     }
 
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(eobool_false);
     }
@@ -509,7 +510,7 @@ extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprot
         return(eoprot_entities_numberof_get(brd));
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
     }
@@ -650,7 +651,7 @@ extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t
         return(eoprot_entities_arrayofdescriptors_get(brd, array, startfrom));
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(eores_NOK_generic);
     }    
@@ -706,7 +707,7 @@ extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
         return(0);
     }
 
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
     }
@@ -742,7 +743,7 @@ extern eOresult_t eoprot_config_endpoint_ram(eOprotBRD_t brd, eOprotEndpoint_t e
         return(eores_NOK_generic);
     }
 
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(eores_NOK_generic);
     }
@@ -771,7 +772,7 @@ extern void* eoprot_variable_ramof_get(eOprotBRD_t brd, eOprotID32_t id)
         return(NULL);
     }     
 
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(NULL);
     }
@@ -813,7 +814,7 @@ extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id)
         return(0);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
     }
@@ -864,7 +865,7 @@ extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep
         return(eobool_false);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(eobool_false);
     }  
@@ -897,7 +898,7 @@ extern void* eoprot_entity_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOpro
         return(NULL);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(NULL);
     }
@@ -934,7 +935,7 @@ extern uint16_t eoprot_entity_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, e
         return(0);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
     }
@@ -964,7 +965,7 @@ extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, 
         return(0);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
     }  
@@ -1050,7 +1051,7 @@ extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t
         return(EOK_uint32dummy);
     }
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(EOK_uint32dummy);
     }
@@ -1100,7 +1101,7 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
     
     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(EOK_uint32dummy);
     }
@@ -1167,7 +1168,7 @@ static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id)
     
     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(NULL);
     }
@@ -1192,7 +1193,7 @@ static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotE
         return(0);
     }    
     
-    if(ep > eoprot_endpoints_numberof)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
     }
