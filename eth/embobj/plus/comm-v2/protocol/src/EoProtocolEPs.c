@@ -86,6 +86,16 @@
 
 const uint8_t eoprot_ep_board_numberofthem = eoprot_boards_maxnumberof;
 
+
+const eoprot_version_t * const eoprot_endpoint_version[eoprot_endpoints_numberof] =
+{
+    &eoprot_mn_version,
+    &eoprot_mc_version,
+    &eoprot_as_version,
+    &eoprot_sk_version 
+}; 
+
+
 const uint8_t eoprot_ep_entities_numberof[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     eoprot_entities_mn_numberof,
@@ -94,7 +104,7 @@ const uint8_t eoprot_ep_entities_numberof[] =
     eoprot_entities_sk_numberof
 };  EO_VERIFYsizeof(eoprot_ep_entities_numberof, eoprot_endpoints_numberof*sizeof(uint8_t)); 
 
-EOPROT_ROMmap EOnv_rom_t * const * eoprot_ep_folded_descriptors[] = 
+EOPROT_ROMmap EOnv_rom_t * const * const eoprot_ep_folded_descriptors[] = 
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     eoprot_mn_rom_folded_descriptors,
     eoprot_mc_rom_folded_descriptors,
@@ -102,7 +112,7 @@ EOPROT_ROMmap EOnv_rom_t * const * eoprot_ep_folded_descriptors[] =
     eoprot_sk_rom_folded_descriptors
 };  EO_VERIFYsizeof(eoprot_ep_folded_descriptors, eoprot_endpoints_numberof*sizeof(EOPROT_ROMmap EOnv_rom_t * const *)); 
 
-const uint16_t* eoprot_ep_entities_sizeof[] =
+const uint16_t* const eoprot_ep_entities_sizeof[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     eoprot_mn_rom_entities_sizeof,
     eoprot_mc_rom_entities_sizeof,
@@ -111,7 +121,7 @@ const uint16_t* eoprot_ep_entities_sizeof[] =
 };  EO_VERIFYsizeof(eoprot_ep_entities_sizeof, eoprot_endpoints_numberof*sizeof(uint16_t*)); 
 
 // eoprot_ep_entities_defval[i][j] contains the default value (as a void*) of endpoint i-th entity j-th 
-const void** eoprot_ep_entities_defval[] =
+const void** const eoprot_ep_entities_defval[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     (const void**)&eoprot_mn_rom_entities_defval,
     (const void**)&eoprot_mc_rom_entities_defval,
@@ -119,7 +129,7 @@ const void** eoprot_ep_entities_defval[] =
     (const void**)&eoprot_sk_rom_entities_defval   
 };
 
-const uint8_t* eoprot_ep_tags_numberof[] =
+const uint8_t* const eoprot_ep_tags_numberof[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     eoprot_mn_rom_tags_numberof,
     eoprot_mc_rom_tags_numberof,

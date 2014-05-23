@@ -56,6 +56,10 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
+
+enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 0 };
+
+
 enum { eoprot_entities_as_numberof = eoas_entities_numberof };
 
 
@@ -179,7 +183,7 @@ enum { eoprot_rwms_as_extorque_numberof = 3 };  // it MUST be equal to the numbe
 typedef struct                  // 56*1+48*1+8*1 = 112              
 {
     eOas_strain_t               strain[1]; 
-    eOas_mais_t                 maise[1];
+    eOas_mais_t                 mais[1];
     eOas_extorque_t             extorque[1];
 } eOprot_template_as_t;         //EO_VERIFYsizeof(eOprot_template_as_t, 112);
   

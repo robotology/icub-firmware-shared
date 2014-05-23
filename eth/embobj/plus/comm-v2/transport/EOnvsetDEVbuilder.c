@@ -105,7 +105,10 @@ static const eOvoid_fp_uint32_voidp_t ram_init_ep[] =
     eoprot_fun_INITIALISE_sk
 };
 
-extern const uint8_t* eoprot_ep_tags_numberof[];
+extern const uint8_t* const eoprot_ep_tags_numberof[];
+
+//#warning --> much better using ... proper include file 
+//#include "EoProtocolEPs.h"
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions

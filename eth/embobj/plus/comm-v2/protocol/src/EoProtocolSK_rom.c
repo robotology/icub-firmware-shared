@@ -137,7 +137,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayof10ca
 
 
 
-static EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg =
 {
     EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.commands.boardscfg),
     EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmd_boardscfg,
@@ -153,7 +153,7 @@ static EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg =
 };
 
 
-static EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg =
 {
     EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.commands.trianglescfg),
     EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmd_trianglescfg,
@@ -173,8 +173,17 @@ static EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg =
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
 
+const eoprot_version_t eoprot_sk_version =
+{
+    EO_INIT(.major)     eoprot_version_sk_major,
+    EO_INIT(.minor)     eoprot_version_sk_minor
+};
+  
+    
 // -- the folded array of descriptors: to be changed if any new tag is added
 
+// eoprot_sk_rom_folded_descriptors is an array whcih keeps const pointers (its values in rom) to objects which are
+// in rom or not depending on EOPROT_ROMmap
 EOPROT_ROMmap EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[] =
 {
     // here are eoprot_tags_sk_skin_numberof descriptors for the skins (equal for every skin)
@@ -198,7 +207,7 @@ const uint16_t eoprot_sk_rom_entities_sizeof[] =
     sizeof(eOsk_skin_t)
 };  EO_VERIFYsizeof(eoprot_sk_rom_entities_sizeof, eoprot_entities_sk_numberof*sizeof(uint16_t));
 
-const void* eoprot_sk_rom_entities_defval[] = 
+const void* const eoprot_sk_rom_entities_defval[] = 
 {
     (const void*)&eoprot_sk_rom_skin_defaultvalue
 };  EO_VERIFYsizeof(eoprot_sk_rom_entities_defval, eoprot_entities_sk_numberof*sizeof(const void*)); 

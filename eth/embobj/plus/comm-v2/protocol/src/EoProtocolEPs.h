@@ -60,11 +60,12 @@
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
 extern const uint8_t eoprot_ep_board_numberofthem;
+extern const eoprot_version_t * const eoprot_endpoint_version[eoprot_endpoints_numberof];
 extern const uint8_t eoprot_ep_entities_numberof[eoprot_endpoints_numberof];
-extern EOPROT_ROMmap EOnv_rom_t * const * eoprot_ep_folded_descriptors[eoprot_endpoints_numberof];
-extern const uint16_t* eoprot_ep_entities_sizeof[eoprot_endpoints_numberof]; 
-extern const void** eoprot_ep_entities_defval[eoprot_endpoints_numberof]; 
-extern const uint8_t* eoprot_ep_tags_numberof[eoprot_endpoints_numberof];
+extern EOPROT_ROMmap EOnv_rom_t * const * const eoprot_ep_folded_descriptors[eoprot_endpoints_numberof];
+extern const uint16_t* const eoprot_ep_entities_sizeof[eoprot_endpoints_numberof]; 
+extern const void** const eoprot_ep_entities_defval[eoprot_endpoints_numberof]; 
+extern const uint8_t* const eoprot_ep_tags_numberof[eoprot_endpoints_numberof];
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
@@ -72,6 +73,11 @@ extern const uint8_t* eoprot_ep_tags_numberof[eoprot_endpoints_numberof];
 EO_extern_inline uint8_t eoprot_ep_ep2index(eOprotEndpoint_t ep)
 {   // dont use control that ep is lower than eoprot_endpoints_numberof ... use sensibly !
     return(ep);
+}
+
+EO_extern_inline eOprotEndpoint_t eoprot_ep_index2ep(uint8_t index)
+{   // dont use control that index is lower than eoprot_endpoints_numberof ... use sensibly !
+    return(index);
 }
 
 /** @}            

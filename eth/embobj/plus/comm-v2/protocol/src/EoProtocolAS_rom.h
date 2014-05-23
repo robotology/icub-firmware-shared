@@ -56,10 +56,11 @@
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
+extern const eoprot_version_t eoprot_as_version;
 extern EOPROT_ROMmap EOnv_rom_t * const eoprot_as_rom_folded_descriptors[];
 extern const uint8_t eoprot_as_rom_tags_numberof[eoprot_entities_as_numberof];
 extern const uint16_t eoprot_as_rom_entities_sizeof[eoprot_entities_as_numberof];
-extern const void* eoprot_as_rom_entities_defval[eoprot_entities_as_numberof];
+extern const void* const eoprot_as_rom_entities_defval[eoprot_entities_as_numberof];
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------

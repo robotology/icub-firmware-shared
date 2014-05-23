@@ -48,6 +48,7 @@ extern "C" {
 
 #include "EOnv.h"
 #include "EOrop.h"
+#include "EOarray.h"
 
 #include "EoAnalogSensors.h"
 #include "EoManagement.h"
@@ -135,6 +136,38 @@ typedef uint8_t eOprotTag_t;
 enum { eoprot_tags_maxnumberof = 256 };    // the current implementation uses at most 256 possible tags per entity of a given type per endpoint.
 
 
+/** @typedef    typedef struct eoprot_version_t
+    @brief      contains the version used in eoprotocol
+ **/
+typedef struct  
+{
+    uint8_t     major;                  /**< the major number */
+    uint8_t     minor;                  /**< the minor number */
+} eoprot_version_t;
+
+
+/** @typedef    typedef struct eoprot_endpoint_descriptor_t
+    @brief      contains a description for the entity
+ **/
+typedef struct  
+{
+    eOprotEndpoint_t    endpoint;               /**< the endpoint */
+    uint8_t             entitiesinside;         /**< the number of entities inside. example: in analogsensors we use 1 if only strain is inside, even if there are two of them */
+    eoprot_version_t    version;                /**< its version */
+} eoprot_endpoint_descriptor_t;
+
+/** @typedef    typedef struct eoprot_entity_descriptor_t
+    @brief      contains a description for the entity
+ **/
+typedef struct  
+{
+    eOprotEndpoint_t    endpoint;               /**< the endpoint which contains the entity */
+    eOprotEntity_t      entity;                 /**< the entity */
+    uint8_t             multiplicity;           /**< tells how many of this entity are available: e.g., 4 joints */
+    uint8_t             numberoftags;           /**< tells how many tags are available for this entity */
+} eoprot_entity_descriptor_t;
+
+
 // - specific values and types
 
 /** @typedef    typedef enum eOprot_endpoint_t;
@@ -144,14 +177,15 @@ enum { eoprot_tags_maxnumberof = 256 };    // the current implementation uses at
  **/
 typedef enum
 {
-    eoprot_endpoint_management              = 0,        /**< management of the ems board: comm+appl */   
-    eoprot_endpoint_motioncontrol           = 1,        /**< management of motion control  */        
-    eoprot_endpoint_analogsensors           = 2,        /**< management of analog sensors  */ 
-    eoprot_endpoint_skin                    = 3,        /**< management of skin  */     
-    eoprot_endpoint_none                    = EOK_uint08dummy
+    eoprot_endpoint_management              = 0,                /**< management of the ems board: comm+appl */   
+    eoprot_endpoint_motioncontrol           = 1,                /**< management of motion control  */        
+    eoprot_endpoint_analogsensors           = 2,                /**< management of analog sensors  */ 
+    eoprot_endpoint_skin                    = 3,                /**< management of skin  */     
+    eoprot_endpoint_all                     = 254,              /**< specifies all the endpoints in some operations */
+    eoprot_endpoint_none                    = EOK_uint08dummy   /**< specified an invalid endpoint */
 } eOprot_endpoint_t;
 
-enum { eoprot_endpoints_numberof = 4 }; // it does not count the eoprot_endpoint_none.
+enum { eoprot_endpoints_numberof = 4 }; // it does not count the eoprot_endpoint_none and eoprot_endpoint_all.
 
 
 /** @typedef    typedef enum eOprot_entity_t;
@@ -247,7 +281,7 @@ extern const eOprot_nvset_Interface_t eoprot_eonvset_Interface;
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-// functions which just makes conversione
+// functions which just make conversions
 
 /** @fn         extern eOprotID32_t eoprot_ID_get(eOprotEndpoint_t ep, eOprotEntity_t entity, eOprotIndex_t index, eOprotTag_t tag)
     @brief      it retrieves the ID of a variable given (ep, entity, index, tag). The ID is equal for any board.
@@ -293,7 +327,19 @@ extern eOprotIndex_t eoprot_ID2index(eOprotID32_t id);
 extern eOprotTag_t eoprot_ID2tag(eOprotID32_t id); 
 
 
-// functions which allows to use the variables etc.
+
+// functions which manage protocol version
+
+
+/** @fn         extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t ep)
+    @brief      it extracts the version of the endpoint.
+    @param      ep          the endpoint.
+    @return     pointer to the internal version of the entity, or NULL is specified endpoit does not exists
+ **/
+extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t ep);
+
+
+// functions which allow to use the variables etc.
 
 
 /** @fn         extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
@@ -344,7 +390,6 @@ extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t 
 
 
 
-
 /** @fn         extern eOresult_t eoprot_config_endpoint_callback(const eOprot_callbacks_endpoint_descriptor_t* cbkdes)
     @brief      it configures the ram initialisation function functions associated to a given endpoint.
                 it does so for every board.
@@ -363,6 +408,81 @@ extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_en
     @return     eores_OK or eores_NOK_generic upon failure.
  **/
 extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_variable_descriptor_t *cbkdes);
+
+
+// functions which tell about properties of the endpoints and of the entities.
+
+
+/** @fn         extern uint8_t eoprot_endpoints_numberof_get(eOprotBRD_t brd)
+    @brief      tells how many endpoints in the board
+    @param      brd         the board
+    @return     the number of endpoint in the specified board. zero if board is not initialised or supported.
+ **/
+extern uint8_t eoprot_endpoints_numberof_get(eOprotBRD_t brd);
+
+
+/** @fn         extern eOresult_t eoprot_endpoints_array_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
+    @brief      fills the array with all the endpoints in the board, starting from a given number.
+    @param      brd         the board
+    @param      array       an array initialised with itemsize = sizeof(eOprotEndpoint_t). the array will be filled
+                            until its capacity or until the endpoints are over.
+    @param      startfrom   it tells to put inside the array the endpoints after position startfrom.
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_endpoints_array_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom);
+
+
+/** @fn         extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
+    @brief      fills the array with all the endpoint descriptors in the board, starting from a given number.
+    @param      brd         the board
+    @param      array       an array initialised with itemsize = sizeof(eoprot_endpoint_descriptor_t). the array will be filled
+                            until its capacity or until the endpoints are over.
+    @param      startfrom   it tells to put inside the array the endpoints after position startfrom. 
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom);
+
+
+/** @fn         extern uint16_t eoprot_entities_numberof_get(eOprotBRD_t brd)
+    @brief      tells how many entities are in the board, considering every endpoint.
+    @param      brd         the board
+    @return     the number of entities in the specified board. zero if board is not initialised or supported.
+ **/
+extern uint16_t eoprot_entities_numberof_get(eOprotBRD_t brd);
+
+
+/** @fn         extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
+    @brief      fills the array with all the entity descriptors in the board, starting from a given number.
+    @param      brd         the board
+    @param      array       an array initialised with itemsize = sizeof(eoprot_entity_descriptor_t). the array will be filled
+                            until its capacity or until the entities are over.
+    @param      startfrom   it tells to put inside the array the entities after position startfrom. 
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom);
+
+
+/** @fn         extern eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
+    @brief      tells how many entities are in the board, considering only the specified endpoint.
+    @param      brd         the board
+    @param      ep          the endpoint
+    @return     the number of entities in the specified board for that endpoint. zero if board or endpoint is not initialised 
+                or supported.
+ **/
+extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep);
+
+
+/** @fn         extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t brd, eOprotEndpoint_t ep, EOarray* array, uint8_t startfrom)
+    @brief      fills the array with all the entity descriptors in the board, starting from a given number, considering only the
+                specifeid endpoint.
+    @param      brd         the board
+    @param      ep          the endpoint
+    @param      array       an array initialised with itemsize = sizeof(eoprot_entity_descriptor_t). the array will be filled
+                            until its capacity or until the entities are over.
+    @param      startfrom   it tells to put inside the array the entities after position startfrom. 
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t brd, eOprotEndpoint_t ep, EOarray* array, uint8_t startfrom);
 
 
 
@@ -407,7 +527,25 @@ extern void* eoprot_variable_ramof_get(eOprotBRD_t brd, eOprotID32_t id);
  **/
 extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id);
 
+
+/** @fn         extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
+    @brief      tells if the variable is proxied. the result is meaningful only after eoprot_config_proxied_variables()
+                has been called, otherwise this function returns false.
+    @param      id              the identifier of the variable.
+    @return     a boolean value.
+ **/
 extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id);
+
+
+
+/** @fn         extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
+    @brief      tells if the entity is configured.
+    @param      brd             the number of the board.
+    @param      ep              the endpoint
+    @param      entity          the entity.
+    @return     a boolean value.
+ **/
+extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity);
 
 
 /** @fn         extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)

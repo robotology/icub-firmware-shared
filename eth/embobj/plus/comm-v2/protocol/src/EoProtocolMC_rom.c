@@ -540,6 +540,13 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_controller_status =
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
 
+const eoprot_version_t eoprot_mc_version =
+{
+    EO_INIT(.major)     eoprot_version_mc_major,
+    EO_INIT(.minor)     eoprot_version_mc_minor
+};
+
+
 // -- the folded array of descriptors: to be changed if any new tag is added
 
 
@@ -599,7 +606,7 @@ const uint16_t eoprot_mc_rom_entities_sizeof[] =
 };  EO_VERIFYsizeof(eoprot_mc_rom_entities_sizeof, eoprot_entities_mc_numberof*sizeof(uint16_t)); 
 
 
-const void* eoprot_mc_rom_entities_defval[] = 
+const void* const eoprot_mc_rom_entities_defval[] = 
 {
     (const void*)&eoprot_mc_rom_joint_defaultvalue, 
     (const void*)&eoprot_mc_rom_motor_defaultvalue,

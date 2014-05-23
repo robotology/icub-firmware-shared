@@ -190,6 +190,13 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_go2state =
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
 
+const eoprot_version_t eoprot_mn_version =
+{
+    EO_INIT(.major)     eoprot_version_mn_major,
+    EO_INIT(.minor)     eoprot_version_mn_minor
+};
+
+    
 // -- the folded array of descriptors: to be changed if any new tag is added
 
 EOPROT_ROMmap EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[] =
@@ -222,7 +229,7 @@ const uint16_t eoprot_mn_rom_entities_sizeof[] =
 };  EO_VERIFYsizeof(eoprot_mn_rom_entities_sizeof, eoprot_entities_mn_numberof*sizeof(uint16_t));
 
 
-const void* eoprot_mn_rom_entities_defval[] = 
+const void* const eoprot_mn_rom_entities_defval[] = 
 {
     (const void*)&eoprot_mn_rom_comm_defaultvalue, 
     (const void*)&eoprot_mn_rom_appl_defaultvalue

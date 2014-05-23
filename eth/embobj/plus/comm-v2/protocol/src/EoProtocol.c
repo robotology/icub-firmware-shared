@@ -166,6 +166,18 @@ extern eOprotTag_t eoprot_ID2tag(eOprotID32_t id)
     return((eOprotTag_t)tag);  
 }
 
+extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t ep)
+{
+    if(ep > eoprot_endpoints_numberof)
+    {
+        return(NULL);
+    }  
+
+    uint8_t epi = eoprot_ep_ep2index(ep);
+    
+    return(eoprot_endpoint_version[epi]);
+}
+
 
 extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
 {   
@@ -295,6 +307,8 @@ extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_en
     return(eores_NOK_generic);
 #else
     
+    eOresult_t res = eores_OK;
+    
     if(NULL == cbkdes)
     {
         return(eores_NOK_generic);
@@ -321,12 +335,12 @@ extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_en
         break;
         
         default:
-            
+            res = eores_NOK_generic;
         break;
     };
     
         
-    return(eores_OK);   
+    return(res);   
     
 #endif    
 }
@@ -346,6 +360,337 @@ extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_va
 #endif    
 }
 
+extern uint8_t eoprot_endpoints_numberof_get(eOprotBRD_t brd)
+{
+    uint8_t numberof = 0;
+    
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if((brd >= eoprot_boards_maxnumberof))
+    {
+        return(0);
+    }
+
+    uint8_t ep = 0;
+    for(ep=0; ep<eoprot_endpoints_numberof; ep++)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);
+        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        {
+            numberof++;
+        }
+    }
+       
+    return(numberof);
+}
+
+extern eOresult_t eoprot_endpoints_array_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
+{   
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if(brd >= eoprot_boards_maxnumberof)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    if((NULL == array) || (sizeof(eOprotEndpoint_t) != eo_array_ItemSize(array)))
+    {   // mild control: the array must be non NULL and with itemsize equal to 1
+        return(eores_NOK_generic);
+    }
+    
+    // we reset the array 
+    eo_array_Reset(array);
+
+    uint8_t ep=0;
+    uint8_t numberof = 0;
+    //uint8_t capacity = eo_array_Capacity(array);
+    for(ep=0; ep<eoprot_endpoints_numberof; ep++)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);
+        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        {
+            numberof++;
+            if(numberof>startfrom)
+            {   // we want to retrieve the items starting from a given number
+                eOresult_t res = eo_array_PushBack(array, &ep);
+                if(eores_OK != res)
+                {   // if array is valid, we have NOK when the array is full
+                    break;
+                }                    
+            }
+        }
+    }
+    
+    return(eores_OK);   
+}
+
+extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
+{   
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if(brd >= eoprot_boards_maxnumberof)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    if((NULL == array) || (sizeof(eoprot_endpoint_descriptor_t) != eo_array_ItemSize(array)))
+    {   // mild control: the array must be non NULL and with itemsize equal to 4
+        return(eores_NOK_generic);
+    }
+    
+    // we reset the array 
+    eo_array_Reset(array);
+
+    uint8_t ep=0;
+    uint8_t numberof = 0;
+    //uint8_t capacity = eo_array_Capacity(array);
+    for(ep=0; ep<eoprot_endpoints_numberof; ep++)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);
+        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        {
+            numberof++;
+            if(numberof>startfrom)
+            {   // we want to retrieve the items starting from a given number
+                eoprot_endpoint_descriptor_t epdes = {0};
+                epdes.endpoint          = ep;
+                epdes.entitiesinside    = 255; // eoprot_ep_entities_numberof[epi];
+                epdes.version.major     = eoprot_endpoint_version[epi]->major;
+                epdes.version.minor     = eoprot_endpoint_version[epi]->minor;
+                uint8_t ent;
+                uint16_t entitiesinside = 0;
+                for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
+                {
+                    if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+                    {
+                        entitiesinside++;
+                    }     
+                }
+                epdes.entitiesinside    = entitiesinside;                
+                
+                
+                eOresult_t res = eo_array_PushBack(array, &epdes);
+                if(eores_OK != res)
+                {   // if array is valid, we have NOK when the array is full
+                    break;
+                }                    
+            }
+        }
+    }
+    
+    return(eores_OK);   
+}
+
+extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
+{
+    uint16_t numberof = 0;
+    
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if((brd >= eoprot_boards_maxnumberof))
+    {
+        return(0);
+    }
+    
+    if(eoprot_endpoint_all == ep)
+    {
+        return(eoprot_entities_numberof_get(brd));
+    }
+    
+    if(ep > eoprot_endpoints_numberof)
+    {
+        return(0);
+    }
+
+    uint8_t epi = eoprot_ep_ep2index(ep);
+    if(NULL != eoprot_board_numberofeachentity[brd][epi])
+    {
+        uint8_t ent;
+        for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
+        {
+            if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+            {
+                numberof++;
+            }
+        }            
+        
+    }
+      
+    return(numberof);       
+}
+
+extern uint16_t eoprot_entities_numberof_get(eOprotBRD_t brd)
+{
+    uint16_t numberof = 0;
+    
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if((brd >= eoprot_boards_maxnumberof))
+    {
+        return(0);
+    }
+
+    uint8_t ep = 0;
+    for(ep=0; ep<eoprot_endpoints_numberof; ep++)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);
+        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        {
+            uint8_t ent;
+            for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
+            {
+                if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+                {
+                    numberof++;
+                }
+            }            
+            
+        }
+    }
+       
+    return(numberof);       
+}
+
+extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
+{
+    uint16_t numberof = 0;
+    
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if((brd >= eoprot_boards_maxnumberof))
+    {
+        return(eores_NOK_generic);
+    }
+
+    if((NULL == array) || (sizeof(eoprot_entity_descriptor_t) != eo_array_ItemSize(array)))
+    {   // mild control: the array must be non NULL and with itemsize equal to sizeof(eoprot_entity_descriptor_t)
+        return(eores_NOK_generic);
+    }
+    
+    // we reset the array 
+    eo_array_Reset(array);
+    
+    uint8_t ep = 0;
+    for(ep=0; ep<eoprot_endpoints_numberof; ep++)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);
+        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        {
+            uint8_t ent;
+            for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
+            {
+                if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+                {
+                    numberof++;
+                    
+                    if(numberof>startfrom)
+                    {   // we want to retrieve the items starting from a given number
+                        eoprot_entity_descriptor_t entdes = {0};
+                        
+                        entdes.endpoint         = ep;
+                        entdes.entity           = ent;
+                        entdes.multiplicity     = eoprot_board_numberofeachentity[brd][epi][ent];
+                        entdes.numberoftags     = eoprot_ep_tags_numberof[epi][ent];
+                        
+                        eOresult_t res = eo_array_PushBack(array, &entdes);
+                        if(eores_OK != res)
+                        {   // if array is valid, we have NOK when the array is full
+                            break;
+                        }                    
+                    }                    
+                    
+                }
+            }            
+            
+        }
+    }
+       
+    return(eores_OK);       
+}
+
+extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t brd, eOprotEndpoint_t ep, EOarray* array, uint8_t startfrom)
+{
+    uint16_t numberof = 0;
+    
+    if(eoprot_board_localboard == brd)
+    {
+        brd = s_eoprot_localboard;
+    }     
+    
+    if((brd >= eoprot_boards_maxnumberof))
+    {
+        return(eores_NOK_generic);
+    }
+
+    if((NULL == array) || (sizeof(eoprot_entity_descriptor_t) != eo_array_ItemSize(array)))
+    {   // mild control: the array must be non NULL and with itemsize equal to sizeof(eoprot_entity_descriptor_t)
+        return(eores_NOK_generic);
+    }
+    
+    if(eoprot_endpoint_all == ep)
+    {
+        return(eoprot_entities_arrayofdescriptors_get(brd, array, startfrom));
+    }
+    
+    if(ep > eoprot_endpoints_numberof)
+    {
+        return(eores_NOK_generic);
+    }    
+    
+    // we reset the array 
+    eo_array_Reset(array);
+    
+    uint8_t epi = eoprot_ep_ep2index(ep);
+    if(NULL != eoprot_board_numberofeachentity[brd][epi])
+    {
+        uint8_t ent;
+        for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
+        {
+            if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+            {
+                numberof++;
+                
+                if(numberof>startfrom)
+                {   // we want to retrieve the items starting from a given number
+                    eoprot_entity_descriptor_t entdes = {0};
+                    
+                    entdes.endpoint         = ep;
+                    entdes.entity           = ent;
+                    entdes.multiplicity     = eoprot_board_numberofeachentity[brd][epi][ent];
+                    entdes.numberoftags     = eoprot_ep_tags_numberof[epi][ent];
+                    
+                    eOresult_t res = eo_array_PushBack(array, &entdes);
+                    if(eores_OK != res)
+                    {   // if array is valid, we have NOK when the array is full
+                        break;
+                    }                    
+                }                    
+                
+            }
+        }            
+        
+    }
+       
+    return(eores_OK);       
+}
 
 extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
@@ -787,16 +1132,16 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
 }    
 
 
-extern eOprotID32_t eoprot_prognum2id(eOprotBRD_t brd, eOprotProgNumber_t prog)
-{
-    return(EOK_uint32dummy);   
-}
+// extern eOprotID32_t eoprot_prognum2id(eOprotBRD_t brd, eOprotProgNumber_t prog)
+// {
+//     return(EOK_uint32dummy);   
+// }
 
 
-extern eOprotProgNumber_t eoprot_id2prognum(eOprotBRD_t brd, eOprotID32_t id)
-{
-    return(EOK_uint32dummy);
-}    
+// extern eOprotProgNumber_t eoprot_id2prognum(eOprotBRD_t brd, eOprotID32_t id)
+// {
+//     return(EOK_uint32dummy);
+// }    
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
