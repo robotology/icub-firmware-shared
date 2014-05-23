@@ -342,6 +342,54 @@ extern eOresult_t eo_transceiver_RegularROPs_Clear(EOtransceiver *p)
     return(res);
 }
 
+extern eOsizecntnr_t eo_transceiver_RegularROP_ArrayID32Size(EOtransceiver *p)
+{
+    if(NULL == p)
+    {
+        return(0);
+    }
+    
+    return(eo_transmitter_regular_rops_Size(p->transmitter));
+}
+
+extern eOsizecntnr_t eo_transceiver_RegularROP_ArrayID32SizeWithEP(EOtransceiver *p, eOnvEP8_t ep)
+{
+    if(NULL == p)
+    {
+        return(0);
+    }
+    
+    return(eo_transmitter_regular_rops_Size_with_ep(p->transmitter, ep));
+}
+
+extern eOresult_t eo_transceiver_RegularROP_ArrayID32Get(EOtransceiver *p, uint16_t start, EOarray* array)
+{
+    eOresult_t res = eores_NOK_generic;
+    
+    if((NULL == p) || (NULL == array))
+    {
+        return(eores_NOK_nullpointer);
+    }
+    
+    res = eo_transmitter_regular_rops_arrayid32_Get(p->transmitter, start, array);
+    
+    return(res);
+}
+
+extern eOresult_t eo_transceiver_RegularROP_ArrayID32GetWithEP(EOtransceiver *p, eOnvEP8_t ep, uint16_t start, EOarray* array)
+{
+    eOresult_t res = eores_NOK_generic;
+    
+    if((NULL == p) || (NULL == array))
+    {
+        return(eores_NOK_nullpointer);
+    }
+    
+    res = eo_transmitter_regular_rops_arrayid32_ep_Get(p->transmitter, ep, start, array);
+    
+    return(res);
+}
+
 extern eOresult_t eo_transceiver_RegularROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdesc)
 {
     eOresult_t res;

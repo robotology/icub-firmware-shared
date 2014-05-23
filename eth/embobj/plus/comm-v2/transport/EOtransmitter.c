@@ -32,6 +32,7 @@
 #include "EOVtheSystem.h"
 #include "EOtheErrorManager.h"
 #include "EOvector.h"
+#include "EoProtocol.h"
 
 
 
@@ -209,7 +210,201 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
 
 
 
+extern eOsizecntnr_t eo_transmitter_regular_rops_Size(EOtransmitter *p)
+{
+    eOsizecntnr_t size = 0;
+    
+    if(NULL == p) 
+    {
+        return(0);
+    }  
 
+    if(NULL == p->listofregropinfo)
+    {
+        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+        return(0);
+    }
+    
+    eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+    
+    size = eo_list_Size(p->listofregropinfo);
+
+    eov_mutex_Release(p->mtx_regulars);
+    
+    return(size);   
+}
+
+extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, eOnvEP8_t ep)
+{
+    eOsizecntnr_t retvalue = 0;
+    
+    if(NULL == p) 
+    {
+        return(0);
+    }  
+
+    if(NULL == p->listofregropinfo)
+    {
+        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+        return(0);
+    }
+
+    if(eoprot_endpoint_all == ep)
+    {
+        return(eo_transmitter_regular_rops_Size(p));
+    }
+
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(0);
+    }
+    
+    
+    eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+    
+    uint16_t size = eo_list_Size(p->listofregropinfo);
+    
+    uint32_t i=0;
+    EOlistIter* li = eo_list_Begin(p->listofregropinfo);
+    for(i=0; i<size; i++) 
+    {       
+        eo_transm_regrop_info_t *item = (eo_transm_regrop_info_t*) eo_list_At(p->listofregropinfo, li);
+        li = eo_list_Next(p->listofregropinfo, li);
+        
+        eOnvID32_t id32 = eo_nv_GetID32(&item->thenv);
+        if(ep == eoprot_ID2endpoint(id32))
+        {
+            retvalue ++;
+        }               
+    }            
+
+    eov_mutex_Release(p->mtx_regulars);
+
+    
+    return(retvalue);   
+}
+
+extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, uint16_t start, EOarray* array)
+{
+    if(NULL == p) 
+    {
+        return(eores_NOK_nullpointer);
+    }  
+
+    if(NULL == p->listofregropinfo)
+    {
+        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+        return(eores_NOK_nullpointer);
+    }
+    
+    if(sizeof(eOnvID32_t) != eo_array_ItemSize(array))
+    {
+        return(eores_NOK_generic);
+    }
+    
+    eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+    
+    uint16_t size = eo_list_Size(p->listofregropinfo);
+    uint16_t array_capacity = eo_array_Capacity(array);
+    
+    eo_array_Reset(array);
+    
+    if(start > size)
+    {
+        // do nothing
+    }
+    else
+    {
+        uint32_t count = 0;
+        uint32_t i=0;
+        EOlistIter* li = eo_list_Begin(p->listofregropinfo);
+        for(i=0; i<size; i++)
+        { 
+            eo_transm_regrop_info_t *item = (eo_transm_regrop_info_t*) eo_list_At(p->listofregropinfo, li);
+            li = eo_list_Next(p->listofregropinfo, li);
+            eOnvID32_t id32 = eo_nv_GetID32(&item->thenv);
+            
+            //if(ep == eoprot_ID2endpoint(id32))
+            {
+                count ++;
+                if(count > start)
+                {
+                    eo_array_PushBack(array, &id32); 
+                }
+            }         
+        }  
+    }
+
+    eov_mutex_Release(p->mtx_regulars);
+    
+    return(eores_OK);   
+}
+
+extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p, eOnvEP8_t ep, uint16_t start, EOarray* array)
+{
+    if(NULL == p) 
+    {
+        return(eores_NOK_nullpointer);
+    }  
+
+    if(NULL == p->listofregropinfo)
+    {
+        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+        return(eores_NOK_nullpointer);
+    }
+    
+    if(sizeof(eOnvID32_t) != eo_array_ItemSize(array))
+    {
+        return(eores_NOK_generic);
+    }
+
+    if(eoprot_endpoint_all == ep)
+    {
+        return(eo_transmitter_regular_rops_arrayid32_Get(p, start, array));
+    }
+
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+    
+    uint16_t size = eo_list_Size(p->listofregropinfo);
+    uint16_t array_capacity = eo_array_Capacity(array);
+    
+    eo_array_Reset(array);
+    
+    if(start > size)
+    {
+        // do nothing
+    }
+    else
+    {      
+        uint32_t count = 0;
+        uint32_t i=0;
+        EOlistIter* li = eo_list_Begin(p->listofregropinfo);
+        for(i=0; i<size; i++)
+        { 
+            eo_transm_regrop_info_t *item = (eo_transm_regrop_info_t*) eo_list_At(p->listofregropinfo, li);
+            li = eo_list_Next(p->listofregropinfo, li);
+            eOnvID32_t id32 = eo_nv_GetID32(&item->thenv);
+            
+            if(ep == eoprot_ID2endpoint(id32))
+            {
+                count ++;
+                if(count > start)
+                {
+                    eo_array_PushBack(array, &id32); 
+                }
+            }         
+        }            
+    }
+
+    eov_mutex_Release(p->mtx_regulars);
+    
+    return(eores_OK);   
+}
 
 
 extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc)

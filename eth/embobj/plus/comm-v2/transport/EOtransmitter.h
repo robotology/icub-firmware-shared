@@ -47,6 +47,7 @@ extern "C" {
 #include "EOagent.h"
 #include "EOVmutex.h"
 #include "EOconfirmationManager.h"
+#include "EOarray.h"
 
 
 
@@ -140,6 +141,10 @@ extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outp
 
 // the rops in regular_rops stay forever unless unloaded one by one or all cleared. at each eo_transmitter_outpacket_Prepare() they are placed 
 // inside the packet. they however need an explicit refresh of their values. 
+extern eOsizecntnr_t eo_transmitter_regular_rops_Size(EOtransmitter *p);
+extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, eOnvEP8_t ep);
+extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, uint16_t start, EOarray* array);
+extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p, eOnvEP8_t ep, uint16_t start, EOarray* array);
 extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc); 
 extern eOresult_t eo_transmitter_regular_rops_Unload(EOtransmitter *p, eOropdescriptor_t* ropdesc); 
 extern eOresult_t eo_transmitter_regular_rops_Clear(EOtransmitter *p); 

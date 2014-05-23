@@ -47,8 +47,7 @@ extern "C" {
 #include "EOproxy.h"
 #include "EOrop.h"
 #include "EOVmutex.h"
-
-
+#include "EOarray.h"
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -149,6 +148,10 @@ extern eOresult_t eo_transceiver_outpacket_Get(EOtransceiver *p, EOpacket **pkt)
 extern eOresult_t eo_transceiver_OccasionalROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdes);
 extern eOresult_t eo_transceiver_ReplyROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdesc);
 
+extern eOsizecntnr_t eo_transceiver_RegularROP_ArrayID32Size(EOtransceiver *p);
+extern eOsizecntnr_t eo_transceiver_RegularROP_ArrayID32SizeWithEP(EOtransceiver *p, eOnvEP8_t ep);
+extern eOresult_t eo_transceiver_RegularROP_ArrayID32Get(EOtransceiver *p, uint16_t start, EOarray* array);
+extern eOresult_t eo_transceiver_RegularROP_ArrayID32GetWithEP(EOtransceiver *p, eOnvEP8_t ep, uint16_t start, EOarray* array);
 extern eOresult_t eo_transceiver_RegularROPs_Clear(EOtransceiver *p);
 extern eOresult_t eo_transceiver_RegularROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdes); 
 extern eOresult_t eo_transceiver_RegularROP_Unload(EOtransceiver *p, eOropdescriptor_t *ropdes); 
