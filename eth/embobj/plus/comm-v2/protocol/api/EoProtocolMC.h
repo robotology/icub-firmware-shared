@@ -280,8 +280,8 @@ extern void eoprot_fun_UPDT_mc_joint_cmmnds_stoptrajectory(const EOnv* nv, const
 extern void eoprot_fun_INIT_mc_joint_cmmnds_controlmode(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_cmmnds_controlmode(const EOnv* nv, const eOropdescriptor_t* rd);
 
-EO_weak extern void eoprot_fun_INIT_mc_joint_cmmnds_interactionmode(const EOnv* nv);
-EO_weak extern void eoprot_fun_UPDT_mc_joint_cmmnds_interactionmode(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_cmmnds_interactionmode(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_cmmnds_interactionmode(const EOnv* nv, const eOropdescriptor_t* rd);
 
 // -- motor
 
