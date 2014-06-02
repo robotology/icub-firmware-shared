@@ -4,7 +4,7 @@
 
 
 cmake_minimum_required(VERSION 2.8.7)
-project(icub_firmware_shared NONE)
+project(icub_firmware_shared)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
