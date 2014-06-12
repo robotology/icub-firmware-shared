@@ -385,7 +385,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_extorque_descriptors[] =
 };  EO_VERIFYsizeof(s_eoprot_as_rom_extorque_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_extorque_numberof));
 
 
-EOPROT_ROMmap EOnv_rom_t ** const eoprot_as_rom_descriptors[] = 
+EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_strain_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_mais_descriptors,   

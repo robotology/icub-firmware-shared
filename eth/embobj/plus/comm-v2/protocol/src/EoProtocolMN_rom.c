@@ -305,7 +305,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
 };  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof));
 
 
-EOPROT_ROMmap EOnv_rom_t ** const eoprot_mn_rom_descriptors[] = 
+EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mn_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_comm_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_appl_descriptors   

@@ -59,7 +59,7 @@
 extern const eoprot_version_t eoprot_as_version;
 
 // in the following arrays we dont put the size inside brackets [] so that the EO_VERIFYsizeof() can alert about a change
-extern EOPROT_ROMmap EOnv_rom_t ** const eoprot_as_rom_descriptors[];   // size: eoprot_entities_as_numberof
+extern EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[];   // size: eoprot_entities_as_numberof
 extern const uint8_t eoprot_as_rom_tags_numberof[];                     // size: eoprot_entities_as_numberof
 extern const uint16_t eoprot_as_rom_entities_sizeof[];                  // size: eoprot_entities_as_numberof
 extern const void* const eoprot_as_rom_entities_defval[];               // size: eoprot_entities_as_numberof

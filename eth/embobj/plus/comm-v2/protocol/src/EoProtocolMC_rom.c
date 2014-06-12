@@ -589,7 +589,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_controller_descriptors[]
 };  EO_VERIFYsizeof(s_eoprot_mc_rom_controller_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_controller_numberof));
 
 
-EOPROT_ROMmap EOnv_rom_t ** const eoprot_mc_rom_descriptors[] = 
+EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mc_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_joint_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_motor_descriptors,   

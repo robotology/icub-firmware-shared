@@ -193,7 +193,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_sk_rom_skin_descriptors[] =
 
 
 
-EOPROT_ROMmap EOnv_rom_t ** const eoprot_sk_rom_descriptors[] = 
+EOPROT_ROMmap EOnv_rom_t * const * const eoprot_sk_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_sk_rom_skin_descriptors 
 };  EO_VERIFYsizeof(eoprot_sk_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_sk_numberof));
