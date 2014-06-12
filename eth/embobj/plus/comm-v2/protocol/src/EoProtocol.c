@@ -238,7 +238,7 @@ extern const char* eoprot_ID2stringOfTag(eOprotID32_t id)
 }
 
 
-extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint8_t size)
+extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint16_t size)
 {
     if((NULL == string) || (0 == size))
     {

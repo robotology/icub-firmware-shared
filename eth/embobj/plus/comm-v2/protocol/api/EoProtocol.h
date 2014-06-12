@@ -390,7 +390,7 @@ extern const char* eoprot_ID2stringOfEntity(eOprotID32_t id);
 extern const char* eoprot_ID2stringOfTag(eOprotID32_t id);
 
 
-/** @fn         extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint8_t size)
+/** @fn         extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint16_t size)
     @brief      it fills the passed string with information about the id. The string size must be able to contain the
                 required characters, otherwise the information will be truncated. a good size is about 40 + size required
                 for the tag description. a total of 96 or 128 is good enough.
@@ -401,7 +401,7 @@ extern const char* eoprot_ID2stringOfTag(eOprotID32_t id);
     @param      size            the size of the string. at least 96-128.
     @return     eores_OK upon success, eores_NOK_generic if the string is NULL or size is 0. 
  **/
-extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint8_t size);
+extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint16_t size);
 
 
 
