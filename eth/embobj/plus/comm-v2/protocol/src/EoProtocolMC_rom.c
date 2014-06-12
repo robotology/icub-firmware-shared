@@ -547,12 +547,10 @@ const eoprot_version_t eoprot_mc_version =
 };
 
 
-// -- the folded array of descriptors: to be changed if any new tag is added
+// -- collector of eonv descriptors for the endpoint
 
-
-EOPROT_ROMmap EOnv_rom_t * const eoprot_mc_rom_folded_descriptors[] =
-{
-    // here are eoprot_mc_tag_joints_numberof descriptors for the joints (equal for every joint)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
+{   // here are eoprot_tags_mc_joint_numberof descriptors for the joint entity
     &eoprot_mc_rom_descriptor_joint_wholeitem,
     &eoprot_mc_rom_descriptor_joint_config,
     &eoprot_mc_rom_descriptor_joint_config_pidposition,
@@ -571,21 +569,33 @@ EOPROT_ROMmap EOnv_rom_t * const eoprot_mc_rom_folded_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_cmmnds_stoptrajectory,
     &eoprot_mc_rom_descriptor_joint_cmmnds_controlmode,
     &eoprot_mc_rom_descriptor_joint_cmmnds_interactionmode,
-    &eoprot_mc_rom_descriptor_joint_status_interactionmodestatus,
-    
-    // here are eoprot_tags_mc_motor_numberof descriptors for the motors (equal for every motor)
+    &eoprot_mc_rom_descriptor_joint_status_interactionmodestatus   
+};  EO_VERIFYsizeof(s_eoprot_mc_rom_joint_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_joint_numberof));
+
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_motor_descriptors[] =
+{   // here are eoprot_tags_mc_motor_numberof descriptors for the motor entity
     &eoprot_mc_rom_descriptor_motor_wholeitem,
     &eoprot_mc_rom_descriptor_motor_config,
     &eoprot_mc_rom_descriptor_motor_config_maxcurrentofmotor,
     &eoprot_mc_rom_descriptor_motor_status,
-    &eoprot_mc_rom_descriptor_motor_status_basic,
+    &eoprot_mc_rom_descriptor_motor_status_basic   
+};  EO_VERIFYsizeof(s_eoprot_mc_rom_motor_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_motor_numberof));
 
-    // here are eoprot_tags_mc_controller_numberof descriptors for the single controller
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_controller_descriptors[] =
+{   // here are eoprot_tags_mc_controller_numberof descriptors for the controller entity
     &eoprot_mc_rom_descriptor_controller_wholeitem,
     &eoprot_mc_rom_descriptor_controller_config,
     &eoprot_mc_rom_descriptor_controller_status
-         
-};  EO_VERIFYsizeof(eoprot_mc_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_joint_numberof+eoprot_tags_mc_motor_numberof+eoprot_tags_mc_controller_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mc_rom_controller_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_controller_numberof));
+
+
+EOPROT_ROMmap EOnv_rom_t ** const eoprot_mc_rom_descriptors[] = 
+{
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_joint_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_motor_descriptors,   
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_controller_descriptors, 
+};  EO_VERIFYsizeof(eoprot_mc_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mc_numberof));
+
 
 
 // the other constants: to be changed when a new entity is added
@@ -614,7 +624,62 @@ const void* const eoprot_mc_rom_entities_defval[] =
 };  EO_VERIFYsizeof(eoprot_mc_rom_entities_defval, eoprot_entities_mc_numberof*sizeof(const void*)); 
 
 
+// the strings of the endpoint
 
+const char * const eoprot_mc_strings_entity[] =
+{
+    "eoprot_entity_mc_joint",   
+    "eoprot_entity_mc_motor",
+    "eoprot_entity_mc_controller"
+};  EO_VERIFYsizeof(eoprot_mc_strings_entity, eoprot_entities_mc_numberof*sizeof(const char*)); 
+
+
+static const char * const s_eoprot_mc_strings_tags_joint[] =
+{
+    "eoprot_tag_mc_joint_wholeitem",
+    "eoprot_tag_mc_joint_config",
+    "eoprot_tag_mc_joint_config_pidposition",
+    "eoprot_tag_mc_joint_config_pidvelocity",
+    "eoprot_tag_mc_joint_config_pidtorque",
+    "eoprot_tag_mc_joint_config_limitsofjoint",
+    "eoprot_tag_mc_joint_config_impedance",
+    "eoprot_tag_mc_joint_config_motionmonitormode",
+    "eoprot_tag_mc_joint_status",
+    "eoprot_tag_mc_joint_status_basic",
+    "eoprot_tag_mc_joint_status_ofpid",
+    "eoprot_tag_mc_joint_inputs",
+    "eoprot_tag_mc_joint_inputs_externallymeasuredtorque",
+    "eoprot_tag_mc_joint_cmmnds_calibration",
+    "eoprot_tag_mc_joint_cmmnds_setpoint",
+    "eoprot_tag_mc_joint_cmmnds_stoptrajectory",
+    "eoprot_tag_mc_joint_cmmnds_controlmode",
+    "eoprot_tag_mc_joint_cmmnds_interactionmode",
+    "eoprot_tag_mc_joint_status_interactionmodestatus"
+};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_joint, eoprot_tags_mc_joint_numberof*sizeof(const char*)); 
+
+static const char * const s_eoprot_mc_strings_tags_motor[] =
+{
+    "eoprot_tag_mc_motor_wholeitem",
+    "eoprot_tag_mc_motor_config",
+    "eoprot_tag_mc_motor_config_maxcurrentofmotor",    
+    "eoprot_tag_mc_motor_status",
+    "eoprot_tag_mc_motor_status_basic"
+};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)); 
+
+static const char * const s_eoprot_mc_strings_tags_controller[] =
+{
+     "eoprot_tag_mc_controller_wholeitem",
+     "eoprot_tag_mc_controller_config",
+     "eoprot_tag_mc_controller_status"
+};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_controller, eoprot_tags_mc_controller_numberof*sizeof(const char*)); 
+
+
+const char ** const eoprot_mc_strings_tags[] =
+{
+    (const char**)&s_eoprot_mc_strings_tags_joint,   
+    (const char**)&s_eoprot_mc_strings_tags_motor,
+    (const char**)&s_eoprot_mc_strings_tags_controller
+};  EO_VERIFYsizeof(eoprot_mc_strings_tags, eoprot_entities_mc_numberof*sizeof(const char**)); 
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions

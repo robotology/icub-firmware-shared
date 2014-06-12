@@ -283,29 +283,35 @@ const eoprot_version_t eoprot_mn_version =
     EO_INIT(.minor)     eoprot_version_mn_minor
 };
 
-    
-// -- the folded array of descriptors: to be changed if any new tag is added
+// -- collector of eonv descriptors for the endpoint
 
-EOPROT_ROMmap EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[] =
-{
-    // here are eoprot_mn_tags_comm_numberof descriptors for the comms (equal for every comm)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_comm_descriptors[] =
+{   // here are eoprot_mn_tags_comm_numberof descriptors for the comm entity
     &eoprot_mn_rom_descriptor_comm_wholeitem,
     &eoprot_mn_rom_descriptor_comm_status,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_querynumof,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_queryarray,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_replynumof,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_replyarray,
-    &eoprot_mn_rom_descriptor_comm_cmmnds_command_config,
-    
+    &eoprot_mn_rom_descriptor_comm_cmmnds_command_config         
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_comm_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof));
 
-    // here are eoprot_mn_tags_appl_numberof descriptors for the appls (equal for every appl)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
+{   // here are eoprot_mn_tags_appl_numberof descriptors for the appl entity
     &eoprot_mn_rom_descriptor_appl_wholeitem,
     &eoprot_mn_rom_descriptor_appl_config,
     &eoprot_mn_rom_descriptor_appl_status,
-    &eoprot_mn_rom_descriptor_appl_cmmnds_go2state
-         
-};  EO_VERIFYsizeof(eoprot_mn_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof+eoprot_tags_mn_appl_numberof));
+    &eoprot_mn_rom_descriptor_appl_cmmnds_go2state     
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof));
 
+
+EOPROT_ROMmap EOnv_rom_t ** const eoprot_mn_rom_descriptors[] = 
+{
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_comm_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_appl_descriptors   
+};  EO_VERIFYsizeof(eoprot_mn_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mn_numberof));
+
+    
 
 // the other constants: to be changed when a new entity is added
 
@@ -328,6 +334,41 @@ const void* const eoprot_mn_rom_entities_defval[] =
     (const void*)&eoprot_mn_rom_appl_defaultvalue
 };  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(const void*)); 
 
+
+// the strings of the endpoint
+
+const char * const eoprot_mn_strings_entity[] =
+{
+    "eoprot_entity_mn_communication",   
+    "eoprot_entity_mn_application",
+};  EO_VERIFYsizeof(eoprot_mn_strings_entity, eoprot_entities_mn_numberof*sizeof(const char*)); 
+
+
+static const char * const s_eoprot_mn_strings_tags_comm[] =
+{
+    "eoprot_tag_mn_comm_wholeitem", 
+    "eoprot_tag_mn_comm_status",
+    "eoprot_tag_mn_comm_cmmnds_command_querynumof",
+    "eoprot_tag_mn_comm_cmmnds_command_queryarray",
+    "eoprot_tag_mn_comm_cmmnds_command_replynumof",
+    "eoprot_tag_mn_comm_cmmnds_command_replyarray",
+    "eoprot_tag_mn_comm_cmmnds_command_config"
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_comm, eoprot_tags_mn_comm_numberof*sizeof(const char*)); 
+
+static const char * const s_eoprot_mn_strings_tags_appl[] =
+{
+    "eoprot_tag_mn_appl_wholeitem",
+    "eoprot_tag_mn_appl_config",
+    "eoprot_tag_mn_appl_status",
+    "eoprot_tag_mn_appl_cmmnds_go2state"
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)); 
+
+
+const char ** const eoprot_mn_strings_tags[] =
+{
+    (const char**)&s_eoprot_mn_strings_tags_comm,   
+    (const char**)&s_eoprot_mn_strings_tags_appl
+};  EO_VERIFYsizeof(eoprot_mn_strings_tags, eoprot_entities_mn_numberof*sizeof(const char**)); 
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -522,23 +563,29 @@ const eoprot_version_t eoprot_mn_version =
     EO_INIT(.minor)     eoprot_version_mn_minor
 };
 
-    
-// -- the folded array of descriptors: to be changed if any new tag is added
+// -- collector of eonv descriptors for the endpoint
 
-EOPROT_ROMmap EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[] =
-{
-    // here are eoprot_mn_tags_comm_numberof descriptors for the comms (equal for every comm)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_comm_descriptors[] =
+{   // here are eoprot_mn_tags_comm_numberof descriptors for the comm entity
     &eoprot_mn_rom_descriptor_comm_wholeitem,
-    &eoprot_mn_rom_descriptor_comm_cmmnds_ropsigcfg,
+    &eoprot_mn_rom_descriptor_comm_cmmnds_ropsigcfg        
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_comm_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof));
 
-    // here are eoprot_mn_tags_appl_numberof descriptors for the appls (equal for every appl)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
+{   // here are eoprot_mn_tags_appl_numberof descriptors for the appl entity
     &eoprot_mn_rom_descriptor_appl_wholeitem,
     &eoprot_mn_rom_descriptor_appl_config,
     &eoprot_mn_rom_descriptor_appl_status,
-    &eoprot_mn_rom_descriptor_appl_cmmnds_go2state
-         
-};  EO_VERIFYsizeof(eoprot_mn_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof+eoprot_tags_mn_appl_numberof));
+    &eoprot_mn_rom_descriptor_appl_cmmnds_go2state   
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof));
 
+
+EOPROT_ROMmap EOnv_rom_t ** const eoprot_mn_rom_descriptors[] = 
+{
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_comm_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_appl_descriptors   
+};  EO_VERIFYsizeof(eoprot_mn_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mn_numberof));
+    
 
 // the other constants: to be changed when a new entity is added
 
@@ -561,7 +608,34 @@ const void* const eoprot_mn_rom_entities_defval[] =
     (const void*)&eoprot_mn_rom_appl_defaultvalue
 };  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(const void*)); 
 
+// the strings of the endpoint
 
+const char * const eoprot_mn_strings_entity[] =
+{
+    "eoprot_entity_mn_communication",   
+    "eoprot_entity_mn_application",
+};  EO_VERIFYsizeof(eoprot_mn_strings_entity, eoprot_entities_mn_numberof*sizeof(const char*)); 
+
+
+static const char * const s_eoprot_mn_strings_tags_comm[] =
+{
+    "eoprot_tag_mn_comm_wholeitem", 
+    "eoprot_tag_mn_comm_cmmnds_ropsigcfg"
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_comm, eoprot_tags_mn_comm_numberof*sizeof(const char*)); 
+
+static const char * const s_eoprot_mn_strings_tags_appl[] =
+{
+    "eoprot_tag_mn_appl_wholeitem",
+    "eoprot_tag_mn_appl_config",
+    "eoprot_tag_mn_appl_status",
+    "eoprot_tag_mn_appl_cmmnds_go2state"
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)); 
+
+const char ** const eoprot_mn_strings_tags[] =
+{
+    (const char**)&s_eoprot_mn_strings_tags_comm,   
+    (const char**)&s_eoprot_mn_strings_tags_appl
+};  EO_VERIFYsizeof(eoprot_mn_strings_tags, eoprot_entities_mn_numberof*sizeof(const char**)); 
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions

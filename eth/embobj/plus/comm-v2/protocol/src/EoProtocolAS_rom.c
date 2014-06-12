@@ -354,33 +354,43 @@ const eoprot_version_t eoprot_as_version =
 };
 
 
-// -- the folded array of descriptors: to be changed if any new tag is added
+// -- collector of eonv descriptors for the endpoint
 
-EOPROT_ROMmap EOnv_rom_t * const eoprot_as_rom_folded_descriptors[] =
-{
-    // here are eoprot_tags_as_strain_numberof descriptors for the strains (equal for every strain)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_strain_descriptors[] =
+{   // here are eoprot_tags_as_strain_numberof descriptors for the strain entity
     &eoprot_as_rom_descriptor_strain_wholeitem,
     &eoprot_as_rom_descriptor_strain_config,
     &eoprot_as_rom_descriptor_strain_status,
     &eoprot_as_rom_descriptor_strain_status_fullscale,
     &eoprot_as_rom_descriptor_strain_status_calibratedvalues,
-    &eoprot_as_rom_descriptor_strain_status_uncalibratedvalues,
+    &eoprot_as_rom_descriptor_strain_status_uncalibratedvalues
+};  EO_VERIFYsizeof(s_eoprot_as_rom_strain_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_strain_numberof));
 
-    // here are eoprot_tags_as_mais_numberof descriptors for the mais (equal for every mais)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_mais_descriptors[] =
+{   // here are eoprot_tags_as_mais_numberof descriptors for the strain entity
     &eoprot_as_rom_descriptor_mais_wholeitem,
     &eoprot_as_rom_descriptor_mais_config,
     &eoprot_as_rom_descriptor_mais_config_mode,
     &eoprot_as_rom_descriptor_mais_config_datarate,
     &eoprot_as_rom_descriptor_mais_config_resolution,
     &eoprot_as_rom_descriptor_mais_status,
-    &eoprot_as_rom_descriptor_mais_status_the15values,
-    
-    // here are eoprot_tags_as_extorque_numberof descriptors for the extorque (equal for every extorque)
+    &eoprot_as_rom_descriptor_mais_status_the15values
+};  EO_VERIFYsizeof(s_eoprot_as_rom_mais_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_mais_numberof));
+
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_extorque_descriptors[] =
+{   // here are eoprot_tags_as_extorque_numberof descriptors for the strain entity
     &eoprot_as_rom_descriptor_extorque_wholeitem,
     &eoprot_as_rom_descriptor_extorque_config,    
     &eoprot_as_rom_descriptor_extorque_inputs
-         
-};  EO_VERIFYsizeof(eoprot_as_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_strain_numberof+eoprot_tags_as_mais_numberof+eoprot_tags_as_extorque_numberof));
+};  EO_VERIFYsizeof(s_eoprot_as_rom_extorque_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_extorque_numberof));
+
+
+EOPROT_ROMmap EOnv_rom_t ** const eoprot_as_rom_descriptors[] = 
+{
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_strain_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_mais_descriptors,   
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_extorque_descriptors, 
+};  EO_VERIFYsizeof(eoprot_as_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_as_numberof));
 
 
 // the other constants: to be changed when a new entity is added
@@ -405,6 +415,53 @@ const void* const eoprot_as_rom_entities_defval[] =
     (const void*)&eoprot_as_rom_mais_defaultvalue,
 	(const void*)&eoprot_as_rom_extorque_defaultvalue
 };  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(const void*)); 
+
+
+// the strings of the endpoint
+
+const char * const eoprot_as_strings_entity[] =
+{
+    "eoprot_entity_as_strain",   
+    "eoprot_entity_as_mais",
+    "eoprot_entity_as_extorque"
+};  EO_VERIFYsizeof(eoprot_as_strings_entity, eoprot_entities_as_numberof*sizeof(const char*)); 
+
+
+static const char * const s_eoprot_as_strings_tags_strain[] =
+{
+    "eoprot_tag_as_strain_wholeitem",
+    "eoprot_tag_as_strain_config",
+    "eoprot_tag_as_strain_status",
+    "eoprot_tag_as_strain_status_fullscale",
+    "eoprot_tag_as_strain_status_calibratedvalues",
+    "eoprot_tag_as_strain_status_uncalibratedvalues"
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_strain, eoprot_tags_as_strain_numberof*sizeof(const char*)); 
+
+static const char * const s_eoprot_as_strings_tags_mais[] =
+{
+    "eoprot_tag_as_mais_wholeitem",
+    "eoprot_tag_as_mais_config",
+    "eoprot_tag_as_mais_config_mode",
+    "eoprot_tag_as_mais_config_datarate",
+    "eoprot_tag_as_mais_config_resolution",
+    "eoprot_tag_as_mais_status",
+    "eoprot_tag_as_mais_status_the15values"
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_mais, eoprot_tags_as_mais_numberof*sizeof(const char*)); 
+
+static const char * const s_eoprot_as_strings_tags_extorque[] =
+{
+    "eoprot_tag_as_extorque_wholeitem",
+    "eoprot_tag_as_extorque_config",
+    "eoprot_tag_as_extorque_inputs"
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_extorque, eoprot_tags_as_extorque_numberof*sizeof(const char*)); 
+
+
+const char ** const eoprot_as_strings_tags[] =
+{
+    (const char**)&s_eoprot_as_strings_tags_strain,   
+    (const char**)&s_eoprot_as_strings_tags_mais,
+    (const char**)&s_eoprot_as_strings_tags_extorque,
+};  EO_VERIFYsizeof(eoprot_as_strings_tags, eoprot_entities_as_numberof*sizeof(const char**)); 
 
 
 // --------------------------------------------------------------------------------------------------------------------

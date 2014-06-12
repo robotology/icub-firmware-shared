@@ -179,21 +179,26 @@ const eoprot_version_t eoprot_sk_version =
     EO_INIT(.minor)     eoprot_version_sk_minor
 };
   
-    
-// -- the folded array of descriptors: to be changed if any new tag is added
 
-// eoprot_sk_rom_folded_descriptors is an array whcih keeps const pointers (its values in rom) to objects which are
-// in rom or not depending on EOPROT_ROMmap
-EOPROT_ROMmap EOnv_rom_t * const eoprot_sk_rom_folded_descriptors[] =
-{
-    // here are eoprot_tags_sk_skin_numberof descriptors for the skins (equal for every skin)
+// -- collector of eonv descriptors for the endpoint
+
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_sk_rom_skin_descriptors[] =
+{   // here are eoprot_tags_sk_skin_numberof descriptors for the skin entity
     &eoprot_sk_rom_descriptor_skin_wholeitem,
     &eoprot_sk_rom_descriptor_skin_config_sigmode,
     &eoprot_sk_rom_descriptor_skin_status_arrayof10canframes,
     &eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg,
     &eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg
-};  EO_VERIFYsizeof(eoprot_sk_rom_folded_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof));
+};  EO_VERIFYsizeof(s_eoprot_sk_rom_skin_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof));
 
+
+
+EOPROT_ROMmap EOnv_rom_t ** const eoprot_sk_rom_descriptors[] = 
+{
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_sk_rom_skin_descriptors 
+};  EO_VERIFYsizeof(eoprot_sk_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_sk_numberof));
+
+    
 
 // the other constants: to be changed when a new entity is added
 
@@ -212,7 +217,27 @@ const void* const eoprot_sk_rom_entities_defval[] =
     (const void*)&eoprot_sk_rom_skin_defaultvalue
 };  EO_VERIFYsizeof(eoprot_sk_rom_entities_defval, eoprot_entities_sk_numberof*sizeof(const void*)); 
 
+// the strings of the endpoint
 
+const char * const eoprot_sk_strings_entity[] =
+{
+    "eoprot_entity_sk_skin"
+};  EO_VERIFYsizeof(eoprot_sk_strings_entity, eoprot_entities_sk_numberof*sizeof(const char*)); 
+
+
+static const char * const s_eoprot_sk_strings_tags_skin[] =
+{
+    "eoprot_tag_sk_skin_wholeitem",
+    "eoprot_tag_sk_skin_config_sigmode",
+    "eoprot_tag_sk_skin_status_arrayof10canframes",
+    "eoprot_tag_sk_skin_cmd_boardscfg",
+    "eoprot_tag_sk_skin_cmd_trianglescfg"
+};  EO_VERIFYsizeof(s_eoprot_sk_strings_tags_skin, eoprot_tags_sk_skin_numberof*sizeof(const char*)); 
+
+const char ** const eoprot_sk_strings_tags[] =
+{
+    (const char**)&s_eoprot_sk_strings_tags_skin
+};  EO_VERIFYsizeof(eoprot_sk_strings_tags, eoprot_entities_sk_numberof*sizeof(const char**)); 
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions

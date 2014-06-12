@@ -59,13 +59,25 @@
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
+
+extern EOPROT_ROMmap EOnv_rom_t * const * const * const eoprot_ep_descriptors[];
+
 extern const uint8_t eoprot_ep_board_numberofthem;
-extern const eoprot_version_t * const eoprot_endpoint_version[eoprot_endpoints_numberof];
-extern const uint8_t eoprot_ep_entities_numberof[eoprot_endpoints_numberof];
-extern EOPROT_ROMmap EOnv_rom_t * const * const eoprot_ep_folded_descriptors[eoprot_endpoints_numberof];
-extern const uint16_t* const eoprot_ep_entities_sizeof[eoprot_endpoints_numberof]; 
-extern const void** const eoprot_ep_entities_defval[eoprot_endpoints_numberof]; 
-extern const uint8_t* const eoprot_ep_tags_numberof[eoprot_endpoints_numberof];
+extern const eoprot_version_t * const eoprot_endpoint_version[];    // eoprot_endpoints_numberof
+extern const uint8_t eoprot_ep_entities_numberof[];                 // eoprot_endpoints_numberof
+extern const uint16_t* const eoprot_ep_entities_sizeof[];           // eoprot_endpoints_numberof
+extern const void** const eoprot_ep_entities_defval[];              // eoprot_endpoints_numberof
+extern const uint8_t* const eoprot_ep_tags_numberof[];              // eoprot_endpoints_numberof
+extern const char * const eoprot_strings_endpoint[];                // eoprot_endpoints_numberof
+extern const char ** const eoprot_strings_entity[];                 // eoprot_endpoints_numberof
+extern const char *** const eoprot_strings_tag[];                   // eoprot_endpoints_numberof
+
+#define POSof_strings_special_endpoint_all                  0
+#define POSof_strings_special_endpoint_none                 1
+#define POSof_strings_special_endpoint_unrecognised         2
+#define POSof_strings_special_entity_unrecognised           3
+#define POSof_strings_special_tag_unrecognised              4
+extern const char * eoprot_strings_special[];
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------

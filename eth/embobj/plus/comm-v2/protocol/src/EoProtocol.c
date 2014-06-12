@@ -78,8 +78,7 @@ static eObool_t s_eoprot_entity_tag_is_valid(uint8_t epi, eOprotEntity_t entity,
 
 static uint16_t s_eoprot_rom_get_offset(uint8_t epi, eOprotEntity_t entity, eOprotTag_t tag);
 
-static uint16_t s_eoprot_rom_epid2index_of_folded_descriptors(uint8_t epi, eOprotID32_t id);
-static void* s_eoprot_rom_get_nvrom(uint8_t epi, eOprotID32_t id);
+static void* s_eoprot_rom_get_nvrom(eOprotID32_t id);
 static uint16_t s_eoprot_rom_entity_offset_of_tag(uint8_t epi, uint8_t ent, eOprotTag_t tag);
 static uint16_t s_eoprot_rom_get_sizeofvar(uint8_t epi, eOprotID32_t id);
 static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id);
@@ -164,6 +163,91 @@ extern eOprotTag_t eoprot_ID2tag(eOprotID32_t id)
 {
     uint32_t tag = ((uint32_t)id & 0xff);
     return((eOprotTag_t)tag);  
+}
+
+
+extern const char* eoprot_EP2string(eOprotEndpoint_t ep)
+{
+    if(ep < eoprot_endpoints_numberof)
+    {
+        return(eoprot_strings_endpoint[ep]);
+    }
+    else if(ep == eoprot_endpoint_all)
+    {
+        return(eoprot_strings_special[POSof_strings_special_endpoint_all]);
+    }
+    else if(ep == eoprot_endpoint_none)
+    {
+        return(eoprot_strings_special[POSof_strings_special_endpoint_none]);
+    }
+    else
+    {
+        return(eoprot_strings_special[POSof_strings_special_endpoint_unrecognised]);
+    }   
+}
+
+
+extern const char* eoprot_EN2string(eOprotEndpoint_t ep, eOprotEntity_t en)
+{
+    if(ep < eoprot_endpoints_numberof)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);
+        
+        if(en < eoprot_ep_entities_numberof[epi])
+        {
+            return(eoprot_strings_entity[ep][en]);
+        }
+    } 
+    
+    return(eoprot_strings_special[POSof_strings_special_entity_unrecognised]);
+}
+
+
+extern const char* eoprot_TAG2string(eOprotEndpoint_t ep, eOprotEntity_t en, eOprotTag_t tag)
+{
+    if(ep < eoprot_endpoints_numberof)
+    {
+        uint8_t epi = eoprot_ep_ep2index(ep);        
+        if(en < eoprot_ep_entities_numberof[epi])
+        {            
+            if(tag < eoprot_ep_tags_numberof[epi][en])
+            {
+                return(eoprot_strings_tag[ep][en][tag]);
+            }           
+        }
+    }
+    
+    return(eoprot_strings_special[POSof_strings_special_tag_unrecognised]);     
+}
+
+
+extern const char* eoprot_ID2stringOfEndpoint(eOprotID32_t id)
+{
+    return(eoprot_EP2string(eoprot_ID2endpoint(id)));   
+}
+
+
+extern const char* eoprot_ID2stringOfEntity(eOprotID32_t id)
+{
+    return(eoprot_EN2string(eoprot_ID2endpoint(id), eoprot_ID2entity(id)));
+}
+
+extern const char* eoprot_ID2stringOfTag(eOprotID32_t id)
+{
+    return(eoprot_TAG2string(eoprot_ID2endpoint(id), eoprot_ID2entity(id), eoprot_ID2tag(id)));
+}
+
+
+extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint8_t size)
+{
+    if((NULL == string) || (0 == size))
+    {
+        return(eores_NOK_generic);
+    }
+    
+    snprintf(string, size, "ID32 = 0x%08x -> IND = %d, TAG = %s", id, eoprot_ID2index(id), eoprot_ID2stringOfTag(id));
+    
+    return(eores_OK);    
 }
 
 extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t ep)
@@ -1153,6 +1237,8 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
 // - definition of static functions 
 // --------------------------------------------------------------------------------------------------------------------
 
+//#include "hal_trace.h"
+
 static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id)
 {
 // we dont verify brd validity because the eonvrom is common to every board
@@ -1166,17 +1252,12 @@ static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id)
 //         return(NULL);
 //     }
     
-    eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
+// the following is for debug only    
+//    char str[128];
+//    eoprot_ID2information(id, str, sizeof(str));
+//    hal_trace_puts(str);   
     
-    if(ep >= eoprot_endpoints_numberof)
-    {
-        return(NULL);
-    }
-    
-    uint8_t epi = eoprot_ep_ep2index(ep);
-    
-//    brd =  brd;
-    return(s_eoprot_rom_get_nvrom(epi, id));
+    return(s_eoprot_rom_get_nvrom(id));
 }
 
 static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
@@ -1292,7 +1373,7 @@ static uint16_t s_eoprot_rom_entity_offset_of_tag(uint8_t epi, uint8_t ent, eOpr
     // one contains the address of the default value of the entire entity (eg: &MYdefentity = 0x08001200).
     uint8_t *one = (uint8_t*) eoprot_ep_entities_defval[epi][ent];
     // two contains the address of the default value of the variable, but inside the default value of the entire entity (eg: &MYdefentity.var = 0x08001220)  
-    uint8_t *two = (uint8_t*) eoprot_ep_folded_descriptors[epi][tag_aux+tag]->resetval;
+    uint8_t *two = (uint8_t*) eoprot_ep_descriptors[epi][ent][tag]->resetval;
     // if we want to know how many bytes they are fare aways we simply cast them to pointers of 1 byte and make the difference.
     // the C standard assures that the result is an integer containing the distance between the pointers expressed in object pointed. in our case 1 byte.
     int res = two - one;
@@ -1311,22 +1392,36 @@ static uint16_t s_eoprot_rom_get_offset(uint8_t epi, eOprotEntity_t entity, eOpr
 }
 
 
-static void* s_eoprot_rom_get_nvrom(uint8_t epi, eOprotID32_t id)
+static void* s_eoprot_rom_get_nvrom(eOprotID32_t id)
 {
-    uint16_t indexoffoldeddescriptors = s_eoprot_rom_epid2index_of_folded_descriptors(epi, id);
+    eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
+    eOprotEntity_t entity = eoprot_ID2entity(id);
+    eOprotTag_t tag = eoprot_ID2tag(id);
     
-    if(EOK_uint16dummy == indexoffoldeddescriptors)
+    if(ep >= eoprot_endpoints_numberof)
     {
         return(NULL);
     }
     
-    return((void*)eoprot_ep_folded_descriptors[epi][indexoffoldeddescriptors]);   
+    uint8_t epindex = eoprot_ep_ep2index(ep);    
+    
+    if(entity >= eoprot_ep_entities_numberof[epindex])
+    {
+        return(NULL);
+    }  
+
+    if(tag >= eoprot_ep_tags_numberof[epindex][entity])
+    {
+        return(NULL);
+    }        
+    
+    return((void*)eoprot_ep_descriptors[epindex][entity][tag]);  
 }
 
 
 static uint16_t s_eoprot_rom_get_sizeofvar(uint8_t epi, eOprotID32_t id)
 {     
-    EOnv_rom_t* rom = s_eoprot_rom_get_nvrom(epi, id);  
+    EOnv_rom_t* rom = s_eoprot_rom_get_nvrom(id);  
     if(NULL == rom)
     {
         return(0);
@@ -1341,31 +1436,6 @@ static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id)
 }
 
 
-
-static uint16_t s_eoprot_rom_epid2index_of_folded_descriptors(uint8_t epi, eOprotID32_t id)
-{      
-    uint16_t ret = 0;
-    
-    // dont check validity of the tag. we could check inside the case xxxx: by verifying if ret is higher than 
-    // the max number of tags for that entity.
-       
-    eOprotEntity_t entity = eoprot_ID2entity(id);
-    
-    if(entity >= eoprot_ep_entities_numberof[epi])
-    {
-        return(EOK_uint16dummy);
-    }
-    
-    uint8_t i;
-    for(i=0; i<entity; i++)
-    {   // we add all the tags in the entities below
-        ret += eoprot_ep_tags_numberof[epi][i];
-    }
-    // then we add only the tags of the entity equal to the current one
-    ret += eoprot_ID2tag(id);
-    
-    return(ret);   
-}
 
 static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
 {

@@ -57,10 +57,16 @@
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
 extern const eoprot_version_t eoprot_mn_version;
-extern EOPROT_ROMmap EOnv_rom_t * const eoprot_mn_rom_folded_descriptors[];
-extern const uint8_t eoprot_mn_rom_tags_numberof[eoprot_entities_mn_numberof];
-extern const uint16_t eoprot_mn_rom_entities_sizeof[eoprot_entities_mn_numberof];
-extern const void* const eoprot_mn_rom_entities_defval[eoprot_entities_mn_numberof];
+
+// in the following arrays we dont put the size inside brackets [] so that EO_VERIFYsizeof() can alert about a change
+extern EOPROT_ROMmap EOnv_rom_t ** const eoprot_mn_rom_descriptors[];       // size: eoprot_entities_mn_numberof
+extern const uint8_t eoprot_mn_rom_tags_numberof[];                         // size: eoprot_entities_mn_numberof
+extern const uint16_t eoprot_mn_rom_entities_sizeof[];                      // size: eoprot_entities_mn_numberof  
+extern const void* const eoprot_mn_rom_entities_defval[];                   // size: eoprot_entities_mn_numberof
+extern const char * const eoprot_mn_strings_entity[];                       // size: eoprot_entities_mn_numberof
+extern const char ** const eoprot_mn_strings_tags[];                        // size: eoprot_entities_mn_numberof
+
+
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------

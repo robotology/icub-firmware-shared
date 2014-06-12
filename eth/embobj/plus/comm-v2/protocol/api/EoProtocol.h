@@ -195,8 +195,10 @@ enum { eoprot_endpoints_numberof = 4 }; // it does not count the eoprot_endpoint
  **/
 typedef enum
 {
-    eoprot_entity_mn_comm                   = eomn_entity_comm,         /**<  */   
+    eoprot_entity_mn_comm                   = eomn_entity_comm,         /**<  */  
+//    eoprot_entity_mn_communication          = eomn_entity_comm,    
     eoprot_entity_mn_appl                   = eomn_entity_appl,         /**<  */
+//    eoprot_entity_mn_application            = eomn_entity_appl,         /**<  */    
     eoprot_entity_mc_joint                  = eomc_entity_joint,        /**<  */ 
     eoprot_entity_mc_motor                  = eomc_entity_motor,        /**<  */     
     eoprot_entity_mc_controller             = eomc_entity_controller,   /**<  */    
@@ -209,6 +211,7 @@ typedef enum
 
 enum { eoprot_entities_numberof = 9 }; // it does not count the eoprot_entity_none.
 
+//#warning --> evalate changing teh name eoprot_entity_mn_comm into eoprot_entity_mn_communication
 
 /** @typedef    typedef enum eOprot_index_t
     @brief      It describes the index of the entity.  It is simply a number from 0 to EOK_uint08dummy-1.                
@@ -325,6 +328,80 @@ extern eOprotIndex_t eoprot_ID2index(eOprotID32_t id);
     @return     the tag of the entity or EOK_uint8dummy in case of invalid parameters.
  **/
 extern eOprotTag_t eoprot_ID2tag(eOprotID32_t id); 
+
+
+/** @fn         extern const char* eoprot_EP2string(eOprotEndpoint_t ep)
+    @brief      it returns a string which describes the endpoint in argument. 
+                if the argument maps to one of the values defined in eOprot_endpoint_t, then the associated 
+                string is returned. Otherwise, it is returned the string "eoprot_endpoint_unrecognised".                
+    @param      ep              the endpoint value
+    @return     the zero-terminated string associated to the endpoint or "eoprot_endpoint_unrecognised".
+ **/
+extern const char* eoprot_EP2string(eOprotEndpoint_t ep);
+
+
+/** @fn         extern const char* eoprot_EN2string(eOprotEndpoint_t ep, eOprotEntity_t en)
+    @brief      it returns a string which describes the entity inside the endpoint as in argument. 
+                if the arguments pair maps to one of the valid values defined in eOprot_entity_t, then the associated 
+                string is returned. Otherwise, it is returned the string "eoprot_entity_unrecognised".          
+    @param      ep              the endpoint value
+    @param      en              the entity value
+    @return     the zero-terminated string associated to the entity or "eoprot_entity_unrecognised".
+ **/
+extern const char* eoprot_EN2string(eOprotEndpoint_t ep, eOprotEntity_t en);
+
+
+/** @fn         extern const char* eoprot_TAG2string(eOprotEndpoint_t ep, eOprotEntity_t en, eOprotTag_t tag)
+    @brief      it returns a string which describes the tag inside the endpoint and entity as in argument. 
+                if the arguments triple maps to a valid tag as defined in the various eOprot_tag_xxx_yyy_t enum types, 
+                then the associated string is returned. Otherwise, it is returned the string "eoprot_tag_unrecognised".          
+    @param      ep              the endpoint value
+    @param      en              the entity value
+    @param      tag             the tag value
+    @return     the zero-terminated string associated to the entity or "eoprot_tag_unrecognised".
+ **/
+extern const char* eoprot_TAG2string(eOprotEndpoint_t ep, eOprotEntity_t en, eOprotTag_t tag);
+
+
+/** @fn         extern const char* eoprot_ID2stringOfEndpoint(eOprotID32_t id)
+    @brief      it returns a string which describes the endpoint contained inside the ID.
+    @param      id              the identifier of the variable.
+    @return     the zero-terminated string associated to the endpoint or "eoprot_endpoint_unrecognised".
+ **/
+extern const char* eoprot_ID2stringOfEndpoint(eOprotID32_t id); 
+
+
+/** @fn         extern const char* eoprot_ID2stringOfEntity(eOprotID32_t id)
+    @brief      it returns a string which describes the entity contained inside the ID.
+    @param      id              the identifier of the variable.
+    @return     the zero-terminated string associated to the entity or "eoprot_entity_unrecognised".
+ **/
+extern const char* eoprot_ID2stringOfEntity(eOprotID32_t id);
+
+
+/** @fn         extern const char* eoprot_ID2stringOfTag(eOprotID32_t id)
+    @brief      it returns a string which describes the tag contained inside the ID.
+                for example, use the following code to create printable information on a variable
+                described by its id:
+                snprintf(str, sizeof(str), "ID32 = 0x%08x -> INDEX = %d, TAG = %s", id, eoprot_ID2index(id), eoprot_ID2stringOfTag(id));
+    @param      id              the identifier of the variable.
+    @return     the zero-terminated string associated to the tag or "eoprot_tag_unrecognised".
+ **/
+extern const char* eoprot_ID2stringOfTag(eOprotID32_t id);
+
+
+/** @fn         extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint8_t size)
+    @brief      it fills the passed string with information about the id. The string size must be able to contain the
+                required characters, otherwise the information will be truncated. a good size is about 40 + size required
+                for the tag description. a total of 96 or 128 is good enough.
+                An example of formatted resulting string is the following, where the ID is related to the status of the
+                motor number 2:  "ID32 = 0x01010203 -> IND = 2, TAG = eoprot_tag_mc_motor_status"
+    @param      id              the identifier of the variable.
+    @param      string          the non NULL string
+    @param      size            the size of the string. at least 96-128.
+    @return     eores_OK upon success, eores_NOK_generic if the string is NULL or size is 0. 
+ **/
+extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint8_t size);
 
 
 

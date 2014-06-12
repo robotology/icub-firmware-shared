@@ -93,7 +93,7 @@ const eoprot_version_t * const eoprot_endpoint_version[eoprot_endpoints_numberof
     &eoprot_mc_version,
     &eoprot_as_version,
     &eoprot_sk_version 
-}; 
+};  EO_VERIFYsizeof(eoprot_endpoint_version, eoprot_endpoints_numberof*sizeof(eoprot_version_t *));  
 
 
 const uint8_t eoprot_ep_entities_numberof[] =
@@ -104,13 +104,14 @@ const uint8_t eoprot_ep_entities_numberof[] =
     eoprot_entities_sk_numberof
 };  EO_VERIFYsizeof(eoprot_ep_entities_numberof, eoprot_endpoints_numberof*sizeof(uint8_t)); 
 
-EOPROT_ROMmap EOnv_rom_t * const * const eoprot_ep_folded_descriptors[] = 
+
+EOPROT_ROMmap EOnv_rom_t * const * const * const eoprot_ep_descriptors[] = 
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
-    eoprot_mn_rom_folded_descriptors,
-    eoprot_mc_rom_folded_descriptors,
-    eoprot_as_rom_folded_descriptors,
-    eoprot_sk_rom_folded_descriptors
-};  EO_VERIFYsizeof(eoprot_ep_folded_descriptors, eoprot_endpoints_numberof*sizeof(EOPROT_ROMmap EOnv_rom_t * const *)); 
+    eoprot_mn_rom_descriptors,
+    eoprot_mc_rom_descriptors,
+    eoprot_as_rom_descriptors,
+    eoprot_sk_rom_descriptors
+};  EO_VERIFYsizeof(eoprot_ep_descriptors, eoprot_endpoints_numberof*sizeof(EOPROT_ROMmap EOnv_rom_t * const * const *)); 
 
 const uint16_t* const eoprot_ep_entities_sizeof[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
@@ -127,7 +128,7 @@ const void** const eoprot_ep_entities_defval[] =
     (const void**)&eoprot_mc_rom_entities_defval,
     (const void**)&eoprot_as_rom_entities_defval,
     (const void**)&eoprot_sk_rom_entities_defval   
-};
+};  EO_VERIFYsizeof(eoprot_ep_entities_defval, eoprot_endpoints_numberof*sizeof(void**));
 
 const uint8_t* const eoprot_ep_tags_numberof[] =
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
@@ -137,7 +138,39 @@ const uint8_t* const eoprot_ep_tags_numberof[] =
     eoprot_sk_rom_tags_numberof
 };  EO_VERIFYsizeof(eoprot_ep_tags_numberof, eoprot_endpoints_numberof*sizeof(uint8_t*)); 
 
+const char * const eoprot_strings_endpoint[eoprot_endpoints_numberof] =
+{   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
+    "eoprot_endpoint_management",   
+    "eoprot_endpoint_motioncontrol",        
+    "eoprot_endpoint_analogsensors", 
+    "eoprot_endpoint_skin"
+};  EO_VERIFYsizeof(eoprot_strings_endpoint, eoprot_endpoints_numberof*sizeof(const char*)); 
 
+const char ** const eoprot_strings_entity[eoprot_endpoints_numberof] =
+{   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
+    (const char **)&eoprot_mn_strings_entity,   
+    (const char **)&eoprot_mc_strings_entity,        
+    (const char **)&eoprot_as_strings_entity,
+    (const char **)&eoprot_sk_strings_entity,
+};  EO_VERIFYsizeof(eoprot_strings_entity, eoprot_endpoints_numberof*sizeof(const char**));  
+
+const char *** const eoprot_strings_tag[eoprot_endpoints_numberof] =
+{   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
+    (const char ***)&eoprot_mn_strings_tags,   
+    (const char ***)&eoprot_mc_strings_tags,        
+    (const char ***)&eoprot_as_strings_tags,
+    (const char ***)&eoprot_sk_strings_tags,
+};  EO_VERIFYsizeof(eoprot_strings_tag, eoprot_endpoints_numberof*sizeof(const char***));   
+
+
+const char * eoprot_strings_special[] = 
+{
+    "eoprot_endpoint_all",
+    "eoprot_endpoint_none",
+    "eoprot_endpoint_unrecognised",
+    "eoprot_entity_unrecognised",
+    "eoprot_tag_unrecognised"
+};
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions
