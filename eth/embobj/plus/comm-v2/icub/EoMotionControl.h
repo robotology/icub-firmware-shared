@@ -224,8 +224,7 @@ typedef enum
     eomc_setpoint_velocity                      = 1,
     eomc_setpoint_torque                        = 2,
     eomc_setpoint_current                       = 3,
-    eomc_setpoint_positionraw                   = 4,
-    eomc_setpoint_openloop                      = 5
+    eomc_setpoint_positionraw                   = 4
 } eOmc_setpoint_type_t;
 
 
@@ -479,10 +478,6 @@ typedef struct              // size is 1+3+8+0 = 12
         { 
             eOmeas_current_t       value; 
         } current;
-        struct
-        {
-            eOmeas_openloop_t      value;
-        } openloop;
     } to;                       /**< the union containing the value field and optional param */
 } eOmc_setpoint_t;              //EO_VERIFYsizeof(eOmc_setpoint_t, 12);
 
@@ -564,7 +559,7 @@ typedef struct                  // size is: 4+4+4+0 = 12
 typedef struct                  // size is:  16+12+1+3 = 32
 {
     eOmc_joint_status_basic_t   basic;                      /**< the basic status */
-    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status   */
+    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status   */ 
     eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
     uint8_t                     chamaleon03[3];             /**< these bytes are available for the application for debug purposes */
 } eOmc_joint_status_t;          //EO_VERIFYsizeof(eOmc_joint_status_t, 32);

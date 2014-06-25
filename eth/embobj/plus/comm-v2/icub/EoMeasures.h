@@ -115,13 +115,6 @@ typedef int16_t             eOmeas_torque_t;
 typedef int16_t             eOmeas_current_t;
 
 
-/** @typedef    typedef int32_t             eOmeas_openloop_t
-    @brief      eOmeas_openloop_t contains the command for the openloop mode.
-                the measurement unit is ???. TODO fill this description
- **/
-typedef int32_t             eOmeas_openloop_t;
-
-
 /** @typedef    typedef uint32_t             eOmeas_stiffness_t
     @brief      eOmeas_stiffness_t contains the stiffness values.
                 the measurement unit is mN m / degree (milli Newton metre per degree, not idg!).
