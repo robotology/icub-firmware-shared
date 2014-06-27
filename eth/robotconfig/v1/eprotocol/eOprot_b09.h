@@ -50,6 +50,8 @@ extern "C" {
 #include "EoProtocolMC.h"
 #include "EoProtocolMN.h"
 
+#include "emBODYrobot.h"
+
 
 // - public #define  --------------------------------------------------------------------------------------------------
 // empty-section
@@ -96,7 +98,7 @@ typedef struct                  // 152*2+40*2+16 = 400
 
 // - analog sensors
 
-#if     defined(ICUB_DARMSTADT01)
+#if     ( defined(ICUB_DARMSTADT01) || (emBODYrobot_ROBOT_NAME == iCubDarmstadt01) )
 #define     NUMOFSTRAINS    1
 #else
 #define     NUMOFSTRAINS    0
@@ -110,7 +112,7 @@ enum { eoprot_b09_as_strains_numberof = NUMOFSTRAINS, eoprot_b09_as_maises_numbe
  **/
 typedef struct                  // 2*8+0 = 16              
 {
-#if     defined(ICUB_DARMSTADT01)
+#if     ( defined(ICUB_DARMSTADT01) || (emBODYrobot_ROBOT_NAME == iCubDarmstadt01) )
     eOas_strain_t               strain;
 #endif 
     eOas_extorque_t             extorquE[eoprot_b09_as_extorque_numberof];
