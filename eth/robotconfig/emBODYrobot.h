@@ -51,6 +51,9 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
+// - the environment must define the following macros ... otherwise they are set to NONE values
+//   -DemBODYrobot_ROBOT_NAME=iCubXXX, -DemBODYrobot_BOARD_NAME=boardYYY, -DemBODYrobot_BOARD_NUMBER=number
+//   w/ number is 1, 2, etc
 
 // - list of supported robots. the iCub* strings are equal to YARP_ROBOT_NAME and values are equal to their serial numbers.
 
