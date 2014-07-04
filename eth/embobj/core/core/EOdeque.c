@@ -109,7 +109,7 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     EOdeque *retptr = NULL;
     uint8_t *start = NULL;
     uint8_t *item = NULL;
-    uint32_t pos = 0;
+//    uint32_t pos = 0;
     eOsizecntnr_t i = 0; 
     eOmempool_alignment_t align = eo_mempool_align_08bit;
 
@@ -157,7 +157,7 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
         retptr->sizeofstoreditem *= 8;
     }
     
-    #warning --> se alloco memoria per n oggetti (eg. di dimensione 6) in modo che ci sia allineamento ad 8, come indicizzo gli oggetti? a 6 oppure a 8?
+    //#warning --> se alloco memoria per n oggetti (eg. di dimensione 6) in modo che ci sia allineamento ad 8, come indicizzo gli oggetti? a 6 oppure a 8?
     // da codice si evince a 6 ... quindi perche' spreco memoria nell'allocazione?
     // se uso dynamic, il heap viene gestito con allineamento a 8. ma quetso vuol dire che per 4 oggetti: 6*4 = 24 che sono tre uint64_t.
     // se uso align_64, anche qui ho array da uint64_t ma per 4 oggetti uso 4*(6+7)/8 = 4*1 = quattro uint64_t .... si spreca perche arrotondo sul item size e non sul totale. 
