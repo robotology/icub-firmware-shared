@@ -104,8 +104,7 @@ extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t 
 extern eOsizecntnr_t eo_constvector_Size(const EOconstvector * cvect) 
 {
     if(NULL == cvect) 
-    {
-        // invalid cvect
+    {   // invalid cvect
         return(0);    
     }
     
@@ -124,8 +123,7 @@ extern const void * eo_constvector_At(const EOconstvector * cvect, eOsizecntnr_t
     }
     
     if(pos >= cvect->size) 
-    { 
-        // cvect does not have any element in pos
+    {    // cvect does not have any element in pos
         return(NULL);     
     }
     
@@ -135,6 +133,23 @@ extern const void * eo_constvector_At(const EOconstvector * cvect, eOsizecntnr_t
     start = &start[(uint32_t)pos * cvect->item_size];
     
     return((const void*) start);         
+}
+
+extern void eo_constvector_Delete(EOconstvector * cvect)
+{  
+    if(NULL == cvect) 
+    {   // invalid cvect
+        return;    
+    }   
+    
+    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_constvector_Delete() only w/ eo_mempool_alloc_dynamic");
+  
+    
+    // reset all things inside vector
+    memset(cvect, 0, sizeof(EOconstvector));
+    
+    // destroy object
+    eo_mempool_Delete(eo_mempool_GetHandle(), cvect);       
 }
 
 

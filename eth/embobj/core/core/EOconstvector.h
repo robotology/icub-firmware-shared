@@ -118,6 +118,8 @@ extern eOsizecntnr_t eo_constvector_Size(const EOconstvector * cvect);
 extern const void * eo_constvector_At(const EOconstvector * cvect, eOsizecntnr_t pos);
 
 
+extern void eo_constvector_Delete(EOconstvector * cvect);
+
 /** @}            
     end of group eo_constvector  
  **/
