@@ -83,9 +83,9 @@ static uint16_t s_eoprot_rom_entity_offset_of_tag(uint8_t epi, uint8_t ent, eOpr
 static uint16_t s_eoprot_rom_get_sizeofvar(uint8_t epi, eOprotID32_t id);
 static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id);
 
-
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update);
-
+#endif
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -1436,7 +1436,7 @@ static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id)
 }
 
 
-
+#if     defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update)
 {
 #if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
@@ -1463,6 +1463,7 @@ static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_c
     
 #endif    
 }
+#endif
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)
