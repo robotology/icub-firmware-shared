@@ -45,7 +45,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#define EOLIST_DEFAULTCLEAR_DOES_NOTHING
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -65,16 +66,26 @@
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-#if 0
-EO_static_inline void s_eo_list_default_clear(void *p, uint16_t size)
+
+EO_static_inline void s_eo_list_default_clear(void *item, EOlist* list)
 {
-     memset(p, 0, size);
-}
+#if defined(EOLIST_DEFAULTCLEAR_DOES_NOTHING)
 #else
-EO_static_inline void s_eo_list_default_clear(void *p, uint16_t size)
-{
-}    
+    memset(item, 0, list->item_size);
 #endif
+}
+
+EO_static_inline void s_eo_list_default_copy(void* item, void* p, EOlist* list)
+{
+    memcpy(item, p, list->item_size);
+}
+
+EO_static_inline void s_eo_list_default_init(void* item,  EOlist* list)
+{
+    memset(item, 0, list->item_size);
+}
+
+
 
 EO_static_inline void* s_eo_list_get_data(EOlist *list, EOlistIter *li)
 {
@@ -103,8 +114,12 @@ static EOlistIter * s_eo_list_iter_prev(EOlistIter *li);
 static void s_eo_list_copy_item_into_iterator(EOlist *list, EOlistIter *li, void *p);
 static void s_eo_list_clean_iterator(EOlist *list, EOlistIter *li);
 
+static EOlistIter* s_eo_list_iterator_create(EOlist* list);
 
+static void s_eo_list_iterator_destroy(EOlist* list, EOlistIter* li);
 
+static EOlistIter* s_eo_list_iterator_get(EOlist* list);
+static void s_eo_list_iterator_release(EOlist* list, EOlistIter* li);
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -123,8 +138,7 @@ extern EOlist* eo_list_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
                            eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear)
 {
     EOlist *retptr = NULL;
-    eOsizecntnr_t i = 0;
-    EOlistIter *li = NULL;    
+    eOsizecntnr_t i = 0; 
 
 
     // i get the memory for the object
@@ -139,36 +153,26 @@ extern EOlist* eo_list_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), s_eobj_ownname, "item_size is zero");
     eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
 
-    retptr->max_items       = capacity;
-    retptr->item_size       = item_size;
-    retptr->item_copy       = item_copy;
-    retptr->item_clear      = item_clear;
+    retptr->capacity            = capacity;
+    retptr->item_size           = item_size;
+    retptr->item_init_fn        = item_init;
+    retptr->item_init_par       = init_par;    
+    retptr->item_copy_fn        = item_copy;
+    retptr->item_clear_fn       = item_clear;
     
-     
-    for(i=0; i<capacity; i++) 
+    if(eo_listcapacity_dynamic == retptr->capacity)
     {
-        li = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOlist), 1);
-        // now we allocate memory for storing the items with size item_size. 
-        // however, if item_size is smaller/equal to teh size of a void* (<=4 in 32-bit arch), then we use the value of data to 
-        // store the item directly instead of allocating extra memory .... 
-        if(item_size > sizeof(void*))
-        {   // normal mode: the .data field contains a pointer to the actual data
-            li->data = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, item_size, 1);
-            
-            if(NULL != item_init)
-            {
-                item_init(li->data, init_par);
-            }
-        }
-        else
-        {   // compact mode: the bytes of the .data field contain the data itself. 
-            if(NULL != item_init)
-            {   // thus, item_init() accepts the pointer to .data
-                item_init(&(li->data), init_par);
-            }
-        }
-        
-        retptr->freeiters = s_eo_list_push_front(retptr->freeiters, li);
+        eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_vectorcapacity_dynamic only w/ eo_mempool_alloc_dynamic");
+        retptr->freeiters = NULL;        
+    }
+    else
+    {   
+        for(i=0; i<capacity; i++) 
+        {
+            EOlistIter *li = s_eo_list_iterator_create(retptr);    
+            retptr->freeiters = s_eo_list_push_front(retptr->freeiters, li);
+        } 
+
     }    
 
     return(retptr);
@@ -194,7 +198,7 @@ extern eOsizecntnr_t eo_list_Capacity(EOlist *list)
         return(0);    
     }
     
-    return(list->max_items);    
+    return(list->capacity);    
 }
 
 
@@ -216,7 +220,7 @@ extern eObool_t eo_list_Full(EOlist *list)
         return(eobool_true);    
     }
     
-    return((list->max_items == list->size) ? (eobool_true) : (eobool_false));        
+    return((list->capacity == list->size) ? (eobool_true) : (eobool_false));        
 }
 
 
@@ -229,20 +233,16 @@ extern void eo_list_PushFront(EOlist *list, void *p)
         return;    
     }
     
-    if(list->max_items == list->size) 
+    if(list->capacity == list->size) 
     { 
         // list is full
         return;
     }
-    
-    // get the first free iter
-    tmpiter = list->freeiters;
+
+    tmpiter = s_eo_list_iterator_get(list);
 
     if(NULL != tmpiter) 
     {
-        // i remove it from front of the free list
-        list->freeiters = s_eo_list_rem_front(list->freeiters);
-
         // copy the passed obj inside the iter or store it directly if size is small
         s_eo_list_copy_item_into_iterator(list, tmpiter, p);
         
@@ -295,20 +295,16 @@ extern void eo_list_PushBack(EOlist *list, void *p)
         return;    
     }
     
-    if(list->max_items == list->size) 
+    if(list->capacity == list->size) 
     { 
         // list is full
         return;
     }
-    
-    // get the first free iter
-    tmpiter = list->freeiters;
+
+    tmpiter = s_eo_list_iterator_get(list);    
 
     if(NULL != tmpiter) 
     {
-        // i remove it from front of the free list
-        list->freeiters = s_eo_list_rem_front(list->freeiters);
-
         // copy the passed obj inside the iter or store it directly if size is small
         s_eo_list_copy_item_into_iterator(list, tmpiter, p);
         
@@ -361,19 +357,15 @@ extern void eo_list_Insert(EOlist *list, EOlistIter *li, void *p)
         return;    
     }
 
-    if(list->max_items == list->size) 
-    { 
-        // list is full
+    if(list->capacity == list->size) 
+    {   // list is full
         return;
     }
 
-    // get the first free iter so that we can place p in that
-    tmpiter = list->freeiters;
-
+    tmpiter = s_eo_list_iterator_get(list);
+    
     if(NULL != tmpiter) 
     {
-        // i remove it from front of the free list
-        list->freeiters = s_eo_list_rem_front(list->freeiters);
         // copy the passed obj inside the iter tmpiter or store it directly if size is small
         s_eo_list_copy_item_into_iterator(list, tmpiter, p);
         
@@ -602,7 +594,7 @@ extern void eo_list_PopFront(EOlist *list)
     {
         return;    
     }
-    
+ 
     // get the first iter of list
     tmpiter = s_eo_list_front(list);
     
@@ -611,12 +603,9 @@ extern void eo_list_PopFront(EOlist *list)
         // i remove it from front of the list
         list->head = s_eo_list_rem_front(list->head);
 
-        // i clean it 
-        s_eo_list_clean_iterator(list, tmpiter);
-
-        // and i put tmpiter back into the free iters
-        list->freeiters = s_eo_list_push_front(list->freeiters, tmpiter);
-
+        // release it
+        s_eo_list_iterator_release(list, tmpiter);
+        
         // finally, i decrement size of list
         list->size --;
 
@@ -649,11 +638,8 @@ extern void eo_list_PopBack(EOlist *list)
         // i remove it from end of the list
         list->tail = s_eo_list_rem_back(list->tail);
 
-        // i clean it 
-        s_eo_list_clean_iterator(list, tmpiter);
-
-        // and i put tmpiter back into the free iters
-        list->freeiters = s_eo_list_push_front(list->freeiters, tmpiter);
+        // release it
+        s_eo_list_iterator_release(list, tmpiter);
 
         // finally, i decrement size of list
         list->size --;
@@ -671,7 +657,7 @@ extern void eo_list_PopBack(EOlist *list)
 
 extern void eo_list_Erase(EOlist *list, EOlistIter *li) 
 {
-    EOlistIter *tmp = NULL;
+    EOlistIter *tmpiter = NULL;
     
     if((NULL == list) || (NULL == li)) 
     {
@@ -687,19 +673,16 @@ extern void eo_list_Erase(EOlist *list, EOlistIter *li)
     // ok, the iter li exists in the list, thus i can safely remove it.
 
     // get the first iter of list, the head
-    tmp = s_eo_list_front(list);
+    tmpiter = s_eo_list_front(list);
 
-    if(NULL != tmp) 
+    if(NULL != tmpiter) 
     {
         // i have a valid head and a valid list iter li, thus i can i remove it
         //list->head = s_eo_list_rem_iter(list->head, li);
         s_eo_list_rem_any(list, li);
 
-        // i clean it
-        s_eo_list_clean_iterator(list, li);
-
-        // and i put li back into the free iters
-        list->freeiters = s_eo_list_push_front(list->freeiters, li);
+        // release it
+        s_eo_list_iterator_release(list, li);
 
         // finally, i decrement size of list
         list->size --;
@@ -726,6 +709,44 @@ extern void eo_list_Clear(EOlist *list)
     {
         eo_list_PopFront(list);
     }
+}
+
+
+extern void eo_list_Delete(EOlist *list)
+{  
+    if(NULL == list) 
+    {   // invalid list
+        return;    
+    }   
+    
+    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_list_Delete() only w/ eo_mempool_alloc_dynamic");
+  
+    // destroy every item. in case of eo_listcapacity_dynamic, each internal listiter is properly deleted and freeiters is NULL
+    eo_list_Clear(list);
+    
+    // destroy freeiters list and its items (not needed)
+    //eo_mempool_Delete(eo_mempool_GetHandle(), list->freeiters);
+    if(NULL != list->freeiters) 
+    {   // aka we dont use dymanic mode: we must destroy each element inside freeiters
+        uint16_t i;
+        for(i=0; i<list->capacity; i++) 
+        {
+            EOlistIter *li =  list->freeiters;
+            if(NULL == li)
+            {
+                break;
+            }
+            list->freeiters = s_eo_list_rem_front(list->freeiters);
+            s_eo_list_iterator_destroy(list, li);             
+        }         
+    }
+    
+    // reset all things inside vector
+    memset(list, 0, sizeof(EOlist));
+    
+    // destroy object
+    eo_mempool_Delete(eo_mempool_GetHandle(), list);
+       
 }
 
 
@@ -976,13 +997,13 @@ static void s_eo_list_copy_item_into_iterator(EOlist *list, EOlistIter *li, void
 {
     void* data = s_eo_list_get_data(list, li);
 
-    if(NULL != list->item_copy)
+    if(NULL != list->item_copy_fn)
     {
-        list->item_copy(data, p);
+        list->item_copy_fn(data, p);
     }
     else
     {
-        memcpy(data, p, list->item_size);
+        s_eo_list_default_copy(data, p, list);
     }
 
 }
@@ -992,19 +1013,126 @@ static void s_eo_list_clean_iterator(EOlist *list, EOlistIter *li)
 {
     void* data = s_eo_list_get_data(list, li);
 
-    // call its dtor
-    if(NULL != list->item_clear)
+    // call its destructor
+    if(NULL != list->item_clear_fn)
     {
-        list->item_clear(data);
+        list->item_clear_fn(data);
     }
     else
     {
-        s_eo_list_default_clear(data, list->item_size);
+        s_eo_list_default_clear(data, list);
     }
 
 }
 
 
+static EOlistIter* s_eo_list_iterator_create(EOlist* list)
+{
+//    #warning --> prima allocavo errato e troppo: una sizeof(EOlist)
+    EOlistIter *li = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOlistIter), 1);
+    //eo_mempool_New(eo_mempool_GetHandle(), sizeof(EOlist));
+    
+    // now we allocate memory for storing the items with size item_size. 
+    // however, if item_size is smaller/equal to the size of a void* (<=4 in 32-bit arch), then we use the value of data to 
+    // store the item directly instead of allocating extra memory .... 
+    if(list->item_size > sizeof(void*))
+    {   // normal mode: the .data field contains a pointer to the actual data
+        li->data = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, list->item_size, 1);
+        //eo_mempool_New(eo_mempool_GetHandle(), list->item_size);
+        
+        if(NULL != list->item_init_fn)
+        {
+            list->item_init_fn(li->data, list->item_init_par);
+        }
+        else
+        {
+//            #warning --> verifica
+            s_eo_list_default_init(li->data, list);
+        }
+    }
+    else
+    {   // compact mode: the bytes of the .data field contain the data itself. 
+        if(NULL != list->item_init_fn)
+        {   // thus, item_init() accepts the pointer to .data
+            list->item_init_fn(&(li->data), list->item_init_par);
+        }
+        else
+        {
+//            #warning --> verifica
+            s_eo_list_default_init(&(li->data), list);
+        }
+    }
+    
+    return(li);
+}
+
+static void s_eo_list_iterator_destroy(EOlist* list, EOlistIter* li)
+{
+    if(list->item_size > sizeof(void*))
+    {   // normal mode: the .data field contains a pointer to the actual data
+        
+//        if(NULL != list->item_clear_fn)
+//        {
+//            list->item_clear_fn(li->data);
+//        }
+//        else
+//        {
+//            #warning --> verifica
+//            s_eo_list_default_clear(li->data, list);
+//        }
+        
+        eo_mempool_Delete(eo_mempool_GetHandle(), li->data);   
+    }
+    else
+    {   // compact mode: the bytes of the .data field contain the data itself. 
+//        if(NULL != list->item_clear_fn)
+//        {   // thus, item_init() accepts the pointer to .data
+//            list->item_clear_fn(&(li->data));
+//        }
+//        else
+//        {
+//            #warning --> verifica
+//            s_eo_list_default_clear(&(li->data), list);
+//        }
+    }
+    
+    memset(li, 0, sizeof(EOlistIter));
+    eo_mempool_Delete(eo_mempool_GetHandle(), li);  
+} 
+
+
+static EOlistIter* s_eo_list_iterator_get(EOlist* list)
+{
+    EOlistIter* li = NULL;
+    
+    if(eo_listcapacity_dynamic == list->capacity)
+    {   // create it
+        li = s_eo_list_iterator_create(list);
+    }
+    else
+    {   // get the first free iter
+        li = list->freeiters;
+        // and i remove it from front of the free list. the following s_eo_list_rem_front() does nothing is argument is NULL.
+        list->freeiters = s_eo_list_rem_front(list->freeiters);
+    }
+    
+    return(li);
+}
+
+static void s_eo_list_iterator_release(EOlist* list, EOlistIter* li)
+{
+    // i clean it 
+    s_eo_list_clean_iterator(list, li);
+   
+    if(eo_listcapacity_dynamic == list->capacity)
+    {   // destroy it
+        s_eo_list_iterator_destroy(list, li);
+    }
+    else
+    {   // i put li back into the free iters
+        list->freeiters = s_eo_list_push_front(list->freeiters, li);
+    }
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)

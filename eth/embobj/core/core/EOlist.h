@@ -72,6 +72,8 @@ typedef struct EOlistIter_hid EOlistIter;
  **/ 
 typedef struct EOlist_hid EOlist;
 
+enum { eo_listcapacity_dynamic = EOK_uint16dummy };
+
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -304,6 +306,8 @@ extern EOlistIter* eo_list_Find(EOlist *list, eOresult_t (matching_rule)(void *i
 extern void eo_list_ForEach(EOlist *list, void (execute)(void *item, void *param), void *param);
 
 extern void eo_list_FromIterForEach(EOlist *list, EOlistIter *li, void (execute)(void *item, void *param), void *param);
+
+extern void eo_list_Delete(EOlist *list);
 
 /** @}            
     end of group eo_list  

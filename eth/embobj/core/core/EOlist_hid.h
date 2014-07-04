@@ -65,14 +65,16 @@ struct EOlistIter_hid
  **/ 
 struct EOlist_hid 
 {
-    EOlistIter  *head;                  /*< pointer to first list iterator                 */
-    EOlistIter  *tail;                  /*< pointer to last list iterator                  */
-    eOsizecntnr_t size;                 /*< current number of list iterators in the list   */
-    eOsizecntnr_t max_items;            /*< max number of list iterators in the list       */
-    eOsizeitem_t  item_size;            /*< size of item contained in the EOlistIter->data */ 
-    eOres_fp_voidp_voidp_t item_copy;   /*< copy constructor used on inserted data              */ 
-    eOres_fp_voidp_t item_clear;        /*< destructor used on removed data                */ 
-    EOlistIter  *freeiters;             /*< pool of free iterators for the list            */
+    EOlistIter                  *head;                  /*< pointer to first list iterator                 */
+    EOlistIter                  *tail;                  /*< pointer to last list iterator                  */
+    eOsizecntnr_t               size;                   /*< current number of list iterators in the list   */
+    eOsizecntnr_t               capacity;               /*< max number of list iterators in the list       */
+    eOsizeitem_t                item_size;              /*< size of item contained in the EOlistIter->data */ 
+    eOres_fp_voidp_uint32_t     item_init_fn;
+    uint32_t                    item_init_par;        
+    eOres_fp_voidp_voidp_t      item_copy_fn;           /*< copy constructor used on inserted data         */ 
+    eOres_fp_voidp_t            item_clear_fn;             /*< destructor used on removed data                */ 
+    EOlistIter                  *freeiters;             /*< pool of free iterators for the list            */
 };
 
  
