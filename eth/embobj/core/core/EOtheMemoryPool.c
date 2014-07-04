@@ -22,6 +22,7 @@
 
 #include "stdlib.h"
 #include "stdio.h"
+#include "string.h"
 #include "EoCommon.h"
 #include "EOtheErrorManager.h"
 #include "EOVmutex.h"
@@ -53,15 +54,7 @@
 const eOmempool_cfg_t eom_mempool_DefaultCfg = 
 {
     EO_INIT(.mode)          eo_mempool_alloc_dynamic,
-    EO_INIT(.memallocator)  NULL,
-    EO_INIT(.size08)        0,
-    EO_INIT(.data08)        NULL,
-    EO_INIT(.size16)        0,
-    EO_INIT(.data16)        NULL,    
-    EO_INIT(.size32)        0,
-    EO_INIT(.data32)        NULL,    
-    EO_INIT(.size64)        0,
-    EO_INIT(.data64)        NULL
+    EO_INIT(.conf)          NULL
 };
 
 
@@ -76,7 +69,7 @@ const eOmempool_cfg_t eom_mempool_DefaultCfg =
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t size, uint16_t number);
+static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t size, uint16_t number, uint32_t* usedbytes);
 
 static void * s_memallocator(uint32_t s);
 
@@ -84,26 +77,60 @@ static void s_memfree(void *p);
 
 static void * s_memrealloc(void *p, uint32_t s);
 
+//static size_t s_eo_mempool_heap_sizeof_allocated_pointer(void* p);
+
+//static uint16_t s_align_size(eOmempool_alignment_t alignmode, uint16_t size);
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
 static const char s_eobj_ownname[] = "EOtheMemoryPool";
 
+
 static EOtheMemoryPool s_the_mempool = 
 { 
-    EO_INIT(.cfg)           NULL, 
-    EO_INIT(.memallocator)  s_memallocator,
+    EO_INIT(.initted)       0, 
+    EO_INIT(.config)        
+    {
+        EO_INIT(.mode)      eo_mempool_alloc_dynamic,
+        EO_INIT(.conf)      NULL
+    }, 
+    EO_INIT(.theheap)  
+    {
+        EO_INIT(.allocate)      s_memallocator,
+        EO_INIT(.reallocate)    s_memrealloc,
+        EO_INIT(.release)       s_memfree           
+    },
+    EO_INIT(.thepool)
+    {
+        EO_INIT(.config)
+        {
+            EO_INIT(.size08)        0, 
+            EO_INIT(.data08)        NULL, 
+            EO_INIT(.size16)        0, 
+            EO_INIT(.data16)        NULL, 
+            EO_INIT(.size32)        0, 
+            EO_INIT(.data32)        NULL, 
+            EO_INIT(.size64)        0, 
+            EO_INIT(.data64)        NULL   
+        },
+        EO_INIT(.status)
+        {
+            EO_INIT(.poolsmask)     0, 
+            EO_INIT(.uint08index)   0, 
+            EO_INIT(.uint16index)   0, 
+            EO_INIT(.uint32index)   0, 
+            EO_INIT(.uint64index)   0      
+        }
+    },
     EO_INIT(.mutex)         NULL, 
     EO_INIT(.tout)          0, 
-    EO_INIT(.allocmode)     eo_mempool_alloc_dynamic, 
-    EO_INIT(.staticmask)    0, 
-    EO_INIT(.initted)       0, 
-    EO_INIT(.uint08s_num)   0, 
-    EO_INIT(.uint16s_num)   0, 
-    EO_INIT(.uint32s_num)   0, 
-    EO_INIT(.uint64s_num)   0,
-    EO_INIT(.usedbytes)     0
+    EO_INIT(.stats)     
+    {
+        EO_INIT(.usedbytesheap)     0,
+        EO_INIT(.usedbytespool)     0
+    }
 };
 
 
@@ -113,68 +140,112 @@ static EOtheMemoryPool s_the_mempool =
 
 
 extern EOtheMemoryPool * eo_mempool_Initialise(const eOmempool_cfg_t *cfg)
-{
-    
-    if(0 == s_the_mempool.initted)
+{   
+    if(1 == s_the_mempool.initted)
     {
-        s_the_mempool.initted = 1;
-        s_the_mempool.usedbytes = 0;
+        return(&s_the_mempool);
+    } 
 
-        // allow initialisation with null cfg .....
-        if(NULL == cfg)
+    
+    s_the_mempool.initted = 1;
+    s_the_mempool.stats.usedbytesheap = 0;
+    s_the_mempool.stats.usedbytespool = 0;
+
+    // allow initialisation with null cfg .....
+    if(NULL == cfg)
+    {
+        // if we use the default, then ... use dynamic mode with calloc, realloc, free
+        cfg = &eom_mempool_DefaultCfg;            
+    }
+    
+
+    
+    // for every mode i copy cfg into config
+    
+    memcpy(&s_the_mempool.config, cfg, sizeof(eOmempool_cfg_t));
+    
+    
+    // evaluate the mode. 
+    // for dynamic just prepare the heap, for static or mixed prepare the heap and the pool   
+    
+    switch(cfg->mode)
+    {
+        case eo_mempool_alloc_dynamic:
         {
-            s_the_mempool.cfg = &eom_mempool_DefaultCfg;
-            s_the_mempool.allocmode = eo_mempool_alloc_dynamic;
-            s_the_mempool.memallocator  = s_memallocator;
-        }
-        else
-        {
-            s_the_mempool.cfg = cfg;
-            s_the_mempool.allocmode = cfg->mode; 
-            
-            if(NULL != cfg->memallocator)
+            if(NULL != cfg->conf)
             {
-                s_the_mempool.memallocator  = cfg->memallocator;
+                // override heap w/ user-provided functions. however at end of function we verify that they are non-null
+                s_the_mempool.theheap.allocate      =   cfg->conf->heap.allocate;
+                s_the_mempool.theheap.reallocate    =   cfg->conf->heap.reallocate;
+                s_the_mempool.theheap.release       =   cfg->conf->heap.release;
+            }
+            
+        } break;
+        
+        case eo_mempool_alloc_static:
+        case eo_mempool_alloc_mixed:
+        {               
+            if(NULL != cfg->conf)
+            {   
+                memcpy(&s_the_mempool.thepool.config, cfg->conf, sizeof(eOmempool_pool_config_t)); 
+                eOmempool_the_pool_t* pool = &s_the_mempool.thepool;
+                
+                if(0 != pool->config.size08)
+                {
+                    pool->status.poolsmask |= 1;
+                    pool->status.uint08index = 0;
+                }
+                
+                if(0 != pool->config.size16)
+                {
+                    pool->status.poolsmask |= 2;
+                    pool->status.uint16index = 0;
+                }                
+                
+                if(0 != pool->config.size32)
+                {
+                    pool->status.poolsmask |= 4;
+                    pool->status.uint32index = 0;
+                }      
+
+                if(0 != pool->config.size64)
+                {
+                    pool->status.poolsmask |= 8;
+                    pool->status.uint64index = 0;
+                }                   
+
             }
             else
             {
-                s_the_mempool.memallocator  = s_memallocator;   
-            }
-    
-            if(eo_mempool_alloc_dynamic != s_the_mempool.allocmode)
-            {
-                if(0 != cfg->size08)
-                {
-                    s_the_mempool.staticmask |= 1;
-                    s_the_mempool.uint08s_num = cfg->size08;
-                }
-                
-                if(0 != cfg->size16)
-                {
-                    s_the_mempool.staticmask |= 2;
-                    s_the_mempool.uint16s_num = cfg->size16/2;
-                }   
-                
-                if(0 != cfg->size32)
-                {
-                    s_the_mempool.staticmask |= 4;
-                    s_the_mempool.uint32s_num = cfg->size32/4;
-                } 
-               
-                if(0 != cfg->size64)
-                {
-                    s_the_mempool.staticmask |= 8;
-                    s_the_mempool.uint64s_num = cfg->size64/8;
-                }            
-            }
-        }
-    }
-    
-    if(NULL == s_the_mempool.memallocator)
-    {
-        s_the_mempool.memallocator  = s_memallocator;
+                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_mempool_alloc_static / eo_mempool_alloc_mixed need some mem pools");
+            }    
+                       
+        } break;
+        
+        default:
+        {
+            
+        } break;
+ 
     }
 
+    // manage NULL heap functions
+   
+    if(NULL == s_the_mempool.theheap.allocate)
+    {
+        s_the_mempool.theheap.allocate      =   s_memallocator;
+    }
+    
+    if(NULL == s_the_mempool.theheap.reallocate)
+    {
+        s_the_mempool.theheap.reallocate   =   s_memrealloc;
+    }
+    
+    if(NULL == s_the_mempool.theheap.release)
+    {
+        s_the_mempool.theheap.release      =   s_memfree;
+    }    
+    
     return(&s_the_mempool);
 }
  
@@ -203,169 +274,132 @@ extern eOresult_t eo_mempool_SetMutex(EOtheMemoryPool *p, EOVmutexDerived *mutex
 extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t alignmode, uint16_t size, uint16_t number)
 {
     void *ret = NULL;
-    
-       
+    uint32_t usedbytespool = 0;
+    uint32_t usedbytesheap = 0;
+          
     if((0 == size) || (0 == number)) 
     {
         // manage the ... warning 
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "requested zero memory");
-        
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "requested zero memory");        
         return(NULL);
     }
 
- 
-
-    
-    // adjust size so that it is a multiple of 1, 2, 4, 8 depending on the alignment
-//    size = (size + (uint8_t)alignmode - 1) / ((uint8_t)alignmode);
-//    size *= ((uint8_t)alignmode);
-
-    switch(alignmode)
-    {   
-        case eo_mempool_align_08bit: {} break;
-        case eo_mempool_align_16bit: { size++;  size>>=1; size<<=1;} break;
-        case eo_mempool_align_32bit: { size+=3; size>>=2; size<<=2;} break;
-        case eo_mempool_align_64bit: { size+=7; size>>=3; size<<=3;} break;
-    }
-
-
+    eOmempool_alloc_mode_t mode = s_the_mempool.config.mode;
 
     if(NULL == p)
     {
-        // manage the ... warning 
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "not initialised yet. using calloc()");
-
-        //ret = calloc(number, size);
-        ret = s_the_mempool.memallocator(number*size);
-
-        if(NULL == ret)
-        {
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no anymore memory from heap");
-        }
-
-        s_the_mempool.usedbytes += (number*size);
-        return(ret);
-    }
-
-
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "not initialised yet. using eo_mempool_alloc_dynamic w/ default handler"); 
+        mode = eo_mempool_alloc_dynamic;       
+    }    
+      
+    
     // ok, using the singleton
         
-    switch(s_the_mempool.allocmode)
+    switch(mode)
     {
         case eo_mempool_alloc_dynamic:
         {
-            //ret = calloc(number, size);
-            ret = s_the_mempool.memallocator(number*size);
+            ret = s_the_mempool.theheap.allocate(number*size);
+            usedbytesheap = eo_common_msize(ret);
         } break;
         
         case eo_mempool_alloc_mixed:
-        {
-        
-            if(0 != (p->staticmask & (uint8_t)alignmode))
-            {
-                // i have a static allocation
-                ret = s_eo_mempool_get_static(alignmode, size, number);
+        {        
+            if(0 == (p->thepool.status.poolsmask & (uint8_t)alignmode))
+                {   // dont have a pool for the alignmode: use heap
+                ret = s_the_mempool.theheap.allocate(number*size);
+                usedbytesheap = eo_common_msize(ret);             
             }
             else
-            {
-                //ret = calloc(number, size);
-                ret = s_the_mempool.memallocator(number*size);
+            {   // i have a proper pool 
+                //size = s_align_size(alignmode, size);  // alignment is internal to s_eo_mempool_get_static()
+                ret = s_eo_mempool_get_static(alignmode, size, number, &usedbytespool);   
             }
 
         } break;
         
         case eo_mempool_alloc_static:
-        {
-            ret = s_eo_mempool_get_static(alignmode, size, number);
+        {   // dont care if i dont have a proper pool for teh requested align mode. if not found ... error
+            //size = s_align_size(alignmode, size);  // alignment is internal to s_eo_mempool_get_static()
+            ret = s_eo_mempool_get_static(alignmode, size, number, &usedbytespool);
         } break;
     
     }
     
     if(NULL == ret)
-    {
-        // manage the fatal error
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from heap");
+    {   // manage the fatal error in case memory could not achieved
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory from heap");
     }
     
-    s_the_mempool.usedbytes += (number*size); 
+    s_the_mempool.stats.usedbytespool += usedbytespool; 
+    s_the_mempool.stats.usedbytesheap += usedbytesheap;
+    
     return(ret);   
 }
 
+
 extern uint32_t eo_mempool_SizeOfAllocated(EOtheMemoryPool *p)
 {
-    return(s_the_mempool.usedbytes);
+    return(s_the_mempool.stats.usedbytespool+s_the_mempool.stats.usedbytesheap);
 }
+
+extern eOmempool_alloc_mode_t eo_mempool_alloc_mode_Get(EOtheMemoryPool *p)
+{   
+    return(s_the_mempool.config.mode);
+}
+
 
 extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size)
 {
-    void *ret = NULL;
-    
-    switch(s_the_mempool.allocmode)
-    {
-        case eo_mempool_alloc_dynamic:
-        {
-            ret = s_the_mempool.memallocator(size);
-        } break;
-        
-        default:
-        {
- 
-        } break;
-
-    }
+    void *ret = s_the_mempool.theheap.allocate(size);
 
     if(NULL == ret)
-    {
-        // manage the fatal error
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from heap in _new()");
+    {   // manage the fatal error in case memory could not achieved
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_mempool_New() failure");
     }
+    
+    s_the_mempool.stats.usedbytespool += eo_common_msize(ret);      
 
     return(ret);   
 }
 
 
 extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
-{
-    void *ret = NULL;
+{       
+    if(0 == size)
+    {
+        eo_mempool_Delete(p, m);
+        return(NULL);
+    }
     
-    switch(s_the_mempool.allocmode)
+    if(NULL != m)
     {
-        case eo_mempool_alloc_dynamic:
-        {
-            ret = s_memrealloc(m, size);
-        } break;
-        
-        default:
-        {
- 
-        } break;
-
-    }
-
+        s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
+    }    
+    
+    void *ret = s_the_mempool.theheap.reallocate(m, size);
+    
     if(NULL == ret)
-    {
-        // manage the fatal error
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from heap in realloc()");
+    {   // manage the fatal error in case memory could not achieved
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_mempool_Realloc() failure");
     }
-
+    
+    s_the_mempool.stats.usedbytespool += eo_common_msize(ret);  
+    
     return(ret);   
 }
 
 
 extern void eo_mempool_Delete(EOtheMemoryPool *p, void *m)
 {
-    switch(s_the_mempool.allocmode)
+    if(NULL == m)
     {
-        case eo_mempool_alloc_dynamic:
-        {
-            s_memfree(m);
-        } break;
+        return;
+    }
         
-        default:
-        {
- 
-        } break;
-    }    
+    s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
+
+    s_the_mempool.theheap.release(m);          
 }
 
 
@@ -380,10 +414,12 @@ extern void eo_mempool_Delete(EOtheMemoryPool *p, void *m)
 // --------------------------------------------------------------------------------------------------------------------
 
 
-static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t size, uint16_t number)
+static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t size, uint16_t number, uint32_t* usedbytes)
 {
-    uint16_t numentries = 0;
+    uint32_t numentries = 0;
     void *ret = NULL;
+    
+    eOmempool_the_pool_t* pool = &s_the_mempool.thepool;
 
     // attempt to lock mutex if it is null it will return nok_nullpointer, else ok or nok_timeout.
     if(eores_NOK_timeout == eov_mutex_Take(s_the_mempool.mutex, s_the_mempool.tout))
@@ -393,15 +429,15 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
      
     
     switch(alignmode) 
-    {
-    
+    {    
         case eo_mempool_align_08bit:
         {  
             numentries = number * size;
-            if((uint32_t)(s_the_mempool.uint08s_num + numentries) <= s_the_mempool.cfg->size08) 
+            if((uint32_t)(pool->status.uint08index + numentries) <= (pool->config.size08)) 
             {
-                ret = (void*) &s_the_mempool.cfg->data08[s_the_mempool.uint08s_num];
-                s_the_mempool.uint08s_num += numentries;
+                ret = (void*) &pool->config.data08[pool->status.uint08index];
+                pool->status.uint08index += numentries;
+                *usedbytes = numentries;
             }
 
         } break;
@@ -409,34 +445,36 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
         case eo_mempool_align_16bit:
         {
             numentries = number * ((size+1)/2);
-            if((uint32_t)(s_the_mempool.uint16s_num + numentries) <= s_the_mempool.cfg->size16) 
+            if((uint32_t)(pool->status.uint16index + numentries) <= (pool->config.size16/2)) 
             {
-                ret = (void*) &s_the_mempool.cfg->data16[s_the_mempool.uint16s_num];
-                s_the_mempool.uint16s_num += numentries;
-            }
+                ret = (void*) &pool->config.data16[pool->status.uint16index];
+                pool->status.uint16index += numentries;
+                *usedbytes = numentries*2;
+            }            
 
         } break;
         
         case eo_mempool_align_32bit:
         {
             numentries = number * ((size+3)/4);
-            if((uint32_t)(s_the_mempool.uint32s_num + numentries) <= s_the_mempool.cfg->size32) 
+            if((uint32_t)(pool->status.uint32index + numentries) <= (pool->config.size32/4)) 
             {
-                ret = (void*) &s_the_mempool.cfg->data32[s_the_mempool.uint32s_num];
-                s_the_mempool.uint32s_num += numentries;
-            }
-
+                ret = (void*) &pool->config.data32[pool->status.uint32index];
+                pool->status.uint32index += numentries;
+                *usedbytes = numentries*4;
+            }   
         } break;
 
+        case eo_mempool_align_auto:
         case eo_mempool_align_64bit:
         {
             numentries = number * ((size+7)/8);
-            if((uint32_t)(s_the_mempool.uint64s_num + numentries) <= s_the_mempool.cfg->size64) 
+            if((uint32_t)(pool->status.uint64index + numentries) <= (pool->config.size64/8)) 
             {
-                ret = (void*) &s_the_mempool.cfg->data64[s_the_mempool.uint64s_num];
-                s_the_mempool.uint64s_num += numentries;
-            }
-
+                ret = (void*) &pool->config.data64[pool->status.uint64index];
+                pool->status.uint64index += numentries;
+                *usedbytes = numentries*8;
+            }  
         } break;
        
         default:
@@ -446,17 +484,14 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
         
     }
     
-
-    if(NULL == ret) 
-    {
-        // manage error
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from static");
-    }
-    
-    
     // unlock mutex. it is safe even if mutex is null.
     eov_mutex_Release(s_the_mempool.mutex);
-
+        
+    if(NULL == ret) 
+    {   // manage error
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from chosen pool");
+    }
+    
     return(ret);
 }
 
@@ -476,6 +511,29 @@ static void * s_memrealloc(void *p, uint32_t s)
 {
     return(realloc(p, s));
 }
+
+//static size_t s_eo_mempool_heap_sizeof_allocated_pointer(void* p)
+//{   // not sure it is portable on 64 bit architectures.
+//    size_t* xx = (size_t*)p;
+//    xx --;
+//    size_t usedbytes = *xx; 
+//    return(usedbytes);    
+//}
+
+//static uint16_t s_align_size(eOmempool_alignment_t alignmode, uint16_t size)
+//{
+//    switch(alignmode)
+//    {   
+//        case eo_mempool_align_08bit: {} break;
+//        case eo_mempool_align_16bit: { size++;  size>>=1; size<<=1;} break;    
+//        case eo_mempool_align_32bit: { size+=3; size>>=2; size<<=2;} break;      
+//        case eo_mempool_align_64bit: { size+=7; size>>=3; size<<=3;} break;
+//        default:
+//        case eo_mempool_align_auto:  {} break;            
+//    } 
+//
+//    return(size);
+//}
 
 
 

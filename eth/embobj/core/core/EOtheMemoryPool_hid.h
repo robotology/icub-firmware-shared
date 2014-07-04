@@ -34,25 +34,39 @@ extern "C" {
 
 
 // - #define used with hidden struct ----------------------------------------------------------------------------------
-// empty-section
 
+typedef struct
+{
+    uint8_t                         poolsmask;
+    uint16_t                        uint08index;
+    uint16_t                        uint16index;
+    uint16_t                        uint32index;
+    uint16_t                        uint64index;    
+} eOmempool_pool_status_t;
+
+typedef struct
+{
+    eOmempool_pool_config_t     config;
+    eOmempool_pool_status_t     status;
+} eOmempool_the_pool_t;
+
+typedef struct
+{
+    uint32_t    usedbytesheap;
+    uint32_t    usedbytespool;
+} eOmempool_stats_t;
 
 // - definition of the hidden struct implementing the object ----------------------------------------------------------
 
 struct EOtheMemoryPool_hid 
 {
-    const eOmempool_cfg_t   *cfg;
-    eOvoidp_fp_uint32_t     memallocator;
-    EOVmutex                *mutex;
-    eOreltime_t             tout;
-    eOmempool_allocmode_t   allocmode;
-    uint8_t                 staticmask;
-    uint8_t                 initted;
-    uint16_t                uint08s_num;
-    uint16_t                uint16s_num;
-    uint16_t                uint32s_num;
-    uint16_t                uint64s_num;
-    uint32_t                usedbytes;
+    uint8_t                         initted;
+    eOmempool_cfg_t                 config;
+    eOmempool_heap_config_t         theheap;
+    eOmempool_the_pool_t            thepool;
+    EOVmutex                        *mutex;
+    eOreltime_t                     tout;
+    eOmempool_stats_t               stats;
 }; 
 
 
