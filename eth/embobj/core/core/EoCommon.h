@@ -76,6 +76,7 @@ extern "C" {
 #include "embOBJporting.h" 
 
 #include "stdint.h"   
+#include "stdio.h"
 
 //#include "stdbool.h"        // contains true, false, bool. you must use pragma -c99. 
 
@@ -483,6 +484,7 @@ typedef     void*       (*eOvoidp_fp_voidp_uint16_uint16_t)         (void*, uint
 typedef     eObool_t    (*eObool_fp_uint8_uint32_t)                 (uint8_t, uint32_t);
 typedef     void*       (*eOvoidp_fp_voidp_uint8_uint32_t)          (void*, uint8_t, uint32_t);
 typedef     void*       (*eOvoidp_fp_uint32_t)                      (uint32_t);
+typedef     void*       (*eOvoidp_fp_voidp_uint32_t)                (void*, uint32_t);
 typedef     void        (*eOvoid_fp_uint8_uint8_voidp_t)            (uint8_t, uint8_t, void*);
 typedef     void*       (*eOvoidp_fp_uint8_uint32_voidp_t)          (uint8_t, uint32_t, void*);
 typedef     eOresult_t  (*eOres_fp_uint8_voidp_uint16_t)            (uint8_t, void*, uint16_t);
@@ -545,6 +547,9 @@ extern void * eo_common_getbaseobject(eOderived_t *derived);
 extern void * eo_common_getsafebaseobject(eOsafelyderived_t *derived);
 
 extern eOresult_t eo_common_verifysafebaseobject(eOsafelyderived_t *derived, const uint32_t tag);
+
+// size of pointer allocated with malloc/calloc/realloc
+extern size_t eo_common_msize(void *p);
 
 
 // - definition of extern public macros ------------------------------------------------------------------------------

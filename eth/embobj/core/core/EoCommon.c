@@ -128,6 +128,14 @@ extern eOresult_t eo_common_verifysafebaseobject(eOsafelyderived_t *derived, con
 }
 
 
+extern size_t eo_common_msize(void *p)
+{   // not sure it is portable on 64 bit architectures.
+    size_t* xx = (size_t*)p;
+    xx --;
+    return(*xx);    
+}
+
+
 //// used to manipulate an array
 //extern eOresult_t eo_common_array_reset(eOarray_t *array)
 //{
