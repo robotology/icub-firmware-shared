@@ -343,7 +343,7 @@ extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
     }
        
     
-    eOnvset_EPcfg_t* data = p->theepcfgs->item_array_data;
+    eOnvset_EPcfg_t* data = eo_vector_storage_Get(p->theepcfgs);
     
     p->devcfg->vectorof_epcfg = eo_constvector_New(sizeof(eOnvset_EPcfg_t), numofeps, data);
     
