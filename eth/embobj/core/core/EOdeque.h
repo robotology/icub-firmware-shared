@@ -66,6 +66,8 @@ extern "C" {
  **/  
 typedef struct EOdeque_hid EOdeque;
 
+//enum { eo_dequecapacity_dynamic = EOK_uint16dummy };
+
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

@@ -53,23 +53,18 @@ extern "C" {
  **/  
  
 struct EOdeque_hid 
-{
-    /* @private                number of items in the deque. used only by the deque. */                
-    eOsizecntnr_t               size;                                                            
-    /* @private                index to the item in front of the deque. used only by the deque. */
-    eOsizecntnr_t               first;                    
-    /* @private                index to the item that will be next at the back of the deque. used only by the deque.*/
-    eOsizecntnr_t               next;                    
-    /* @private                size in bytes of the item object. */
-    eOsizeitem_t                item_size;                
-    /* @private                number of item object in the array. */
-    eOsizecntnr_t               max_items;         
-    /* @private                array of item object. */
-    void                        *item_array_data;        
-    /* @private                specialised copy for a single item object. It is called upon copy into the deque*/
-    eOres_fp_voidp_voidp_t      item_copy_fn;
-    /* @private                specialised remove for a single item object. It is called upon removal from the deque*/
-    eOres_fp_voidp_t            item_clear_fn;
+{                 
+    eOsizecntnr_t               size;               /**< number of items in the deque. used only by the deque. */                                                         
+    eOsizecntnr_t               first;              /**< index to the item in front of the deque. used only by the deque. */               
+    eOsizecntnr_t               next;               /**< index to the item that will be next at the back of the deque. used only by the deque.*/              
+    eOsizeitem_t                item_size;          /**< size in bytes of the item object. */      
+    eOsizecntnr_t               capacity;           /**< number of item object in the array. */ 
+    eOsizeitem_t                sizeofstoreditem;   /**< size in bytes of the item object when stored in the container. */     
+    void                        *stored_items;      /**< array of item object. */   
+    eOres_fp_voidp_uint32_t     item_init_fn;
+    uint32_t                    item_init_par;         
+    eOres_fp_voidp_voidp_t      item_copy_fn;       /**< specialised copy for a single item object. It is called upon copy into the deque*/    
+    eOres_fp_voidp_t            item_clear_fn;      /**< specialised remove for a single item object. It is called upon removal from the deque*/
 };
 
 
