@@ -53,19 +53,16 @@ extern "C" {
  **/  
  
 struct EOvector_hid 
-{
-    /* @private                 number of items in the vector. used only by the vector. */                
-    eOsizecntnr_t               size;                                                            
-    /* @private                 size in bytes of the item object. */
-    eOsizeitem_t                item_size;                
-    /* @private                 array of item object. */
-    void                        *item_array_data; 
-    /* @private                 max number of item objects in the array. */
-    eOsizecntnr_t               capacity;         
-    /* @private                 specialised copy for a single item object. It is called upon copy into the vector*/
-    eOres_fp_voidp_voidp_t      item_copy_fn;
-    /* @private                 specialised remove for a single item object. It is called upon removal from the vector*/
-    eOres_fp_voidp_t            item_clear_fn;           
+{                    
+    eOsizecntnr_t               size;               /**< number of items in the vector. used only by the vector. */                                       
+    eOsizeitem_t                item_size;          /**< size in bytes of the item object. */   
+    eOsizecntnr_t               capacity;           /**< max number of item objects in the array. */
+    eOsizeitem_t                sizeofstoreditem;   /**< size in bytes of the item object when stored in the container. */
+    void                        *stored_items;      /**< array of item object. */   
+    eOres_fp_voidp_uint32_t     item_init_fn;
+    uint32_t                    item_init_par;        
+    eOres_fp_voidp_voidp_t      item_copy_fn;       /**< specialised copy for a single item object. It is called upon copy into the vector*/    
+    eOres_fp_voidp_t            item_clear_fn;      /**< specialised remove for a single item object. It is called upon removal from the vector*/
 };
 
 

@@ -99,8 +99,8 @@ enum { eo_vectorcapacity_dynamic = EOK_uint16dummy };
                 never be NULL, because failure is managed by the memory pool.
  **/
 extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
-                               eOres_fp_voidp_uint32_t item_init, uint32_t init_par, 
-                               eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear);
+                                eOres_fp_voidp_uint32_t item_init, uint32_t init_par, 
+                                eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear);
 
 
 /** @fn         extern eOsizecntnr_t eo_vector_Capacity(EOvector * vector)
@@ -186,7 +186,7 @@ extern void eo_vector_Assign(EOvector * vector, eOsizecntnr_t pos, void *items, 
 
 
 /** @fn         extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
-    @brief      Resize the vector and calls proper constructor or destructors for teh item. 
+    @brief      Resize the vector and calls proper constructor or destructor for the item. 
                 A call with pos > capacity shall do nothing. 
     @param      vector          Pointer to the EOvector object.
     @param      size            The new size 
@@ -217,6 +217,10 @@ extern eObool_t eo_vector_Empty(EOvector * vector);
     @return     eobool_true or eobool_false.
  **/
 extern eObool_t eo_vector_Find(EOvector * vector, void *p, eOsizecntnr_t *index);
+
+extern void* eo_vector_storage_Get(EOvector * vector);
+
+extern void eo_vector_Delete(EOvector * vector);
 
 /** @}            
     end of group eo_vector  

@@ -45,7 +45,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+#define EOVECTOR_DEFAULTCLEAR_DOES_NOTHING
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -65,17 +66,29 @@
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-#if 0
-EO_static_inline void s_eo_vector_default_clear(void *p, uint16_t size)
-{
-     memset(p, 0, size);
-}
-#else
-EO_static_inline void s_eo_vector_default_clear(void *p, uint16_t size)
-{
-}    
-#endif
 
+EO_static_inline void s_eo_vector_default_clear(void *item, EOvector* vector)
+{
+#if defined(EOVECTOR_DEFAULTCLEAR_DOES_NOTHING)
+#else
+    memset(item, 0, vector->item_size);
+#endif
+}
+
+EO_static_inline void s_eo_vector_default_copy(void* item, void* p, EOvector* vector)
+{
+    memcpy(item, p, vector->item_size);
+}
+
+EO_static_inline void s_eo_vector_default_init(void* item,  EOvector* vector)
+{
+    memset(item, 0, vector->item_size);
+}
+
+//EO_static_inline void s_eo_vector_default_initall(EOvector* vector)
+//{
+//    memset(vector->stored_items, 0, vector->capacity*vector->item_size);
+//}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -95,17 +108,15 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
 {
     EOvector *retptr = NULL;
     uint8_t *start = NULL;
-    uint8_t *obj = NULL;
+    uint8_t *item = NULL;
     eOsizecntnr_t i = 0; 
-    eOmempool_alignment_t align = eo_mempool_align_08bit;
 
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOvector), 1);
 
 
-
-    // now the obj has valid memory. i need to initialise it with user-defined data,
+    // now the object has valid memory. i need to initialise it with user-defined data,
     
     retptr->size                = 0;
 
@@ -113,17 +124,24 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
 
     retptr->item_size           = item_size;
+    retptr->sizeofstoreditem    = item_size;
     retptr->capacity            = capacity;
+    retptr->item_init_fn        = item_init;
+    retptr->item_init_par       = init_par;
     retptr->item_copy_fn        = item_copy;
     retptr->item_clear_fn       = item_clear;
     
     
     if(eo_vectorcapacity_dynamic == retptr->capacity)
     {
-        retptr->item_array_data = NULL;
+        eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_vectorcapacity_dynamic only w/ eo_mempool_alloc_dynamic");
+        retptr->stored_items = NULL;
     }
     else
     {
+
+        eOmempool_alignment_t align = eo_mempool_align_08bit;
+        
         // now we get memory for copying objects inside
         if(1 == item_size)
         {
@@ -133,35 +151,41 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
         {
             align = eo_mempool_align_16bit;
         }
-        else
-        {   // use 4-bytes alignment for everything else
+        else if (item_size <= 4)
+        {
             align = eo_mempool_align_32bit;
+            retptr->sizeofstoreditem = 4;
+        }
+        else
+        {   // use 8-bytes alignment for everything else
+            align = eo_mempool_align_64bit;
+            retptr->sizeofstoreditem = (item_size+7)/8;
+            retptr->sizeofstoreditem *= 8;
         }
 
-        // here is the memory from the correct memory pool
-        retptr->item_array_data  = eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
-        
-        
-        if(NULL != item_init)
+        // here is the memory from the correct memory pool (or the heap)
+        retptr->stored_items  = eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
+              
+
+        start = (uint8_t*) (retptr->stored_items);
+        for(i=0; i<capacity; i++) 
         {
-            start = (uint8_t*) (retptr->item_array_data);
-            for(i=0; i<capacity; i++) 
+            // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
+            item = &start[(uint32_t)i * item_size];
+            if(NULL != item_init)
             {
-                // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-                obj = &start[(uint32_t)i * item_size];
                 // construct each item 
-                item_init(obj, init_par);
+                item_init(item, init_par);
+            }
+            else
+            {   // default init
+                s_eo_vector_default_init(item, retptr);
             }
         }
-        else 
-        {
-            // clean items all together
-            memset(retptr->item_array_data, 0, retptr->capacity*retptr->item_size);
-        } 
+
     }
 
-    return(retptr);
-   
+    return(retptr);   
 }
 
 
@@ -178,37 +202,36 @@ extern eOsizecntnr_t eo_vector_Capacity(EOvector * vector)
 
 extern void eo_vector_PushBack(EOvector * vector, void *p) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
+    uint8_t *item = NULL;
         
     if((NULL == vector) || (NULL == p)) 
-    {    
-        // invalid data
+    {   // invalid data
         return;    
     }
     
     if(vector->capacity == vector->size) 
-    { 
-        // vector is full
+    {   // vector is full
         return;
     }
     
     if(eo_vectorcapacity_dynamic == vector->capacity)
-    {
-        vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size+1) * vector->item_size);
+    {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+        vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size+1) * vector->item_size);
     }
             
-    start = (uint8_t*) (vector->item_array_data);
+    start = (uint8_t*) (vector->stored_items);
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-    start = &start[(uint32_t)vector->size * vector->item_size]; 
+    item = &start[(uint32_t)vector->size * vector->item_size]; 
     
     if(NULL != vector->item_copy_fn) 
     {
-        vector->item_copy_fn(start, p);
+        vector->item_copy_fn(item, p);
     }
     else
     {
-        memcpy(start, p, vector->item_size);
+        s_eo_vector_default_copy(item, p, vector);
     }
     
     vector->size ++;
@@ -218,68 +241,63 @@ extern void eo_vector_PushBack(EOvector * vector, void *p)
 
 
 extern void * eo_vector_Back(EOvector * vector) 
-{
-    
-    // here we require uint8_t to access item_array_data because we work with bytes.
+{    
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
+    uint8_t *item = NULL;
     
     if(NULL == vector) 
-    {
-        // invalid vector. return NULL
+    {   // invalid vector. return NULL
         return(NULL);    
     }
     
     if(0 == vector->size) 
-    { 
-        // vector is empty. return NULL
+    {   // vector is empty. return NULL
         return(start);     
     }
+     
+    start = (uint8_t*) (vector->stored_items);
+    item = &start[(uint32_t)(vector->size-1) * vector->item_size];
     
- 
-    start = (uint8_t*) (vector->item_array_data);
-    start = &start[(uint32_t)(vector->size-1) * vector->item_size];
-    
-    return((void*) start);         
+    return((void*) item);         
 }
 
 
 extern void eo_vector_PopBack(EOvector * vector) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
-
+    uint8_t *item = NULL;
     
     if(NULL == vector) 
-    {
-        // invalid vector
+    {   // invalid vector
         return;    
     }
     
     if(0 == vector->size) 
-    { 
-        // vector is empty
+    {   // vector is empty
         return;     
     }
 
-
-    start = (uint8_t*) (vector->item_array_data);
-    start = &start[(uint32_t)(vector->size - 1) * vector->item_size];            
+    start = (uint8_t*) (vector->stored_items);
+    item = &start[(uint32_t)(vector->size - 1) * vector->item_size];            
     
     if(NULL != vector->item_clear_fn) 
     {
-        vector->item_clear_fn(start);
+        vector->item_clear_fn(item);
     } 
     else 
     { 
         // clean the removed item
-        s_eo_vector_default_clear(start, vector->item_size);
+        s_eo_vector_default_clear(item, vector);
     }
     
     vector->size --;
     
+    //if size is zero, eo_mempool_Realloc() calls eo_mempool_Free() and returns NULL. that is correct.
     if(eo_vectorcapacity_dynamic == vector->capacity)
-    {
-        vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+    {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+        vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size) * vector->item_size);
     }
 }
 
@@ -287,8 +305,7 @@ extern void eo_vector_PopBack(EOvector * vector)
 extern eOsizecntnr_t eo_vector_Size(EOvector * vector) 
 {
     if(NULL == vector) 
-    {
-        // invalid vector
+    {    // invalid vector
         return(0);    
     }
     
@@ -298,54 +315,54 @@ extern eOsizecntnr_t eo_vector_Size(EOvector * vector)
 
 extern void eo_vector_Clear(EOvector * vector) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
-    uint8_t *obj = NULL;
+    uint8_t *item = NULL;
     eOsizecntnr_t i = 0;        
     
     
     if(NULL == vector) 
-    {
-        // invalid vector
+    {   // invalid vector
         return;    
     }
 
     if(0 == vector->size) 
-    { 
-        // vector is empty
+    {   // vector is empty
         return;     
     }
     
-    if(NULL != vector->item_clear_fn) 
-    {
-        start = (uint8_t*) (vector->item_array_data);
-        for(i=0; i<vector->size; i++) 
+
+    start = (uint8_t*) (vector->stored_items);
+    for(i=0; i<vector->size; i++) 
+    {   // i use i as index because the items in a vector are always stored from pos 0 to size-1
+        // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
+        item = &start[(uint32_t)i * vector->item_size];
+        if(NULL != vector->item_clear_fn)
         {
-            // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-            obj = &start[(uint32_t)i * vector->item_size];
-            vector->item_clear_fn(obj);
+            vector->item_clear_fn(item);
         }
+        else
+        {
+            s_eo_vector_default_clear(item, vector);
+        }
+    }
         
-    }
-    else
-    {  
-        // clean all items
-        s_eo_vector_default_clear(vector->item_array_data, vector->size*vector->item_size);
-    }
     
-    vector->size     = 0;
+    vector->size = 0;
     
+    //its ok to use realloc when size is zero because eo_mempool_Realloc() calls eo_mempool_Free() and returns NULL.
     if(eo_vectorcapacity_dynamic == vector->capacity)
-    {
-        vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+    {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+        vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size) * vector->item_size);
     }
 }
 
 
 extern void * eo_vector_At(EOvector * vector, eOsizecntnr_t pos) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
+    uint8_t *item = NULL;
     
     if(NULL == vector) 
     {
@@ -353,35 +370,33 @@ extern void * eo_vector_At(EOvector * vector, eOsizecntnr_t pos)
     }
     
     if(pos >= vector->size) 
-    { 
-        // vector does not have any element in pos
+    {   // vector does not have any element in pos
         return(NULL);     
     }
     
    
-    start = (uint8_t*) (vector->item_array_data);
+    start = (uint8_t*) (vector->stored_items);
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-    start = &start[(uint32_t)pos * vector->item_size];
+    item = &start[(uint32_t)pos * vector->item_size];
     
-    return((void*) start);         
+    return((void*) item);         
 }
 
 extern void eo_vector_Assign(EOvector * vector, eOsizecntnr_t pos, void *items, eOsizecntnr_t nitems)
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
-    uint8_t *p = items;
+    uint8_t *p = NULL;          // external item
+    uint8_t *item = NULL;       // internal item
     uint16_t i;
         
     if((NULL == vector) || (NULL == items) || (0 == nitems)) 
-    {    
-        // invalid data
+    {   // invalid data
         return;    
     }
     
     if((pos+nitems-1) >= vector->capacity) 
-    { 
-        // beyond the capacity of the vector
+    {   // beyond the capacity of the vector
         return;
     }
  
@@ -394,43 +409,53 @@ extern void eo_vector_Assign(EOvector * vector, eOsizecntnr_t pos, void *items, 
     // now fill from pos-th position until (pos+nitems-1)-th position w/ objects pointed by items
     
     
-    start = (uint8_t*) (vector->item_array_data);
+    start = (uint8_t*) (vector->stored_items);
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-    start = &start[(uint32_t)pos * vector->item_size]; 
-    p = (uint8_t*) items;
+    item = &start[(uint32_t)pos * vector->item_size]; 
+    p = (uint8_t*) items;    // first ext item of items[]
     
     for(i=0; i<nitems; i++)
     {
         if(NULL != vector->item_copy_fn) 
         {
-            vector->item_copy_fn(start, p);
+            vector->item_copy_fn(item, p);
         }
         else
         {
-            memcpy(start, p, vector->item_size);
+            s_eo_vector_default_copy(item, p, vector);
         } 
         
-        start += vector->item_size;
+        item += vector->item_size;
         p += vector->item_size;
     }
     
     return;     
 }
 
+extern void* eo_vector_storage_Get(EOvector * vector)
+{
+    if(NULL == vector) 
+    {   // invalid data
+        return (NULL);    
+    }    
+    
+    return(vector->stored_items);   
+}
+
+
 extern void eo_vector_AssignOne(EOvector * vector, eOsizecntnr_t pos, void *p) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
+    uint8_t *item = NULL;
         
     if((NULL == vector) || (NULL == p)) 
-    {    
-        // invalid data
+    {   // invalid data
         return;    
     }
     
     if(pos >= vector->capacity) 
-    { 
-        // beyond the capacity of the vector
+    {   // beyond the capacity of the vector
         return;
     }
  
@@ -443,17 +468,17 @@ extern void eo_vector_AssignOne(EOvector * vector, eOsizecntnr_t pos, void *p)
     // now fill the pos-th position w/ object p
     
     
-    start = (uint8_t*) (vector->item_array_data);
+    start = (uint8_t*) (vector->stored_items);
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-    start = &start[(uint32_t)pos * vector->item_size]; 
+    item = &start[(uint32_t)pos * vector->item_size]; 
     
     if(NULL != vector->item_copy_fn) 
     {
-        vector->item_copy_fn(start, p);
+        vector->item_copy_fn(item, p);
     }
     else
     {
-        memcpy(start, p, vector->item_size);
+        s_eo_vector_default_copy(item, p, vector);
     }
     
     return; 
@@ -462,32 +487,34 @@ extern void eo_vector_AssignOne(EOvector * vector, eOsizecntnr_t pos, void *p)
 
 extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
+    // here we require uint8_t to access stored_items because we work with bytes.
     uint8_t *start = NULL;
-    uint8_t *obj = NULL;
+    uint8_t *item = NULL;
     eOsizecntnr_t first;
     eOsizecntnr_t last;
     uint8_t added = 0;
     
     eOsizecntnr_t i = 0;        
-    
-    
+        
     if(NULL == vector) 
-    {
-        // invalid vector
+    {   // invalid vector
         return;    
     }
-    
-
-    
+        
     if(size == vector->size)
-    {
-        return; // nothing to do
+    {   // nothing to do
+        return; 
+    }
+    
+    if(0 == size)
+    {   // if dymanic mode _Clear() also deletes the items
+        eo_vector_Clear(vector);
+        return;
     }
 
     if(size > vector->capacity)
-    {
-        return; // nothing to do
+    {   // nothing to do
+        return; 
     }
     
     if(size < vector->size)
@@ -507,50 +534,66 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
     vector->size = size;
     
     
-    // clear the removed elements or the added ones 
-    
     if(1 == added)
-    {   // cannot write ot of memory
-        if(eo_vectorcapacity_dynamic == vector->capacity)
-        {
-            vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
-        }  
-    }
+    {   // must create the new items
     
-    if(NULL != vector->item_clear_fn) 
-    {
-        start = (uint8_t*) (vector->item_array_data);
+        // add items if dynamic mode
+        if(eo_vectorcapacity_dynamic == vector->capacity)
+        {   // i must allocate new memory
+            // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+            vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size) * vector->item_size);
+        }
+        
+        // ok, now i init the new memory as if it was just created. we do it for the new items.
+        start = (uint8_t*) (vector->stored_items);
         for(i=first; i<last; i++) 
         {
             // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-            obj = &start[(uint32_t)i * vector->item_size];
-            vector->item_clear_fn(obj);
-        }
-    }
+            item = &start[(uint32_t)i * vector->item_size];
+            if(NULL != vector->item_init_fn) 
+            {
+                vector->item_init_fn(item, vector->item_init_par);
+            }
+            else
+            {
+                s_eo_vector_default_init(item, vector);
+            }
+        }        
+                
+    } 
     else
-    {  
-        // clean all items
-        start = (uint8_t*) (vector->item_array_data);
-        s_eo_vector_default_clear(&start[(uint32_t)(first*vector->item_size)], (last-first)*vector->item_size);
-        //memset(&start[(uint32_t)(first*vector->item_size)], 0, (last-first)*vector->item_size);
-    }
-
-    if(0 == added)
-    {   // now i can reduce memory
-        if(eo_vectorcapacity_dynamic == vector->capacity)
+    {   // must destroy the items
+    
+        start = (uint8_t*) (vector->stored_items);
+        for(i=first; i<last; i++) 
         {
-            vector->item_array_data = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->item_array_data, (uint32_t)(vector->size) * vector->item_size);
+            // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
+            item = &start[(uint32_t)i * vector->item_size];
+            if(NULL != vector->item_clear_fn) 
+            {
+                vector->item_clear_fn(item);
+            }
+            else
+            {
+                s_eo_vector_default_clear(item, vector);
+            }
         }  
-    }    
 
+        // remove items if dynamic mode
+        if(eo_vectorcapacity_dynamic == vector->capacity)
+        {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+            vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size) * vector->item_size);
+        }  
+        
+    }
+    
 }
 
 
 extern eObool_t eo_vector_Full(EOvector * vector) 
 {
     if(NULL == vector) 
-    {
-        // invalid deque
+    {   // invalid vector
         return(eobool_true);    
     }
     
@@ -560,29 +603,28 @@ extern eObool_t eo_vector_Full(EOvector * vector)
 extern eObool_t eo_vector_Empty(EOvector * vector) 
 {
     if(NULL == vector) 
-    {
-        // invalid deque
+    {   // invalid vector
         return(eobool_true);    
     }
     
     return((vector->size == 0) ? (eobool_true) : (eobool_false));        
 }
 
+
 extern eObool_t eo_vector_Find(EOvector * vector, void *p, eOsizecntnr_t *index)
 {
     eOsizecntnr_t i = 0;
-    uint8_t *datainside;
+    uint8_t *item;
 
     if((NULL == vector) || (p == NULL) || (0 == vector->size)) 
-    {
-        // invalid deque
+    {   // invalid vector or invalid data to search
         return(eobool_false);    
     }
 
-    
-    for(i=0, datainside = (uint8_t*) (vector->item_array_data); i<vector->size; i++, datainside += vector->item_size)
+    // loop over all items to see is any matches with external data
+    for(i=0, item = (uint8_t*) (vector->stored_items); i<vector->size; i++, item += vector->item_size)
     {
-        if(0 == memcmp(p, datainside, vector->item_size))
+        if(0 == memcmp(p, item, vector->item_size))
         {
             if(NULL != index)
             {
@@ -595,6 +637,29 @@ extern eObool_t eo_vector_Find(EOvector * vector, void *p, eOsizecntnr_t *index)
     return(eobool_false);
 }
 
+
+extern void eo_vector_Delete(EOvector * vector)
+{  
+    if(NULL == vector) 
+    {   // invalid vector
+        return;    
+    }   
+    
+    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_vector_Delete() only w/ eo_mempool_alloc_dynamic");
+  
+    // destroy every item. in case of eo_vectorcapacity_dynamic, the vector->stored_items is also deleted
+    eo_vector_Clear(vector);
+    
+    // destroy dataarray
+    eo_mempool_Delete(eo_mempool_GetHandle(), vector->stored_items);
+    
+    // reset all things inside vector
+    memset(vector, 0, sizeof(EOvector));
+    
+    // destroy object
+    eo_mempool_Delete(eo_mempool_GetHandle(), vector);
+       
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
