@@ -64,6 +64,7 @@ const eOprotconfig_cfg_t eo_protconfig_cfg_default =
     EO_INIT(.ep_management_is_present)              eobool_true,
     EO_INIT(.en_mn_entity_comm_numberof)            1,        
     EO_INIT(.en_mn_entity_appl_numberof)            1,
+    EO_INIT(.en_mn_entity_info_numberof)            1,
     
     EO_INIT(.ep_motioncontrol_is_present)           eobool_true,
     EO_INIT(.en_mc_entity_joint_numberof)           12,
@@ -138,7 +139,11 @@ extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
         if(p->config.en_mn_entity_appl_numberof > 0)
         {
             eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_management, eoprot_entity_mn_appl, p->config.en_mn_entity_appl_numberof);
-        }            
+        }  
+        if(p->config.en_mn_entity_info_numberof > 0)
+        {
+            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_management, eoprot_entity_mn_info, p->config.en_mn_entity_info_numberof);
+        }          
     }
     
     // load mc ...
