@@ -64,17 +64,18 @@ enum { eoprot_b01_endpoints_numberof = 3 };
 
 // - management
 
-enum { eoprot_b01_mn_comms_numberof = 1, eoprot_b01_mn_appls_numberof = 1 };
+enum { eoprot_b01_mn_comms_numberof = 1, eoprot_b01_mn_appls_numberof = 1, eoprot_b01_mn_infos_numberof = 1 };
 
 
 /** @typedef    typedef struct eOprot_b01_management_t;
     @brief      It is the container of entities comm and app in the management endpoint of board b01.
  **/
-typedef struct                  // 124+24+0 = 128              
+typedef struct                  // 124+24+40 = 168              
 {
     eOmn_comm_t                 communication; 
     eOmn_appl_t                 application;
-} eOprot_b01_management_t;      //EO_VERIFYsizeof(eOprot_b01_management_t, 128); 
+    eOmn_info_t                 info;
+} eOprot_b01_management_t;      //EO_VERIFYsizeof(eOprot_b01_management_t, 168); 
 
 
 // - motion control

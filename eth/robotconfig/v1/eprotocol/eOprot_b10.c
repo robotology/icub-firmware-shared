@@ -132,7 +132,8 @@ const eOnvset_DEVcfg_t eoprot_b10_nvsetDEVcfg =
 const uint8_t eoprot_b10_mn_entities_numberofeach[eomn_entities_numberof] = 
 { 
     eoprot_b10_mn_comms_numberof, 
-    eoprot_b10_mn_appls_numberof
+    eoprot_b10_mn_appls_numberof,
+    eoprot_b10_mn_infos_numberof
 };
 
 

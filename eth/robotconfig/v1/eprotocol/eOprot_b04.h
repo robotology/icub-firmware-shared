@@ -65,17 +65,19 @@ enum { eoprot_b04_endpoints_numberof = 4 };
 
 // - management
 
-enum { eoprot_b04_mn_comms_numberof = 1, eoprot_b04_mn_appls_numberof = 1 };
+enum { eoprot_b04_mn_comms_numberof = 1, eoprot_b04_mn_appls_numberof = 1, eoprot_b04_mn_infos_numberof = 1 };
 
 
 /** @typedef    typedef struct eOprot_b04_management_t;
     @brief      It is the container of entities comm and app in the management endpoint of board b04.
  **/
-typedef struct                  // 124+24+0 = 128              
+typedef struct                  // 124+24+40 = 168              
 {
     eOmn_comm_t                 communication; 
     eOmn_appl_t                 application;
-} eOprot_b04_management_t;      //EO_VERIFYsizeof(eOprot_b04_management_t, 128); 
+    eOmn_info_t                 info;
+} eOprot_b04_management_t;      //EO_VERIFYsizeof(eOprot_b04_management_t, 168); 
+
 
 
 // - motion control
@@ -141,7 +143,7 @@ extern const uint8_t eoprot_b04_sk_entities_numberofeach[]; // = { eoprot_b04_sk
     @brief      Initialises the endpoints of this board by loading the number of 
                 entities for each of them in the related endpoint file. As a result of that, 
                 the functions which require a brd argument will return the correct value if called 
-                with brd = eoprot_b01_boardnumber.
+                with brd = eoprot_b04_boardnumber.
                 This function is called by the EOnvset because the eOnvset_DEVcfg_t contains a 
                 pointer to it.  However, it is made public so that it can be called independently 
                 from the use of EOnvset.
