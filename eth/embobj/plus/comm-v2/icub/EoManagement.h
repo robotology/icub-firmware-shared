@@ -74,9 +74,10 @@ typedef enum
 {
     eomn_entity_comm                        = 0,
     eomn_entity_appl                        = 1,
+    eomn_entity_info                        = 2
 } eOmn_entity_t; 
 
-enum { eomn_entities_numberof = 2 };
+enum { eomn_entities_numberof = 3 };
 
 // -- all the possible enum
 
@@ -320,6 +321,39 @@ typedef struct                      // size is 8+8+8 = 24 bytes
     eOmn_appl_cmmnds_t              cmmnds;
 } eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 24);
 
+
+// -- the definition of info entity
+
+/** @typedef    typedef struct eOmn_info_config_t;
+    @brief      used to configure the info
+ **/
+typedef struct                      // size is 1+7 = 8 bytes
+{
+    uint8_t                         enabled;
+    uint8_t                         filler07[7];
+} eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8);
+
+
+/** @typedef    typedef struct eOmn_info_status_t;
+    @brief      used to report status of the info
+ **/
+typedef struct                      // size is 1+31 = 32 bytes
+{
+    uint8_t                         type;               /**< used for specifying the nature of the following message */
+    uint8_t                         string[31];         /**< contains a descriptive string */
+} eOmn_info_status_t;               EO_VERIFYsizeof(eOmn_info_status_t, 32);
+
+                                         
+
+
+/** @typedef    typedef struct eOmn_info_t;
+    @brief      used to represent the info with config, status
+ **/
+typedef struct                      // size is 8+32 = 40 bytes
+{
+    eOmn_info_config_t              config;
+    eOmn_info_status_t              status;
+} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 40);  
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------

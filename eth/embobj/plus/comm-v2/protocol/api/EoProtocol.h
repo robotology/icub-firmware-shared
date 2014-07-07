@@ -198,7 +198,8 @@ typedef enum
     eoprot_entity_mn_comm                   = eomn_entity_comm,         /**<  */  
 //    eoprot_entity_mn_communication          = eomn_entity_comm,    
     eoprot_entity_mn_appl                   = eomn_entity_appl,         /**<  */
-//    eoprot_entity_mn_application            = eomn_entity_appl,         /**<  */    
+//    eoprot_entity_mn_application            = eomn_entity_appl,         /**<  */ 
+    eoprot_entity_mn_info                   = eomn_entity_info,         /**<  */    
     eoprot_entity_mc_joint                  = eomc_entity_joint,        /**<  */ 
     eoprot_entity_mc_motor                  = eomc_entity_motor,        /**<  */     
     eoprot_entity_mc_controller             = eomc_entity_controller,   /**<  */    

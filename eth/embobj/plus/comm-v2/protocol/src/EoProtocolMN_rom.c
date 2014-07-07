@@ -98,6 +98,9 @@ static const eOmn_comm_t eoprot_mn_rom_comm_defaultvalue = { 0 };
 // - default value of a appl
 static const eOmn_appl_t eoprot_mn_rom_appl_defaultvalue = { 0 };
 
+// - default value of a info
+static const eOmn_info_t eoprot_mn_rom_info_defaultvalue = { 0 };
+
 
 // - descriptors for the variables of a comm
 
@@ -272,6 +275,67 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_go2state =
 };
 
 
+// - descriptors for the variables of a info
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_info_wholeitem =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_info_defaultvalue),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_info_wholeitem,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_info_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_info_wholeitem,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_info_wholeitem
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_info_config =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_info_defaultvalue.config),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_info_config,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_info_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_info_config,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_info_config
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_info_config_enabled =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_info_defaultvalue.config.enabled),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_info_config_enabled,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_info_defaultvalue.config.enabled,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_info_config_enabled,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_info_config_enabled
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_info_status =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_info_defaultvalue.status),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_info_status,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_info_defaultvalue.status,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_info_status,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_info_status
+#endif
+};
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -296,6 +360,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_comm_descriptors[] =
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_config         
 };  EO_VERIFYsizeof(s_eoprot_mn_rom_comm_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof));
 
+
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
 {   // here are eoprot_mn_tags_appl_numberof descriptors for the appl entity
     &eoprot_mn_rom_descriptor_appl_wholeitem,
@@ -305,10 +370,20 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
 };  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof));
 
 
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_info_descriptors[] =
+{   // here are eoprot_mn_tags_info_numberof descriptors for the info entity
+    &eoprot_mn_rom_descriptor_info_wholeitem,
+    &eoprot_mn_rom_descriptor_info_config,
+    &eoprot_mn_rom_descriptor_info_config_enabled,
+    &eoprot_mn_rom_descriptor_info_status    
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_info_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_info_numberof));
+
+
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mn_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_comm_descriptors,
-    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_appl_descriptors   
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_appl_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_info_descriptors    
 };  EO_VERIFYsizeof(eoprot_mn_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mn_numberof));
 
     
@@ -318,20 +393,23 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mn_rom_descriptors[] =
 const uint8_t eoprot_mn_rom_tags_numberof[] = 
 {
     eoprot_tags_mn_comm_numberof, 
-    eoprot_tags_mn_appl_numberof
+    eoprot_tags_mn_appl_numberof,
+    eoprot_tags_mn_info_numberof
 };  EO_VERIFYsizeof(eoprot_mn_rom_tags_numberof, eoprot_entities_mn_numberof*sizeof(uint8_t));
 
 const uint16_t eoprot_mn_rom_entities_sizeof[] = 
 {
     sizeof(eOmn_comm_t), 
-    sizeof(eOmn_appl_t)
+    sizeof(eOmn_appl_t),
+    sizeof(eOmn_info_t)
 };  EO_VERIFYsizeof(eoprot_mn_rom_entities_sizeof, eoprot_entities_mn_numberof*sizeof(uint16_t));
 
 
 const void* const eoprot_mn_rom_entities_defval[] = 
 {
     (const void*)&eoprot_mn_rom_comm_defaultvalue, 
-    (const void*)&eoprot_mn_rom_appl_defaultvalue
+    (const void*)&eoprot_mn_rom_appl_defaultvalue,
+    (const void*)&eoprot_mn_rom_info_defaultvalue    
 };  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(const void*)); 
 
 
@@ -341,6 +419,7 @@ const char * const eoprot_mn_strings_entity[] =
 {
     "eoprot_entity_mn_communication",   
     "eoprot_entity_mn_application",
+    "eoprot_entity_mn_info",
 };  EO_VERIFYsizeof(eoprot_mn_strings_entity, eoprot_entities_mn_numberof*sizeof(const char*)); 
 
 
@@ -355,6 +434,7 @@ static const char * const s_eoprot_mn_strings_tags_comm[] =
     "eoprot_tag_mn_comm_cmmnds_command_config"
 };  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_comm, eoprot_tags_mn_comm_numberof*sizeof(const char*)); 
 
+
 static const char * const s_eoprot_mn_strings_tags_appl[] =
 {
     "eoprot_tag_mn_appl_wholeitem",
@@ -364,10 +444,20 @@ static const char * const s_eoprot_mn_strings_tags_appl[] =
 };  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)); 
 
 
+static const char * const s_eoprot_mn_strings_tags_info[] =
+{
+    "eoprot_tag_mn_info_wholeitem",
+    "eoprot_tag_mn_info_config",
+    "eoprot_tag_mn_info_config_enabled",
+    "eoprot_tag_mn_info_status"
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_info, eoprot_tags_mn_info_numberof*sizeof(const char*));
+
+
 const char ** const eoprot_mn_strings_tags[] =
 {
     (const char**)&s_eoprot_mn_strings_tags_comm,   
-    (const char**)&s_eoprot_mn_strings_tags_appl
+    (const char**)&s_eoprot_mn_strings_tags_appl,
+    (const char**)&s_eoprot_mn_strings_tags_info
 };  EO_VERIFYsizeof(eoprot_mn_strings_tags, eoprot_entities_mn_numberof*sizeof(const char**)); 
 
 

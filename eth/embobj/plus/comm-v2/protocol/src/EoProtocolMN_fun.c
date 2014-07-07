@@ -199,6 +199,37 @@ EO_weak extern void eoprot_fun_INIT_mn_appl_cmmnds_go2state(const EOnv* nv) {}
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mn_appl_cmmnds_go2state)
 EO_weak extern void eoprot_fun_UPDT_mn_appl_cmmnds_go2state(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
+    
+    
+// -- info
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_info_wholeitem)
+EO_weak extern void eoprot_fun_INIT_mn_info_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_info_wholeitem)
+EO_weak extern void eoprot_fun_UPDT_mn_info_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_info_config)
+EO_weak extern void eoprot_fun_INIT_mn_info_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_info_config)
+EO_weak extern void eoprot_fun_UPDT_mn_info_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_info_config_enabled)
+EO_weak extern void eoprot_fun_INIT_mn_info_config_enabled(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_info_config_enabled)
+EO_weak extern void eoprot_fun_UPDT_mn_info_config_enabled(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_info_status)
+EO_weak extern void eoprot_fun_INIT_mn_info_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_info_status)
+EO_weak extern void eoprot_fun_UPDT_mn_info_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
