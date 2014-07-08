@@ -153,7 +153,8 @@ typedef enum
     eomc_controlmode_direct                     = eomc_ctrlmval_direct,
     eomc_controlmode_hwFault                    = eomc_ctrlmval_hwFault,
     eomc_controlmode_notConfigured              = eomc_ctrlmval_notConfigured,
-    eomc_controlmode_configured                 = eomc_ctrlmval_configured
+    eomc_controlmode_configured                 = eomc_ctrlmval_configured,
+    eomc_controlmode_unknownError               = eomc_ctrlmval_unknownError
 } eOmc_controlmode_t;
 
 
