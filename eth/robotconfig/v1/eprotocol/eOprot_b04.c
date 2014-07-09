@@ -198,29 +198,50 @@ extern eOresult_t eoprot_b04_Initialise(void* p, eObool_t islocal)
     return(eores_OK);
 }
 
+/*NOTE: proxied variable can be used only in EMS4 because of memory missing in ems001 */
+#ifdef USE_PROTO_PROXY
 extern eObool_t eoprot_b04_isvariableproxied(eOnvID32_t id)
 {    
-//     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
-//     if(eoprot_endpoint_motioncontrol == ep)
-//     {
-//         eOprotEntity_t ent = eoprot_ID2entity(id);
-//         if((eoprot_entity_mc_joint == ent) || (eoprot_entity_mc_motor == ent))
-//         {   // only joints and motors are proxied. all of them
-//             return(eobool_true);
-//         }        
-//     }
-//     else if(eoprot_endpoint_analogsensors == ep)
-//     {   // what about the mais?
-//         return(eobool_false);
-//     }
-//     
-//     // all other variables are not proxied
-//     return(eobool_false);    
+    //currently proxied net vars are regarding joints only.
+    eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
+    if(eoprot_endpoint_motioncontrol != ep)
+    {
+        return(eobool_false);
+    }
     
+    eOprotEntity_t ent = eoprot_ID2entity(id);
+    if(eoprot_entity_mc_joint != ent)
+    {
+        return(eobool_false);
+    }
     
-    //vale: i commented all because currently we don't use proxied variables
-     return(eobool_false); 
+    eOprotTag_t tag = eoprot_ID2tag(id);
+    
+    switch(tag)
+    {
+        //VALE get velocity pid not implemented!!!
+        case eoprot_tag_mc_joint_config_pidposition:
+        case eoprot_tag_mc_joint_config_pidvelocity:
+        case eoprot_tag_mc_joint_config_pidtorque:
+        case eoprot_tag_mc_joint_config_limitsofjoint:
+        case eoprot_tag_mc_joint_config_impedance:
+        case eoprot_tag_mc_joint_cmmnds_setpoint:
+        {
+            return(eobool_true);
+        }
+        
+        default:
+        {
+            return(eobool_false);
+        };
+     };
 }
+#else
+extern eObool_t eoprot_b04_isvariableproxied(eOnvID32_t id)
+{
+    return(eobool_false);
+}
+#endif
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
