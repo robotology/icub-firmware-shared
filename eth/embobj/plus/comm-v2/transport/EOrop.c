@@ -242,14 +242,16 @@ extern EOnv* eo_rop_GetNV(EOrop *p)
 
 extern eObool_t eo_rop_IsValid(EOrop *p)
 {
+    eObool_t datasizeispresent = eobool_false;
+    eObool_t datafieldisrequired = eobool_false;
     // verify ropcode
     if(eobool_false == eo_rop_ropcode_is_valid(p->stream.head.ropc))
     {
         return(eobool_false);
     }
     
-    eObool_t datasizeispresent = eo_rop_datafield_is_present(&p->stream.head);
-    eObool_t datafieldisrequired = eo_rop_datafield_is_required(&p->stream.head);
+    datasizeispresent = eo_rop_datafield_is_present(&p->stream.head);
+    datafieldisrequired = eo_rop_datafield_is_required(&p->stream.head);
     
     // verify datafield
     if(eobool_true == datafieldisrequired)

@@ -149,8 +149,10 @@ extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, c
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN
     EOVtaskDerived *task = NULL;
-    task = eov_sys_GetRunningTask(eov_sys_GetHandle());
     eOid08_t id = 0;
+
+    task = eov_sys_GetRunningTask(eov_sys_GetHandle());
+    
     
     if(NULL == task)
     {

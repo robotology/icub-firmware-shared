@@ -210,12 +210,14 @@ extern eOresult_t eo_confman_Confirmation_Requested(EOconfirmationManager *p, eO
 
 extern eOresult_t eo_confman_Confirmation_Received(EOconfirmationManager *p, eOipv4addr_t fromipaddr, eOropdescriptor_t* ropdes)
 {
+    eOropconfinfo_t confinfo = 0;
+
     if((NULL == p) || (NULL == ropdes))
     {
         return(eores_NOK_generic);  
     }
     
-    eOropconfinfo_t confinfo = (eOropconfinfo_t)ropdes->control.confinfo;
+    confinfo = (eOropconfinfo_t)ropdes->control.confinfo;
 
     if(eo_ropconf_none != confinfo)
     {

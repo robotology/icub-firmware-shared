@@ -187,8 +187,9 @@ extern EOtheMemoryPool * eo_mempool_Initialise(const eOmempool_cfg_t *cfg)
         {               
             if(NULL != cfg->conf)
             {   
-                memcpy(&s_the_mempool.thepool.config, cfg->conf, sizeof(eOmempool_pool_config_t)); 
                 eOmempool_the_pool_t* pool = &s_the_mempool.thepool;
+                memcpy(&s_the_mempool.thepool.config, cfg->conf, sizeof(eOmempool_pool_config_t)); 
+                
                 
                 if(0 != pool->config.size08)
                 {
@@ -276,6 +277,7 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
     void *ret = NULL;
     uint32_t usedbytespool = 0;
     uint32_t usedbytesheap = 0;
+    eOmempool_alloc_mode_t mode = s_the_mempool.config.mode;
           
     if((0 == size) || (0 == number)) 
     {
@@ -284,7 +286,7 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
         return(NULL);
     }
 
-    eOmempool_alloc_mode_t mode = s_the_mempool.config.mode;
+    
 
     if(NULL == p)
     {
@@ -365,7 +367,8 @@ extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size)
 
 
 extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
-{       
+{  
+    void *ret = NULL;
     if(0 == size)
     {
         eo_mempool_Delete(p, m);
@@ -377,7 +380,7 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
         s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
     }    
     
-    void *ret = s_the_mempool.theheap.reallocate(m, size);
+    ret = s_the_mempool.theheap.reallocate(m, size);
     
     if(NULL == ret)
     {   // manage the fatal error in case memory could not achieved

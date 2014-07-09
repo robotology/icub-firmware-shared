@@ -209,6 +209,8 @@ extern eOnvBRD_t eo_devicetransceiver_GetBoardNumber(EOdeviceTransceiver* p)
 
 static EOnvSet* s_eo_devicetransceiver_nvset_get(EOdeviceTransceiver* p, const eOdevicetransceiver_cfg_t *cfg)
 {
+    EOnvSet* nvset = NULL;
+
     const uint16_t numofdevices     = 1;    // one device only
     const uint16_t ondevindexzero   = 0;    // one device only
 
@@ -217,7 +219,7 @@ static EOnvSet* s_eo_devicetransceiver_nvset_get(EOdeviceTransceiver* p, const e
         return(p->nvset);
     }
 
-    EOnvSet* nvset = eo_nvset_New(numofdevices, cfg->nvsetprotection, cfg->mutex_fn_new);
+    nvset = eo_nvset_New(numofdevices, cfg->nvsetprotection, cfg->mutex_fn_new);
     
     eo_nvset_DEVpushback(nvset, ondevindexzero, (eOnvset_DEVcfg_t*)cfg->nvsetdevcfg, eo_nvset_ownership_local, EO_COMMON_IPV4ADDR_LOCALHOST);
     

@@ -237,6 +237,10 @@ extern eOsizecntnr_t eo_transmitter_regular_rops_Size(EOtransmitter *p)
 extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, eOnvEP8_t ep)
 {
     eOsizecntnr_t retvalue = 0;
+    uint16_t size = 0;
+    uint32_t i = 0;
+    EOlistIter* li = NULL;
+    eOnvID32_t id32 = 0;
     
     if(NULL == p) 
     {
@@ -262,16 +266,14 @@ extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, 
     
     eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
     
-    uint16_t size = eo_list_Size(p->listofregropinfo);
-    
-    uint32_t i=0;
-    EOlistIter* li = eo_list_Begin(p->listofregropinfo);
+    size = eo_list_Size(p->listofregropinfo);
+    li = eo_list_Begin(p->listofregropinfo);
     for(i=0; i<size; i++) 
-    {       
+    { 
         eo_transm_regrop_info_t *item = (eo_transm_regrop_info_t*) eo_list_At(p->listofregropinfo, li);
         li = eo_list_Next(p->listofregropinfo, li);
         
-        eOnvID32_t id32 = eo_nv_GetID32(&item->thenv);
+        id32 = eo_nv_GetID32(&item->thenv);
         if(ep == eoprot_ID2endpoint(id32))
         {
             retvalue ++;
@@ -286,6 +288,9 @@ extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, 
 
 extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, uint16_t start, EOarray* array)
 {
+    uint16_t size = 0;
+    uint16_t array_capacity = 0;
+
     if(NULL == p) 
     {
         return(eores_NOK_nullpointer);
@@ -304,8 +309,8 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
     
     eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
     
-    uint16_t size = eo_list_Size(p->listofregropinfo);
-    uint16_t array_capacity = eo_array_Capacity(array);
+    size = eo_list_Size(p->listofregropinfo);
+    array_capacity = eo_array_Capacity(array);
     
     eo_array_Reset(array);
     
@@ -315,6 +320,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
     }
     else
     {
+        eOnvID32_t id32 = 0;
         uint32_t count = 0;
         uint32_t i=0;
         EOlistIter* li = eo_list_Begin(p->listofregropinfo);
@@ -322,7 +328,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
         { 
             eo_transm_regrop_info_t *item = (eo_transm_regrop_info_t*) eo_list_At(p->listofregropinfo, li);
             li = eo_list_Next(p->listofregropinfo, li);
-            eOnvID32_t id32 = eo_nv_GetID32(&item->thenv);
+            id32 = eo_nv_GetID32(&item->thenv);
             
             //if(ep == eoprot_ID2endpoint(id32))
             {
@@ -342,6 +348,9 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
 
 extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p, eOnvEP8_t ep, uint16_t start, EOarray* array)
 {
+    uint16_t size = 0;
+    uint16_t array_capacity = 0;
+
     if(NULL == p) 
     {
         return(eores_NOK_nullpointer);
@@ -370,8 +379,8 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p,
     
     eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
     
-    uint16_t size = eo_list_Size(p->listofregropinfo);
-    uint16_t array_capacity = eo_array_Capacity(array);
+    size = eo_list_Size(p->listofregropinfo);
+    array_capacity = eo_array_Capacity(array);
     
     eo_array_Reset(array);
     
@@ -381,6 +390,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p,
     }
     else
     {      
+        eOnvID32_t id32 = 0;
         uint32_t count = 0;
         uint32_t i=0;
         EOlistIter* li = eo_list_Begin(p->listofregropinfo);
@@ -388,7 +398,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p,
         { 
             eo_transm_regrop_info_t *item = (eo_transm_regrop_info_t*) eo_list_At(p->listofregropinfo, li);
             li = eo_list_Next(p->listofregropinfo, li);
-            eOnvID32_t id32 = eo_nv_GetID32(&item->thenv);
+            id32 = eo_nv_GetID32(&item->thenv);
             
             if(ep == eoprot_ID2endpoint(id32))
             {

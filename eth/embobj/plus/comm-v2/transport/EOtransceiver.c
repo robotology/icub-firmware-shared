@@ -117,6 +117,7 @@ extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg)
     EOtransceiver *retptr = NULL;  
     eOreceiver_cfg_t rec_cfg;
     eOtransmitter_cfg_t tra_cfg;
+    eOagent_cfg_t agentcfg = {0};
 
 
     if(NULL == cfg)
@@ -166,7 +167,7 @@ extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg)
 
     // create the agent
     
-    eOagent_cfg_t agentcfg;
+    //eOagent_cfg_t agentcfg;
     agentcfg.nvset      = cfg->nvset;
     agentcfg.proxy      = retptr->proxy;
     agentcfg.confman    = retptr->confmanager;

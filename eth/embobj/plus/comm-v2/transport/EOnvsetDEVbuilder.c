@@ -159,6 +159,10 @@ extern EOnvsetDEVbuilder* eo_nvsetdevbuilder_New(eOnvBRD_t board)
 
 extern eOresult_t eo_nvsetdevbuilder_ENDPOINTpushback(EOnvsetDEVbuilder* p, eOnvEP8_t ep) 
 {
+    uint16_t size = 0;
+    uint8_t *nn = NULL;
+    ep_holder_t epholder = {0};
+
  	if(NULL == p) 
 	{
 		return(eores_NOK_nullpointer); 
@@ -169,14 +173,13 @@ extern eOresult_t eo_nvsetdevbuilder_ENDPOINTpushback(EOnvsetDEVbuilder* p, eOnv
         return(eores_NOK_generic); 
     }
     
-    uint16_t size = eo_vector_Size(p->theendpoints);
+    size = eo_vector_Size(p->theendpoints);
     
     if(EOK_uint16dummy != p->ep2indexhashtable[ep])
     {   // already inserted
         return(eores_OK); 
     }
     
-    ep_holder_t epholder = {0};
     epholder.ep                 = ep;
     epholder.numofentities      = 0; // or maxentities
     epholder.entities           = eo_vector_New(sizeof(ET_holder_t), eo_vectorcapacity_dynamic, NULL, 0, NULL, NULL);  // or maxentities
@@ -187,7 +190,7 @@ extern eOresult_t eo_nvsetdevbuilder_ENDPOINTpushback(EOnvsetDEVbuilder* p, eOnv
     eo_vector_PushBack(p->theendpoints, &epholder);   
     
     // now i assign the ..
-    uint8_t *nn = NULL;
+    nn = NULL;
     switch(ep)
     {
         case eoprot_endpoint_management:
@@ -219,6 +222,10 @@ extern eOresult_t eo_nvsetdevbuilder_ENDPOINTpushback(EOnvsetDEVbuilder* p, eOnv
 
 extern eOresult_t eo_nvsetdevbuilder_ENTITYpushback(EOnvsetDEVbuilder* p, eOnvEP8_t ep, eOnvENT_t en, uint8_t howmanyofthisentity) //, uint8_t numberoftagsinentity)
 {
+    uint16_t epindex = 0;
+    ep_holder_t* eph = NULL;
+    ET_holder_t etholder = {0};
+
  	if(NULL == p) 
 	{
 		return(eores_NOK_nullpointer); 
@@ -234,7 +241,7 @@ extern eOresult_t eo_nvsetdevbuilder_ENTITYpushback(EOnvsetDEVbuilder* p, eOnvEP
         return(eores_NOK_generic); 
     }
     
-    uint16_t epindex = p->ep2indexhashtable[ep];
+    epindex = p->ep2indexhashtable[ep];
     
     if(EOK_uint16dummy == epindex)
     {   // ep was never inserted.
@@ -245,7 +252,7 @@ extern eOresult_t eo_nvsetdevbuilder_ENTITYpushback(EOnvsetDEVbuilder* p, eOnvEP
     }
     
     // ok, i get the epholder an i modify it.
-    ep_holder_t* eph = (ep_holder_t*) eo_vector_At(p->theendpoints, epindex);
+    eph = (ep_holder_t*) eo_vector_At(p->theendpoints, epindex);
     
     // i hope that eph is not NULL
     
@@ -254,7 +261,6 @@ extern eOresult_t eo_nvsetdevbuilder_ENTITYpushback(EOnvsetDEVbuilder* p, eOnvEP
         return(eores_NOK_generic); 
     }
     
-    ET_holder_t etholder = {0};
     etholder.en                 = en;
     etholder.enmultiplicity     = howmanyofthisentity;
     etholder.tagsnumber         = eoprot_ep_tags_numberof[ep][en]; // or numberoftagsinentity
@@ -262,7 +268,7 @@ extern eOresult_t eo_nvsetdevbuilder_ENTITYpushback(EOnvsetDEVbuilder* p, eOnvEP
     // now i put the ethholde inside the eph
 
     eo_vector_PushBack(eph->entities, &etholder);
-    eph->numofentities =  eo_vector_Size(eph->entities);
+    eph->numofentities =  (uint8_t) eo_vector_Size(eph->entities); // numofentities is never too big
     
     // now change the number of entities in the ep. the default is zero.
     p->eoprot_ep_entities_numberofeach[ep][en] = howmanyofthisentity;
@@ -280,12 +286,14 @@ extern eOresult_t eo_nvsetdevbuilder_PROXIEDRULEset(EOnvsetDEVbuilder* p, eObool
     
     p->isvarproxied     = isvarproxied_fn;
 
-    
     return(eores_OK);    
 }
 
 extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
 {
+    uint16_t numofeps = 0;
+    eOnvset_EPcfg_t epcfg = {0};
+    eOnvset_EPcfg_t* data = NULL;
     uint8_t i = 0;
     uint8_t j = 0;
     
@@ -306,10 +314,9 @@ extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
     p->devcfg->vectorof_epcfg               = NULL;
     p->devcfg->fptr_ep2indexofepcfg         = s_eoprot_ep2index;           
     
-    uint16_t numofeps = eo_vector_Size(p->theendpoints);
+    numofeps = eo_vector_Size(p->theendpoints);
     p->theepcfgs = eo_vector_New(sizeof(eOnvset_EPcfg_t), numofeps, NULL, 0, NULL, NULL);
     
-    eOnvset_EPcfg_t epcfg = {0};
     
     epcfg.dummy         = 0;
     epcfg.protif        = (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface;
@@ -343,7 +350,7 @@ extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
     }
        
     
-    eOnvset_EPcfg_t* data = eo_vector_storage_Get(p->theepcfgs);
+    data = (eOnvset_EPcfg_t*) eo_vector_storage_Get(p->theepcfgs);
     
     p->devcfg->vectorof_epcfg = eo_constvector_New(sizeof(eOnvset_EPcfg_t), numofeps, data);
     

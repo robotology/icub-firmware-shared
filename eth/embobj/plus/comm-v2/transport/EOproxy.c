@@ -160,13 +160,14 @@ extern EOproxy* eo_proxy_New(const eOproxy_cfg_t *cfg)
 extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
 {
     eOresult_t res = eores_NOK_generic;
+    EOnv *nv = NULL;
     
     if((NULL == p) || (NULL == rop))
     {
         return(eores_NOK_nullpointer);
     }
 
-    EOnv *nv = &rop->netvar;
+    nv = &rop->netvar;
     
     if(eobool_false == eo_nv_IsProxied(nv))
     {
@@ -203,8 +204,10 @@ extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
 extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t signature, void *data)
 {
     eOresult_t res = eores_NOK_generic;
-    
-    eo_proxy_search_key_t skey;
+    EOlistIter* li = NULL;
+    eo_proxy_search_key_t skey = {0};
+    eo_proxy_ropdes_plus_t *item = NULL;
+
     skey.id32 = id32;
     skey.sign = signature;
         
@@ -215,7 +218,7 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
         
     eov_mutex_Take(p->mtx, eok_reltimeINFINITE);
     
-    EOlistIter* li = eo_list_Find(p->listofropdes, s_matching_rule_id32, &skey);
+    li = eo_list_Find(p->listofropdes, s_matching_rule_id32, &skey);
 
     if(NULL == li)
     {   // there is no entry with id32 in the list ... i dont load any reply rop
@@ -223,7 +226,7 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
         return(eores_NOK_generic);
     }
     
-    eo_proxy_ropdes_plus_t *item = eo_list_At(p->listofropdes, li);
+    item = (eo_proxy_ropdes_plus_t*) eo_list_At(p->listofropdes, li);
     
     if(NULL != data)
     {
@@ -244,21 +247,24 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
     
 extern eOresult_t eo_proxy_Tick(EOproxy *p)
 {   
+    eo_proxy_ropdes_plus_t* item = NULL;
+    eOabstime_t timenow = 0;
+
     if(NULL == p)
     {
         return(eores_NOK_nullpointer);
     }
     
-    eOabstime_t timenow = eov_sys_LifeTimeGet(eov_sys_GetHandle());
+    timenow = eov_sys_LifeTimeGet(eov_sys_GetHandle());
     
     eov_mutex_Take(p->mtx, eok_reltimeINFINITE);
     
     // i assume that the items are in expiry order, thus i get the front and i keep on removing until timenow is higher than item->ropdes.time          
-    eo_proxy_ropdes_plus_t* item = eo_list_Front(p->listofropdes);   
+    item = (eo_proxy_ropdes_plus_t*) eo_list_Front(p->listofropdes);   
     while((NULL != item) && (timenow > item->ropdes.time))
     {
         eo_list_PopFront(p->listofropdes);
-        item = eo_list_Front(p->listofropdes);
+        item = (eo_proxy_ropdes_plus_t*) eo_list_Front(p->listofropdes);
     }
     
     eov_mutex_Release(p->mtx);
