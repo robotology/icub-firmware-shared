@@ -140,7 +140,6 @@ const eOnvset_DEVcfg_t eoprot_b02_nvsetDEVcfg =
     EO_INIT(.boardnum)                  eoprot_b02_boardnumber,
     EO_INIT(.dummy)                     {0, 0, 0},
     EO_INIT(.param)                     NULL,
-    EO_INIT(.param)                     NULL,
     EO_INIT(.fptr_device_initialise)    eoprot_b02_Initialise,     
     EO_INIT(.vectorof_epcfg)            &s_eoprot_b02_constvectofEPcfg,
     EO_INIT(.fptr_ep2indexofepcfg)      s_eoprot_b02_ep2index
@@ -192,7 +191,6 @@ extern eOresult_t eoprot_b02_Initialise(void* p, eObool_t islocal)
     if(eobool_true == islocal)
     {
         eoprot_config_board_local(eoprot_b02_boardnumber);
-        eoprot_config_proxied_variables(eoprot_b02_boardnumber, eoprot_b02_isvariableproxied);
         eoprot_config_proxied_variables(eoprot_b02_boardnumber, eoprot_b02_isvariableproxied);
     }
     
