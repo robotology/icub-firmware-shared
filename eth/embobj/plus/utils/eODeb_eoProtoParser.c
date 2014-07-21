@@ -306,13 +306,11 @@ static uint8_t s_eodeb_eoProtoParser_CheckSeqnum(eODeb_eoProtoParser *p, eOethLo
 
     //if i'm here i lost a packt or packets arrived not in order.
     
-    if(*rec_seqnum > curr_seqNum)
+    if(*rec_seqnum != curr_seqNum)
     {
         //i lost a pkt, so i restart with received seqnum
         curr_seqNum = *rec_seqnum;
     }
-    
-    //if i received a pkt with seqnum<curr_seqNum then i mantein my curr_seqNum
     
     return(0);
 }
