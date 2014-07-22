@@ -188,6 +188,8 @@ static eOresult_t s_eodeb_eoProtoParser_CheckNV(eODeb_eoProtoParser *p, eOethLow
 	eOrophead_t *ropheader;
 	uint8_t *rop_ptr;
     uint16_t i;
+    uint32_t signature = EOK_uint32dummy;
+    uint64_t time = EOK_uint64dummy;
 
 
 	//get ropframe header
@@ -215,18 +217,20 @@ static eOresult_t s_eodeb_eoProtoParser_CheckNV(eODeb_eoProtoParser *p, eOethLow
 
 // 		//save ptr to enddata
 // 		enddata_ptr = &rop_ptr[(ropheader->dsiz) + filldata];
+        
+        
 
 		if(ropheader->ctrl.plussign == 1)
 		{
 			uint8_t *data_ptr = &rop_ptr[totdatasize];
-			ropAddInfo.desc.signature = *((uint32_t*)data_ptr);
+			signature = *((uint32_t*)data_ptr);
 			signaturesize = 4;
-
 		}
+        
 		if(ropheader->ctrl.plustime == 1)
 		{
 			uint8_t *data_ptr = &rop_ptr[totdatasize + signaturesize];
-			memcpy((uint8_t*)&ropAddInfo.time, data_ptr, sizeof(uint64_t));
+			memcpy((uint8_t*)&time, data_ptr, sizeof(uint64_t));
 			timesize = 8;
 		}
 
@@ -240,8 +244,8 @@ static eOresult_t s_eodeb_eoProtoParser_CheckNV(eODeb_eoProtoParser *p, eOethLow
 			ropAddInfo.desc.id32 = ropheader->id32;
 			ropAddInfo.desc.data = &rop_ptr[ROP_HEADER_SIZE];
 			ropAddInfo.desc.size = ropheader->dsiz;
-			ropAddInfo.desc.signature = EOK_uint32dummy;
-			ropAddInfo.time = EOK_uint64dummy;
+			ropAddInfo.desc.signature = signature;
+			ropAddInfo.time = time;
 
 			p->cfg.checks.nv.cbk_onNVfound(pktInfo_ptr, &ropAddInfo);
 		}
