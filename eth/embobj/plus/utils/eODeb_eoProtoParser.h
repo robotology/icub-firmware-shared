@@ -62,6 +62,7 @@ typedef struct
 {
     eOropdescriptor_t   desc; 
     uint64_t            time;
+    uint64_t            seqnum;
     //put here other info you want collect while parsing rop
 } eODeb_eoProtoParser_ropAdditionalInfo_t;
 
