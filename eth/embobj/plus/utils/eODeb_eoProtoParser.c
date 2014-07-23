@@ -75,7 +75,7 @@ static eOresult_t s_eodeb_eoProtoParser_CheckNV(eODeb_eoProtoParser *p, eOethLow
 static uint8_t s_eodeb_eoProtoParser_NVisrequired(eODeb_eoProtoParser *p, eOprotID32_t id32);
 static uint8_t s_eodeb_eoProtoParser_CheckSeqnum(eODeb_eoProtoParser *p, eOethLowLevParser_packetInfo_t *pktInfo_ptr, 
                                                 uint32_t *rec_seqnum, uint32_t *expeted_seqnum);
-static uint8_t s_eodeb_eoProtoParser_isvalidropframe(uint8_t *payload);
+static uint8_t s_eodeb_eoProtoParser_isvalidropframe(uint8_t *payload, uint32_t size);
 //static eOresult_t s_eodeb_eoProtoParser_DumpNV(eODeb_eoProtoParser *p, eOethLowLevParser_packetInfo_t *pktInfo_ptr);
 
 
@@ -125,7 +125,7 @@ extern eOresult_t eODeb_eoProtoParser_RopFrameDissect(eODeb_eoProtoParser *p, eO
     }
 
     //1) verify if i received a valid ropframe
-    if(!(s_eodeb_eoProtoParser_isvalidropframe(pktInfo_ptr->payload_ptr)))
+    if(!(s_eodeb_eoProtoParser_isvalidropframe(pktInfo_ptr->payload_ptr, pktInfo_ptr->size)))
     {
         if(p->cfg.checks.invalidRopFrame.cbk != NULL)
         {
@@ -167,11 +167,11 @@ extern eOresult_t eODeb_eoProtoParser_RopFrameDissect(eODeb_eoProtoParser *p, eO
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of static functions 
 // --------------------------------------------------------------------------------------------------------------------
-static uint8_t s_eodeb_eoProtoParser_isvalidropframe(uint8_t *payload)
+static uint8_t s_eodeb_eoProtoParser_isvalidropframe(uint8_t *payload, uint32_t size)
 {
     EOropframeHeader_t *ropframeHdr = (EOropframeHeader_t *)payload;
-    
-    if(ropframeHdr->startofframe == 0x12345678)
+    uint32_t footer =*((uint32_t*)(&payload[size-4]));
+    if((ropframeHdr->startofframe == 0x12345678) && (footer == 0x87654321))
     {
         return(1);
     }
