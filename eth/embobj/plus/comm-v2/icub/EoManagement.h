@@ -253,7 +253,7 @@ typedef struct
 {
     uint8_t                         filler08[8];
 } eOmn_comm_config_t;               //EO_VERIFYsizeof(eOmn_comm_config_t, 8);
-
+//#warning marco.accame says: add a variable mnprotocolversion which is used to verify if queries are possibles
 typedef struct
 {
     eOmn_transceiver_properties_t   transceiver;
