@@ -66,7 +66,7 @@ const eOledpulser_cfg_t eo_ledpulser_DefaultCfg =
     .led_init           = s_eo_ledpulser_fake_led_init,
     .led_on             = s_eo_ledpulser_fake_led_on,
     .led_off            = s_eo_ledpulser_fake_led_off,
-    .led_toggle         = s_eo_ledpulser_fake_led_toggle,
+    .led_toggle         = s_eo_ledpulser_fake_led_toggle
 };
 
 
@@ -93,7 +93,11 @@ static EOtheLEDpulser s_theledpulser =
 {
     .config         = 
     {
-        .led_enable_mask = 1 << eo_ledpulser_led_zero 
+        .led_enable_mask    = 1 << eo_ledpulser_led_zero,
+        .led_init           = s_eo_ledpulser_fake_led_init,
+        .led_on             = s_eo_ledpulser_fake_led_on,
+        .led_off            = s_eo_ledpulser_fake_led_off,
+        .led_toggle         = s_eo_ledpulser_fake_led_toggle     
     },
     .action         = NULL,
     .timer          = {NULL},
@@ -142,7 +146,7 @@ extern EOtheLEDpulser * eo_ledpulser_Initialise(const eOledpulser_cfg_t *ledpuls
     uint8_t i = 0;
     for(i=0; i<eo_ledpulser_leds_number; i++)
     {
-        uint8_t ledbit = 0x1 << i;
+        uint16_t ledbit = 0x1 << i;
         if((ledpulsercfg->led_enable_mask & ledbit) == ledbit)
         {            
             s_theledpulser.timer[i] = eo_timer_New(); 
