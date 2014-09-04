@@ -276,22 +276,18 @@ extern eObool_t eo_rop_IsValid(EOrop *p)
 extern uint16_t eo_rop_compute_size(eOropctrl_t ropctrl, eOropcode_t ropc, uint16_t sizeofdata)
 {
     uint16_t size = sizeof(eOrophead_t);
-    eOrophead_t rophead = 
-    {
-        EO_INIT(.ctrl)  0,
-        EO_INIT(.ropc)  ropc,
-        EO_INIT(.dsiz)  sizeofdata,           
-        EO_INIT(.id32)  0     
-    };
+    eOrophead_t rophead = { 0 };
 
-    if( (eo_ropcode_none == ropc) || (0 != ropctrl.version) )
+    if( (eo_ropcode_none == ropc) || (EOK_ROP_VERSION_0 != ropctrl.version) )
     {
         return(0);      
     }
     
 
     memcpy(&rophead.ctrl, &ropctrl, sizeof(eOropctrl_t));
-    
+    rophead.ropc = ropc;
+    rophead.dsiz = sizeofdata;
+    rophead.id32 = 0;
     
     if(eobool_true == eo_rop_datafield_is_required(&rophead))
     {
@@ -309,7 +305,6 @@ extern uint16_t eo_rop_compute_size(eOropctrl_t ropctrl, eOropcode_t ropc, uint1
     }
 
     return(size);    
-    
 }
 
 
