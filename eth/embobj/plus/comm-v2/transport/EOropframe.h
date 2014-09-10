@@ -48,11 +48,11 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 // empty-section
-  
+
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-// the ropframe with zero rops does not have zero szie as it is made of an header and a footer. thus requires some bytes 
+// the ropframe with zero rops does not have zero size as it is made of an header and a footer. thus requires some bytes 
 enum { eo_ropframe_sizeforZEROrops = 28 };
 
 
@@ -62,6 +62,13 @@ enum { eo_ropframe_sizeforZEROrops = 28 };
                 object only with the proper public functions. 
  **/  
 typedef struct EOropframe_hid EOropframe;
+
+
+/** @typedef    typedef struct EOropframeData_hid EOropframeData
+    @brief      EOropframeData is an opaque struct. It is used to cast the pointer of a received packet so that 
+                functions with prefix eo_ropframedata_ can operate directly on the packet without creating a proper EOropframe. 
+ **/  
+typedef struct EOropframeData_hid EOropframeData;
 
 
     
@@ -114,6 +121,13 @@ extern eOresult_t eo_ropframe_seqnum_Set(EOropframe *p, uint64_t seqnum);
 extern uint64_t eo_ropframe_seqnum_Get(EOropframe *p);
 
 
+extern eOresult_t eo_ropframedata_age_Set(EOropframeData *d, eOabstime_t age);
+
+extern eOabstime_t eo_ropframedata_age_Get(EOropframeData *d);
+
+extern eOresult_t eo_ropframedata_seqnum_Set(EOropframeData *d, uint64_t seqnum);
+
+extern uint64_t eo_ropframedata_seqnum_Get(EOropframeData *d);
 
 /** @}            
     end of group eo_ropframe  

@@ -75,27 +75,27 @@
 
 EO_static_inline EOropframeHeader_t* s_eo_ropframe_header_get(EOropframe *p)
 {
-    return( (EOropframeHeader_t *)&p->headropsfooter->header );
+    return( (EOropframeHeader_t *)&p->framedata->header );
 }
 
 EO_static_inline uint8_t* s_eo_ropframe_rops_get(EOropframe *p)
 {
-    return( (uint8_t *)(&p->headropsfooter->ropsfooter[0]) );
+    return( (uint8_t *)(&p->framedata->ropsfooter[0]) );
 }
 
 EO_static_inline uint16_t s_eo_ropframe_sizeofrops_get(EOropframe *p)
 {
-    return( p->headropsfooter->header.ropssizeof );
+    return( p->framedata->header.ropssizeof );
 }
 
 EO_static_inline uint16_t s_eo_ropframe_numberofrops_get(EOropframe *p)
 {
-    return( p->headropsfooter->header.ropsnumberof );
+    return( p->framedata->header.ropsnumberof );
 }
 
 EO_static_inline EOropframeFooter_t* s_eo_ropframe_footer_get(EOropframe *p)
 {
-    return( (EOropframeFooter_t *)(&p->headropsfooter->ropsfooter[s_eo_ropframe_sizeofrops_get(p)]) );
+    return( (EOropframeFooter_t *)(&p->framedata->ropsfooter[s_eo_ropframe_sizeofrops_get(p)]) );
 }
 
 
@@ -132,7 +132,7 @@ extern EOropframe* eo_ropframe_New(void)
     retptr->capacity                = 0;
     retptr->size                    = 0;
     retptr->index2nextrop2beparsed  = 0;
-    retptr->headropsfooter          = NULL;
+    retptr->framedata               = NULL;
 
     return(retptr);
 }
@@ -153,7 +153,7 @@ extern eOresult_t eo_ropframe_Load(EOropframe *p, uint8_t *framedata, uint16_t f
     p->capacity                 = framecapacity;
     p->size                     = framesize;
     p->index2nextrop2beparsed   = 0;
-    p->headropsfooter           = (EOropframeHeaderRopsFooter_t*)framedata;
+    p->framedata                = (EOropframeData*)framedata;
     
     return(eores_OK);
 }
@@ -168,7 +168,7 @@ extern eOresult_t eo_ropframe_Unload(EOropframe *p)
     p->capacity                 = 0;
     p->size                     = 0;
     p->index2nextrop2beparsed   = 0;
-    p->headropsfooter           = NULL;
+    p->framedata                = NULL;
 
     return(eores_OK);
 }
@@ -180,7 +180,7 @@ extern eOresult_t eo_ropframe_Get(EOropframe *p, uint8_t **framedata, uint16_t* 
         return(eores_NOK_nullpointer);
     }
 
-    *framedata          = (uint8_t*)p->headropsfooter;
+    *framedata          = (uint8_t*)p->framedata;
     *framesize          = p->size;
     *framecapacity      = p->capacity;
 
@@ -210,7 +210,7 @@ extern eOresult_t eo_ropframe_Clear(EOropframe *p)
     p->size                     = (0 == p->capacity) ? (0) : (eo_ropframe_sizeforZEROrops); // if capacity is zero then we dont have buffer ... else we have and size must be eo_ropframe_sizeforZEROrops
     p->index2nextrop2beparsed   = 0;
     
-    if(NULL != p->headropsfooter)
+    if(NULL != p->framedata)
     {
         s_eo_ropframe_header_clr(p);    
         s_eo_ropframe_footer_adjust(p);
@@ -287,7 +287,7 @@ extern eObool_t eo_ropframe_IsValid(EOropframe *p)
     EOropframeHeader_t *header;
     EOropframeFooter_t *footer;
     
-    if((NULL == p) || (NULL == p->headropsfooter)) 
+    if((NULL == p) || (NULL == p->framedata)) 
     {
         return(eobool_false);
     }
@@ -322,7 +322,7 @@ extern uint16_t eo_ropframe_ROP_NumberOf(EOropframe *p)
 
 extern uint16_t eo_ropframe_ROP_NumberOf_quickversion(EOropframe *p)
 {
-    return( p->headropsfooter->header.ropsnumberof );
+    return( p->framedata->header.ropsnumberof );
 }
 
 
@@ -400,7 +400,7 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
     uint16_t streamindex = 0;
     eOresult_t res = eores_NOK_generic;
     
-    if((NULL == p) || (NULL == p->headropsfooter) || (NULL == rop)) 
+    if((NULL == p) || (NULL == p->framedata) || (NULL == rop)) 
     {
         return(eores_NOK_nullpointer);
     }
@@ -508,6 +508,50 @@ extern eOresult_t eo_ropframe_ROP_Rem(EOropframe *p, uint16_t wasaddedinpos, uin
     return(eores_OK);
 }
 
+extern eOresult_t eo_ropframedata_age_Set(EOropframeData *d, eOabstime_t age)
+{
+    if(NULL == d) 
+    {
+        return(eores_NOK_nullpointer);
+    }
+
+    d->header.ageofframe = age;
+ 
+    return(eores_OK);    
+}
+
+extern eOabstime_t eo_ropframedata_age_Get(EOropframeData *d)
+{  
+    if(NULL == d) 
+    {
+        return(eok_abstimeNOW);
+    }
+
+    return(d->header.ageofframe);    
+}
+
+extern eOresult_t eo_ropframedata_seqnum_Set(EOropframeData *d, uint64_t seqnum)
+{
+    if(NULL == d) 
+    {
+        return(eores_NOK_nullpointer);
+    }
+
+    d->header.sequencenumber = seqnum;
+ 
+    return(eores_OK);    
+}
+
+
+extern uint64_t eo_ropframedata_seqnum_Get(EOropframeData *d)
+{
+    if(NULL == d) 
+    {
+        return(eok_uint64dummy);
+    }
+    
+    return(d->header.sequencenumber);    
+}
 
 extern eOresult_t eo_ropframe_age_Set(EOropframe *p, eOabstime_t age)
 {

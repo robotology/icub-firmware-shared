@@ -48,14 +48,28 @@ extern "C" {
 
 // - definition of the hidden struct implementing the object ----------------------------------------------------------
 
-typedef struct  // 24 bytes
+/** @typedef    typedef struct EOropframeHeader_t
+    @brief      contains the definition of the header in the framedata according to the ethernet protocol 
+ **/  
+typedef struct  
 {
-    uint32_t            startofframe;
-    uint16_t            ropssizeof;
-    uint16_t            ropsnumberof;
-    uint64_t            ageofframe;
-    uint64_t            sequencenumber;
+    uint32_t            startofframe;       /**< it is the start of the frame: it is EOFRAME_START */
+    uint16_t            ropssizeof;         /**< tells how many bytes are reserved for the rops: its value can be 0 to ... */
+    uint16_t            ropsnumberof;       /**< tells how many rops are inside: its value can be 0 to ... */
+    uint64_t            ageofframe;         /**< tells the time (in usec) of creation of the frame */
+    uint64_t            sequencenumber;     /**< contains a sequence number */
 } EOropframeHeader_t;   EO_VERIFYsizeof(EOropframeHeader_t, 24);
+
+
+/** @typedef    struct EOropframeData_t
+    @brief      contains the framedata, which is what travels inside a packet. This variable must be used as a pointer,
+                with a cast to a received packet
+ **/  
+struct EOropframeData_hid 
+{
+    EOropframeHeader_t      header;
+    uint8_t                 ropsfooter[8];    
+};        
 
 
 typedef struct  // 04 bytes
@@ -71,6 +85,8 @@ typedef struct  // 28 bytes ...
 
 // the following is used to guarantee that eo_ropframe_sizeforZEROrops is equal to size of EOropframeEmpty_t.
 EO_VERIFYproposition(EOropframe_hid_verifyzerorops, sizeof(EOropframeEmpty_t) == eo_ropframe_sizeforZEROrops);
+
+
 
 typedef struct  // 32 bytes
 {
@@ -89,14 +105,11 @@ typedef struct  // 32 bytes
  
 struct EOropframe_hid 
 {
-    uint16_t                        capacity;               // contains the maximum size of headropsfooter
-    uint16_t                        size;                   // contains the number of bytes effectively used by headropsfooter. has values from eo_ropframe_sizeforZEROrops to .capacity
+    uint16_t                        capacity;               // contains the maximum size of framedata
+    uint16_t                        size;                   // contains the number of bytes effectively used by framedata. has values from eo_ropframe_sizeforZEROrops to .capacity
     uint16_t                        index2nextrop2beparsed; // it is an index to next rop to be parser. it starts from zero and is used from &rops[0]
     uint16_t                        dummy;
-//    uint16_t                        currop;                 // ...
-//    uint16_t                        remainingbytes;
-//    uint8_t                         externaldatastorage;
-    EOropframeHeaderRopsFooter_t*   headropsfooter;         // contains the header, the rops, the footer. in case of a ropframe unable to store rops its size must be eo_ropframe_sizeforZEROrops
+    EOropframeData*                 framedata;         // contains the header, the rops, the footer. in case of a ropframe unable to store rops its size must be eo_ropframe_sizeforZEROrops
 }; 
 
 
