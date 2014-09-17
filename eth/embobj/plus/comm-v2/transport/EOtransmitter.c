@@ -311,6 +311,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
     
     size = eo_list_Size(p->listofregropinfo);
     array_capacity = eo_array_Capacity(array);
+    array_capacity = array_capacity;
     
     eo_array_Reset(array);
     
@@ -381,6 +382,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p,
     
     size = eo_list_Size(p->listofregropinfo);
     array_capacity = eo_array_Capacity(array);
+    array_capacity = array_capacity;
     
     eo_array_Reset(array);
     
