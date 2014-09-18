@@ -355,7 +355,8 @@ typedef struct
 
 // -- all the possible data holding structures used in a joint
 
-#undef EOM_USE_STICTION
+//#undef  EOM_USE_STICTION
+//#define EOM_USE_STICTION
 
 /** @typedef    typedef struct eOmc_PID16_t
     @brief      eOmc_PID16_t contains the values required to configure a PID control compatible with CAN board.
