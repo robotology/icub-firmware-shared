@@ -290,8 +290,7 @@ typedef struct                      // size is 1+7 = 8 bytes
 {
     eOenum08_t                      currstate;          /**< use eOmn_appl_state_t */
     eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
-    uint8_t                         isvalid;            /**< if 1 it means that the board is updating the status */
-    uint8_t                         filler05[5];
+    uint8_t                         filler06[6];
 } eOmn_appl_status_t;               //EO_VERIFYsizeof(eOmn_appl_status_t, 8);
 
                                          
