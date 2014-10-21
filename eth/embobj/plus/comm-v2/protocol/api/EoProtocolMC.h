@@ -56,8 +56,11 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
+#if defined(EOM_USE_STICTION )
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 1 }; 
+#else
 enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 0 }; 
-
+#endif
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -87,7 +90,7 @@ typedef enum
     eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 15,
     eoprot_tag_mc_joint_cmmnds_controlmode                          = 16,
     eoprot_tag_mc_joint_cmmnds_interactionmode                      = 17,
-    eoprot_tag_mc_joint_status_interactionmodestatus                = 18    
+    eoprot_tag_mc_joint_status_interactionmodestatus                = 18
 } eOprot_tag_mc_joint_t;
 
 enum { eoprot_tags_mc_joint_numberof = 19 };  // it MUST be equal to the number of tags    

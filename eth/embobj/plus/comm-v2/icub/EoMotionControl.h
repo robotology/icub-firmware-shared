@@ -500,6 +500,12 @@ typedef struct              // size is 1+3+8+0 = 12
     } to;                       /**< the union containing the value field and optional param */
 } eOmc_setpoint_t;              //EO_VERIFYsizeof(eOmc_setpoint_t, 12);
 
+typedef struct
+{
+    int16_t     value;
+    int8_t      offset;
+    uint8_t     dummy;   
+} eOmc_bemf_t;  EO_VERIFYsizeof(eOmc_bemf_t, 4);
 
 // -- all the possible data holding structures used in a motor
 
@@ -526,7 +532,7 @@ typedef uint8_t  eOmc_jointId_t;
 /** @typedef    typedef struct eOmc_joint_config_t
     @brief      eOmc_joint_config_t contains the values required to configure a joint
  **/
-typedef struct                  // size is: 24+24+24+8++12+2+1+1+4+4+0 = 104/80 
+typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80 
 {
     eOmc_PID_t                  pidposition;                /**< the pid for position control */
     eOmc_PID_t                  pidvelocity;                /**< the pid for velocity control */
@@ -538,7 +544,11 @@ typedef struct                  // size is: 24+24+24+8++12+2+1+1+4+4+0 = 104/80
     uint8_t                     filler01[1];      
     eOutil_emulfloat32_t        encoderconversionfactor;
     eOutil_emulfloat32_t        encoderconversionoffset;
-} eOmc_joint_config_t;          //EO_VERIFYsizeof(eOmc_joint_config_t, 104);
+    #if defined(EOM_USE_STICTION)
+    eOmc_bemf_t                 bemf;
+    uint8_t                     filler04[4];
+    #endif
+} eOmc_joint_config_t;          //EO_VERIFYsizeof(eOmc_joint_config_t, 112);
 
 
 
@@ -605,13 +615,13 @@ typedef struct                  // size is 16+12+1+1+2+0 = 32
 
 
 
-typedef struct                  // size is 104+32+8+32+0 = 176
+typedef struct                  // size is 112+32+8+32+0 = 184
 {
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 //EO_VERIFYsizeof(eOmc_joint_t, 176);
+} eOmc_joint_t;                 //EO_VERIFYsizeof(eOmc_joint_t, 184);
 
 
 // -- the definition of a motor
