@@ -57,7 +57,7 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 1 };
+enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 2 };
 
 enum { eoprot_entities_mn_numberof = eomn_entities_numberof };
 
@@ -71,15 +71,16 @@ enum { eoprot_entities_mn_numberof = eomn_entities_numberof };
 typedef enum
 {
     eoprot_tag_mn_comm_wholeitem                                    = 0, 
-    eoprot_tag_mn_comm_status                                       = 1,    
-    eoprot_tag_mn_comm_cmmnds_command_querynumof                    = 2,
-    eoprot_tag_mn_comm_cmmnds_command_queryarray                    = 3,
-    eoprot_tag_mn_comm_cmmnds_command_replynumof                    = 4,
-    eoprot_tag_mn_comm_cmmnds_command_replyarray                    = 5,
-    eoprot_tag_mn_comm_cmmnds_command_config                        = 6
+    eoprot_tag_mn_comm_status                                       = 1, 
+    eoprot_tag_mn_comm_status_managementprotocolversion             = 2,
+    eoprot_tag_mn_comm_cmmnds_command_querynumof                    = 3,
+    eoprot_tag_mn_comm_cmmnds_command_queryarray                    = 4,
+    eoprot_tag_mn_comm_cmmnds_command_replynumof                    = 5,
+    eoprot_tag_mn_comm_cmmnds_command_replyarray                    = 6,
+    eoprot_tag_mn_comm_cmmnds_command_config                        = 7
 } eOprot_tag_mn_comm_t;
 
-enum { eoprot_tags_mn_comm_numberof = 7 };  // it MUST be equal to the number of tags. 
+enum { eoprot_tags_mn_comm_numberof = 8 };  // it MUST be equal to the number of tags. 
 
 
 /** @typedef    typedef enum eOprot_rwm_mn_comm_t
@@ -90,6 +91,7 @@ typedef enum
 {
     eoprot_rwm_mn_comm_wholeitem                                    = eo_nv_rwmode_RO,
     eoprot_rwm_mn_comm_status                                       = eo_nv_rwmode_RO,
+    eoprot_rwm_mn_comm_status_managementprotocolversion             = eo_nv_rwmode_RO,
     eoprot_rwm_mn_comm_cmmnds_command_querynumof                    = eo_nv_rwmode_RW,
     eoprot_rwm_mn_comm_cmmnds_command_queryarray                    = eo_nv_rwmode_RW,
     eoprot_rwm_mn_comm_cmmnds_command_replynumof                    = eo_nv_rwmode_RW,
@@ -97,7 +99,7 @@ typedef enum
     eoprot_rwm_mn_comm_cmmnds_command_config                        = eo_nv_rwmode_RW    
 } eOprot_rwm_mn_comm_t; 
 
-enum { eoprot_rwms_mn_comm_numberof = 7 };  // it MUST be equal to the number of rw modes. 
+enum { eoprot_rwms_mn_comm_numberof = 8 };  // it MUST be equal to the number of rw modes. 
 
 
 
@@ -202,6 +204,9 @@ extern void eoprot_fun_UPDT_mn_comm_wholeitem(const EOnv* nv, const eOropdescrip
 
 extern void eoprot_fun_INIT_mn_comm_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mn_comm_status(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mn_comm_status_managementprotocolversion(const EOnv* nv);
+extern void eoprot_fun_UPDT_mn_comm_status_managementprotocolversion(const EOnv* nv, const eOropdescriptor_t* rd);
  
 extern void eoprot_fun_INIT_mn_comm_cmmnds_command_querynumof(const EOnv* nv);
 extern void eoprot_fun_UPDT_mn_comm_cmmnds_command_querynumof(const EOnv* nv, const eOropdescriptor_t* rd);

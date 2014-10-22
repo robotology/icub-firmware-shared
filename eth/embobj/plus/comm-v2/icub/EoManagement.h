@@ -196,18 +196,18 @@ typedef union
     eOmn_cmd_replynumof_t           replynumof;
     eOmn_cmd_replyarray_t           replyarray;
     eOmn_cmd_config_t               config;
-} eOmn_cmD_t;
+} eOmn_cmD_t;                       //EO_VERIFYsizeof(eOmn_cmD_t, 76);
 
 
 
 /** @typedef    typedef struct eOmn_ropsigcfg_command_t;
     @brief      is the command used to configure the communication
  **/
-typedef struct              // size is 88+ 1+1+1+1+4 = 96 bytes
+typedef struct              // size is 76+4 = 80 bytes
 {
     eOmn_cmD_t              cmd;                /** < eomn_opc_query_ uses only cmd, eomn_opc_reply_ and eomn_opc_config use data as well */
     uint8_t                 filler04[4];
-} eOmn_command_t;           EO_VERIFYsizeof(eOmn_command_t, 80);
+} eOmn_command_t;           //EO_VERIFYsizeof(eOmn_command_t, 80);
 
 
 
@@ -224,6 +224,23 @@ typedef enum
     applrunMode__skinAndMc4    = 3,
     applrunMode__2foc          = 4
 } eOmn_appl_runMode_t;
+
+
+typedef struct 
+{
+    uint8_t         major;
+    uint8_t         minor;   
+} eOmn_version_t;
+
+typedef struct                     
+{
+    uint32_t            year  : 12;    /**< the year a.d. upto 2047 */
+    uint32_t            month : 4;     /**< the month, where jan is 1, dec is 12 */
+    uint32_t            day   : 5;     /**< the day from 1 to 31 */
+    uint32_t            hour  : 5;     /**< the hour from 0 to 23 */
+    uint32_t            min   : 6;     /**< the minute from 0 to 59 */
+} eOmn_date_t; 
+
 
 typedef struct
 {
@@ -246,28 +263,30 @@ typedef struct
 {
     uint8_t                         filler08[8];
 } eOmn_comm_config_t;               //EO_VERIFYsizeof(eOmn_comm_config_t, 8);
-//#warning marco.accame says: add a variable mnprotocolversion which is used to verify if queries are possibles
-typedef struct
-{
-    eOmn_transceiver_properties_t   transceiver;
-} eOmn_comm_status_t;               //EO_VERIFYsizeof(eOmn_comm_status_t, 24);
+
 
 typedef struct
 {
-    //eOmn_ropsigcfg_command_t        ropsigcfg;
+    eOmn_version_t                  managementprotocolversion;  // of the mn endpoint
+    uint8_t                         filler06[6];
+    eOmn_transceiver_properties_t   transceiver;
+} eOmn_comm_status_t;               //EO_VERIFYsizeof(eOmn_comm_status_t, 32);
+
+typedef struct
+{
     eOmn_command_t                  command;
-} eOmn_comm_cmmnds_t;               //EO_VERIFYsizeof(eOmn_comm_cmmnds_t, 96);
+} eOmn_comm_cmmnds_t;               //EO_VERIFYsizeof(eOmn_comm_cmmnds_t, 80);
 
 
 /** @typedef    typedef struct eOmn_comm_t;
     @brief      used to represent the communication with config, status, commands. so far config and status are not used
  **/
-typedef struct                      // size is 8+24+96+0 = 128 bytes
+typedef struct                      // size is 8+32+80+0 = 120 bytes
 {
     eOmn_comm_config_t              config;
     eOmn_comm_status_t              status;
     eOmn_comm_cmmnds_t              cmmnds;
-} eOmn_comm_t;                      EO_VERIFYsizeof(eOmn_comm_t, 112);
+} eOmn_comm_t;                      //EO_VERIFYsizeof(eOmn_comm_t, 120);
 
 
 
@@ -276,22 +295,25 @@ typedef struct                      // size is 8+24+96+0 = 128 bytes
 /** @typedef    typedef struct eOmn_appl_config_t;
     @brief      used to configure the application
  **/
-typedef struct                      // size is 4+4 = 8 bytes
+typedef struct                      // size is 4+3+3 = 8 bytes
 {
-    eOreltime_t                     cycletime;      /**< the time to be used for the control loop expressed in microseconds */
-    uint8_t                         filler04[4];
+    eOreltime_t                     cycletime;      /**< FOR-FUTURE_USE: the time to be used for the control loop expressed in microseconds */
+    uint8_t                         txratedivider;  /**< FOR-FUTURE_USE: if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles */ 
+    uint8_t                         filler03[3];
 } eOmn_appl_config_t;               //EO_VERIFYsizeof(eOmn_appl_config_t, 8);
 
 
 /** @typedef    typedef struct eOmn_appl_status_t;
     @brief      used to report status of the application
  **/
-typedef struct                      // size is 1+7 = 8 bytes
+typedef struct                      // size is 4+2+16+1+1 = 24 bytes
 {
+    eOmn_date_t                     buildate;
+    eOmn_version_t                  version;
+    uint8_t                         name[16];
     eOenum08_t                      currstate;          /**< use eOmn_appl_state_t */
     eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
-    uint8_t                         filler06[6];
-} eOmn_appl_status_t;               //EO_VERIFYsizeof(eOmn_appl_status_t, 8);
+} eOmn_appl_status_t;               //EO_VERIFYsizeof(eOmn_appl_status_t, 24);
 
                                          
 /** @typedef    typedef struct eOmn_appl_cmmnds_t;
@@ -307,12 +329,12 @@ typedef struct                      // size is 1+7 = 8 bytes
 /** @typedef    typedef struct eOmn_appl_t;
     @brief      used to represent the application with config, status, commands
  **/
-typedef struct                      // size is 8+8+8 = 24 bytes
+typedef struct                      // size is 8+24+8 = 40 bytes
 {
     eOmn_appl_config_t              config;
     eOmn_appl_status_t              status;
     eOmn_appl_cmmnds_t              cmmnds;
-} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 24);
+} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 40);
 
 
 // -- the definition of info entity

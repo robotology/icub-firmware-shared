@@ -126,6 +126,14 @@ EO_weak extern void eoprot_fun_INIT_mn_comm_status(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mn_comm_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif    
 
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_comm_status_managementprotocolversion)
+EO_weak extern void eoprot_fun_INIT_mn_comm_status_managementprotocolversion(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_comm_status_managementprotocolversion)
+EO_weak extern void eoprot_fun_UPDT_mn_comm_status_managementprotocolversion(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif  
+    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mn_comm_cmmnds_command_querynumof)
 EO_weak extern void eoprot_fun_INIT_mn_comm_cmmnds_command_querynumof(const EOnv* nv) {}

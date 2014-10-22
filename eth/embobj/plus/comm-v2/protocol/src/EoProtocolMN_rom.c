@@ -126,6 +126,21 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_comm_status =
 };
 
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_comm_status_managementprotocolversion =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_comm_defaultvalue.status.managementprotocolversion),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_comm_status_managementprotocolversion,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_comm_defaultvalue.status.managementprotocolversion,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_comm_status_managementprotocolversion,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_comm_status_managementprotocolversion
+#endif
+};
+
 static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_comm_cmmnds_command_querynumof =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mn_rom_comm_defaultvalue.cmmnds.command.cmd.querynumof),
@@ -344,6 +359,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_comm_descriptors[] =
 {   // here are eoprot_mn_tags_comm_numberof descriptors for the comm entity
     &eoprot_mn_rom_descriptor_comm_wholeitem,
     &eoprot_mn_rom_descriptor_comm_status,
+    &eoprot_mn_rom_descriptor_comm_status_managementprotocolversion,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_querynumof,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_queryarray,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_replynumof,
@@ -418,6 +434,7 @@ static const char * const s_eoprot_mn_strings_tags_comm[] =
 {
     "eoprot_tag_mn_comm_wholeitem", 
     "eoprot_tag_mn_comm_status",
+    "eoprot_tag_mn_comm_status_managementprotocolversion",
     "eoprot_tag_mn_comm_cmmnds_command_querynumof",
     "eoprot_tag_mn_comm_cmmnds_command_queryarray",
     "eoprot_tag_mn_comm_cmmnds_command_replynumof",
