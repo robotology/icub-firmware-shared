@@ -95,15 +95,33 @@ typedef struct              // size is 4+10*16+0 = 164
 } EOarray_of_10canframes;   //EO_VERIFYsizeof(EOarray_of_10canframes, 164);
 
 
+typedef struct              // size is 4+24*16+0 = 388
+{
+    eOarray_head_t          head;
+    uint8_t                 data[24*sizeof(eOutil_canframe_t)];
+} EOarray_of_24canframes;   //EO_VERIFYsizeof(EOarray_of_24canframes, 388);
+
+
 /** @typedef    typedef struct eOsk_array_data_t
-    @brief      eOsk_array_data_t contains up to 10 can frames as received by hal placed in an EOarray  object
-    @warning    This struct must be of fixed and size and multiple of 4.
+    @brief      eOsk_array_data_t contains up to 10 can frames as received by hal placed in an EOarray object
+    @warning    This struct must be of fixed size and multiple of 4.
  **/
 typedef struct                  // size is: 164+4+0 = 168 
 {
     EOarray_of_10canframes  array;
     uint8_t                 filler04[4];
 } eOsk_array_data_t;        //EO_VERIFYsizeof(eOsk_array_data_t, 168);
+
+
+/** @typedef    typedef struct eOsk_array_largedata_t
+    @brief      eOsk_array_largedata_t contains up to 24 can frames as received by hal placed in an EOarray object
+    @warning    This struct must be of fixed size and multiple of 8.
+ **/
+typedef struct                  // size is: 388+4+0 = 392 
+{
+    EOarray_of_24canframes  array;
+    uint8_t                 filler04[4];
+} eOsk_array_largedata_t;   //EO_VERIFYsizeof(eOsk_array_largedata_t, 392);
 
 
 // -- the definition of a skin entity 
@@ -176,6 +194,11 @@ typedef struct                  // size is: 164+4+0 = 168
     uint8_t                     filler04[4];                           
 } eOsk_status_t;                //EO_VERIFYsizeof(eOsk_status_t, 168);
 
+
+typedef struct                  // size is: 388+0 = 392                     
+{
+    eOsk_array_largedata_t      arrayofcanframes;                         
+} eOsk_status_large_t;          EO_VERIFYsizeof(eOsk_status_large_t, 392);
 
 typedef struct                  // size is: 4+4+168+0 = 176
 {
