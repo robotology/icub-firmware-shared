@@ -355,8 +355,6 @@ typedef struct
 
 // -- all the possible data holding structures used in a joint
 
-//#undef  EOM_USE_STICTION
-//#define EOM_USE_STICTION
 
 /** @typedef    typedef struct eOmc_PID16_t
     @brief      eOmc_PID16_t contains the values required to configure a PID control compatible with CAN board.
@@ -364,7 +362,6 @@ typedef struct
                 On a ARM-based board, the values kp, ki, kd, limitonlintegral, linitonoutput and offset represent
                 the integer part of the floating point values which are effectively used.
  **/
-#if defined(EOM_USE_STICTION)
 typedef struct              // size is 2+2+2+2+2+2+2+2+2+1+5+0 bytes
 {
     int16_t                 kp;                 /**< proportional gain */
@@ -379,19 +376,7 @@ typedef struct              // size is 2+2+2+2+2+2+2+2+2+1+5+0 bytes
     int8_t                  scale;              /**< scale factor for the gains (used for a rigth shift */
     uint8_t                 filler05[5];
 } eOmc_PID16_t;             EO_VERIFYsizeof(eOmc_PID16_t, 24);
-#else
-typedef struct              // size is 2+2+2+2+2+2+1+3+0 bytes
-{
-    int16_t                 kp;                 /**< proportional gain */
-    int16_t                 ki;                 /**< integral gain */
-    int16_t                 kd;                 /**< derivative gain */
-    int16_t                 limitonintegral;    /**< limit of integral term */ 
-    int16_t                 limitonoutput;      /**< limit of the output of the pid */
-    int16_t                 offset;             /**< the k0 in the pid formula */
-    int8_t                  scale;              /**< scale factor for the gains (used for a rigth shift */
-    uint8_t                 filler03[3];        /**< filler to make struct a multiple of 4 */
-} eOmc_PID16_t;             //EO_VERIFYsizeof(eOmc_PID16_t, 16);
-#endif
+
 
 typedef struct              // size is 4+4+4+4+4+4+0 bytes
 {
@@ -544,10 +529,8 @@ typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80
     uint8_t                     filler01[1];      
     eOutil_emulfloat32_t        encoderconversionfactor;
     eOutil_emulfloat32_t        encoderconversionoffset;
-    #if defined(EOM_USE_STICTION)
     eOmc_bemf_t                 bemf;
     uint8_t                     filler04[4];
-    #endif
 } eOmc_joint_config_t;          //EO_VERIFYsizeof(eOmc_joint_config_t, 112);
 
 
@@ -621,7 +604,7 @@ typedef struct                  // size is 112+32+8+32+0 = 184
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 //EO_VERIFYsizeof(eOmc_joint_t, 184);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 184);
 
 
 // -- the definition of a motor

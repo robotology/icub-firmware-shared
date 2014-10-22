@@ -56,11 +56,7 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-#if defined(EOM_USE_STICTION )
 enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 1 }; 
-#else
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 0 }; 
-#endif
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -80,20 +76,21 @@ typedef enum
     eoprot_tag_mc_joint_config_limitsofjoint                        =  5,
     eoprot_tag_mc_joint_config_impedance                            =  6,
     eoprot_tag_mc_joint_config_motionmonitormode                    =  7,
-    eoprot_tag_mc_joint_status                                      =  8,
-    eoprot_tag_mc_joint_status_basic                                =  9,
-    eoprot_tag_mc_joint_status_ofpid                                = 10,
-    eoprot_tag_mc_joint_inputs                                      = 11,
-    eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 12,
-    eoprot_tag_mc_joint_cmmnds_calibration                          = 13,
-    eoprot_tag_mc_joint_cmmnds_setpoint                             = 14,
-    eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 15,
-    eoprot_tag_mc_joint_cmmnds_controlmode                          = 16,
-    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 17,
-    eoprot_tag_mc_joint_status_interactionmodestatus                = 18
+    eoprot_tag_mc_joint_config_bemf                                 =  8,
+    eoprot_tag_mc_joint_status                                      =  9,
+    eoprot_tag_mc_joint_status_basic                                = 10,
+    eoprot_tag_mc_joint_status_ofpid                                = 11,
+    eoprot_tag_mc_joint_inputs                                      = 12,
+    eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 13,
+    eoprot_tag_mc_joint_cmmnds_calibration                          = 14,
+    eoprot_tag_mc_joint_cmmnds_setpoint                             = 15,
+    eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 16,
+    eoprot_tag_mc_joint_cmmnds_controlmode                          = 17,
+    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 18,
+    eoprot_tag_mc_joint_status_interactionmodestatus                = 19
 } eOprot_tag_mc_joint_t;
 
-enum { eoprot_tags_mc_joint_numberof = 19 };  // it MUST be equal to the number of tags    
+enum { eoprot_tags_mc_joint_numberof = 20 };  // it MUST be equal to the number of tags    
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_joint_t
@@ -111,6 +108,7 @@ typedef enum
     eoprot_rwm_mc_joint_config_limitsofjoint                        = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_impedance                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_motionmonitormode                    = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_bemf                                 = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_basic                                = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_ofpid                                = eo_nv_rwmode_RO,
@@ -124,7 +122,7 @@ typedef enum
     eoprot_rwm_mc_joint_status_interactionmodestatus                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_joint_t;    
 
-enum { eoprot_rwms_mc_joint_numberof = 19 };  // it MUST be equal to the number of rw modes  
+enum { eoprot_rwms_mc_joint_numberof = 20 };  // it MUST be equal to the number of rw modes  
 
 
 // - definition of the motor
@@ -204,12 +202,12 @@ enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the num
     @brief      It is a template for the organisation of joint, motor, controller entities in the motion control endpoint.
                 The effective number depends on the board.
  **/
-typedef struct                  // 152*1+40*1+24 = 216              
+typedef struct                  // 184*1+40*1+24 = 248              
 {
     eOmc_joint_t                joints[1]; 
     eOmc_motor_t                motors[1];
     eOmc_controller_t           thecontroller;
-} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 216);
+} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 248);
 
 
   
@@ -251,6 +249,9 @@ extern void eoprot_fun_UPDT_mc_joint_config_impedance(const EOnv* nv, const eOro
 
 extern void eoprot_fun_INIT_mc_joint_config_motionmonitormode(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_motionmonitormode(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_joint_config_bemf(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_bemf(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_joint_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_status(const EOnv* nv, const eOropdescriptor_t* rd);

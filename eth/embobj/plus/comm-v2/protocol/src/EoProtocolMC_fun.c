@@ -170,6 +170,13 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_config_motionmonitormode(const EOnv
 EO_weak extern void eoprot_fun_UPDT_mc_joint_config_motionmonitormode(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_bemf)
+EO_weak extern void eoprot_fun_INIT_mc_joint_config_bemf(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_bemf)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_config_bemf(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+    
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status)
 EO_weak extern void eoprot_fun_INIT_mc_joint_status(const EOnv* nv)  {}
 #endif

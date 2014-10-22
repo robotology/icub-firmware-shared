@@ -226,6 +226,21 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_motionmoni
 }; 
 
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_bemf =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.bemf),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_bemf,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.config.bemf,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_bemf,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_bemf
+#endif
+}; 
+
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status),
@@ -559,6 +574,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_config_limitsofjoint,
     &eoprot_mc_rom_descriptor_joint_config_impedance,
     &eoprot_mc_rom_descriptor_joint_config_motionmonitormode,
+    &eoprot_mc_rom_descriptor_joint_config_bemf,
     &eoprot_mc_rom_descriptor_joint_status,
     &eoprot_mc_rom_descriptor_joint_status_basic,
     &eoprot_mc_rom_descriptor_joint_status_ofpid,
@@ -644,6 +660,7 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_config_limitsofjoint",
     "eoprot_tag_mc_joint_config_impedance",
     "eoprot_tag_mc_joint_config_motionmonitormode",
+    "eoprot_tag_mc_joint_config_bemf",
     "eoprot_tag_mc_joint_status",
     "eoprot_tag_mc_joint_status_basic",
     "eoprot_tag_mc_joint_status_ofpid",
