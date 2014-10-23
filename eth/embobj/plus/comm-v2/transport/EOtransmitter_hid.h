@@ -104,7 +104,11 @@ struct EOtransmitter_hid
     uint64_t                    tx_seqnum;
 #if defined(USE_DEBUG_EOTRANSMITTER)    
     EOtransmitterDEBUG_t        debug;
-#endif    
+#endif 
+    int32_t                     lasterror;
+    int32_t                     lasterror_info0;
+    int32_t                     lasterror_info1;
+    int32_t                     lasterror_info2;
 }; 
 
 

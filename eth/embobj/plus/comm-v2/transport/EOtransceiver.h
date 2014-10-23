@@ -143,7 +143,8 @@ extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *n
  **/
 extern eOresult_t eo_transceiver_outpacket_Get(EOtransceiver *p, EOpacket **pkt);
 
-
+extern eOresult_t eo_transceiver_lasterror_tx_Get(EOtransceiver *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2);
+    
 // if the variable is local then it is used the ram of the netvar. if it is remote, the ropdescr must contain data and size
 extern eOresult_t eo_transceiver_OccasionalROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdes);
 extern eOresult_t eo_transceiver_ReplyROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdesc);

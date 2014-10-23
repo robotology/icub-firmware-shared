@@ -429,6 +429,17 @@ extern eOresult_t eo_transceiver_RegularROP_Unload(EOtransceiver *p, eOropdescri
     return(res);
 }
 
+extern eOresult_t eo_transceiver_lasterror_tx_Get(EOtransceiver *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2)
+{
+    eOresult_t res;
+    
+    if((NULL == p) || (NULL == err) || (NULL == info0) || (NULL == info1))
+    {
+        return(eores_NOK_nullpointer);
+    }
+
+    return(eo_transmitter_lasterror_Get(p->transmitter, err, info0, info1, info2));    
+}
 
 extern eOresult_t eo_transceiver_OccasionalROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdesc)
 {

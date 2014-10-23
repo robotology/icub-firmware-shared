@@ -205,6 +205,11 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->debug.txropframeistoobigforthepacket = 0;
 #endif
     
+    retptr->lasterror = 0;
+    retptr->lasterror_info0 = 0;
+    retptr->lasterror_info1 = 0;
+    retptr->lasterror_info2 = 0;
+    
     return(retptr);
 }
 
@@ -768,6 +773,28 @@ extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outp
     return(eores_OK);   
 }
 
+extern eOresult_t eo_transmitter_lasterror_Get(EOtransmitter *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2)
+{
+    eOresult_t res;
+    
+    if((NULL == p) || (NULL == err) || (NULL == info0) || (NULL == info1))
+    {
+        return(eores_NOK_nullpointer);
+    }
+    
+    *err    = p->lasterror;
+    *info0  = p->lasterror_info0;
+    *info1  = p->lasterror_info1;
+    *info2  = p->lasterror_info2;
+    
+    
+    p->lasterror        = 0;
+    p->lasterror_info0  = 0;
+    p->lasterror_info1  = 0;
+    p->lasterror_info2  = 0;
+    
+    return(eores_OK);    
+}
 
 extern eOresult_t eo_transmitter_occasional_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc)
 {   // we dont care about p->ropframeoccasionals being invalid because all controls are inside s_eo_transmitter_rops_Load().
@@ -893,11 +920,16 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     
     if((NULL == p) || (NULL == ropdesc)) 
     {
+        if(NULL != p)
+        {
+            p->lasterror = 1;
+        }
         return(eores_NOK_nullpointer);
     } 
     
     if(eobool_false == eo_ropframe_IsValid(intoropframe))
     {   // marco.accame: i added it on 15 may 2014 to exit from function if the ropframe does not have any data
+        p->lasterror = 2;
         return(eores_NOK_generic);
     }
     
@@ -912,6 +944,7 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     // if the nvset does not have the pair (ip, id) then we return an error because we cannot form the rop
     if(eores_OK != res)
     {
+        p->lasterror = 3;
         return(eores_NOK_generic);
     } 
 
@@ -946,6 +979,7 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     
     if(eores_OK != res)
     {
+        p->lasterror = 4;
         eov_mutex_Release(mtx);
         return(res);
     }
@@ -953,12 +987,21 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     // put the rop inside the ropframe
     res = eo_ropframe_ROP_Add(intoropframe, p->roptmp, NULL, &ropsize, &remainingbytes);
     
+    if(eores_OK != res)
+    {
+        uint16_t ss = 0;
+        p->lasterror_info0 = ropsize;
+        p->lasterror_info1 = remainingbytes;
+        eo_ropframe_EffectiveCapacity_Get(intoropframe, &ss);
+        p->lasterror_info2  = ss;
+        p->lasterror = 5;
+    }
     
     eov_mutex_Release(mtx);
     
  
     // if conf request is flagged on
-    if((1 == ropdesc->control.rqstconf) && ((NULL != p->confmanager)))
+    if((eores_OK == res) && (1 == ropdesc->control.rqstconf) && ((NULL != p->confmanager)))
     {
         if(eores_OK != eo_confman_ConfirmationRequest_Insert(p->confmanager, ropdesc))
         {

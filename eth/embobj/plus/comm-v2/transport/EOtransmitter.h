@@ -153,6 +153,8 @@ extern eOresult_t eo_transmitter_regular_rops_Refresh(EOtransmitter *p);
 // the rops in occasional_rops are inserted with following functions, put inside the packet with function eo_transmitter_outpacket_Get()
 // and after that they are cleared.
 
+extern eOresult_t eo_transmitter_lasterror_Get(EOtransmitter *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2);
+
 extern eOresult_t eo_transmitter_occasional_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc);
 extern eOresult_t eo_transmitter_reply_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc);
 extern eOresult_t eo_transmitter_reply_ropframe_Load(EOtransmitter *p, EOropframe* ropframe);
