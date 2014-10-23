@@ -199,6 +199,25 @@ extern eOresult_t eo_ropframe_Size_Get(EOropframe *p, uint16_t* framesize)
     return(eores_OK);
 }
 
+extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* effectivecapacity)
+{
+    if((NULL == p) || (NULL == effectivecapacity)) 
+    {
+        return(eores_NOK_nullpointer);
+    }
+
+    if(p->capacity > eo_ropframe_sizeforZEROrops)
+    {
+        *effectivecapacity = p->capacity - eo_ropframe_sizeforZEROrops;
+    }
+    else
+    {
+        *effectivecapacity = 0;
+    }
+    
+    return(eores_OK);
+}
+
 
 extern eOresult_t eo_ropframe_Clear(EOropframe *p)
 {

@@ -93,6 +93,8 @@ extern eOresult_t eo_ropframe_Get(EOropframe *p, uint8_t **framedata, uint16_t* 
 
 extern eOresult_t eo_ropframe_Size_Get(EOropframe *p, uint16_t* framesize);
 
+extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* effectivecapacity);
+
 extern eOresult_t eo_ropframe_Clear(EOropframe *p);
 
 extern eOresult_t eo_ropframe_Append(EOropframe *p, EOropframe *rfr, uint16_t *remainingbytes);
