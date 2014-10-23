@@ -42,6 +42,7 @@ extern "C" {
 
 #include "EoCommon.h"
 #include "EOrop.h"
+#include "EOVmutex.h"
 
 
 
