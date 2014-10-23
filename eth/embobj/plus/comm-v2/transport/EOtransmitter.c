@@ -191,13 +191,15 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     {
         retptr->mtx_replies     = cfg->mutex_fn_new();
         retptr->mtx_regulars    = cfg->mutex_fn_new();
-        retptr->mtx_occasionals = cfg->mutex_fn_new();        
+        retptr->mtx_occasionals = cfg->mutex_fn_new(); 
+        retptr->mtx_roptmp      = cfg->mutex_fn_new();
     }
     else
     {
         retptr->mtx_replies     = NULL;
         retptr->mtx_regulars    = NULL;
         retptr->mtx_occasionals = NULL;
+        retptr->mtx_roptmp      = NULL;
     }
     
 #if defined(USE_DEBUG_EOTRANSMITTER)
@@ -491,6 +493,7 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     // if the nvset does not have the triple (ip, ep, id) then we return an error because we cannot form the rop
     if(eores_OK != res)
     {
+        eov_mutex_Release(p->mtx_regulars);
         return(eores_NOK_generic);
     } 
 
@@ -521,12 +524,15 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
         ropdescriptor.data = NULL;
     }
 
-       
+    // lock tmprop
+    eov_mutex_Take(p->mtx_roptmp, eok_reltimeINFINITE);
+    
     res = eo_agent_OutROPprepare(p->agent, &nv, &ropdescriptor, p->roptmp, &usedbytes);   
     
     // if we cannot prepare the rop ... we quit
     if(eores_OK != res)
     {
+        eov_mutex_Release(p->mtx_roptmp);
         eov_mutex_Release(p->mtx_regulars);
         return(res);
     }
@@ -539,6 +545,7 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     // if we cannot add the rop we quit
     if(eores_OK != res)
     {
+        eov_mutex_Release(p->mtx_roptmp);
         eov_mutex_Release(p->mtx_regulars);
         return(res);
     }
@@ -557,7 +564,9 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     // 4. finally push back regropinfo inside the list.
     eo_list_PushBack(p->listofregropinfo, &regropinfo);
     
-    eov_mutex_Release(p->mtx_regulars);    
+    eov_mutex_Release(p->mtx_roptmp);
+    eov_mutex_Release(p->mtx_regulars);  
+    
     return(eores_OK);   
 }
 
@@ -911,12 +920,14 @@ static void s_eo_transmitter_list_shiftdownropinfo(void *item, void *param)
 
 static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc, EOropframe* intoropframe, EOVmutexDerived* mtx)
 {
+    // marco.accame on 23oct14: mtx protects the occasional or replies ropframe. p->mtx_roptmp protects the use of tmprop
     eOnvOwnership_t nvownership;
     eOresult_t res;
     uint16_t usedbytes;
     uint16_t ropsize;
     uint16_t remainingbytes;   
     EOnv nv;
+    eObool_t boolres = eobool_false;
     
     if((NULL == p) || (NULL == ropdesc)) 
     {
@@ -927,7 +938,14 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
         return(eores_NOK_nullpointer);
     } 
     
-    if(eobool_false == eo_ropframe_IsValid(intoropframe))
+    // marco.accame on 23oct14
+    // must protect the reading of the ropframe. it has happened that boolres is false even for a good ropframe. 
+    // reason is concurrent tx of the packet and call of this function
+    eov_mutex_Take(mtx, eok_reltimeINFINITE);
+    boolres = eo_ropframe_IsValid(intoropframe);
+    eov_mutex_Release(mtx);
+    
+    if(eobool_false == boolres)
     {   // marco.accame: i added it on 15 may 2014 to exit from function if the ropframe does not have any data
         p->lasterror = 2;
         return(eores_NOK_generic);
@@ -973,31 +991,36 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     }
 
 
-    eov_mutex_Take(mtx, eok_reltimeINFINITE);
-       
+    // we begin the use in rw of p->tmprop: take its mutex ... we must avoid that a concurrent thread use it at the same time.
+    eov_mutex_Take(p->mtx_roptmp, eok_reltimeINFINITE);
+           
     res = eo_agent_OutROPprepare(p->agent, &nv, ropdesc, p->roptmp, &usedbytes);    
     
     if(eores_OK != res)
     {
         p->lasterror = 4;
-        eov_mutex_Release(mtx);
+        eov_mutex_Release(p->mtx_roptmp);
         return(res);
     }
 
-    // put the rop inside the ropframe
+    // put the rop inside the ropframe: protec ropframe vs concurrent use
+    eov_mutex_Take(mtx, eok_reltimeINFINITE);
     res = eo_ropframe_ROP_Add(intoropframe, p->roptmp, NULL, &ropsize, &remainingbytes);
+    eov_mutex_Release(mtx);
+    
+    // we dont use p->tmprop anymore: release its mutex
+    eov_mutex_Release(p->mtx_roptmp);
     
     if(eores_OK != res)
     {
         uint16_t ss = 0;
         p->lasterror_info0 = ropsize;
         p->lasterror_info1 = remainingbytes;
-        eo_ropframe_EffectiveCapacity_Get(intoropframe, &ss);
+        eo_ropframe_EffectiveCapacity_Get(intoropframe, &ss); // no need to protect using mutex as we read its capacity which stays constant all over the time
         p->lasterror_info2  = ss;
         p->lasterror = 5;
     }
     
-    eov_mutex_Release(mtx);
     
  
     // if conf request is flagged on

@@ -101,6 +101,7 @@ struct EOtransmitter_hid
     EOVmutexDerived*            mtx_replies;
     EOVmutexDerived*            mtx_regulars;
     EOVmutexDerived*            mtx_occasionals;
+    EOVmutexDerived*            mtx_roptmp;
     uint64_t                    tx_seqnum;
 #if defined(USE_DEBUG_EOTRANSMITTER)    
     EOtransmitterDEBUG_t        debug;
