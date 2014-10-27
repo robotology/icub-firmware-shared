@@ -57,9 +57,15 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
+#if defined(USE_MNINFO_LARGE_STATUS)
+enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 3 };
+#else
 enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 2 };
+#endif
+
 
 enum { eoprot_entities_mn_numberof = eomn_entities_numberof };
+
 
 // - entity comm
 

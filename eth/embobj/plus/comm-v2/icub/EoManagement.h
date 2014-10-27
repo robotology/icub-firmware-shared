@@ -51,7 +51,7 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
-
+//#define USE_MNINFO_LARGE_STATUS
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
@@ -349,16 +349,62 @@ typedef struct                      // size is 1+7 = 8 bytes
 } eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8);
 
 
+#if defined(USE_MNINFO_LARGE_STATUS)
+
+typedef enum
+{
+    eomn_info_format_verbal     = 0,
+    eomn_info_format_compact    = 1   
+} eOmn_info_format_t;
+
+typedef enum
+{
+    eomn_info_type_info         = 0,
+    eomn_info_type_debug        = 1,   
+    eomn_info_type_warning      = 2,
+    eomn_info_type_error        = 3,
+} eOmn_info_type_t;
+
+typedef enum
+{
+    eomn_info_source_board      = 0,
+    eomn_info_source_can1       = 1,   
+    eomn_info_source_can2       = 2
+} eOmn_info_source_t;
+
+typedef struct
+{
+    uint32_t                source : 2;     /**< use eOmn_info_source_t */
+    uint32_t                sourceaddr : 4; /**< it contains the address of the source: if can is the the id-can, if ems it it ... */ 
+    uint32_t                type : 2;       /**< values are:  info, debug, warning, error */
+    uint32_t                format : 2;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact reprepresentation */        
+    uint32_t                futureuse : 20;
+    //    uint8_t                 source;     /**< use eOmn_info_source_t */
+//    uint8_t                 sourceaddr; /**< it contains the address of the source: if can is the the id-can, if ems it it ... */ 
+//    uint8_t                 type;       /**< values are:  info, debug, warning, error */
+//    uint8_t                 format;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact reprepresentation */    
+} eOmn_info_properties_t;
+// or ... we could use a uint32_t with bitfields. in such a case we may save some bits for future use.
+// bitfields: 2 for source, 4 for address, 4 for type, 2 for format =  12. 20 are free
+
 /** @typedef    typedef struct eOmn_info_status_t;
     @brief      used to report status of the info
  **/
+typedef struct 
+{
+    uint64_t                timestamp;  /**< it keeps the absolute time in microseconds since the EMS has bootstrapped */
+    eOmn_info_properties_t  properties; /**< specifies the propetries of the info */  
+    uint8_t                 data[60];   /**< contains either a descriptive string or a compact representation */
+} eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
+
+#else
 typedef struct                      // size is 1+31 = 32 bytes
 {
     uint8_t                         type;               /**< used for specifying the nature of the following message */
     uint8_t                         string[31];         /**< contains a descriptive string */
 } eOmn_info_status_t;               EO_VERIFYsizeof(eOmn_info_status_t, 32);
-
-                                         
+#endif
+                                        
 
 
 /** @typedef    typedef struct eOmn_info_t;
@@ -368,8 +414,11 @@ typedef struct                      // size is 8+32 = 40 bytes
 {
     eOmn_info_config_t              config;
     eOmn_info_status_t              status;
-} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 40);  
-
+#if defined(USE_MNINFO_LARGE_STATUS)
+} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 80);  
+#else
+} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 40);
+#endif
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

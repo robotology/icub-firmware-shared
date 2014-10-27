@@ -556,25 +556,26 @@ typedef struct                  // size is: 4+4+4+2+1+1+0 = 16
                 signed integers of 32 bits, but the must contain the relevant measurement units (eOmeas_position_t, eOmeas_velocity_t,
                 eOmeas_torque_t, or eOmeas_current_t).
  **/
-typedef struct                  // size is: 4+4+4+0 = 12
+typedef struct                  // size is: 4+4+4+0 = 16
 {
-    int32_t                     reference;              /**< the reference of the pid. it can be position, velocity, torque, current  */
+    int32_t                     positionreference;              /**< the reference of the position pid */
+    int32_t                     torquereference;        /**< the reference of the torque pid */
     int32_t                     error;                  /**< the error of the pid */ 
     int32_t                     output;                 /**< the output of the pid */ 
-} eOmc_joint_status_ofpid_t;    //EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 12);
+} eOmc_joint_status_ofpid_t;    //EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 16);
 
 
 
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint. 
  **/
-typedef struct                  // size is:  16+12+1+3 = 32
+typedef struct                  // size is:  16+16+1+3 = 36
 {
     eOmc_joint_status_basic_t   basic;                      /**< the basic status */
     eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status   */ 
     eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
     uint8_t                     chamaleon03[3];             /**< these bytes are available for the application for debug purposes */
-} eOmc_joint_status_t;          //EO_VERIFYsizeof(eOmc_joint_status_t, 32);
+} eOmc_joint_status_t;          //EO_VERIFYsizeof(eOmc_joint_status_t, 36);
 
 
 
@@ -598,13 +599,13 @@ typedef struct                  // size is 16+12+1+1+2+0 = 32
 
 
 
-typedef struct                  // size is 112+32+8+32+0 = 184
+typedef struct                  // size is 112+36+8+32+0 = 184
 {
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 184);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 188);
 
 
 // -- the definition of a motor

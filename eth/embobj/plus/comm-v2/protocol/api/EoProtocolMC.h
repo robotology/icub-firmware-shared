@@ -56,7 +56,7 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 1 }; 
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 2 }; 
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
