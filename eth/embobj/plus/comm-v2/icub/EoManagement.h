@@ -51,7 +51,7 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
-//#define USE_MNINFO_LARGE_STATUS
+#define USE_MNINFO_LARGE_STATUS
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
@@ -376,7 +376,7 @@ typedef struct
 {
     uint32_t                source : 2;     /**< use eOmn_info_source_t */
     uint32_t                sourceaddr : 4; /**< it contains the address of the source: if can is the the id-can, if ems it it ... */ 
-    uint32_t                type : 2;       /**< values are:  info, debug, warning, error */
+    uint32_t                type : 2;       /**< use eOmn_info_type_t. */
     uint32_t                format : 2;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact reprepresentation */        
     uint32_t                futureuse : 20;
     //    uint8_t                 source;     /**< use eOmn_info_source_t */
