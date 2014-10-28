@@ -377,15 +377,11 @@ typedef struct
     uint32_t                source : 2;     /**< use eOmn_info_source_t */
     uint32_t                sourceaddr : 4; /**< it contains the address of the source: if can is the the id-can, if ems it it ... */ 
     uint32_t                type : 2;       /**< use eOmn_info_type_t. */
-    uint32_t                format : 2;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact reprepresentation */        
-    uint32_t                futureuse : 20;
-    //    uint8_t                 source;     /**< use eOmn_info_source_t */
-//    uint8_t                 sourceaddr; /**< it contains the address of the source: if can is the the id-can, if ems it it ... */ 
-//    uint8_t                 type;       /**< values are:  info, debug, warning, error */
-//    uint8_t                 format;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact reprepresentation */    
+    uint32_t                format : 2;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact representation */        
+    uint32_t                errorcode : 16; /**< used to communicate in a ultra-compact mode what happens. its value must be taken from a table */
+    uint32_t                futureuse : 4;  
 } eOmn_info_properties_t;
-// or ... we could use a uint32_t with bitfields. in such a case we may save some bits for future use.
-// bitfields: 2 for source, 4 for address, 4 for type, 2 for format =  12. 20 are free
+
 
 /** @typedef    typedef struct eOmn_info_status_t;
     @brief      used to report status of the info
@@ -393,7 +389,7 @@ typedef struct
 typedef struct 
 {
     uint64_t                timestamp;  /**< it keeps the absolute time in microseconds since the EMS has bootstrapped */
-    eOmn_info_properties_t  properties; /**< specifies the propetries of the info */  
+    eOmn_info_properties_t  properties; /**< specifies the properties of the info */  
     uint8_t                 data[60];   /**< contains either a descriptive string or a compact representation */
 } eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
 
