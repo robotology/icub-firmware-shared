@@ -615,7 +615,7 @@ extern eOresult_t eo_transmitter_regular_rops_Unload(EOtransmitter *p, eOropdesc
     memcpy(&regropinfo, eo_list_At(p->listofregropinfo, li), sizeof(eo_transm_regrop_info_t));
     
     // for each element after li: (name is afterli) retrieve it and modify its content so that ropstarthere is decremented by regropinfo.ropsize ...
-    eo_list_FromIterForEach(p->listofregropinfo, eo_list_Next(p->listofregropinfo, li), s_eo_transmitter_list_shiftdownropinfo, &regropinfo);
+    eo_list_ExecuteFromIter(p->listofregropinfo, s_eo_transmitter_list_shiftdownropinfo, &regropinfo, eo_list_Next(p->listofregropinfo, li));
     
     // remove the element indexedby li
     eo_list_Erase(p->listofregropinfo, li);
@@ -687,7 +687,7 @@ extern eOresult_t eo_transmitter_regular_rops_Refresh(EOtransmitter *p)
     p->currenttime = eov_sys_LifeTimeGet(eov_sys_GetHandle());
     
     // for each element in the list ... i do: ... see function
-    eo_list_ForEach(p->listofregropinfo, s_eo_transmitter_list_updaterop_in_ropframe, p);
+    eo_list_Execute(p->listofregropinfo, s_eo_transmitter_list_updaterop_in_ropframe, p);
 
     eov_mutex_Release(p->mtx_regulars);
     
@@ -784,7 +784,7 @@ extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outp
 
 extern eOresult_t eo_transmitter_lasterror_Get(EOtransmitter *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2)
 {
-    eOresult_t res;
+//    eOresult_t res;
     
     if((NULL == p) || (NULL == err) || (NULL == info0) || (NULL == info1))
     {
