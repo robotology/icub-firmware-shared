@@ -65,7 +65,7 @@ extern "C" {
  **/  
 typedef struct EOvector_hid EOvector;
 
-enum { eo_vectorcapacity_dynamic = EOK_uint16dummy };
+enum { eo_vectorcapacity_dynamic = eo_sizecntnr_dynamic };
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -147,6 +147,34 @@ extern void* eo_vector_Back(EOvector * vector);
 extern void eo_vector_PopBack(EOvector * vector); 
 
 
+/**  @fn        extern void eo_vector_PushFront(EOvector * vector, void *p)
+     @brief     Copies the item object pointed by @e p at the front of the EOvector and calls its constructor 
+                @e item_ctor(p) if passed not NULL in eo_vector_New().
+     @param     vector          pointer to the EOvector object.
+     @param     p               pointer to the item object to be copied into the EOvector. 
+ **/
+extern void eo_vector_PushFront(EOvector * vector, void *p);
+
+
+/** @fn         extern void* eo_vector_Front(EOvector *vector)
+    @brief      Retrieves a reference to the item object in the front of the EOvector without removing it. 
+    @param      vector           Pointer to the EOvector object.
+    @return     Pointer to the item object (or NULL if the vector is empty).
+    @warning    Before use, the returned pointer needs to be casted to the desidered object type.
+ **/
+extern void* eo_vector_Front(EOvector * vector);
+
+
+/** @fn         extern void eo_vector_PopFront(EOvector * vector)
+    @brief      Removes the item object from the front of the EOvector, calls its destructor
+                @e item_dtor(p) if passed not NULL in eo_vector_New(), and finally sets memory to zero.
+    @param      vector           Pointer to the EOvector object. 
+    @warning    After this function call, previously obtained references to the removed item object 
+                will point to zero-ed data
+ **/
+extern void eo_vector_PopFront(EOvector * vector); 
+
+
 /** @fn         extern void eo_vector_clear(EOvector * vector)
     @brief      Removes all item objects from the EOvector and for each one calls its destructor 
                 @e item_dtor() if passed not NULL in eo_vector_new(). Finally sets memory to zero.
@@ -211,12 +239,21 @@ extern eObool_t eo_vector_Full(EOvector * vector);
 extern eObool_t eo_vector_Empty(EOvector * vector);
 
 
-/** @fn         extern eObool_t eo_vector_Find(EOvector * vector, void *p, eOsizecntnr_t *index)
-    @brief      Tells if the EOvector is full
+/** @fn         extern eObool_t eo_vector_Find(EOvector * vector, eOresult_t (matching_rule)(void *item, void *param), void *param, eOsizecntnr_t *position)
+    @brief      Tells if an item is inside the vector
     @param      vector          Pointer to the EOvector object. 
+    @param      matching_rule   a user-defined function which returns eores_OK when the param matches an inside item.
+                                If NULL, then the match is done using a memcmp 
+    @param      p               The item to find
+    @param      position        if function returns eobool_true and index is not NULL, it contains the index of the found item, 
+                                so that eo_vector_At(vector, position) is the wanted item.
     @return     eobool_true or eobool_false.
  **/
-extern eObool_t eo_vector_Find(EOvector * vector, void *p, eOsizecntnr_t *index);
+extern eObool_t eo_vector_Find(EOvector * vector, eOresult_t (matching_rule)(void *item, void *param), void *param, eOsizecntnr_t *position);
+
+
+extern void eo_vector_Execute(EOvector *vector, void (execute)(void *item, void *param), void *param);
+
 
 extern void* eo_vector_storage_Get(EOvector * vector);
 

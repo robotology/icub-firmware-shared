@@ -67,6 +67,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+static eOresult_t s_eo_vector_default_matching_rule(EOvector * vector, void *item, void *param);
+
+
+
 EO_static_inline void s_eo_vector_default_clear(void *item, EOvector* vector)
 {
 #if defined(EOVECTOR_DEFAULTCLEAR_DOES_NOTHING)
@@ -103,8 +107,8 @@ static const char s_eobj_ownname[] = "EOvector";
 
 
 extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
-                              eOres_fp_voidp_uint32_t item_init, uint32_t init_par,  
-                              eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear)
+                                eOres_fp_voidp_uint32_t item_init, uint32_t init_par,  
+                                eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear)
 {
     EOvector *retptr = NULL;
     uint8_t *start = NULL;
@@ -298,6 +302,127 @@ extern void eo_vector_PopBack(EOvector * vector)
     if(eo_vectorcapacity_dynamic == vector->capacity)
     {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
         vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size) * vector->item_size);
+    }
+}
+
+
+extern void eo_vector_PushFront(EOvector * vector, void *p) 
+{
+    // here we require uint8_t to access stored_items because we work with bytes.
+    uint8_t *start = NULL;
+    uint8_t *item = NULL;
+    uint8_t *second = NULL;
+        
+    if((NULL == vector) || (NULL == p)) 
+    {   // invalid data
+        return;    
+    }
+    
+    if(vector->capacity == vector->size) 
+    {   // vector is full
+        return;
+    }
+       
+       
+    // if dynamic, then we need to have one more item.
+    if(eo_vectorcapacity_dynamic == vector->capacity)
+    {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+        vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size+1) * vector->item_size);
+    }
+    
+    start = (uint8_t*) (vector->stored_items);
+    // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
+    item = &start[0]; 
+    second = &start[(uint32_t)1 * vector->item_size];     
+    
+    // now i must memmove from front into second   
+    memmove(second, vector->stored_items, vector->size * vector->item_size); 
+    
+    // now we have the first position available and we can copy p into it.
+    
+    if(NULL != vector->item_copy_fn) 
+    {
+        vector->item_copy_fn(item, p);
+    }
+    else
+    {
+        s_eo_vector_default_copy(item, p, vector);
+    }
+    
+    vector->size ++;
+    
+    return; 
+}
+
+
+extern void * eo_vector_Front(EOvector * vector) 
+{    
+    // here we require uint8_t to access stored_items because we work with bytes.
+    uint8_t *start = NULL;
+    uint8_t *item = NULL;
+    
+    if(NULL == vector) 
+    {   // invalid vector. return NULL
+        return(NULL);    
+    }
+    
+    if(0 == vector->size) 
+    {   // vector is empty. return NULL
+        return(start);     
+    }
+     
+    start = (uint8_t*) (vector->stored_items);
+    item = &start[0];
+    
+    return((void*) item);         
+}
+
+extern void eo_vector_PopFront(EOvector * vector) 
+{
+    // here we require uint8_t to access stored_items because we work with bytes.
+    uint8_t *start = NULL;
+    uint8_t *item = NULL;   
+    uint8_t *second = NULL;
+    
+    if(NULL == vector) 
+    {   // invalid vector
+        return;    
+    }
+    
+    if(0 == vector->size) 
+    {   // vector is empty
+        return;     
+    }
+
+    start = (uint8_t*) (vector->stored_items);
+    item = &start[0]; 
+    second = &start[(uint32_t)(1) * vector->item_size];    
+    
+    if(NULL != vector->item_clear_fn) 
+    {
+        vector->item_clear_fn(item);
+    } 
+    else 
+    { 
+        // clean the removed item
+        s_eo_vector_default_clear(item, vector);
+    }
+    
+    vector->size --;
+    
+    
+    // now we must move memory starting from second to start for an amount of (vector->size * vector->item_size)
+    // if size is zero, the function memmove() does not copy anything 
+    memmove(vector->stored_items, second, vector->size * vector->item_size); 
+    
+    // if size is zero, eo_mempool_Realloc() calls eo_mempool_Free() and returns NULL. that is correct.
+    if(eo_vectorcapacity_dynamic == vector->capacity)
+    {   // in here i dont make any control because in _New() we have already verified that mempool is dynamic 
+        vector->stored_items = eo_mempool_Realloc(eo_mempool_GetHandle(), vector->stored_items, (uint32_t)(vector->size) * vector->item_size);
+    }
+    else
+    {
+        // should clear memory that before the memmove was used by the last one ... but for now i will not do it.        
     }
 }
 
@@ -600,6 +725,7 @@ extern eObool_t eo_vector_Full(EOvector * vector)
     return((vector->size == vector->capacity) ? (eobool_true) : (eobool_false));        
 }
 
+
 extern eObool_t eo_vector_Empty(EOvector * vector) 
 {
     if(NULL == vector) 
@@ -611,30 +737,76 @@ extern eObool_t eo_vector_Empty(EOvector * vector)
 }
 
 
-extern eObool_t eo_vector_Find(EOvector * vector, void *p, eOsizecntnr_t *index)
+static eOresult_t s_eo_vector_default_matching_rule(EOvector * vector, void *item, void *param)
+{
+    if(0 == memcmp(item, param, vector->item_size))
+    {
+        return(eores_OK);
+    }
+    else
+    {
+        return(eores_NOK_generic);
+    }
+}
+
+extern eObool_t eo_vector_Find(EOvector * vector, eOresult_t (matching_rule)(void *item, void *param), void *param, eOsizecntnr_t *position)
 {
     eOsizecntnr_t i = 0;
-    uint8_t *item;
+    uint8_t *item;    
+    eOresult_t res = eores_NOK_generic;
 
-    if((NULL == vector) || (p == NULL) || (0 == vector->size)) 
+
+    if((NULL == vector) || (param == NULL) || (0 == vector->size)) 
     {   // invalid vector or invalid data to search
         return(eobool_false);    
     }
+    
 
     // loop over all items to see is any matches with external data
     for(i=0, item = (uint8_t*) (vector->stored_items); i<vector->size; i++, item += vector->item_size)
     {
-        if(0 == memcmp(p, item, vector->item_size))
+        //if(0 == memcmp(param, item, vector->item_size))
+        
+        if(NULL != matching_rule)
         {
-            if(NULL != index)
+            res = matching_rule(item, param);
+        }
+        else
+        {
+            res = s_eo_vector_default_matching_rule(vector, item, param);
+        }
+        
+        if(eores_OK == res)
+        {
+            if(NULL != position)
             {
-                *index = i;
+                *position = i;
             }
             return(eobool_true);
         }
     }
 
     return(eobool_false);
+}
+
+
+extern void eo_vector_Execute(EOvector *vector, void (execute)(void *item, void *param), void *param)
+{
+    eOsizecntnr_t i = 0;
+    uint8_t *item;    
+
+    if((NULL == vector) || (NULL == execute)) 
+    {
+         return;
+    }
+    
+    // loop over all items to call the execute()
+    for(i=0, item = (uint8_t*) (vector->stored_items); i<vector->size; i++, item += vector->item_size)
+    {
+        execute(item, param);
+    }
+    
+    return; 
 }
 
 
