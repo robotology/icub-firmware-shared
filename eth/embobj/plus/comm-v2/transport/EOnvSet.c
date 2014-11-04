@@ -150,7 +150,7 @@ static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ow
     
     eo_errman_Assert(eo_errman_GetHandle(), (eobool_false == eo_vector_Full(p->thedevices)), s_eobj_ownname, "->thedevices is full");
 
-    eo_errman_Assert(eo_errman_GetHandle(), (eobool_true != eo_vector_Find(p->theipaddresses, &ipaddress, NULL)), s_eobj_ownname, "ip already inside");
+    eo_errman_Assert(eo_errman_GetHandle(), (eobool_true != eo_vector_Find(p->theipaddresses, NULL, &ipaddress, NULL)), s_eobj_ownname, "ip already inside");
 
     s_eo_nvset_devicesowneship_change(p, ownership);
 
@@ -533,7 +533,7 @@ extern uint16_t eo_nvset_hid_ip2index(EOnvSet* p, eOipv4addr_t ip)
     {
         return(EOK_uint16dummy);
     }
-    if(eobool_true == eo_vector_Find(p->theipaddresses, &ip, &index))
+    if(eobool_true == eo_vector_Find(p->theipaddresses, NULL, &ip, &index))
     {
         return(index);  
     }
