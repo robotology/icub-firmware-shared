@@ -495,13 +495,25 @@ extern EOlistIter* eo_list_FindItem(EOlist *list, void *p)
 //    return(tmpiter);    
 ////}
 
+static eOresult_t s_eo_list_default_matching_rule(EOlist * list, void *item, void *param)
+{
+    if(0 == memcmp(item, param, list->item_size))
+    {
+        return(eores_OK);
+    }
+    else
+    {
+        return(eores_NOK_generic);
+    }
+}
 
 extern EOlistIter* eo_list_Find(EOlist *list, eOresult_t (matching_rule)(void *item, void *param), void *param)
 {
     EOlistIter *tmpiter = NULL;
     void* data = NULL;
+    eOresult_t res = eores_NOK_generic;
 
-    if((NULL == list) || (NULL == matching_rule)) 
+    if((NULL == list) || (NULL == param)) 
     {
          return(NULL);
     }
@@ -511,7 +523,17 @@ extern EOlistIter* eo_list_Find(EOlist *list, eOresult_t (matching_rule)(void *i
     {
         data = s_eo_list_get_data(list, tmpiter);
 
-        if(eores_OK == matching_rule(data, param)) 
+        if(NULL != matching_rule)
+        {
+            res = matching_rule(data, param);
+        }
+        else
+        {
+            res = s_eo_list_default_matching_rule(list, data, param);
+        }
+        
+        if(eores_OK == res)      
+        //if(eores_OK == matching_rule(data, param)) 
         {
             break;
         }
@@ -522,7 +544,7 @@ extern EOlistIter* eo_list_Find(EOlist *list, eOresult_t (matching_rule)(void *i
 
 }
 
-extern void eo_list_ForEach(EOlist *list, void (execute)(void *item, void *param), void *param)
+extern void eo_list_Execute(EOlist *list, void (execute)(void *item, void *param), void *param)
 {
     EOlistIter *tmpiter = NULL;
     void* data = NULL;
@@ -543,7 +565,7 @@ extern void eo_list_ForEach(EOlist *list, void (execute)(void *item, void *param
 }
 
 
-extern void eo_list_FromIterForEach(EOlist *list, EOlistIter *li, void (execute)(void *item, void *param), void *param)
+extern void eo_list_ExecuteFromIter(EOlist *list, void (execute)(void *item, void *param), void *param, EOlistIter *li)
 {
     EOlistIter *tmpiter = NULL;
     void* data = NULL;

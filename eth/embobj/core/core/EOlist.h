@@ -293,7 +293,7 @@ extern EOlistIter* eo_list_Find(EOlist *list, eOresult_t (matching_rule)(void *i
 
 
 
-/** @fn         extern void eo_list_ForEach(EOlist *list, void (execute)(void *item, void *param), void *param)
+/** @fn         extern void eo_list_Execute(EOlist *list, void (execute)(void *item, void *param), void *param)
     @brief      Executes the function execute() on each item inside the list. 
     @param      list            Pointer to the EOlist object.
     @param      execute()       The function which is internally called for each item.
@@ -303,9 +303,9 @@ extern EOlistIter* eo_list_Find(EOlist *list, eOresult_t (matching_rule)(void *i
          
     @param      param           The second argument of @e execute().
  **/
-extern void eo_list_ForEach(EOlist *list, void (execute)(void *item, void *param), void *param);
+extern void eo_list_Execute(EOlist *list, void (execute)(void *item, void *param), void *param);
 
-extern void eo_list_FromIterForEach(EOlist *list, EOlistIter *li, void (execute)(void *item, void *param), void *param);
+extern void eo_list_ExecuteFromIter(EOlist *list, void (execute)(void *item, void *param), void *param, EOlistIter *li);
 
 extern void eo_list_Delete(EOlist *list);
 
