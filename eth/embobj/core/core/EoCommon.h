@@ -543,6 +543,9 @@ extern const eOabstime_t    eok_abstimeNOW;         /**< = 0xffffffffffffffffLL;
 extern const eOipv4addr_t   eok_ipv4addr_localhost;
 
 
+enum { eo_sizecntnr_dynamic = EOK_uint16dummy };
+
+
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
