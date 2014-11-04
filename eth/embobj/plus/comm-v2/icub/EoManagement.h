@@ -51,7 +51,6 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
-#define USE_MNINFO_LARGE_STATUS
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
@@ -349,7 +348,6 @@ typedef struct                      // size is 1+7 = 8 bytes
 } eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8);
 
 
-#if defined(USE_MNINFO_LARGE_STATUS)
 
 typedef enum
 {
@@ -393,14 +391,7 @@ typedef struct
     uint8_t                 data[60];   /**< contains either a descriptive string or a compact representation */
 } eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
 
-#else
-typedef struct                      // size is 1+31 = 32 bytes
-{
-    uint8_t                         type;               /**< used for specifying the nature of the following message */
-    uint8_t                         string[31];         /**< contains a descriptive string */
-} eOmn_info_status_t;               EO_VERIFYsizeof(eOmn_info_status_t, 32);
-#endif
-                                        
+                                       
 
 
 /** @typedef    typedef struct eOmn_info_t;
@@ -410,11 +401,8 @@ typedef struct                      // size is 8+32 = 40 bytes
 {
     eOmn_info_config_t              config;
     eOmn_info_status_t              status;
-#if defined(USE_MNINFO_LARGE_STATUS)
 } eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 80);  
-#else
-} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 40);
-#endif
+
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
