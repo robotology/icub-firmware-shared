@@ -94,6 +94,10 @@ static EOtheErrorManager s_errman_singleton =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
+extern void eo_errman_Error2(EOtheErrorManager *p, eOerrmanErrorType2_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des)
+{
+    info = info;
+}
 
 extern EOtheErrorManager * eo_errman_Initialise(const eOerrman_cfg_t *errmancfg)
 {

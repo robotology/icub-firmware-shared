@@ -97,6 +97,91 @@ typedef struct
 } eOerrman_cfg_t;
 
 
+// marco.accame: in here are some temporary types that can be used to write code compatible with the new error manager 
+// begin
+    
+/**	@typedef    typedef enum eOerrmanErrorType2_t 
+ 	@brief      Contains the error types managed by the EOtheErrorManager 
+ **/  
+typedef enum  
+{
+    eo_errortype2_info    = 0,       /**< used to communicate some innocent situation */
+    eo_errortype2_debug   = 1,       /**< used to communicate debugging situation */
+    eo_errortype2_warning = 2,       /**< used to communicate some strange situation */
+    eo_errortype2_error   = 3,       /**< used to communicate an error */
+    eo_errortype2_fatal   = 4        /**< used to communicate a fatal error which requires stopping the system */
+} eOerrmanErrorType2_t;
+
+enum { eo_errortype2_numberof = 5 };
+
+
+/** @typedef    typedef struct eOerrmanCaller_t
+    @brief      Contains information about the caller of the error handler
+ **/ 
+typedef struct
+{
+    eOid08_t        taskid;         /**< the id of the caller task */
+    const char*     eobjstr;        /** the name of the caller object */
+} eOerrmanCaller_t;
+
+
+typedef enum 
+{ 
+    eo_errman_code_sys_unspecified              = 0,
+    eo_errman_code_sys_tobedecided              = 1,
+    eo_errman_code_sys_memory_zerorequested     = 2,    
+    eo_errman_code_sys_memory_notinitialised    = 3,
+    eo_errman_code_sys_memory_missing           = 4,    /**< param contains the requested bytes */
+    eo_errman_code_sys_mutex_timeout            = 5,    /**< param contains the timeout expressed in milli-seconds */
+    eo_errman_code_sys_wrongparam               = 6,    /**< param MAY ?? contain the param position */
+    eo_errman_code_sys_wrongusage               = 7,
+    eo_errman_code_sys_runtimeerror             = 8,
+    eo_errman_code_sys_runninghappily           = 9,
+    eo_errman_code_sys_ctrloop_execoverflowRX   = 10,   /**< param contains the duration ??? */ // meglio non tx stringa
+    eo_errman_code_sys_ctrloop_execoverflowDO   = 11,   /**< param contains the duration ??? */ // meglio non tx stringa
+    eo_errman_code_sys_ctrloop_execoverflowTX   = 12,   /**< param contains the duration ??? */ // meglio non tx stringa
+    eo_errman_code_sys_ctrloop_udptxfailure     = 13, 
+    eo_errman_code_sys_ropparsingerror          = 14,   /**< param contains the specific parsing error */
+    eo_errman_code_sys_halerror                 = 15,   /**< param contains the specific ipal error */
+    eo_errman_code_sys_osalerror                = 16,   /**< param contains the specific ipal error */
+    eo_errman_code_sys_ipalerror                = 17,   /**< param contains the specific ipal error */    
+} eOerrmanCode_t;
+
+typedef enum 
+{ 
+    eo_errman_sourcedevice_localboard = 0 
+} eOerrmanSourceDevice_t;
+
+
+/** @typedef    typedef struct eOerrmanDescriptor_t
+    @brief      Contains description of the error which will be used by a particular user-defined error handler.
+                This type is built so that it completes the other parameters passed to the user-defined error handler
+                so that it can call the object EOtheInfoDispatcher which uses the eOmn_info_status_t type.
+ **/ 
+typedef struct
+{
+    uint32_t        code;           /* the system uses eOerrmanCode_t, other modules may use values defined in a particular table ... see eoerror_code_get() */
+    uint16_t        param;          /* it must be 0 unless the code needs one particular param */
+    uint8_t         sourcedevice;   /* the system uses eo_errman_sourcedevice_localboard, others modules may use values defined in a particular enum ... see eOmn_info_source_t */
+    uint8_t         sourceaddress;  /* the system uses 0, other modules may use other values ...  e.g., CAN addresses */   
+} eOerrmanDescriptor_t;
+
+
+/** @fn         extern void eo_errman_Error2(EOtheErrorManager *p, eOerrmanErrorType2_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
+    @brief      It calls the configured usr_on_error() with the passed errtype, and if it is a fatal error it also
+                stops the system using the eov_sys_Stop() function and finally enters in a forever loop. 
+    @param      p               The singleton
+    @param      errtype         The error type.
+    @param      info            A string containing a specific message from the calling object.
+    @param      eobjstr         A string containing the name of the calling object. 
+    @param      par             An optional parameter used by the user-defined usr_on_error()
+ **/
+extern void eo_errman_Error2(EOtheErrorManager *p, eOerrmanErrorType2_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
+
+
+// end   
+
+ 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
