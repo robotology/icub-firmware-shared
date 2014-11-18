@@ -75,7 +75,7 @@ typedef struct
 
 static const uint32_t s_eoerror_maxvalue_in_category[] =
 {
-    eoerror_value_EBS_numberof,
+    eoerror_value_SYS_numberof,
     eoerror_value_HW_numberof,
     eoerror_value_MC_numberof
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
@@ -92,13 +92,28 @@ const eOerror_value_t eoerror_value_dummy = EOERROR_VALUE_DUMMY;
 // - fill strings in here in accordance with relevant enums 
 
 
-const eoerror_valuestring_t eoerror_valuestrings_EBS[] =
-{   // very important: fill table with order of eOerror_value_EBS_t
+const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
+{   // very important: fill table with order of eOerror_value_SYS_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_EBS_missingmemory,       "EBS: missing memory"},       
-    {eoerror_value_EBS_whatelse,            "EBS: what else"},        
-    {eoerror_value_EBS_whatelseagain,       "EBS: what else again"}
-};  EO_VERIFYsizeof(eoerror_valuestrings_EBS, eoerror_value_EBS_numberof*sizeof(const eoerror_valuestring_t)); 
+    {eoerror_value_SYS_unspecified,             "SYS: unspecified code. It may be that EOtheErrorManager is still called with a NULL eOerrmanDescriptor_t* param"},  
+    {eoerror_value_SYS_tobedecided,             "SYS: tbd code. We must decide how to manage this code. it it wip"},  
+    {eoerror_value_SYS_memory_zerorequested,    "SYS: the EOtheMemoryPool is requested 0 bytes"},       
+    {eoerror_value_SYS_memory_notinitialised,   "SYS: the EOtheMemoryPool is requested bytes but it is not yet initialised"},        
+    {eoerror_value_SYS_memory_missing,          "SYS: the EOtheMemoryPool cannot give any more memory"},     
+    {eoerror_value_SYS_mutex_timeout,           "SYS: a mutex has timed out unexpectedly"},     
+    {eoerror_value_SYS_wrongparam,              "SYS: a function has a wrong parameter"},  
+    {eoerror_value_SYS_wrongusage,              "SYS: a function is used in the wrong way"},  
+    {eoerror_value_SYS_runtimeerror,            "SYS: detected a runtime error"},  
+    {eoerror_value_SYS_runninghappily,          "SYS: the board is running happily"},  
+    {eoerror_value_SYS_ctrloop_execoverflowRX,  "SYS: the RX phase of the control loop has lasted more than wanted. In param there is the total execution time in usec"},  
+    {eoerror_value_SYS_ctrloop_execoverflowDO,  "SYS: the DO phase of the control loop has lasted more than wanted. In param there is the total execution time in usec"},    
+    {eoerror_value_SYS_ctrloop_execoverflowTX,  "SYS: the TX phase of the control loop has lasted more than wanted. In param there is the total execution time in usec"},  
+    {eoerror_value_SYS_udptxfailure,            "SYS: a UDP packet could not be transmitted"},  
+    {eoerror_value_SYS_ropparsingerror,         "SYS: there was a parsing error of a received ROP"},  
+    {eoerror_value_SYS_halerror,                "SYS: the HAL triggered an error. In param there is the relevant hal code"},  
+    {eoerror_value_SYS_osalerror,               "SYS: the OSAL triggered an error. In param there is the relevant osal code"},  
+    {eoerror_value_SYS_ipalerror,               "SYS: the IPAL triggered an error. In param there is the relevant ipal code"} 
+};  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
 const eoerror_valuestring_t eoerror_valuestrings_HW[] =
@@ -121,7 +136,7 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 const eoerror_valuestring_t * const eoerror_valuestrings[eoerror_category_numberof] =
 {   // very important: fill table with order of eOerror_category_t: pos 0 is eoerror_category_EthBoardSystem etc.
     //                 in case of holes use: NULL,
-    (const eoerror_valuestring_t *)&eoerror_valuestrings_EBS,   
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_SYS,   
     (const eoerror_valuestring_t *)&eoerror_valuestrings_HW,        
     (const eoerror_valuestring_t *)&eoerror_valuestrings_MC
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
