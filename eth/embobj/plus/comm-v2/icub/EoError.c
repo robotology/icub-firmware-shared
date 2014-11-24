@@ -112,7 +112,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_ropparsingerror,         "SYS: there was a parsing error of a received ROP"},  
     {eoerror_value_SYS_halerror,                "SYS: the HAL triggered an error. In param there is the relevant hal code"},  
     {eoerror_value_SYS_osalerror,               "SYS: the OSAL triggered an error. In param there is the relevant osal code"},  
-    {eoerror_value_SYS_ipalerror,               "SYS: the IPAL triggered an error. In param there is the relevant ipal code"} 
+    {eoerror_value_SYS_ipalerror,               "SYS: the IPAL triggered an error. In param there is the relevant ipal code"}, 
+    {eoerror_value_SYS_dispatcherfifooverflow,  "SYS: the EOtheInfoDispatcher could not accept a eOmn_info_properties_t item inside its transmitting queue."} 
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 

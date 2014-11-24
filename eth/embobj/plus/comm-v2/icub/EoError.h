@@ -125,10 +125,11 @@ typedef enum
     eoerror_value_SYS_ropparsingerror               = 14,
     eoerror_value_SYS_halerror                      = 15,
     eoerror_value_SYS_osalerror                     = 16,
-    eoerror_value_SYS_ipalerror                     = 17
+    eoerror_value_SYS_ipalerror                     = 17,
+    eoerror_value_SYS_dispatcherfifooverflow        = 18
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 18 };
+enum { eoerror_value_SYS_numberof = 19 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
