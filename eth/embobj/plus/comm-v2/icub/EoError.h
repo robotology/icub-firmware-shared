@@ -118,18 +118,19 @@ typedef enum
     eoerror_value_SYS_wrongusage                    = 7,
     eoerror_value_SYS_runtimeerror                  = 8,
     eoerror_value_SYS_runninghappily                = 9,
-    eoerror_value_SYS_ctrloop_execoverflowRX        = 10,
-    eoerror_value_SYS_ctrloop_execoverflowDO        = 11,
-    eoerror_value_SYS_ctrloop_execoverflowTX        = 12,
-    eoerror_value_SYS_udptxfailure                  = 13,
-    eoerror_value_SYS_ropparsingerror               = 14,
-    eoerror_value_SYS_halerror                      = 15,
-    eoerror_value_SYS_osalerror                     = 16,
-    eoerror_value_SYS_ipalerror                     = 17,
-    eoerror_value_SYS_dispatcherfifooverflow        = 18
+    eoerror_value_SYS_runninginfatalerrorstate      = 10,
+    eoerror_value_SYS_ctrloop_execoverflowRX        = 11,
+    eoerror_value_SYS_ctrloop_execoverflowDO        = 12,
+    eoerror_value_SYS_ctrloop_execoverflowTX        = 13,
+    eoerror_value_SYS_udptxfailure                  = 14,
+    eoerror_value_SYS_ropparsingerror               = 15,
+    eoerror_value_SYS_halerror                      = 16,
+    eoerror_value_SYS_osalerror                     = 17,
+    eoerror_value_SYS_ipalerror                     = 18,
+    eoerror_value_SYS_dispatcherfifooverflow        = 19
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 19 };
+enum { eoerror_value_SYS_numberof = 20 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t

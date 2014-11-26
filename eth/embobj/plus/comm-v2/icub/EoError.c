@@ -105,6 +105,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_wrongusage,              "SYS: a function is used in the wrong way"},  
     {eoerror_value_SYS_runtimeerror,            "SYS: detected a runtime error"},  
     {eoerror_value_SYS_runninghappily,          "SYS: the board is running happily"},  
+    {eoerror_value_SYS_runninginfatalerrorstate,"SYS: the board is running in fatal error state. check previous errors to verify the reason"},
     {eoerror_value_SYS_ctrloop_execoverflowRX,  "SYS: the RX phase of the control loop has last more than wanted. In param there is the total execution time in usec"},  
     {eoerror_value_SYS_ctrloop_execoverflowDO,  "SYS: the DO phase of the control loop has last more than wanted. In param there is the total execution time in usec"},    
     {eoerror_value_SYS_ctrloop_execoverflowTX,  "SYS: the TX phase of the control loop has last more than wanted. In param there is the total execution time in usec"},  
