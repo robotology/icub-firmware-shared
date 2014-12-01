@@ -127,10 +127,14 @@ typedef enum
     eoerror_value_SYS_halerror                      = 16,
     eoerror_value_SYS_osalerror                     = 17,
     eoerror_value_SYS_ipalerror                     = 18,
-    eoerror_value_SYS_dispatcherfifooverflow        = 19
+    eoerror_value_SYS_dispatcherfifooverflow        = 19,
+    eoerror_value_SYS_configurator_udptxfailure     = 20,
+    eoerror_value_SYS_runner_udptxfailure           = 21,
+    eoerror_value_SYS_runner_transceivererror       = 22,
+    eoerror_value_SYS_canservices_cantxfailure      = 23
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 20 };
+enum { eoerror_value_SYS_numberof = 24 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t

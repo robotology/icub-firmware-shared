@@ -114,7 +114,12 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_halerror,                "SYS: the HAL triggered an error. In param there is the relevant hal code"},  
     {eoerror_value_SYS_osalerror,               "SYS: the OSAL triggered an error. In param there is the relevant osal code"},  
     {eoerror_value_SYS_ipalerror,               "SYS: the IPAL triggered an error. In param there is the relevant ipal code"}, 
-    {eoerror_value_SYS_dispatcherfifooverflow,  "SYS: the EOtheInfoDispatcher could not accept a eOmn_info_properties_t item inside its transmitting queue."} 
+    {eoerror_value_SYS_dispatcherfifooverflow,  "SYS: the EOtheInfoDispatcher could not accept a eOmn_info_properties_t item inside its transmitting queue."}, 
+    {eoerror_value_SYS_configurator_udptxfailure,"SYS: the EOMtheEMSconfigurator could not tx a UDP packet with eom_emssocket_Transmit()."},
+    {eoerror_value_SYS_runner_udptxfailure,      "SYS: the EOMtheEMSrunner could not tx a UDP packet with eom_emssocket_Transmit()."},
+    {eoerror_value_SYS_runner_transceivererror,  "SYS: the EOMtheEMSrunner could not either parse or form a UDP packet."},
+    {eoerror_value_SYS_canservices_cantxfailure, "SYS: the EOappCanSP could not tx CAN packets. The wait inside eo_appCanSP_wait_XXX() timed out. In param there is the can channel: 1 or 2."}
+
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
