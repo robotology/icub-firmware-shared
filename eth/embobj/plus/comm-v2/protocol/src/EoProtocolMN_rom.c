@@ -343,6 +343,29 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_info_status =
 #endif
 };
 
+#if     defined(EOMANAGEMENT_USE_VER_2_4)
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_info_status_basic =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_info_defaultvalue.status.basic),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_info_status_basic,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_info_defaultvalue.status.basic,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_info_status_basic,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_info_status_basic
+#endif
+};
+
+#elif   defined(EOMANAGEMENT_USE_VER_2_3)
+//
+#else
+    #error -> specify a EOMANAGEMENT_USE_VER_2_x
+#endif
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -376,7 +399,16 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
     &eoprot_mn_rom_descriptor_appl_cmmnds_go2state     
 };  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof));
 
-
+#if     defined(EOMANAGEMENT_USE_VER_2_4)
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_info_descriptors[] =
+{   // here are eoprot_mn_tags_info_numberof descriptors for the info entity
+    &eoprot_mn_rom_descriptor_info_wholeitem,
+    &eoprot_mn_rom_descriptor_info_config,
+    &eoprot_mn_rom_descriptor_info_config_enabled,
+    &eoprot_mn_rom_descriptor_info_status,
+    &eoprot_mn_rom_descriptor_info_status_basic
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_info_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_info_numberof));
+#elif   defined(EOMANAGEMENT_USE_VER_2_3)
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_info_descriptors[] =
 {   // here are eoprot_mn_tags_info_numberof descriptors for the info entity
     &eoprot_mn_rom_descriptor_info_wholeitem,
@@ -384,7 +416,9 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_info_descriptors[] =
     &eoprot_mn_rom_descriptor_info_config_enabled,
     &eoprot_mn_rom_descriptor_info_status    
 };  EO_VERIFYsizeof(s_eoprot_mn_rom_info_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_info_numberof));
-
+#else
+    #error -> specify a EOMANAGEMENT_USE_VER_2_x
+#endif
 
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mn_rom_descriptors[] = 
 {
@@ -451,7 +485,16 @@ static const char * const s_eoprot_mn_strings_tags_appl[] =
     "eoprot_tag_mn_appl_cmmnds_go2state"
 };  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)); 
 
-
+#if     defined(EOMANAGEMENT_USE_VER_2_4)
+static const char * const s_eoprot_mn_strings_tags_info[] =
+{
+    "eoprot_tag_mn_info_wholeitem",
+    "eoprot_tag_mn_info_config",
+    "eoprot_tag_mn_info_config_enabled",
+    "eoprot_tag_mn_info_status",
+    "eoprot_tag_mn_info_status_basic"
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_info, eoprot_tags_mn_info_numberof*sizeof(const char*));
+#elif   defined(EOMANAGEMENT_USE_VER_2_3)
 static const char * const s_eoprot_mn_strings_tags_info[] =
 {
     "eoprot_tag_mn_info_wholeitem",
@@ -459,7 +502,9 @@ static const char * const s_eoprot_mn_strings_tags_info[] =
     "eoprot_tag_mn_info_config_enabled",
     "eoprot_tag_mn_info_status"
 };  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_info, eoprot_tags_mn_info_numberof*sizeof(const char*));
-
+#else
+    #error -> specify a EOMANAGEMENT_USE_VER_2_x
+#endif
 
 const char ** const eoprot_mn_strings_tags[] =
 {

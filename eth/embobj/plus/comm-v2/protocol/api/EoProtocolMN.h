@@ -57,9 +57,13 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-
+#if     defined(EOMANAGEMENT_USE_VER_2_4)
+enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 4 };
+#elif   defined(EOMANAGEMENT_USE_VER_2_3)
 enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 3 };
-
+#else
+    #error -> specify a EOMANAGEMENT_USE_VER_2_x
+#endif
 
 
 enum { eoprot_entities_mn_numberof = eomn_entities_numberof };
@@ -142,6 +146,41 @@ enum { eoprot_rwms_mn_appl_numberof = 4 };  // it MUST be equal to the number of
 
 // - entity info
   
+#if defined(EOMANAGEMENT_USE_VER_2_4)
+
+/** @typedef    typedef enum eOprot_tag_mn_info_t
+    @brief      It contains the tags for all variables of the appl entity.
+                See definition of eOmn_appl_t (and its fields) in file EoManagement.h for explanation of the variables.
+ **/
+typedef enum
+{
+    eoprot_tag_mn_info_wholeitem                                    = 0,
+    eoprot_tag_mn_info_config                                       = 1,
+    eoprot_tag_mn_info_config_enabled                               = 2,
+    eoprot_tag_mn_info_status                                       = 3,
+    eoprot_tag_mn_info_status_basic                                 = 4
+} eOprot_tag_mn_info_t;
+
+enum { eoprot_tags_mn_info_numberof = 5 };  // it MUST be equal to the number of tags. 
+
+/** @typedef    typedef enum eOprot_rwm_mn_appl_t
+    @brief      It contains the rw modes for all variables of the appl entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_mn_appl_t.
+ **/
+typedef enum
+{
+    eoprot_rwm_mn_info_wholeitem                                    = eo_nv_rwmode_RO,
+    eoprot_rwm_mn_info_config                                       = eo_nv_rwmode_RW,
+    eoprot_rwm_mn_info_config_enabled                               = eo_nv_rwmode_RW,
+    eoprot_rwm_mn_info_status                                       = eo_nv_rwmode_RO,
+    eoprot_rwm_mn_info_status_basic                                 = eo_nv_rwmode_RO
+} eOprot_rwm_mn_info_t; 
+
+enum { eoprot_rwms_mn_info_numberof = 5 };  // it MUST be equal to the number of rw modes. 
+
+
+#elif   defined(EOMANAGEMENT_USE_VER_2_3)
+
 
 /** @typedef    typedef enum eOprot_tag_mn_info_t
     @brief      It contains the tags for all variables of the appl entity.
@@ -173,6 +212,10 @@ typedef enum
 enum { eoprot_rwms_mn_info_numberof = 4 };  // it MUST be equal to the number of rw modes. 
 
 
+#else
+    #error -> specify a EOMANAGEMENT_USE_VER_2_x
+#endif
+
 // - memory organization in the endpoint
   
   
@@ -180,12 +223,12 @@ enum { eoprot_rwms_mn_info_numberof = 4 };  // it MUST be equal to the number of
     @brief      It is a template for the organisation of comm and appl entities in the management endpoint.
                 The effective number may depend on the board.
  **/
-typedef struct                  // 104+24+4+0 = 168              
+typedef struct                  // 120+40+80+0 = 240              
 {
     eOmn_comm_t                 communication; 
     eOmn_appl_t                 application;
     eOmn_info_t                 info;
-} eOprot_template_mn_t;         //EO_VERIFYsizeof(eOprot_template_mn_t, 168);  
+} eOprot_template_mn_t;         //EO_VERIFYsizeof(eOprot_template_mn_t, 240);  
 
   
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -257,6 +300,14 @@ extern void eoprot_fun_UPDT_mn_info_config_enabled(const EOnv* nv, const eOropde
 extern void eoprot_fun_INIT_mn_info_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mn_info_status(const EOnv* nv, const eOropdescriptor_t* rd);
 
+#if     defined(EOMANAGEMENT_USE_VER_2_4)
+extern void eoprot_fun_INIT_mn_info_status_basic(const EOnv* nv);
+extern void eoprot_fun_UPDT_mn_info_status_basic(const EOnv* nv, const eOropdescriptor_t* rd);
+#elif   defined(EOMANAGEMENT_USE_VER_2_3)
+//
+#else
+    #error -> specify a EOMANAGEMENT_USE_VER_2_x
+#endif
 
 /** @}            
     end of group eo_EoProtocolMN  

@@ -52,6 +52,10 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
+#undef EOMANAGEMENT_USE_VER_2_4
+#define EOMANAGEMENT_USE_VER_2_3
+
+
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
 
@@ -348,6 +352,81 @@ typedef struct                      // size is 1+7 = 8 bytes
 } eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8);
 
 
+#if defined(EOMANAGEMENT_USE_VER_2_4)
+
+typedef enum
+{
+    eomn_info_extraformat_none      = 0,    /**< there is no extra field. use it when eOmn_info_basic_t is used alone */
+    eomn_info_extraformat_verbal    = 1,    /**< the extra field in eOmn_info_basic_t::extra is a string to be managed with sprintf() */
+    eomn_info_extraformat_compact1  = 2     /**< the extra field in eOmn_info_basic_t::extra is coded in a compact mode of type 1 to be properly encoded/decoded  */   
+} eOmn_info_extraformat_t;
+
+typedef enum
+{
+    eomn_info_type_info             = 0,
+    eomn_info_type_debug            = 1,   
+    eomn_info_type_warning          = 2,
+    eomn_info_type_error            = 3,
+    eomn_info_type_fatal            = 4
+} eOmn_info_type_t;
+
+typedef enum
+{
+    eomn_info_source_board          = 0,
+    eomn_info_source_can1           = 1,   
+    eomn_info_source_can2           = 2
+} eOmn_info_source_t;
+
+
+
+
+#define EOMN_INFO_PROPERTIES_FLAGS_set_type(flags, type)                    ((flags) |= ((0x0007&((uint16_t)(type)))<<0))
+#define EOMN_INFO_PROPERTIES_FLAGS_set_source(flags, source)                ((flags) |= ((0x0007&((uint16_t)(source)))<<3))
+#define EOMN_INFO_PROPERTIES_FLAGS_set_address(flags, address)              ((flags) |= ((0x000f&((uint16_t)(address)))<<6))
+#define EOMN_INFO_PROPERTIES_FLAGS_set_extraformat(flags, extraformat)      ((flags) |= ((0x0003&((uint16_t)(extraformat)))<<10))
+#define EOMN_INFO_PROPERTIES_FLAGS_set_futureuse(flags, futureuse)          ((flags) |= ((0x000f&((uint16_t)(futureuse)))<<12))
+
+
+#define EOMN_INFO_PROPERTIES_FLAGS_get_type(flags)                          (  ((flags)>>0)&0x0007  ) 
+#define EOMN_INFO_PROPERTIES_FLAGS_get_source(flags)                        (  ((flags)>>3)&0x0007  ) 
+#define EOMN_INFO_PROPERTIES_FLAGS_get_address(flags)                       (  ((flags)>>6)&0x000f  ) 
+#define EOMN_INFO_PROPERTIES_FLAGS_get_extraformat(flags)                   (  ((flags)>>10)&0x0003  ) 
+#define EOMN_INFO_PROPERTIES_FLAGS_get_futureuse(flags)                     (  ((flags)>>12)&0x000f  ) 
+
+// this definition of eOmn_info_properties_t with flags guarantees portability. the mapping of bits remains unchanged across different machines.
+// the bit field version, although more elegant, is not guaranteed about that because standard C does not specify the order in which the bits are packed. 
+typedef struct
+{
+    uint32_t                code;           /**< the code of the info. used to communicate in a ultra-compact mode what happens. its value must be taken from a table */
+    uint16_t                param;          /**< these bits can be used to specify further the meaning of code. its use id code-dependant */
+    uint16_t                flags;          /**< the field flags contains the following sub-fields. type:3 uses eOmn_info_type_t; source:3 uses eOmn_info_source_t; address:4 contains the 
+                                                 address of the source (0 for source == eomn_info_source_board); 
+                                                 extraformat: 2 uses eOmn_info_extraformat_t to tell how eOmn_info_status_t::extra[] is used  */
+} eOmn_info_properties_t;   EO_VERIFYsizeof(eOmn_info_properties_t, 8);
+
+
+
+
+typedef struct
+{
+    uint64_t                timestamp;  /**< it keeps the absolute time in microseconds since the EMS has bootstrapped */
+    eOmn_info_properties_t  properties; /**< specifies the properties of the info */          
+} eOmn_info_basic_t;        EO_VERIFYsizeof(eOmn_info_basic_t, 16);
+
+
+/** @typedef    typedef struct eOmn_info_status_t;
+    @brief      used to report status of the info
+ **/
+typedef struct 
+{
+    eOmn_info_basic_t       basic;          /**< the basic info status */  
+    uint8_t                 extra[56];      /**< contains either a descriptive string or a compact representation */
+} eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
+
+
+#elif defined(EOMANAGEMENT_USE_VER_2_3)
+
+
 
 typedef enum
 {
@@ -391,7 +470,13 @@ typedef struct
     uint8_t                 data[60];   /**< contains either a descriptive string or a compact representation */
 } eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
 
-                                       
+
+
+                                 
+#else
+    #error --> define a EOMANAGEMENT_USE_VER_2_x
+#endif
+
 
 
 /** @typedef    typedef struct eOmn_info_t;
