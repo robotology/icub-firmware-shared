@@ -65,7 +65,7 @@ extern "C" {
 typedef struct EOrop_hid EOrop;
 
 
-typedef uint8_t eOropcode_t;
+typedef uint8_t eOropcode_t; // use eOropcodevalues_t
 
 /** @typedef    typedef enum eOropcodevalue_t
     @brief      eOropcodevalue_t contains possible ROP codes.
