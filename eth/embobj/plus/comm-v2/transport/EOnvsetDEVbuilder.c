@@ -94,7 +94,7 @@ static uint16_t s_eoprot_ep2index(void* p, eOnvEP8_t ep);
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char s_eobj_ownname[] = "EOnvsetDEVbuilder";
+//static const char s_eobj_ownname[] = "EOnvsetDEVbuilder";
 
 
 static const eOvoid_fp_uint32_voidp_t ram_init_ep[] =
