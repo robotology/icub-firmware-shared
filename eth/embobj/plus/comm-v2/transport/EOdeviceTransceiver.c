@@ -116,7 +116,7 @@ extern EOdeviceTransceiver * eo_devicetransceiver_New(const eOdevicetransceiver_
     
     if(NULL == cfg->nvsetdevcfg)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "need a nv set cfg");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_devicetransceiver_New(): NULL nvsetdevcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
     
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOdeviceTransceiver), 1);
@@ -124,7 +124,7 @@ extern EOdeviceTransceiver * eo_devicetransceiver_New(const eOdevicetransceiver_
     if((0 == cfg->sizes.capacityoftxpacket) || (0 == cfg->sizes.capacityofrop) || (0 == cfg->sizes.capacityofropframeregulars) ||
        (0 == cfg->sizes.capacityofropframeoccasionals) || (0 == cfg->sizes.capacityofropframereplies) || (0 == cfg->sizes.maxnumberofregularrops))
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "a cfg->sizes field is 0");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_devicetransceiver_New(): one 0 cfg->sizes.field", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }    
     
     // 1. init the proper transceiver cfg

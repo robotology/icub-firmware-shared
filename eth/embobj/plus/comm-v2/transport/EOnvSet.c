@@ -98,7 +98,7 @@ extern EOnvSet* eo_nvset_New(uint16_t ndevices, eOnvset_protection_t prot, eov_m
 {
     EOnvSet *p = NULL;  
 
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != ndevices), s_eobj_ownname, "ndevices is zero");    
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != ndevices), "eo_nvset_New(): 0 ndevices", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);    
 
     // i get the memory for the object
     p = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOnvSet), 1);
@@ -145,12 +145,12 @@ static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ow
 		return(eores_NOK_nullpointer); 
 	}
     
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != nendpoints), s_eobj_ownname, "nendpoints is zero");
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != fptr_ep2index), s_eobj_ownname, "fptr_ep2index() is NULL");
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != nendpoints), "s_eo_nvset_PushBackDEVholder(): 0 nendpoints", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != fptr_ep2index), "s_eo_nvset_PushBackDEVholder(): NULL fptr_ep2index", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     
-    eo_errman_Assert(eo_errman_GetHandle(), (eobool_false == eo_vector_Full(p->thedevices)), s_eobj_ownname, "->thedevices is full");
+    eo_errman_Assert(eo_errman_GetHandle(), (eobool_false == eo_vector_Full(p->thedevices)), "s_eo_nvset_PushBackDEVholder(): thedevices is full", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
 
-    eo_errman_Assert(eo_errman_GetHandle(), (eobool_true != eo_vector_Find(p->theipaddresses, NULL, &ipaddress, NULL)), s_eobj_ownname, "ip already inside");
+    eo_errman_Assert(eo_errman_GetHandle(), (eobool_true != eo_vector_Find(p->theipaddresses, NULL, &ipaddress, NULL)),"s_eo_nvset_PushBackDEVholder(): ip already inside", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     s_eo_nvset_devicesowneship_change(p, ownership);
 
@@ -192,14 +192,14 @@ static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, e
     
     epnvsnumberof = cfgofep->protif->getvarsnumberof(boardnum, cfgofep->endpoint);
     
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != epnvsnumberof), s_eobj_ownname, "epnvsnumberof is zero"); 
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != epnvsnumberof), "s_eo_nvset_onDEV_PushBackEP(): 0 epnvsnumberof", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal); 
     
     // ok: i go on
         
     thedev = (eOnvset_dev_t**) eo_vector_At(p->thedevices, ondevindex);
     
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != thedev), s_eobj_ownname, "->thedevices is indexed in wrong pos");    
-    eo_errman_Assert(eo_errman_GetHandle(), (eobool_false == eo_vector_Full((*thedev)->theendpoints)), s_eobj_ownname, "one of ->theendpoints is full");
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != thedev), "s_eo_nvset_onDEV_PushBackEP(): ->thedevices is indexed in wrong pos", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);    
+    eo_errman_Assert(eo_errman_GetHandle(), (eobool_false == eo_vector_Full((*thedev)->theendpoints)), "s_eo_nvset_onDEV_PushBackEP(): one of ->theendpoints is full", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
      
     theendpoint = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(eOnvset_ep_t), 1);
     
@@ -211,7 +211,7 @@ static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, e
         
     // now we must load the ram in the endpoint
     fptr_loadram = theendpoint->epcfg.protif->loadram;
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != fptr_loadram), s_eobj_ownname, "fptr_loadram is NULL"); 
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != fptr_loadram), "s_eo_nvset_onDEV_PushBackEP(): NULL fptr_loadram", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal); 
     fptr_loadram((*thedev)->boardnum, theendpoint->epcfg.endpoint, theendpoint->epram, theendpoint->epcfg.epram_sizeof);
     
     // now add the vector of mtx if needed.
@@ -693,7 +693,7 @@ static void s_eo_nvset_devicesowneship_change(EOnvSet *p,  eOnvsetOwnership_t ow
         {
             if(eo_nvset_ownership_local == ownership)
             {
-                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "at most one local");
+                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_nvset_devicesowneship_change(): at most one local", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
             }
             else
             {
@@ -705,7 +705,7 @@ static void s_eo_nvset_devicesowneship_change(EOnvSet *p,  eOnvsetOwnership_t ow
         {
             if(eo_nvset_ownership_local == ownership)
             {
-                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "at most one local");
+                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_nvset_devicesowneship_change() at most One local", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
             }
             else
             {
@@ -727,7 +727,7 @@ static void s_eo_nvset_devicesowneship_change(EOnvSet *p,  eOnvsetOwnership_t ow
 
         default:
         {
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "verify your code");
+            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_nvset_devicesowneship_change(): verify your code", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
         } break;
 
     }

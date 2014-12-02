@@ -96,11 +96,11 @@ extern EOagent* eo_agent_New(const eOagent_cfg_t *cfg)
     if(NULL == cfg)
     {    
         //cfg = &eo_agent_cfg_default;
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "cfg is NULL");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_agent_New(): NULL cfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
     
     // of all the config, only nvset is mandatory
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg->nvset), s_eobj_ownname, "cfg->nvset is NULL");
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg->nvset), "eo_agent_New(): NULL cfg->nvset", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     
    
     // i get the memory for the object

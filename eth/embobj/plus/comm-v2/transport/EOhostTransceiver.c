@@ -122,7 +122,7 @@ extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t 
     
     if(NULL == cfg->nvsetdevcfg)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "need a nv set cfg");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_hosttransceiver_New(): NULL nvsetdevcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }  
     
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOhostTransceiver), 1);

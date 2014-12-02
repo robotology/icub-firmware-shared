@@ -127,13 +127,13 @@ extern EOtheBOARDtransceiver * eo_boardtransceiver_Initialise(const eOboardtrans
     
     if(NULL == cfg->nvsetdevcfg)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "need a nv set cfg");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_boardtransceiver_Initialise(): NULL nvsetdevcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
 
     if((0 == cfg->sizes.capacityoftxpacket) || (0 == cfg->sizes.capacityofrop) || (0 == cfg->sizes.capacityofropframeregulars) ||
        (0 == cfg->sizes.capacityofropframeoccasionals) || (0 == cfg->sizes.capacityofropframereplies) || (0 == cfg->sizes.maxnumberofregularrops))
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "a cfg->sizes field is 0");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_boardtransceiver_Initialise(): a cfg->sizes.field is 0", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }    
     
     // 1. init the proper transceiver cfg
