@@ -52,12 +52,69 @@
 // - definition (and initialisation) of extern variables, but better using _get(), _set() 
 // --------------------------------------------------------------------------------------------------------------------
 
-const eOerrman_cfg_t eom_errman_DefaultCfg = 
+const eOerrman_cfg_t eo_errman_DefaultCfg = 
 {
     EO_INIT(.extfn)
     { 
         EO_INIT(.usr_on_error)      NULL
     }
+};
+
+
+const eOerrmanDescriptor_t eo_errman_DescrUnspecified = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_unspecified,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
+};
+
+const eOerrmanDescriptor_t eo_errman_DescrTobedecided = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_tobedecided,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
+};
+
+const eOerrmanDescriptor_t eo_errman_DescrWrongParamLocal = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_wrongparam,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
+};
+
+const eOerrmanDescriptor_t eo_errman_DescrWrongUsageLocal = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_wrongusage,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
+};
+
+const eOerrmanDescriptor_t eo_errman_DescrRuntimeErrorLocal = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_runtimeerror,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
+};
+
+const eOerrmanDescriptor_t eo_errman_DescrRunningHappily = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_runninghappily,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
+};
+
+const eOerrmanDescriptor_t eo_errman_DescrRuntimeFatalErrorState = 
+{
+    EO_INIT(.code)          eo_errman_code_sys_runninginfatalerrorstate,
+    EO_INIT(.param)         0,
+    EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
+    EO_INIT(.sourceaddress) 0
 };
 
 
@@ -71,7 +128,7 @@ const eOerrman_cfg_t eom_errman_DefaultCfg =
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static void s_eo_errman_OnError(eOerrmanErrorType_t errtype, eOid08_t taskid, const char *eobjstr, const char *info);
+static void s_eo_errman_OnError(eOerrmanErrorType_t errtype, const char *info, eOerrmanCaller_t *caller, const eOerrmanDescriptor_t *des);
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -86,6 +143,14 @@ static EOtheErrorManager s_errman_singleton =
 	EO_INIT(.cfg) 
     {   
         EO_INIT(.extfn.usr_on_error)    NULL
+    },
+    EO_INIT(.errorstrings)
+    {
+        "INFO", 
+        "DEBUG", 
+        "WARNING", 
+        "ERROR", 
+        "FATAL"
     }
 };
 
@@ -94,17 +159,13 @@ static EOtheErrorManager s_errman_singleton =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-extern void eo_errman_Error2(EOtheErrorManager *p, eOerrmanErrorType2_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des)
-{
-    info = info;
-}
 
 extern EOtheErrorManager * eo_errman_Initialise(const eOerrman_cfg_t *errmancfg)
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN
     if(NULL == errmancfg)
     {
-        errmancfg = &eom_errman_DefaultCfg;    
+        errmancfg = &eo_errman_DefaultCfg;    
     }
 
     memcpy(&s_errman_singleton.cfg, errmancfg, sizeof(eOerrman_cfg_t));
@@ -125,6 +186,18 @@ extern EOtheErrorManager* eo_errman_GetHandle(void)
 #endif
 }
 
+
+extern const char* eo_errman_ErrorStringGet(EOtheErrorManager *p, eOerrmanErrorType_t errtype) 
+{
+    return(s_errman_singleton.errorstrings[(uint8_t)errtype]);
+}
+
+
+extern eObool_t eo_errman_IsErrorHandlerConfigured(EOtheErrorManager *p) 
+{
+    return((NULL == s_errman_singleton.cfg.extfn.usr_on_error) ? (eobool_false) : (eobool_true));
+}
+
 extern void eo_errman_SetOnErrorHandler(EOtheErrorManager *p, eOerrman_fp_onerror_t onerrorhandler)
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN    
@@ -135,12 +208,12 @@ extern void eo_errman_SetOnErrorHandler(EOtheErrorManager *p, eOerrman_fp_onerro
 }
 
  
-extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *eobjstr, const char *info) 
+extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN    
     if(0 == cond) 
     {
-        eo_errman_Error(p, eo_errortype_fatal, eobjstr, info);
+        eo_errman_Error(p, eo_errortype_fatal, info, eobjstr, des);
     }
 
 #else
@@ -149,41 +222,64 @@ extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *eo
 }
 
 
-extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *eobjstr, const char *info) 
+extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN
     EOVtaskDerived *task = NULL;
-    eOid08_t id = 0;
-
-    task = eov_sys_GetRunningTask(eov_sys_GetHandle());
     
+    eOerrmanCaller_t caller = {0};
+
+    caller.eobjstr = eobjstr;
+    
+    task = eov_sys_GetRunningTask(eov_sys_GetHandle());   
     
     if(NULL == task)
     {
         // we are in init task ...
-        id = 2;
+        caller.taskid = 2;
     }
     else
     {
-        id = eov_task_GetID(task);
+        caller.taskid = eov_task_GetID(task);
     }
+    
+    
 
-    s_eo_errman_OnError(errtype, id, eobjstr, info);
+    s_eo_errman_OnError(errtype, info, &caller, des);
 #else
     ;
 #endif
 }
 
 
-extern void eo_errman_Info(EOtheErrorManager *p, const char *eobjstr, const char *info) 
+extern void eo_errman_Info(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN
-    eo_errman_Error(p, eo_errortype_info, eobjstr, info);
+    eo_errman_Error(p, eo_errortype_info, info, eobjstr, des);
 #else
     ;
 #endif
 }
 
+
+extern void eo_errman_Debug(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
+{
+#ifndef EODEF_DONT_USE_THE_ERRORMAN
+    eo_errman_Error(p, eo_errortype_debug, info, eobjstr, des);
+#else
+    ;
+#endif
+}
+
+
+extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
+{
+#ifndef EODEF_DONT_USE_THE_ERRORMAN
+    eo_errman_Error(p, eo_errortype_warning, info, eobjstr, des);
+#else
+    ;
+#endif
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
@@ -196,16 +292,16 @@ extern void eo_errman_Info(EOtheErrorManager *p, const char *eobjstr, const char
 // - definition of static functions 
 // --------------------------------------------------------------------------------------------------------------------
 
-static void s_eo_errman_OnError(eOerrmanErrorType_t errtype, eOid08_t taskid, const char *eobjstr, const char *info)
+static void s_eo_errman_OnError(eOerrmanErrorType_t errtype, const char *info, eOerrmanCaller_t *caller, const eOerrmanDescriptor_t *des)
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN
     if(NULL != s_errman_singleton.cfg.extfn.usr_on_error)
     {
-        s_errman_singleton.cfg.extfn.usr_on_error(errtype, taskid, eobjstr, info);
+        s_errman_singleton.cfg.extfn.usr_on_error(errtype, info, caller, des);
     }
     else
     {
-        if(errtype <= eo_errortype_weak)
+        if(errtype <= eo_errortype_error)
         {
             return;
         }

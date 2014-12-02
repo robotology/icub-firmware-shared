@@ -53,6 +53,7 @@ extern "C" {
 struct EOtheErrorManager_hid 
 {
 	eOerrman_cfg_t  cfg;
+    const char errorstrings[eo_errortype_numberof][8];
 };
 
 

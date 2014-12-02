@@ -46,7 +46,8 @@ extern "C" {
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
-// empty-section
+
+#define EO_ERRMAN_VERSION   2
   
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
@@ -65,54 +66,13 @@ typedef struct EOtheErrorManager_hid EOtheErrorManager;
 typedef enum  
 {
     eo_errortype_info    = 0,       /**< used to communicate some innocent situation */
-    eo_errortype_warning = 1,       /**< used to communicate some strange situation */
-    eo_errortype_weak    = 2,       /**< used to communicate a weak error which could be recovered by user intervention */
-    eo_errortype_fatal   = 3        /**< used to communicate a fatal error which requires stopping the system */
+    eo_errortype_debug   = 1,       /**< used to communicate debugging situation */
+    eo_errortype_warning = 2,       /**< used to communicate some strange situation */
+    eo_errortype_error   = 3,       /**< used to communicate an error */
+    eo_errortype_fatal   = 4        /**< used to communicate a fatal error which requires stopping the system */
 } eOerrmanErrorType_t;
 
-
-typedef     void (*eOerrman_fp_onerror_t)(eOerrmanErrorType_t errtype, eOid08_t taskid, const char *eobjstr, const char *info);
-
-
-/** @typedef    typedef struct eOerrman_fn_cfg_t
-    @brief      eOerrman_fn_cfg_t keeps pointers to functions of EOtheErrorManager whcih can be redefined by the user.
- **/
-typedef struct
-{
-    /** When an error is detected, the error manager attempt to call this function.
-        If not defined: if errtype is eo_errortype_weak or lower it returns control to the environment. Otherwise if 
-        error is eo_errortype_fatal it stops the environment and it enters in a forever loop.
-        If defined: it just calls the function and if the function returns it returns control to teh caller. 
-        Parameters are: the error type, the id of the calling task, the name of the calling embOBJ, and a string with a
-        more detailed info */ 
-    void            (*usr_on_error)(eOerrmanErrorType_t errtype, eOid08_t taskid, const char *eobjstr, const char *info);
-} eOerrman_fn_cfg_t;
-
-/**	@typedef    typedef struct eOerrman_cfg_t 
- 	@brief      Contains the configuration for the EOtheErrorManager. 
- **/
-typedef struct
-{
-    eOerrman_fn_cfg_t    extfn;
-} eOerrman_cfg_t;
-
-
-// marco.accame: in here are some temporary types that can be used to write code compatible with the new error manager 
-// begin
-    
-/**	@typedef    typedef enum eOerrmanErrorType2_t 
- 	@brief      Contains the error types managed by the EOtheErrorManager 
- **/  
-typedef enum  
-{
-    eo_errortype2_info    = 0,       /**< used to communicate some innocent situation */
-    eo_errortype2_debug   = 1,       /**< used to communicate debugging situation */
-    eo_errortype2_warning = 2,       /**< used to communicate some strange situation */
-    eo_errortype2_error   = 3,       /**< used to communicate an error */
-    eo_errortype2_fatal   = 4        /**< used to communicate a fatal error which requires stopping the system */
-} eOerrmanErrorType2_t;
-
-enum { eo_errortype2_numberof = 5 };
+enum { eo_errortype_numberof = 5 };
 
 
 /** @typedef    typedef struct eOerrmanCaller_t
@@ -137,19 +97,22 @@ typedef enum
     eo_errman_code_sys_wrongusage               = 7,
     eo_errman_code_sys_runtimeerror             = 8,
     eo_errman_code_sys_runninghappily           = 9,
-    eo_errman_code_sys_ctrloop_execoverflowRX   = 10,   /**< param contains the duration ??? */ // meglio non tx stringa
-    eo_errman_code_sys_ctrloop_execoverflowDO   = 11,   /**< param contains the duration ??? */ // meglio non tx stringa
-    eo_errman_code_sys_ctrloop_execoverflowTX   = 12,   /**< param contains the duration ??? */ // meglio non tx stringa
-    eo_errman_code_sys_ctrloop_udptxfailure     = 13, 
-    eo_errman_code_sys_ropparsingerror          = 14,   /**< param contains the specific parsing error */
-    eo_errman_code_sys_halerror                 = 15,   /**< param contains the specific ipal error */
-    eo_errman_code_sys_osalerror                = 16,   /**< param contains the specific ipal error */
-    eo_errman_code_sys_ipalerror                = 17,   /**< param contains the specific ipal error */    
+    eo_errman_code_sys_runninginfatalerrorstate = 10,
+    eo_errman_code_sys_ctrloop_execoverflowRX   = 11,   /**< param contains the duration ??? */ // meglio non tx stringa
+    eo_errman_code_sys_ctrloop_execoverflowDO   = 12,   /**< param contains the duration ??? */ // meglio non tx stringa
+    eo_errman_code_sys_ctrloop_execoverflowTX   = 13,   /**< param contains the duration ??? */ // meglio non tx stringa
+    eo_errman_code_sys_ctrloop_udptxfailure     = 14, 
+    eo_errman_code_sys_ropparsingerror          = 15,   /**< param contains the specific parsing error */
+    eo_errman_code_sys_halerror                 = 16,   /**< param contains the specific ipal error */
+    eo_errman_code_sys_osalerror                = 17,   /**< param contains the specific ipal error */
+    eo_errman_code_sys_ipalerror                = 18,   /**< param contains the specific ipal error */     
 } eOerrmanCode_t;
 
 typedef enum 
 { 
-    eo_errman_sourcedevice_localboard = 0 
+    eo_errman_sourcedevice_localboard   = 0,
+    eo_errman_sourcedevice_canbus1      = 1,
+    eo_errman_sourcedevice_canbus2      = 2    
 } eOerrmanSourceDevice_t;
 
 
@@ -167,25 +130,56 @@ typedef struct
 } eOerrmanDescriptor_t;
 
 
-/** @fn         extern void eo_errman_Error2(EOtheErrorManager *p, eOerrmanErrorType2_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
-    @brief      It calls the configured usr_on_error() with the passed errtype, and if it is a fatal error it also
-                stops the system using the eov_sys_Stop() function and finally enters in a forever loop. 
-    @param      p               The singleton
-    @param      errtype         The error type.
-    @param      info            A string containing a specific message from the calling object.
-    @param      eobjstr         A string containing the name of the calling object. 
-    @param      par             An optional parameter used by the user-defined usr_on_error()
+typedef     void (*eOerrman_fp_onerror_t)(eOerrmanErrorType_t errtype, const char *info, eOerrmanCaller_t *caller, const eOerrmanDescriptor_t *des);
+
+
+/** @typedef    typedef struct eOerrman_fn_cfg_t
+    @brief      eOerrman_fn_cfg_t keeps pointers to functions of EOtheErrorManager whcih can be redefined by the user.
  **/
-extern void eo_errman_Error2(EOtheErrorManager *p, eOerrmanErrorType2_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
+typedef struct
+{
+    /** When an error is detected, the error manager attempt to call this function.
+        If not defined: if errtype is eo_errortype_weak or lower it returns control to the environment. Otherwise if 
+        error is eo_errortype_fatal it stops the environment and it enters in a forever loop.
+        If defined: it just calls the function and if the function returns it returns control to the caller. 
+        Parameters are: the error type, a string with a more detailed info, optional pointer to the caller info, pointer to
+        data which is specific of the  user-defined function 
+    */ 
+    void (*usr_on_error)(eOerrmanErrorType_t errtype, const char *info, eOerrmanCaller_t *caller, const eOerrmanDescriptor_t *des);
+} eOerrman_fn_cfg_t;
 
 
-// end   
+/**	@typedef    typedef struct eOerrman_cfg_t 
+ 	@brief      Contains the configuration for the EOtheErrorManager. 
+ **/
+typedef struct
+{
+    eOerrman_fn_cfg_t    extfn;
+} eOerrman_cfg_t;
 
- 
+
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOerrman_cfg_t eom_errman_DefaultCfg; // = {.extfn = { .usr_on_error = NULL}};
+
+extern const eOerrman_cfg_t eo_errman_DefaultCfg; // = {.extfn = { .usr_on_error = NULL}};
+
+
+extern const eOerrmanDescriptor_t eo_errman_DescrUnspecified;
+
+extern const eOerrmanDescriptor_t eo_errman_DescrTobedecided;
+
+extern const eOerrmanDescriptor_t eo_errman_DescrWrongParamLocal;
+
+extern const eOerrmanDescriptor_t eo_errman_DescrWrongUsageLocal;
+
+extern const eOerrmanDescriptor_t eo_errman_DescrRuntimeErrorLocal;
+
+extern const eOerrmanDescriptor_t eo_errman_DescrRunningHappily;
+
+extern const eOerrmanDescriptor_t eo_errman_DescrRuntimeFatalErrorState;
+
+//extern const eOerrmanDescriptor_t eo_errman_DescrConfigParamLocal;
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
@@ -208,46 +202,78 @@ extern EOtheErrorManager * eo_errman_Initialise(const eOerrman_cfg_t *errmancfg)
 extern EOtheErrorManager * eo_errman_GetHandle(void);
 
 
+/** @fn         extern const char* eo_errman_ErrorStringGet(EOtheErrorManager *p, eOerrmanErrorType_t errtype) 
+    @brief      It returns a string describing the error type in argument. 
+    @param      p               The singleton
+    @param      errtype         The error type.
+    @return     The error string: INFO, DEBUG, WARNING, ERROR, FATAL 
+ **/
+extern const char* eo_errman_ErrorStringGet(EOtheErrorManager *p, eOerrmanErrorType_t errtype);
+
+
+extern eObool_t eo_errman_IsErrorHandlerConfigured(EOtheErrorManager *p);
+
+/** @fn         extern void eo_errman_SetOnErrorHandler(EOtheErrorManager *p, eOerrman_fp_onerror_t onerrorhandler) 
+    @brief      It changes the error handler function. 
+    @param      p               The singleton
+    @param      onerrorhandler  the error handler. If NULL, then the default error handler is used which does nothing if severity 
+                                is lower or equal to eo_errortype_error and it stops the system inside only if severity is eo_errortype_fatal.
+ **/
 extern void eo_errman_SetOnErrorHandler(EOtheErrorManager *p, eOerrman_fp_onerror_t onerrorhandler);
  
  
-/** @fn         extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *eobjstr,
-                                            const char *info)
+/** @fn         extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des)
     @brief      If the value of @e cond is 0, it calls the configured usr_on_error() with eo_errortype_fatal, 
                 then stops the system using the eov_sys_Stop() function and finally enters in a forever loop.
     @param      p               The singleton
-    @param      condition       The condition to be tested
-    @param      eobjstr         A string containing the name of the calling object. 
+    @param      cond            The condition to be tested
     @param      info            A string containing a specific message from the calling object.
+    @param      eobjstr         A string containing the name of the calling object. 
+    @param      par             An optional parameter used by the user-defined usr_on_error()
  **/
-extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *eobjstr, const char *info);
+extern void eo_errman_Assert(EOtheErrorManager *p, uint32_t cond, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
 
-/** @fn         extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *eobjstr, 
-                                            const char *info) 
+/** @fn         extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
     @brief      It calls the configured usr_on_error() with the passed errtype, and if it is a fatal error it also
-                 stops the system using the eov_sys_Stop() function and finally enters in a forever loop. 
+                stops the system using the eov_sys_Stop() function and finally enters in a forever loop. 
     @param      p               The singleton
     @param      errtype         The error type.
-    @param      eobjstr         A string containing the name of the calling object. 
     @param      info            A string containing a specific message from the calling object.
+    @param      eobjstr         A string containing the name of the calling object. 
+    @param      par             An optional parameter used by the user-defined usr_on_error()
  **/
+extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
-extern void eo_errman_Error(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *eobjstr, const char *info);
 
-
-/** @fn         extern void eo_errman_Info(EOtheErrorManager *p, const char *eobjstr, const char *info) 
-    @brief      It calls eo_errman_Error(p, eo_errortype_info, eobjstr, info). 
+/** @fn         extern void eo_errman_Info(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
+    @brief      It calls eo_errman_Error(p, eo_errortype_info, info, eobjstr, par). 
     @param      p               The singleton
-    @param      eobjstr         A string containing the name of the calling object. 
     @param      info            A string containing a specific message from the calling object.
+    @param      eobjstr         A string containing the name of the calling object. 
+    @param      par             An optional parameter used by the user-defined usr_on_error()
  **/
-extern void eo_errman_Info(EOtheErrorManager *p, const char *eobjstr, const char *info);
+extern void eo_errman_Info(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
 
+/** @fn         extern void eo_errman_Debug(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
+    @brief      It calls eo_errman_Error(p, eo_errortype_debug, eobjstr, info). 
+    @param      p               The singleton
+    @param      info            A string containing a specific message from the calling object.
+    @param      eobjstr         A string containing the name of the calling object. 
+    @param      par             An optional parameter used by the user-defined usr_on_error()
+ **/
+extern void eo_errman_Debug(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
 
-
+/** @fn         extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des) 
+    @brief      It calls eo_errman_Error(p, eo_errortype_warning, eobjstr, info). 
+    @param      p               The singleton
+    @param      info            A string containing a specific message from the calling object.
+    @param      eobjstr         A string containing the name of the calling object. 
+    @param      par             An optional parameter used by the user-defined usr_on_error()
+ **/
+extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
 
 /** @}            
