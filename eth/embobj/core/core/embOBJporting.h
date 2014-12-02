@@ -50,7 +50,19 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
-#if defined(_MSC_VER)
+
+#if defined(__arm__)
+    // __arm__ or __ARMCC_VERSION are always defined in armcc compiler
+    #define EO_extern_inline        extern inline
+    #define EO_static_inline        static inline
+    // other compilers which support c99 can keep the designated initializers in structs
+    #define EO_INIT(f)      f =
+    #pragma pack(8)
+    //#define snprintf        snprintf  
+    #define EO_weak         __weak
+    #define float32_t       float
+    #define EO_TAILOR_CODE_FOR_ARM    
+#elif defined(_MSC_VER)
     // msc does not support c99, thus inline must be redefined as __inline
     #define EO_extern_inline       extern __inline
     #define EO_static_inline       static __inline
@@ -60,8 +72,8 @@ extern "C" {
     //#pragma pack(4) 
     #pragma pack(8) 
     #define snprintf        sprintf_s
-	#define float32_t       float
-	#define __weak	
+    #define float32_t       float
+    #define __weak	
     #define EO_TAILOR_CODE_FOR_WINDOWS
     #define EO_WARNING(a)   __pragma(message("EOWARNING-> "##a))
     #define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
@@ -81,19 +93,6 @@ extern "C" {
     #define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
     #define _PEDANT_WARNING_ON_COMPILATION_CALLBACK_
     #define _STATS_DEBUG_FOR_CYCLE_TIME_
-
-#elif defined(__arm__)
-    // __arm__ or __ARMCC_VERSION are always defined in armcc compiler
-    #define EO_extern_inline        extern inline
-    #define EO_static_inline        static inline
-    // other compilers which support c99 can keep the designated initializers in structs
-    #define EO_INIT(f)      f =
-    #pragma pack(8)
-    // or pack(4) ???
-    #define snprintf        snprintf  
-    #define EO_weak         __weak
-    #define float32_t       float
-    #define EO_TAILOR_CODE_FOR_ARM
 #elif defined(_DSPIC_) & defined(__GNUC__)
     // for dspic ...
     #define EO_extern_inline        extern inline
@@ -117,6 +116,7 @@ extern "C" {
 #else
     #error architecture not defined 
 #endif
+    
 
 
 #define __emBODYportingVERIFYsizeof(sname, ssize)    typedef uint8_t GUARD##sname[ ( ssize == sizeof(sname) ) ? (1) : (-1)];
