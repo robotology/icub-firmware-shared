@@ -52,8 +52,8 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
-#undef EOMANAGEMENT_USE_VER_2_4
-#define EOMANAGEMENT_USE_VER_2_3
+#undef EOMANAGEMENT_USE_VER_2_3
+#define EOMANAGEMENT_USE_VER_2_4
 
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
