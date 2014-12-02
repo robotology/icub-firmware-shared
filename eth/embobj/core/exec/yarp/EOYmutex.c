@@ -103,7 +103,7 @@ extern EOYmutex* eoy_mutex_New(void)
     retptr->acemutex = ace_mutex_new();
 
     // need to check because yarp may return NULL
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != retptr->acemutex), s_eobj_ownname, "ace cannot give a mutex");
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != retptr->acemutex), s_eobj_ownname, "eoy_mutex_New(): ace cannot give a mutex", &eo_errman_DescrRuntimeErrorLocal);
     
     return(retptr);    
 }
