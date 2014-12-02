@@ -92,7 +92,7 @@ extern EOtheInfoDispatcher * eo_infodispatcher_GetHandle(void);
 
 
 
-extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_properties_t* props, uint8_t* extra);
+extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_properties_t* props, const char* extra);
 
 // use  .... if you want try sending them all
 enum { eoinfodispatcher_sendnumber_all = EOK_uint16dummy };

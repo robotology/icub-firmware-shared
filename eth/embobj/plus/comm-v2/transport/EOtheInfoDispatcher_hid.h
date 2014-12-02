@@ -68,6 +68,11 @@ struct EOtheInfoDispatcher_hid
     //               by passing a EOnv* as argument which overrides the internal computation 
     EOnv*                   nvinfostatus;
     EOnv*                   nvinfostatusbasic;    
+    uint8_t*                ropstream;
+    eOrophead_t*            rophead;
+    uint8_t*                ropdata;
+    uint16_t                ropsizeinfostatus;
+    uint16_t                ropsizeinfostatusbasic;
 }; 
 
 

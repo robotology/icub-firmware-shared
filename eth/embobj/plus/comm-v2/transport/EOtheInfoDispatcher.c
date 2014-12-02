@@ -31,6 +31,7 @@
 #include "EOVtheSystem.h"
 #include "EoProtocol.h"
 #include "EoProtocolMN.h"
+#include "EoError.h"
 
 #include "eventviewer.h"
 
@@ -104,7 +105,7 @@ const eOinfodispatcher_cfg_t eo_infodispatcher_cfg_default =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-void infodisp_loadrop(void) {}
+//void infodisp_loadrop(void) {}
  
 extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher_cfg_t *cfg) 
 {
@@ -121,12 +122,12 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     
     if(0 == cfg->capacity)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "need a non-zero cfg->capacity");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_infodispatcher_Initialise(): 0 cfg->capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
     
     if(NULL == cfg->transmitter)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "need a non-NULL cfg->transmitter");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_infodispatcher_Initialise(): NULL cfg->transmitter", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
 
     
@@ -154,7 +155,34 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     s_eo_infodispatcher_overflow_init(&s_eo_theinfodispatcher);
     
     
-    eventviewer_load(ev_ID_first_usrdef+15, infodisp_loadrop);
+    s_eo_theinfodispatcher.ropsizeinfostatusbasic = eo_rop_compute_size(eok_ropctrl_basic, eo_ropcode_say, sizeof(eOmn_info_basic_t));
+    // s_eo_theinfodispatcher.ropsizeinfostatusbasic = sizeof(eOrophead_t) + sizeof(eOmn_info_basic_t);
+    s_eo_theinfodispatcher.ropsizeinfostatus = eo_rop_compute_size(eok_ropctrl_basic, eo_ropcode_say, sizeof(eOmn_info_status_t));
+    // s_eo_theinfodispatcher.ropsizeinfostatus = sizeof(eOrophead_t) + sizeof(eOmn_info_status_t);
+
+    // in here i build the ropstream which i want to send out to the transmitter. i use a single buffer and then i shape it later
+    s_eo_theinfodispatcher.ropstream = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, s_eo_theinfodispatcher.ropsizeinfostatus, 1);
+    
+    
+    // i get the pointers to header and data. i known from the protocol that the data is just after the header. 
+    // then ... i dont use signature and time in the rop
+    s_eo_theinfodispatcher.rophead = (eOrophead_t*)s_eo_theinfodispatcher.ropstream;
+    s_eo_theinfodispatcher.ropdata = s_eo_theinfodispatcher.ropstream + sizeof(eOrophead_t);
+    
+    // init the rophead to contain a eok_ropctrl_basic and a eo_ropcode_say. 
+    // the id32 and the size are to be configured each time we send a ropstream. for now are for eOmn_info_basic_t
+    s_eo_theinfodispatcher.rophead->ctrl.confinfo   = eo_ropconf_none;
+    s_eo_theinfodispatcher.rophead->ctrl.plustime   = 0;
+    s_eo_theinfodispatcher.rophead->ctrl.plussign   = 0;
+    s_eo_theinfodispatcher.rophead->ctrl.rqsttime   = 0;
+    s_eo_theinfodispatcher.rophead->ctrl.rqstconf   = 0;
+    s_eo_theinfodispatcher.rophead->ctrl.version    = EOK_ROP_VERSION_0;
+    s_eo_theinfodispatcher.rophead->ropc            = eo_ropcode_say;  
+    s_eo_theinfodispatcher.rophead->id32            = eoprot_ID_get(eoprot_endpoint_management, eoprot_entity_mn_info, 0, eoprot_tag_mn_info_status_basic);
+    s_eo_theinfodispatcher.rophead->dsiz            = sizeof(eOmn_info_basic_t);
+    
+    
+    //eventviewer_load(ev_ID_first_usrdef+15, infodisp_loadrop);
 
     
     return(&s_eo_theinfodispatcher);        
@@ -174,7 +202,7 @@ extern EOtheInfoDispatcher * eo_infodispatcher_GetHandle(void)
 }
 
 
-extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_properties_t* props, uint8_t* extra)
+extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_properties_t* props, const char* extra)
 {
     if(NULL == p) 
     {
@@ -204,7 +232,7 @@ extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_proper
     }
     else
     {   // must tell that there is no extra
-        s_eo_theinfodispatcher.infostatus->basic.properties.extraformat = eomn_info_extraformat_none;
+        EOMN_INFO_PROPERTIES_FLAGS_set_extraformat(s_eo_theinfodispatcher.infostatus->basic.properties.flags, eomn_info_extraformat_none);
     }
     
     // put infostatus inside the vector
@@ -305,14 +333,17 @@ static void s_eo_infodispatcher_overflow_init(EOtheInfoDispatcher* p)
     memset(p->overflow, 0, sizeof(eOmn_info_status_t));
     
     p->overflow->basic.timestamp                = 0;
-    p->overflow->basic.properties.source        = eomn_info_source_board;
-    p->overflow->basic.properties.address       = 0;
-    p->overflow->basic.properties.type          = eomn_info_type_error;
-    p->overflow->basic.properties.extraformat   = eomn_info_extraformat_none;
+    p->overflow->basic.properties.code          = eoerror_code_get(eoerror_category_System, eoerror_value_SYS_dispatcherfifooverflow);
     p->overflow->basic.properties.param         = 0;
-    p->overflow->basic.properties.code          = 0xff12ff34;
-    //snprintf((char*)p->overflow->extra, sizeof(p->overflow->extra), "EOtheInfoDispatcher had an overflow");
+    
+    EOMN_INFO_PROPERTIES_FLAGS_set_type(p->overflow->basic.properties.flags, eomn_info_type_error);
+    EOMN_INFO_PROPERTIES_FLAGS_set_source(p->overflow->basic.properties.flags, eomn_info_source_board);
+    EOMN_INFO_PROPERTIES_FLAGS_set_address(p->overflow->basic.properties.flags, 0);
+    EOMN_INFO_PROPERTIES_FLAGS_set_extraformat(p->overflow->basic.properties.flags, eomn_info_extraformat_none);
+    EOMN_INFO_PROPERTIES_FLAGS_set_futureuse(p->overflow->basic.properties.flags, 0);    
+        
 }
+
 
 static void s_eo_infodispatcher_overflow_clear(EOtheInfoDispatcher* p)
 {   
@@ -335,7 +366,41 @@ static void s_eo_infodispatcher_overflow_fill(EOtheInfoDispatcher* p)
 
 
 static eOresult_t s_eo_infodispatcher_transmit(EOtheInfoDispatcher* p, eOmn_info_status_t* info)
-{
+{  
+#if 1
+    
+    eOresult_t res = eores_NOK_generic;
+    uint16_t size = 0;
+    
+    //evEntityId_t prev = eventviewer_switch_to(ev_ID_first_usrdef+15);
+    
+    // when i transmit a say, i want that the nv contains the value, thus ... let me copy the whole status. 
+    eo_nv_Set(s_eo_theinfodispatcher.nvinfostatus, info, eobool_true, eo_nv_upd_dontdo);    
+     
+    if(eomn_info_extraformat_none == EOMN_INFO_PROPERTIES_FLAGS_get_extraformat(info->basic.properties.flags))
+    {
+        s_eo_theinfodispatcher.rophead->dsiz = sizeof(eOmn_info_basic_t); //eo_nv_Size(s_eo_theinfodispatcher.nvinfostatusbasic); //sizeof(eOmn_info_basic_t);
+        s_eo_theinfodispatcher.rophead->id32 = eo_nv_GetID32(s_eo_theinfodispatcher.nvinfostatusbasic);  
+        memcpy(s_eo_theinfodispatcher.ropdata, info, sizeof(eOmn_info_basic_t));
+        size = p->ropsizeinfostatusbasic;        
+    }
+    else
+    {
+        s_eo_theinfodispatcher.rophead->dsiz = sizeof(eOmn_info_status_t); //eo_nv_Size(s_eo_theinfodispatcher.nvinfostatus); //sizeof(eOmn_info_status_t);
+        s_eo_theinfodispatcher.rophead->id32 = eo_nv_GetID32(s_eo_theinfodispatcher.nvinfostatus);  
+        memcpy(s_eo_theinfodispatcher.ropdata, info, sizeof(eOmn_info_status_t));        
+        size = p->ropsizeinfostatus;        
+    }
+    
+    
+
+    res = eo_transmitter_occasional_rops_LoadStream(p->transmitter, p->ropstream, size);
+    
+    //eventviewer_switch_to(prev);
+    
+    return(res);
+    
+#else
     // must: attempt loading the info inside the proper netvar, then into the transmitter as a occasional rop
  
     //evEntityId_t prev = eventviewer_switch_to(ev_ID_first_usrdef+15);
@@ -369,6 +434,8 @@ static eOresult_t s_eo_infodispatcher_transmit(EOtheInfoDispatcher* p, eOmn_info
     //eventviewer_switch_to(prev);
     
     return(res);     
+    
+#endif    
 }
 
 
