@@ -111,6 +111,8 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
 
 extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t* addedinpos, uint16_t* consumedbytes, uint16_t *remainingbytes);
 
+extern eOresult_t eo_ropframe_ROPdata_Add(EOropframe *p, uint8_t* data, uint16_t size, uint16_t *remainingbytes);
+
 extern eOresult_t eo_ropframe_ROP_Rem(EOropframe *p, uint16_t wasaddedinpos, uint16_t itssizeis);
 
 

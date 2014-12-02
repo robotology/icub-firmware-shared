@@ -383,18 +383,26 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
     res = eo_parser_GetROP(eo_parser_GetHandle(), ropstream, unparsed, rop, &consumedbytes, &parsres);
     
     if(eores_OK != res)
-    {
+    {   
+        // in case of failure, at first reset the rop. then ... it is possible to go on unless there are some serious problems, such as NULL pointer.
+        eo_rop_Reset(rop);
+            
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_ropparsingerror;
+        errdes.param            = parsres;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;           
+        
         if(eores_NOK_nullpointer == res)
         {
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_ropframe_ROP_Parse() called w/ NULL params");          
+            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_ropframe_ROP_Parse(): eo_parser_GetROP() called w/ NULL params", s_eobj_ownname, &errdes);          
         }
-       
-        eo_rop_Reset(rop);
         
-        // for all errors the parser tells us how many bytes consume. 
-        // they may be those of the single rop or also those of the entire stream.  
-
-        // put in here diagnostics of parsing error ?
+        // for all other errors the parser tells us how many bytes consume. 
+        // they may be those of the single rop or also those of the entire stream. 
+        // thus we go on ...   
+     
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "eo_ropframe_ROP_Parse(): eo_parser_GetROP() had problems", s_eobj_ownname, &errdes);         
     }
     
     // advance the internal index2nextrop2beparsed
@@ -441,7 +449,7 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
         return(eores_NOK_generic);
     }
   
-    // get the ropstream starting from the end of rops. call the parser
+    // get the ropstream starting from the end of rops. call the former
     ropstream = s_eo_ropframe_rops_get(p);
     streamindex = s_eo_ropframe_sizeofrops_get(p);
     ropstream += streamindex;
@@ -479,6 +487,63 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
         *consumedbytes = streamsize;
     }
         
+    if(NULL != remainingbytes)
+    {
+        *remainingbytes = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
+    }
+    
+    // ... returns ok
+
+    return(eores_OK);
+}
+
+
+extern eOresult_t eo_ropframe_ROPdata_Add(EOropframe *p, uint8_t* data, uint16_t size, uint16_t *remainingbytes)
+{    
+    uint8_t* ropstream = NULL;
+    int32_t remaining = 0;
+    //uint16_t streamsize = 0;
+    uint16_t streamindex = 0;
+    //eOresult_t res = eores_NOK_generic;
+    
+    if((NULL == p) || (NULL == data) || (0 == size)) 
+    {
+        return(eores_NOK_nullpointer);
+    }
+     
+    // verify that the ropstream is valid ... dont do it to gain some speed
+
+    
+    // verify that we have bytes enough to put the data into the ropframe
+    
+ 
+    // if we dont have space, remaining can be also negative. for example when capacity is eo_ropframe_sizeforZEROrops+1 (thus only one byte for rops) and the target rop requires 8 bytes.
+    // we have eo_ropframe_sizeforZEROrops+1 - eo_ropframe_sizeforZEROrops - 8 = -7 ... thus remaining must be signed
+    remaining = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
+    if(remaining < ((int32_t)size))
+    {   // not enough space in ...
+        return(eores_NOK_generic);
+    }
+  
+    // get the ropstream starting from the end of rops.
+    ropstream = s_eo_ropframe_rops_get(p);
+    streamindex = s_eo_ropframe_sizeofrops_get(p);
+    ropstream += streamindex;
+    
+    
+    // copy directly into the ropstream
+    memcpy(ropstream, data, size);
+    
+    // advance the size with what is used by the added stream
+    p->size  += size;
+    
+    // adjust the header
+    s_eo_ropframe_header_addrop(p, size);
+
+    // adjust the footer
+    s_eo_ropframe_footer_adjust(p);
+
+
     if(NULL != remainingbytes)
     {
         *remainingbytes = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
