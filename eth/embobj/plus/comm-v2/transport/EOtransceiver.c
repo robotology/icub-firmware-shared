@@ -234,6 +234,26 @@ extern EOproxy * eo_transceiver_GetProxy(EOtransceiver *p)
     return(p->proxy);    
 }
 
+extern EOtransmitter * eo_transceiver_GetTransmitter(EOtransceiver *p)
+{
+    if(NULL == p)
+    {
+        return(NULL);
+    }
+         
+    return(p->transmitter);    
+}
+
+extern EOreceiver * eo_transceiver_GetReceiver(EOtransceiver *p)
+{
+    if(NULL == p)
+    {
+        return(NULL);
+    }
+         
+    return(p->receiver);    
+}
+
 
 extern eOresult_t eo_transceiver_Receive(EOtransceiver *p, EOpacket *pkt, uint16_t *numberofrops, eOabstime_t* txtime)
 {
@@ -291,7 +311,15 @@ extern eOresult_t eo_transceiver_Receive(EOtransceiver *p, EOpacket *pkt, uint16
     return(res);
 }
 
-
+extern eOresult_t eo_transceiver_NumberofOutROPs(EOtransceiver *p, uint16_t *numberofreplies, uint16_t *numberofoccasionals, uint16_t *numberofregulars)
+{
+    if(NULL == p)
+    {
+        return(eores_NOK_nullpointer);
+    }  
+    
+    return(eo_transmitter_NumberofOutROPs(p->transmitter, numberofreplies, numberofoccasionals, numberofregulars));
+}
 
 extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *numberofrops)
 {  
@@ -431,7 +459,7 @@ extern eOresult_t eo_transceiver_RegularROP_Unload(EOtransceiver *p, eOropdescri
 
 extern eOresult_t eo_transceiver_lasterror_tx_Get(EOtransceiver *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2)
 {
-    eOresult_t res;
+    //eOresult_t res;
     
     if((NULL == p) || (NULL == err) || (NULL == info0) || (NULL == info1))
     {

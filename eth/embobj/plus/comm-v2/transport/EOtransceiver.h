@@ -49,6 +49,8 @@ extern "C" {
 #include "EOVmutex.h"
 #include "EOarray.h"
 
+#include "EOtransmitter.h"
+#include "EOreceiver.h"
 
 // - public #define  --------------------------------------------------------------------------------------------------
 // empty-section
@@ -123,7 +125,13 @@ extern EOnvSet * eo_transceiver_GetNVset(EOtransceiver *p);
 
 extern EOproxy * eo_transceiver_GetProxy(EOtransceiver *p);
 
+extern EOtransmitter * eo_transceiver_GetTransmitter(EOtransceiver *p);
+
+extern EOreceiver * eo_transceiver_GetReceiver(EOtransceiver *p);
+
 extern eOresult_t eo_transceiver_Receive(EOtransceiver *p, EOpacket *pkt, uint16_t *numberofrops, eOabstime_t* txtime); 
+
+extern eOresult_t eo_transceiver_NumberofOutROPs(EOtransceiver *p, uint16_t *numberofreplies, uint16_t *numberofoccasionals, uint16_t *numberofregulars);
 
 /** @fn         extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *numberofrops)
     @brief      prepares out packet to send with one ropframe   
