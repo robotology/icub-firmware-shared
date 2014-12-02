@@ -133,9 +133,9 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
         cfg = &eo_transmitter_cfg_default;
     }
     
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg->agent), s_eobj_ownname, "cfg->agent is NULL");
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg->agent), "eo_transmitter_New(): NULL agent", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     
-    eo_errman_Assert(eo_errman_GetHandle(), (cfg->sizes.capacityoftxpacket > eo_ropframe_sizeforZEROrops), s_eobj_ownname, "capacityoftxpacket must be at least an empty ropframe"); 
+    eo_errman_Assert(eo_errman_GetHandle(), (cfg->sizes.capacityoftxpacket > eo_ropframe_sizeforZEROrops), "eo_transmitter_New(): capacityoftxpacket is too small", s_eobj_ownname, &eo_errman_DescrWrongParamLocal); 
     
     // i get the memory for the object
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtransmitter), 1);
@@ -180,7 +180,7 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
         
         if(eobool_true != eo_ropframe_IsValid(retptr->ropframereadytotx))
         {
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "the ropframeready2tx is not valid... cannot continue");
+            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_transmitter_New(): ropframeready2tx is not valid", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
         }
 
         // the destination ipv4addr and ipv4port are constant and are the ones passed through configuration
@@ -215,7 +215,15 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     return(retptr);
 }
 
+extern EOnvSet* eo_transmitter_GetNVset(EOtransmitter *p)
+{
+    if(NULL == p) 
+    {
+        return(NULL);
+    }  
 
+    return(p->nvset);
+}
 
 extern eOsizecntnr_t eo_transmitter_regular_rops_Size(EOtransmitter *p)
 {
@@ -511,12 +519,17 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
         {   // if the nv is remote, then the data must be passed inside ropdescriptor.data
             
             // so far we dont support that the device regularly sends commands such as set<remotevar, value>. it can send ask<remotevar> however.
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_transmitter_regular_rops_Load() so far cannot load a ROP w/ payload onto a variable remotely owned");
+            // marco.accame on Nov 17 2014: it can regularly sends a ask<remotevar>, even if this mechanisms is not used ... and maybe will never be used ...
+            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "eo_transmitter_regular_rops_Load(): cant load a regular ROP of remote variable w/ payload", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
             
-            if(NULL == ropdescriptor.data)
-            {
-                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_transmitter_regular_rops_Load() cannot have a NULL ropdes->data with remote ownership");
-            }          
+            eov_mutex_Release(p->mtx_regulars);
+            return(eores_NOK_generic);
+            
+            // however, if we allow a sending of rop<remotevar, value> ... we must have a descriptor.data not NULL
+            //if(NULL == ropdescriptor.data)
+            //{
+            //    eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_transmitter_regular_rops_Load(): cant have NULL ropdes->data if nv is remote", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
+            //}          
         }
     }
     else
@@ -695,7 +708,38 @@ extern eOresult_t eo_transmitter_regular_rops_Refresh(EOtransmitter *p)
 }
 
 
+extern eOresult_t eo_transmitter_NumberofOutROPs(EOtransmitter *p, uint16_t *numberofreplies, uint16_t *numberofoccasionals, uint16_t *numberofregulars)
+{
+    if(NULL == p)
+    {
+        return(eores_NOK_nullpointer);
+    }  
+    
+    if(NULL != numberofreplies)
+    {
+        eov_mutex_Take(p->mtx_replies, eok_reltimeINFINITE);
+        *numberofreplies = eo_ropframe_ROP_NumberOf(p->ropframereplies);
+        eov_mutex_Release(p->mtx_replies);
+    }   
 
+    if(NULL != numberofoccasionals)
+    {
+        eov_mutex_Take(p->mtx_occasionals, eok_reltimeINFINITE);
+        *numberofoccasionals = eo_ropframe_ROP_NumberOf(p->ropframeoccasionals);
+        eov_mutex_Release(p->mtx_occasionals);
+    }   
+
+    if(NULL != numberofregulars)
+    {
+        eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+        *numberofregulars = eo_ropframe_ROP_NumberOf(p->ropframeregulars);
+        eov_mutex_Release(p->mtx_regulars);
+    }  
+
+    return(eores_OK);   
+}    
+
+    
 
 extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops)
 {
@@ -810,6 +854,7 @@ extern eOresult_t eo_transmitter_occasional_rops_Load(EOtransmitter *p, eOropdes
     return(s_eo_transmitter_rops_Load(p, ropdesc, p->ropframeoccasionals, p->mtx_occasionals));
 }
 
+
 extern eOresult_t eo_transmitter_reply_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc)
 {   // we dont care about p->ropframereplies being invalid because all controls are inside s_eo_transmitter_rops_Load().
     return(s_eo_transmitter_rops_Load(p, ropdesc, p->ropframereplies, p->mtx_replies));
@@ -833,6 +878,14 @@ extern eOresult_t eo_transmitter_reply_ropframe_Load(EOtransmitter *p, EOropfram
     // replies cannot have a conf request flagged on, then there is no insertion inside the p->confrequests
 
     return(res);     
+}
+
+
+extern eOresult_t eo_transmitter_occasional_rops_LoadStream(EOtransmitter *p, uint8_t *stream, uint16_t size)
+{    
+    eOresult_t res;
+    res = eo_ropframe_ROPdata_Add(p->ropframeoccasionals, stream, size, NULL);
+    return(res);
 }
 
 
@@ -980,7 +1033,8 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
         {   // if the nv is remote, then the data must be passed inside ropdesc->data
             if(NULL == ropdesc->data)
             {
-                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "s_eo_transmitter_rops_Load() cannot have a NULL ropdes->data with remote ownership");
+                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "s_eo_transmitter_rops_Load(): cant have NULL ropdes->data with rem ownership", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
+                return(eores_NOK_generic);
             }          
         }
     }
@@ -1028,7 +1082,7 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     {
         if(eores_OK != eo_confman_ConfirmationRequest_Insert(p->confmanager, ropdesc))
         {
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "s_eo_transmitter_rops_Load() cannot process a conf-request");
+            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "s_eo_transmitter_rops_Load(): fails in processing a conf-request", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
         }
     }
   

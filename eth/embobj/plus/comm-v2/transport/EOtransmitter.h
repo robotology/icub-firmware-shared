@@ -118,6 +118,10 @@ extern const eOtransmitter_cfg_t eo_transmitter_cfg_default;
 extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg);
 
 
+extern EOnvSet* eo_transmitter_GetNVset(EOtransmitter *p);
+
+
+extern eOresult_t eo_transmitter_NumberofOutROPs(EOtransmitter *p, uint16_t *numberofreplies, uint16_t *numberofoccasionals, uint16_t *numberofregulars);
 
 /** @fn         extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops)
     @brief      prepares the out packet.  
@@ -156,6 +160,8 @@ extern eOresult_t eo_transmitter_regular_rops_Refresh(EOtransmitter *p);
 extern eOresult_t eo_transmitter_lasterror_Get(EOtransmitter *p, int32_t *err, int32_t *info0, int32_t *info1, int32_t *info2);
 
 extern eOresult_t eo_transmitter_occasional_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc);
+extern eOresult_t eo_transmitter_occasional_rops_LoadStream(EOtransmitter *p, uint8_t *stream, uint16_t size);
+
 extern eOresult_t eo_transmitter_reply_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc);
 extern eOresult_t eo_transmitter_reply_ropframe_Load(EOtransmitter *p, EOropframe* ropframe);
 
