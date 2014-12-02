@@ -85,8 +85,6 @@ extern EOarray* eo_array_New(uint8_t capacity, uint8_t itemsize, void *memory)
     uint8_t capacity08 = (uint8_t)capacity;     
     uint8_t itemsize08 = (uint8_t)itemsize;
     
-//    eo_errman_Assert(eo_errman_GetHandle(), (capacity08 == capacity), s_eobj_ownname, ":eo_array_New() has capacity > uint8_t");
-//    eo_errman_Assert(eo_errman_GetHandle(), (itemsize08 == itemsize), s_eobj_ownname, ":eo_array_New() has itemsize > uint8_t");
     
     if(NULL != memory)
     {   // i use external memory
