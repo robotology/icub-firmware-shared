@@ -24,6 +24,7 @@
 #include "EoCommon.h"
 #include "string.h"
 #include "EOtheMemoryPool.h"
+#include "EOtheErrorManager.h"
 
 #include "EOVmutex.h"
 
@@ -94,7 +95,7 @@ EO_static_inline uint16_t s_eo_nv_get_size2(const EOnv *nv)
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-//static const char s_eobj_ownname[] = "EOnv";
+static const char s_eobj_ownname[] = "EOnv";
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -111,6 +112,22 @@ extern EOnv * eo_nv_New(void)
     eo_nv_Clear(retptr);
       
     return(retptr);
+}
+
+extern void eo_nv_Delete(EOnv *nv)
+{
+    if(NULL == nv) 
+    {   // invalid nv
+        return;    
+    }   
+    
+    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), "eo_vector_Delete(): needs eo_mempool_alloc_dynamic", s_eobj_ownname, &eo_errman_DescrWrongUsageLocal);
+  
+    // at first clear.
+    eo_nv_Clear(nv);
+    
+    // then, destroy object
+    eo_mempool_Delete(eo_mempool_GetHandle(), nv);
 }
 
 

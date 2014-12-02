@@ -119,6 +119,8 @@ typedef void (*eOvoid_fp_cnvp_t)                            (const EOnv*);
 
 extern EOnv* eo_nv_New(void);
 
+extern void eo_nv_Delete(EOnv *nv);
+
 extern eOresult_t eo_nv_Clear(EOnv *nv);
 
 extern eOresult_t eo_nv_Init(const EOnv *nv);
