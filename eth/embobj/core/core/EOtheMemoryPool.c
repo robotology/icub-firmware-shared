@@ -218,7 +218,7 @@ extern EOtheMemoryPool * eo_mempool_Initialise(const eOmempool_cfg_t *cfg)
             }
             else
             {
-                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_mempool_alloc_static / eo_mempool_alloc_mixed need some mem pools");
+                eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_Initialise(): pools needed", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
             }    
                        
         } break;
@@ -282,15 +282,24 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
     if((0 == size) || (0 == number)) 
     {
         // manage the ... warning 
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "requested zero memory");        
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_memory_zerorequested;
+        errdes.param            = 0;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, "eo_mempool_GetMemory() is asked 0 bytes", s_eobj_ownname, &errdes);        
         return(NULL);
     }
-
-    
+   
 
     if(NULL == p)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, s_eobj_ownname, "not initialised yet. using eo_mempool_alloc_dynamic w/ default handler"); 
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_memory_notinitialised;
+        errdes.param            = 0;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;    
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_info, "eo_mempool_GetMemory() not initted uses dyn alloc", s_eobj_ownname, &errdes); 
         mode = eo_mempool_alloc_dynamic;       
     }    
       
@@ -330,7 +339,12 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
     
     if(NULL == ret)
     {   // manage the fatal error in case memory could not achieved
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory from heap");
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_memory_missing;
+        errdes.param            = number*size;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;         
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_GetMemory() no more memory", s_eobj_ownname, &errdes);
     }
     
     s_the_mempool.stats.usedbytespool += usedbytespool; 
@@ -356,8 +370,13 @@ extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size)
     void *ret = s_the_mempool.theheap.allocate(size);
 
     if(NULL == ret)
-    {   // manage the fatal error in case memory could not achieved
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_mempool_New() failure");
+    {   // manage the fatal error in case memory could not be achieved
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_memory_missing;
+        errdes.param            = size;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0; 
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_New() no more memory", s_eobj_ownname, &errdes);
     }
     
     s_the_mempool.stats.usedbytespool += eo_common_msize(ret);      
@@ -375,6 +394,19 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
         return(NULL);
     }
     
+    
+    if(eo_mempool_alloc_dynamic != s_the_mempool.config.mode)
+    {
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_wrongusage;
+        errdes.param            = 0;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;         
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_Realloc() used when non dyn", s_eobj_ownname, &errdes);
+        
+        return(NULL);
+    }            
+    
     if(NULL != m)
     {
         s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
@@ -383,8 +415,13 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
     ret = s_the_mempool.theheap.reallocate(m, size);
     
     if(NULL == ret)
-    {   // manage the fatal error in case memory could not achieved
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "eo_mempool_Realloc() failure");
+    {   // manage the fatal error in case memory could not be achieved
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_memory_missing;
+        errdes.param            = size;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;         
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_Realloc() no more memory", s_eobj_ownname, &errdes);
     }
     
     s_the_mempool.stats.usedbytespool += eo_common_msize(ret);  
@@ -399,6 +436,12 @@ extern void eo_mempool_Delete(EOtheMemoryPool *p, void *m)
     {
         return;
     }
+    
+    if(eo_mempool_alloc_dynamic != s_the_mempool.config.mode)
+    {        
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, "eo_mempool_Delete(): only w/ eo_mempool_alloc_dynamic", s_eobj_ownname, &eo_errman_DescrWrongUsageLocal);       
+        return;
+    }        
         
     s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
 
@@ -427,7 +470,12 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
     // attempt to lock mutex if it is null it will return nok_nullpointer, else ok or nok_timeout.
     if(eores_NOK_timeout == eov_mutex_Take(s_the_mempool.mutex, s_the_mempool.tout))
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "mutex not taken from static after ?? micro-sec");
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_mutex_timeout;
+        errdes.param            = s_the_mempool.tout / 1000;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_mempool_get_static(): mutex_take() tout", s_eobj_ownname, &errdes);
     }
      
     
@@ -492,7 +540,12 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
         
     if(NULL == ret) 
     {   // manage error
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, s_eobj_ownname, "no memory anymore from chosen pool");
+        eOerrmanDescriptor_t errdes = {0};
+        errdes.code             = eo_errman_code_sys_memory_missing;
+        errdes.param            = size*number;
+        errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+        errdes.sourceaddress    = 0;
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_mempool_get_static(): no more mem", s_eobj_ownname, &errdes);
     }
     
     return(ret);

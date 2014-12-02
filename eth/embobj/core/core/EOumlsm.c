@@ -94,7 +94,7 @@ extern EOumlsm * eo_umlsm_New(const eOumlsm_cfg_t * cfg)
     EOumlsm *retptr = NULL;
     
     // verify that we have a non NULL cfg
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg), s_eobj_ownname, "cfg is NULL");    
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg), "eo_umlsm_New(): NULL cfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);    
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOumlsm), 1);
@@ -595,7 +595,7 @@ static uint8_t s_eo_umlsm_GetDeepestStateFrom(eOumlsm_cfg_t * p, uint8_t index)
         // thus i dont put any safe exit in case of mistake.
         index                   = targetstate->initial_substate;
         targetstate             = &(p->states_table[index]);
-        eo_errman_Assert(eo_errman_GetHandle(), i < eov_umlsm_OWNERS_maxnumber, s_eobj_ownname, "too many owners");
+        eo_errman_Assert(eo_errman_GetHandle(), i < eov_umlsm_OWNERS_maxnumber, "s_eo_umlsm_GetDeepestStateFrom(): too many owners", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
         i++;
     }  
 
@@ -606,14 +606,12 @@ static uint8_t s_eo_umlsm_GetDeepestStateFrom(eOumlsm_cfg_t * p, uint8_t index)
 static eOresult_t s_eo_umlsm_Verify(eOumlsm_cfg_t * p)
 {
     uint8_t i = 0;
-    
- 
+
     // verify the integrity of the owners table.
     for(i=0; i<p->states_number; i++) 
     {
-        eo_errman_Assert(eo_errman_GetHandle(), i == p->states_table[i].owners_table[0], s_eobj_ownname, "incorrect owners table");
+        eo_errman_Assert(eo_errman_GetHandle(), i == p->states_table[i].owners_table[0], "s_eo_umlsm_Verify(): incorrect owners table", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     } 
-
  
     return(eores_OK);
 }

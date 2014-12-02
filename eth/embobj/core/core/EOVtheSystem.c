@@ -194,13 +194,13 @@ extern EOVtheSystem * eov_sys_hid_Initialise(const eOmempool_cfg_t *mpcfg,
         return(&s_eov_system);
     }
 
-       
+    
     // trying to initialise with NULL functions ?
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != start, s_eobj_ownname, "start() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != getcurrtask, s_eobj_ownname, "getcurrtask() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != timeget, s_eobj_ownname, "timeget() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != timeset, s_eobj_ownname, "timeset() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != nanotimeget, s_eobj_ownname, "nanotimeget() is NULL");
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != start, "eov_sys_hid_Initialise(): NULL start", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != getcurrtask, "eov_sys_hid_Initialise(): NULL getcurrtask", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != timeget, "eov_sys_hid_Initialise(): NULL timeget", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != timeset, "eov_sys_hid_Initialise(): NULL timeset", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != nanotimeget, "eov_sys_hid_Initialise(): NULL nanotimeget", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     // i copy the functions
     s_eov_system.vtable[VF00_start]         = (eOres_fp_voidfpvoid_t)start;

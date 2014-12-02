@@ -180,9 +180,9 @@ extern EOVtheTimerManager * eov_timerman_hid_Initialise(eOres_fp_tmrmanp_tmrp_t 
     }
 
 
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != onnewtimer_fn, s_eobj_ownname, "onnewtimer_fn() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != addtimer_fn, s_eobj_ownname, "addtimer_fn() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != remtimer_fn, s_eobj_ownname, "remtimer_fn() is NULL");
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != onnewtimer_fn, "eov_timerman_hid_Initialise(): NULL onnewtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != addtimer_fn, "eov_timerman_hid_Initialise(): NULL addtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != remtimer_fn, "eov_timerman_hid_Initialise(): NULL remtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     s_eov_timermanager.vtable[VF00_onnewtimer]          = onnewtimer_fn;
     s_eov_timermanager.vtable[VF01_addtimer]            = addtimer_fn;

@@ -89,9 +89,8 @@ extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t 
 
 
     // now the obj has valid memory. i need to initialise it with user-defined data,
-
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), s_eobj_ownname, "item_size is zero");
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != size), s_eobj_ownname, "size is zero");
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_constvector_New(): 0 itemsize", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != size), "eo_constvector_New(): 0 size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     retptr->item_size           = item_size;
     retptr->size                = size;
@@ -140,10 +139,7 @@ extern void eo_constvector_Delete(EOconstvector * cvect)
     if(NULL == cvect) 
     {   // invalid cvect
         return;    
-    }   
-    
-    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_constvector_Delete() only w/ eo_mempool_alloc_dynamic");
-  
+    }  
     
     // reset all things inside vector
     memset(cvect, 0, sizeof(EOconstvector));

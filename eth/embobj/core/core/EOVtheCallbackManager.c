@@ -134,11 +134,10 @@ extern EOVtheCallbackManager * eov_callbackman_hid_Initialise(eOres_fp_vcbkmanp_
     {
         // already initialised
         return(&s_eov_callbackmanager);
-    }
-
-
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != execute_fn, s_eobj_ownname, "execute_fn() is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), NULL != task, s_eobj_ownname, "task is NULL");
+    } 
+    
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != execute_fn, "eov_callbackman_hid_Initialise(): NULL execute_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != task, "eov_callbackman_hid_Initialise(): NULL task", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     s_eov_callbackmanager.vtable[VF00_execute]              = execute_fn;
     s_eov_callbackmanager.task                              = task;

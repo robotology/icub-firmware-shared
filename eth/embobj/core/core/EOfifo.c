@@ -92,8 +92,8 @@ extern EOfifo * eo_fifo_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     // i get memory for a mutexfifo. it will never be null
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOfifo), 1);
 
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), s_eobj_ownname, "item_size is zero");
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_fifo_New(): 0 item_size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_fifo_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     
     // now i fill the mutexfifo with a deque 
     retptr->dek = eo_deque_New(item_size, capacity, item_init, init_arg, item_copy, item_clear);

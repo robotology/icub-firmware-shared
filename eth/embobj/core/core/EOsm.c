@@ -87,9 +87,9 @@ static const char s_eobj_ownname[] = "EOsm";
 extern EOsm * eo_sm_New(const eOsm_cfg_t * cfg) 
 {
     EOsm *retptr = NULL;
-    
+   
     // verify that we have a non NULL cfg
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg), s_eobj_ownname, "cfg is NULL");    
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg), "eo_sm_New(): NULL cfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);    
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOsm), 1);
@@ -300,7 +300,7 @@ static void s_eo_sm_Specialise(EOsm *p, const eOsm_cfg_t * c)
         // tr must point to a valid location .... we cannot do much to verify that. however, we verify its content.
         eo_errman_Assert(eo_errman_GetHandle(), 
                          (tr->curr < c->nstates) && (tr->next < c->nstates) && (tr->evt < c->maxevts), 
-                         s_eobj_ownname, "cfg is not correct"); 
+                         "s_eo_sm_Specialise(): wrong cfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal); 
         
         st = &p->statequickinfo[tr->curr];
         

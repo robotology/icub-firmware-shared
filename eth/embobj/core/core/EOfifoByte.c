@@ -88,7 +88,7 @@ extern EOfifoByte* eo_fifobyte_New(eOsizecntnr_t capacity, EOVmutexDerived *mute
     // i get memory for a fifobyte. it can never be NULL 
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOfifoByte), 1);
 
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_fifobyte_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     // now i create a fifo made of bytes (no ctor or dtor!) and i fill it into the fifo of 
     // the fifobyte. it can never be NULL 

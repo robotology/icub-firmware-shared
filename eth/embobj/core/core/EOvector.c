@@ -123,9 +123,9 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     // now the object has valid memory. i need to initialise it with user-defined data,
     
     retptr->size                = 0;
-
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), s_eobj_ownname, "item_size is zero");
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
+ 
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_vector_New(): 0 item_size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_vector_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     retptr->item_size           = item_size;
     retptr->sizeofstoreditem    = item_size;
@@ -137,8 +137,8 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     
     
     if(eo_vectorcapacity_dynamic == retptr->capacity)
-    {
-        eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_vectorcapacity_dynamic only w/ eo_mempool_alloc_dynamic");
+    {      
+        eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), "eo_vector_New(): cannot use eo_vectorcapacity_dynamic", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
         retptr->stored_items = NULL;
     }
     else
@@ -816,9 +816,7 @@ extern void eo_vector_Delete(EOvector * vector)
     {   // invalid vector
         return;    
     }   
-    
-    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_vector_Delete() only w/ eo_mempool_alloc_dynamic");
-  
+
     // destroy every item. in case of eo_vectorcapacity_dynamic, the vector->stored_items is also deleted
     eo_vector_Clear(vector);
     
@@ -829,8 +827,7 @@ extern void eo_vector_Delete(EOvector * vector)
     memset(vector, 0, sizeof(EOvector));
     
     // destroy object
-    eo_mempool_Delete(eo_mempool_GetHandle(), vector);
-       
+    eo_mempool_Delete(eo_mempool_GetHandle(), vector);       
 }
 
 // --------------------------------------------------------------------------------------------------------------------

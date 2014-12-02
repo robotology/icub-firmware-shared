@@ -150,7 +150,7 @@ extern EONtheSystem* eon_sys_GetHandle(void)
 
 extern void eon_sys_Start(EONtheSystem *p, eOvoid_fp_void_t userinit_fn)
 {
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != p), s_eobj_ownname, "eon_sys_Start() uses a NULL handle");
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != p), "eon_sys_Start(): NULL handle", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     s_eon_sys_start(userinit_fn);
 } 

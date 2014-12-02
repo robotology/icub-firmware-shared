@@ -125,8 +125,8 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     retptr->first               = 0;
     retptr->next                = 0;
 
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), s_eobj_ownname, "item_size is zero");
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_deque_New(): 0 item_size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_deque_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     retptr->item_size           = item_size;
     retptr->sizeofstoreditem    = item_size;

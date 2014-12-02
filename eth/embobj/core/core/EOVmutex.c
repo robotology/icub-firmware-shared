@@ -96,7 +96,7 @@ extern eOresult_t eov_mutex_Take(EOVmutexDerived *d, eOreltime_t tout)
     // get take function
     fptr = (eOres_fp_voidp_uint32_t)mutex->vtable[VF00_take]; 
 	
-//    if(NULL == fptr)
+//  if(NULL == fptr)
 //	{
 //		return(eores_NOK_nullpointer);     
 //	}
@@ -121,7 +121,7 @@ extern eOresult_t eov_mutex_Release(EOVmutexDerived *d)
     // get release function
     fptr = (eOres_fp_voidp_t)mutex->vtable[VF01_release]; 
 	
-//    if(NULL == fptr)
+//  if(NULL == fptr)
 //	{
 //		return(eores_NOK_nullpointer);     
 //	}
@@ -158,9 +158,8 @@ extern EOVmutex* eov_mutex_hid_New(void)
 
 extern eOresult_t eov_mutex_hid_SetVTABLE(EOVmutex *p, eOres_fp_voidp_uint32_t v_take, eOres_fp_voidp_t v_release)
 {
-
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != v_take), s_eobj_ownname, "v_tke is NULL");
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != v_release), s_eobj_ownname, "v_release is NULL");
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != v_take), "eov_mutex_hid_SetVTABLE(): NULL v_take", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != v_release), "eov_mutex_hid_SetVTABLE(): NULL v_release", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     p->vtable[VF00_take]            = v_take;
     p->vtable[VF01_release]         = v_release;

@@ -149,9 +149,9 @@ extern EOlist* eo_list_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     retptr->head            = NULL;
     retptr->tail            = NULL;
     retptr->size            = 0;
-
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), s_eobj_ownname, "item_size is zero");
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), s_eobj_ownname, "capacity is zero");
+ 
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_list_New(): 0 item_size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_list_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     retptr->capacity            = capacity;
     retptr->item_size           = item_size;
@@ -162,7 +162,7 @@ extern EOlist* eo_list_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     
     if(eo_listcapacity_dynamic == retptr->capacity)
     {
-        eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_vectorcapacity_dynamic only w/ eo_mempool_alloc_dynamic");
+        eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), "eo_list_New(): eo_vectorcapacity_dynamic only if eo_mempool_alloc_dynamic", s_eobj_ownname, &eo_errman_DescrWrongUsageLocal);
         retptr->freeiters = NULL;        
     }
     else
@@ -741,7 +741,7 @@ extern void eo_list_Delete(EOlist *list)
         return;    
     }   
     
-    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), s_eobj_ownname, "can use eo_list_Delete() only w/ eo_mempool_alloc_dynamic");
+    eo_errman_Assert(eo_errman_GetHandle(), (eo_mempool_alloc_dynamic == eo_mempool_alloc_mode_Get(eo_mempool_GetHandle())), "eo_list_Delete(): only if eo_mempool_alloc_dynamic", s_eobj_ownname, &eo_errman_DescrWrongUsageLocal);
   
     // destroy every item. in case of eo_listcapacity_dynamic, each internal listiter is properly deleted and freeiters is NULL
     eo_list_Clear(list);

@@ -102,16 +102,15 @@ extern EOtimer* eo_timer_New(void)
     p = eov_timerman_GetHandle();
     
     if(NULL == p) 
-    {
-         //return(eores_NOK_nullpointer);
-         eo_errman_Assert(eo_errman_GetHandle(), 0, s_eobj_ownname, "eo_timer_New() cannot get the timer manager");
+    { 
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_timer_New(): eov_timerman_GetHandle() fails", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
     }
 
     res = eov_timerman_OnNewTimer(p, retptr);
 
     if(eores_OK != res)
     {
-        eo_errman_Assert(eo_errman_GetHandle(), 0, s_eobj_ownname, "in eo_timer_New() the timer manager cannot init the timer");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_timer_New(): eov_timerman_OnNewTimer() fails", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);
     }
 
 
@@ -130,13 +129,13 @@ extern eOresult_t eo_timer_Start(EOtimer *t, eOabstime_t startat, eOreltime_t co
     if((NULL == p) || (NULL == action)) 
     {
          //return(eores_NOK_nullpointer);
-         eo_errman_Assert(eo_errman_GetHandle(), 0, s_eobj_ownname, "eo_timer_Start() found a NULL pointer as argument");
+         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_timer_Start(): NULL arg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
     
     if((eok_abstimeNOW != startat) && (0 == countdown))
     {
         //return(eores_NOK_generic);
-        eo_errman_Assert(eo_errman_GetHandle(), 0, s_eobj_ownname, "eo_timer_Start() has zero expiry time and startat not eok_abstimeNOW");
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_timer_Start(): 0 countdown w/ wrong startat", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
 
 
