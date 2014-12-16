@@ -81,6 +81,13 @@ typedef struct EOpacket_hid EOpacket;
 extern EOpacket* eo_packet_New(uint16_t capacity);
 
 
+/** @fn         extern void eo_packet_Delete(EOpacket *p)
+    @brief      Deletes the packet object, and in case of internal storage mode also the storage.
+    @param      p       The packet.
+ **/
+extern void eo_packet_Delete(EOpacket *p);
+
+
 /** @fn         extern eOresult_t eo_packet_Full_LinkTo(EOpacket *p, eOipv4addr_t addr, eOipv4port_t port, uint16_t size, uint8_t *data)
     @brief      Sets the content of a packet by simply making a reference the @e data payload.  It must be used on a
                 EOpacket object created with eo_packet_New(0), otherwise there will be a failure of the operation. 

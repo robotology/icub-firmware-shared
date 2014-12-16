@@ -104,6 +104,24 @@ extern EOpacket* eo_packet_New(uint16_t capacity)
     return(retptr);
 }
 
+extern void eo_packet_Delete(EOpacket *p)
+{
+    if(NULL == p)
+    {
+        return;
+    } 
+
+    if(0 == p->externaldatastorage)
+    {   // the packet may contain a pointer to externally allocated data. but this is not the case, thus i delete  
+        eo_mempool_Delete(eo_mempool_GetHandle(), p->data);
+    }
+    
+    memset(p, 0, sizeof(EOpacket));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+}
+
+
 
 extern eOresult_t eo_packet_Full_LinkTo(EOpacket *p, eOipv4addr_t addr, eOipv4port_t port, uint16_t size, uint8_t *data)
 {
@@ -435,6 +453,7 @@ extern eOresult_t eo_packet_hid_DefCopy(void *d, void *s)
     dest->read_index        = 0;
     // the dest->capacity  remains constant as it expresses size of memory allocated by the object
     // the dest->externaldatastorage remains constant as it expresses .... actually it should be 0 in here.
+    memset(dest->data, 0, dest->capacity);
     memcpy(dest->data, orig->data, dest->size);
 
     return(eores_OK);
