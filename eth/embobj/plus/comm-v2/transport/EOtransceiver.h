@@ -120,6 +120,7 @@ extern const eOtransceiver_cfg_t eo_transceiver_cfg_default; //= {512, 128, 256,
  **/
 extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg);
 
+extern void eo_transceiver_Delete(EOtransceiver* p);
 
 extern EOnvSet * eo_transceiver_GetNVset(EOtransceiver *p);
 

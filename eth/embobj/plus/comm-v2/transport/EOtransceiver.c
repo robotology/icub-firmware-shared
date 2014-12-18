@@ -214,6 +214,43 @@ extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg)
 }
 
 
+
+extern void eo_transceiver_Delete(EOtransceiver* p)
+{
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(p->transmitter == NULL)
+    {   // protection vs multiple calls of _Delete()
+        return;
+    }
+    
+  
+    eo_transmitter_Delete(p->transmitter);
+    
+    eo_receiver_Delete(p->receiver);
+    
+    eo_agent_Delete(p->agent);
+
+    if(NULL != p->proxy)
+    {
+        eo_proxy_Delete(p->proxy);
+    } 
+    
+    if(NULL != p->confmanager)
+    {
+        eo_confman_Delete(p->confmanager);
+    }    
+    
+    memset(p, 0, sizeof(EOtransceiver));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
+
 extern EOnvSet * eo_transceiver_GetNVset(EOtransceiver *p)
 {    
     if(NULL == p)
