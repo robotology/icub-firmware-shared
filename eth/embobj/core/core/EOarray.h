@@ -57,7 +57,7 @@ typedef struct
     uint8_t         capacity;       /**< it is the maximum possible value of size in array */
     uint8_t         itemsize;       /**< it is the size of a single item in bytes */
     uint8_t         size;           /**< it keeps the number of items in the array */
-    uint8_t         dummy;
+    eObool_t        internalmem;    /**< if eobool_true the object use internally allocated memory, else it uses externally allocated memory */  
 } eOarray_head_t;   EO_VERIFYsizeof(eOarray_head_t, 4);
 
 typedef struct
@@ -98,7 +98,14 @@ typedef EOarray_of EOarray;
 extern EOarray* eo_array_New(uint8_t capacity, uint8_t itemsize, void *memory);
 
 
-/** @fn         extern eOresult_t eo_array_Reset(EOarray *t)
+/** @fn         extern void eo_array_Delete(EOarray *p)
+    @brief      deletes the object but only if the ram is internally allocated.
+    @param      p               The pointer to the array object.
+ **/
+extern void eo_array_Delete(EOarray *p);
+
+
+/** @fn         extern eOresult_t eo_array_Reset(EOarray *p)
     @brief      Resets the array. It sets its size to zero and memset to zero all the data for p->capacity * p->itemsize bytes.
     @param      p               The pointer to the array object.
     @return     eores_OK upon success, eores_NOK_nullpointer if p is NULL

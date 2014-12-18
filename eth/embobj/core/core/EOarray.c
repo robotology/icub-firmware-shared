@@ -89,10 +89,12 @@ extern EOarray* eo_array_New(uint8_t capacity, uint8_t itemsize, void *memory)
     if(NULL != memory)
     {   // i use external memory
         retptr = memory;
+        retptr->head.internalmem = eobool_false;
     }
     else
     {   // i get the memory for the object
         retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(eOarray_head_t) + capacity08*itemsize08, 1);
+        retptr->head.internalmem = eobool_true;
     }
 
     retptr->head.capacity       = capacity08;
@@ -103,6 +105,25 @@ extern EOarray* eo_array_New(uint8_t capacity, uint8_t itemsize, void *memory)
 
     return(retptr);
 }
+
+
+extern void eo_array_Delete(EOarray *p)
+{
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(eobool_false == p->head.internalmem)
+    {
+        return;
+    }
+       
+    memset(p, 0, sizeof(EOarray));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
 
 extern eOresult_t eo_array_Reset(EOarray *p)
 {
