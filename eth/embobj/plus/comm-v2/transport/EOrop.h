@@ -172,6 +172,13 @@ extern const eOropdescriptor_t eok_ropdesc_basic; // no time, no sign, no conf r
 extern EOrop* eo_rop_New(uint16_t capacity);
 
 
+/** @fn         extern void eo_rop_Delete(EOrop *p)
+    @brief      deletes a rop object.
+    @param      p             The ROP 
+ **/
+extern void eo_rop_Delete(EOrop *p);
+
+
 /** @fn         extern eOresult_t eo_rop_Reset(EOrop *p)
     @brief      Resets a rop object. 
     @return     Always success unless argument is NULL.
@@ -181,7 +188,7 @@ extern eOresult_t eo_rop_Reset(EOrop *p);
 
 /** @fn         extern uint16_t eo_rop_GetSize(EOrop *p)
     @brief      computes the size of the stream that will come out of rop.
-    @param      rop             The ROP 
+    @param      p           The ROP 
     @return     the size of the stream
  **/
 extern uint16_t eo_rop_GetSize(EOrop *p);

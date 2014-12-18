@@ -135,6 +135,24 @@ extern EOrop* eo_rop_New(uint16_t capacity)
 }
 
 
+extern void eo_rop_Delete(EOrop *p)
+{
+    if(NULL == p)
+    {
+        return;
+    }        
+
+    if(0 != p->stream.capacity)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(), p->stream.data);
+    }
+
+    memset(p, 0, sizeof(EOrop));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
+
 extern eOresult_t eo_rop_Reset(EOrop *p)
 {
     if(NULL == p)
