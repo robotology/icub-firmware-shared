@@ -91,6 +91,8 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
 extern EOtheInfoDispatcher * eo_infodispatcher_GetHandle(void);
 
 
+extern void eo_infodispatcher_DeInitialise(EOtheInfoDispatcher* p);
+
 
 extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_properties_t* props, const char* extra);
 

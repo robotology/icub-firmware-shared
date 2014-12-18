@@ -88,8 +88,14 @@ static EOtheInfoDispatcher s_eo_theinfodispatcher =
 {
     EO_INIT(.vectorOfinfostatus)        NULL,
     EO_INIT(.overflow)                  NULL,
+    EO_INIT(.infostatus)                NULL,
+    EO_INIT(.transmitter)               NULL,
     EO_INIT(.nvinfostatus)              NULL,
-    EO_INIT(.nvinfostatusbasic)         NULL
+    EO_INIT(.nvinfostatusbasic)         NULL,
+    EO_INIT(.ropstream)                 NULL,
+    EO_INIT(.rophead)                   NULL,
+    EO_INIT(.ropsizeinfostatus)         0,
+    EO_INIT(.ropsizeinfostatusbasic)    0   
 };
 
 
@@ -187,6 +193,33 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     
     return(&s_eo_theinfodispatcher);        
 }    
+
+extern void eo_infodispatcher_DeInitialise(EOtheInfoDispatcher* p) 
+{
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == p->vectorOfinfostatus)
+    {
+        return;
+    }
+    
+    
+    eo_vector_Delete(p->vectorOfinfostatus);
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p->overflow);
+    eo_mempool_Delete(eo_mempool_GetHandle(), p->infostatus);
+    
+    eo_nv_Delete(p->nvinfostatus);
+    eo_nv_Delete(p->nvinfostatusbasic);
+    eo_mempool_Delete(eo_mempool_GetHandle(), p->ropstream);
+    
+    memset(p, 0, sizeof(EOtheInfoDispatcher));
+    
+    return;
+}
 
 
 extern EOtheInfoDispatcher * eo_infodispatcher_GetHandle(void) 
