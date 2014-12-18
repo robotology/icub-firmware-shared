@@ -95,6 +95,19 @@ extern EOaction* eo_action_New()
 }
 
 
+extern void eo_action_Delete(EOaction *p)
+{
+    if(NULL == p)
+    {
+        return;
+    }    
+
+    memset(p, 0, sizeof(EOaction));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
+
 extern eOresult_t eo_action_Clear(EOaction *p)
 {
     if(NULL == p)

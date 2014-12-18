@@ -90,6 +90,13 @@ typedef uint8_t EOaction_strg[EOaction_sizeof];
 extern EOaction* eo_action_New(void);
 
 
+/** @fn         externvoid eo_action_Delete(EOaction *p)
+    @brief      deletes a EOaction object. 
+    @param      p               The target object
+ **/
+extern void eo_action_Delete(EOaction *p);
+
+
 /** @fn         extern eOresult_t eo_action_Clear(EOaction *p)
     @brief      Clears a given EOaction object. 
     @param      p               The target object
