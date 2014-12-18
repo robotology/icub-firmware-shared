@@ -85,6 +85,8 @@ typedef struct
  **/
 extern EOagent* eo_agent_New(const eOagent_cfg_t* cfg);
 
+extern void eo_agent_Delete(EOagent *p);
+
 extern EOnvSet* eo_agent_GetNVset(EOagent *p);
 
 extern EOconfirmationManager* eo_agent_GetConfirmationManager(EOagent *p);

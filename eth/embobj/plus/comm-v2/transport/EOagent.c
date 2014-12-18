@@ -111,6 +111,25 @@ extern EOagent* eo_agent_New(const eOagent_cfg_t *cfg)
     return(retptr);       
 }    
 
+
+extern void eo_agent_Delete(EOagent *p) 
+{    
+    if(NULL == p)
+    {    
+        return;
+    }
+    
+    if(NULL == p->config.nvset)
+    {
+        return;
+    }
+    
+    memset(p, 0, sizeof(EOagent));
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;         
+}  
+
+
 extern EOnvSet* eo_agent_GetNVset(EOagent *p)
 {
     if(NULL == p)
