@@ -103,6 +103,13 @@ extern const eOreceiver_cfg_t eo_receiver_cfg_default; //= {{256, 128, 128}, NUL
 extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg);
 
 
+/** @fn         extern void eo_receiver_Delete(EOreceiver *p)
+    @brief      deletes a receiver.   
+    @param      p               the object
+ **/
+extern void eo_receiver_Delete(EOreceiver *p);
+
+
 /** @fn         extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, eObool_t *thereisareply)
     @brief      Accepts the reference to a received packet from a given remote host, uses a given NVs configuration, and process
                 the ropframe contained inside the packet (if valid). For each ROP it searches the NV(endpoint, id) if local operation

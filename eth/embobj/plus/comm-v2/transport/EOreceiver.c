@@ -133,6 +133,32 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
 }
 
 
+extern void eo_receiver_Delete(EOreceiver *p)
+{
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == p->ropinput)
+    {
+        return;
+    }
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p->bufferropframereply);
+    eo_rop_Delete(p->ropreply);
+    eo_rop_Delete(p->ropinput);
+    eo_ropframe_Delete(p->ropframereply);
+    eo_ropframe_Delete(p->ropframeinput);
+
+    
+    memset(p, 0, sizeof(EOreceiver));
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;    
+}
+
+
+
 extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t *numberofrops, eObool_t *thereisareply, eOabstime_t *transmittedtime)
 {
     uint16_t rxremainingbytes = 0;
