@@ -81,6 +81,14 @@ typedef struct EOfifoByte_hid EOfifoByte;
  **/
 extern EOfifoByte* eo_fifobyte_New(eOsizecntnr_t capacity, EOVmutexDerived *mutex);
 
+
+ 
+/** @fn         extern void eo_fifobyte_Delete(EOfifoByte *fifobyte)
+    @brief      deletes the fifobyte queue. it clears the object before.
+    @param      fifobyte        Pointer to the fifo object.
+ **/ 
+extern void eo_fifobyte_Delete(EOfifoByte *fifobyte);
+
  
 /** @fn         extern eOresult_t eo_fifobyte_Capacity(EOfifoByte *fifobyte, eOsizecntnr_t *capacity, eOreltime_t tout)
     @brief      Returns the maximum number of byte items that the fifobyte queue can contain.

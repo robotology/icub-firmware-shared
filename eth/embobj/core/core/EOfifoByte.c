@@ -99,6 +99,28 @@ extern EOfifoByte* eo_fifobyte_New(eOsizecntnr_t capacity, EOVmutexDerived *mute
 }
 
 
+extern void eo_fifobyte_Delete(EOfifoByte *fifobyte) 
+{
+    if(NULL == fifobyte)
+    {
+        return;
+    }
+
+    if(NULL == fifobyte->fifo)
+    {
+        return;
+    }
+
+    eo_fifobyte_Clear(fifobyte, eok_reltimeINFINITE);
+    
+    eo_fifo_Delete(fifobyte->fifo);
+    
+    memset(fifobyte, 0, sizeof(EOfifoByte));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), fifobyte);
+    return;  
+}
+
+
 extern eOresult_t eo_fifobyte_Capacity(EOfifoByte *fifobyte, eOsizecntnr_t *capacity, eOreltime_t tout) 
 {
     if(NULL == fifobyte)
