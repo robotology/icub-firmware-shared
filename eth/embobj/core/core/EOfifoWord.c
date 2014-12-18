@@ -85,7 +85,7 @@ extern EOfifoWord* eo_fifoword_New(eOsizecntnr_t capacity, EOVmutexDerived *mute
 {
     EOfifoWord *retptr = NULL; 
     
-    // i get memory for a fifobyte. it can never be NULL 
+    // i get memory for a fifoword. it can never be NULL 
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOfifoWord), 1);
    
     eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_fifoword_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
@@ -96,6 +96,28 @@ extern EOfifoWord* eo_fifoword_New(eOsizecntnr_t capacity, EOVmutexDerived *mute
 
     // ok, done
     return(retptr);
+}
+
+
+extern void eo_fifoword_Delete(EOfifoWord *fifoword) 
+{
+    if(NULL == fifoword)
+    {
+        return;
+    }
+
+    if(NULL == fifoword->fifo)
+    {
+        return;
+    }
+
+    eo_fifoword_Clear(fifoword, eok_reltimeINFINITE);
+    
+    eo_fifo_Delete(fifoword->fifo);
+    
+    memset(fifoword, 0, sizeof(EOfifoWord));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), fifoword);
+    return;  
 }
 
 
