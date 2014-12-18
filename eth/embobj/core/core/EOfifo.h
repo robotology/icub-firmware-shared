@@ -92,6 +92,12 @@ extern EOfifo * eo_fifo_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
                             eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear,
                             EOVmutexDerived *mutex);
 
+/** @fn         extern void eo_fifo_Delete(EOfifo * fifo)
+    @brief      deletes the fifo, it calls eo_fifo_Clear() before destroying the objects.
+    @param      fifo            Pointer to the EOfifo object.
+ **/
+extern void eo_fifo_Delete(EOfifo * fifo);
+
 
 /** @fn         extern eOresult_t eo_fifo_Capacity(EOfifo *fifo, eOsizecntnr_t *capacity, eOreltime_t tout)
     @brief      Returns the maximum number of items that the fifo queue can contain.

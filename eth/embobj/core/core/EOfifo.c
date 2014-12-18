@@ -105,6 +105,40 @@ extern EOfifo * eo_fifo_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     return(retptr);
 }
 
+extern void eo_fifo_Delete(EOfifo * fifo)
+{
+    if(NULL == fifo) 
+    {   // invalid fifo
+        return;    
+    }   
+    
+    if(NULL == fifo->dek)
+    {
+        return;
+    }
+    
+    if(NULL != fifo->mutex)    
+    {
+        eov_mutex_Take(fifo->mutex, eok_reltimeINFINITE);
+    }
+
+    eo_fifo_Clear(fifo, eok_reltimeINFINITE);
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), fifo->dek);
+    fifo->dek = NULL;
+
+    if(NULL != fifo->mutex)    
+    {
+        //eov_mutex_Release(fifo->mutex);
+        // however, if someone is waiting for this mutex, then there is a crash ... so, maybe better not to release
+    }
+
+    
+    memset(fifo, 0, sizeof(EOfifo));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), fifo);
+    return;    
+}
+
 
 extern eOresult_t eo_fifo_Capacity(EOfifo *fifo, eOsizecntnr_t *capacity, eOreltime_t tout) 
 {
