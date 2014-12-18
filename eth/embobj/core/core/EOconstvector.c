@@ -83,7 +83,6 @@ extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t 
 {
     EOconstvector *retptr = NULL;
  
-
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOconstvector), 1);
 
@@ -91,7 +90,8 @@ extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t 
     // now the obj has valid memory. i need to initialise it with user-defined data,
     eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_constvector_New(): 0 itemsize", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     eo_errman_Assert(eo_errman_GetHandle(), (0 != size), "eo_constvector_New(): 0 size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
-
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != data), "eo_constvector_New(): NULL data", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    
     retptr->item_size           = item_size;
     retptr->size                = size;
     retptr->item_array_data     = data;     
@@ -100,52 +100,54 @@ extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t 
 }
 
 
-extern eOsizecntnr_t eo_constvector_Size(const EOconstvector * cvect) 
+extern void eo_constvector_Delete(EOconstvector *p)
 {
-    if(NULL == cvect) 
-    {   // invalid cvect
+    if(NULL == p)
+    {
+        return;
+    }
+    if(NULL == p->item_array_data)
+    {
+        return;
+    }
+    
+    memset(p, 0, sizeof(EOconstvector));   
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
+extern eOsizecntnr_t eo_constvector_Size(const EOconstvector *p) 
+{
+    if(NULL == p) 
+    {   // invalid p
         return(0);    
     }
     
-    return(cvect->size);        
+    return(p->size);        
 }
 
 
-extern const void * eo_constvector_At(const EOconstvector * cvect, eOsizecntnr_t pos) 
+extern const void * eo_constvector_At(const EOconstvector *p, eOsizecntnr_t pos) 
 {
     // here we require uint8_t to access item_array_data because we work with bytes.
     uint8_t *start = NULL;
     
-    if(NULL == cvect) 
+    if(NULL == p) 
     {
         return(NULL);    
     }
     
-    if(pos >= cvect->size) 
-    {    // cvect does not have any element in pos
+    if(pos >= p->size) 
+    {    // p does not have any element in pos
         return(NULL);     
     }
     
    
-    start = (uint8_t*) (cvect->item_array_data);
+    start = (uint8_t*) (p->item_array_data);
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-    start = &start[(uint32_t)pos * cvect->item_size];
+    start = &start[(uint32_t)pos * p->item_size];
     
     return((const void*) start);         
-}
-
-extern void eo_constvector_Delete(EOconstvector * cvect)
-{  
-    if(NULL == cvect) 
-    {   // invalid cvect
-        return;    
-    }  
-    
-    // reset all things inside vector
-    memset(cvect, 0, sizeof(EOconstvector));
-    
-    // destroy object
-    eo_mempool_Delete(eo_mempool_GetHandle(), cvect);       
 }
 
 

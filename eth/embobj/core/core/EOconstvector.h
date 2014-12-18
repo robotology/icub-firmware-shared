@@ -74,38 +74,32 @@ typedef struct EOconstvector_hid EOconstvector;
 
 
  
-/** @fn         extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity, 
-                                             eOres_fp_voidp_uint32_t item_init, uint32_t init_par, 
-                                             eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear);
-    @brief      Creates a new EOconstvector object and reserves memory for the items that will be stored in its
-                inside, taking it from the memory pool.
+/** @fn         extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data) 
+    @brief      Creates a new EOconstvector object. it uses externally passed const data
     @param      item_size       The size in bytes of the item object managed by the EOconstvector.
-    @param      capacity        The max number of item objects stored by the EOconstvector.
-    @param      item_init       Pointer to a specialised init function for the item object to be called at
-                                creation of the object for each contained item with arguments item_init(item, item_par). 
-                                If NULL, memory is just set to zero.
-    @param      item_par        Argument used for @e item_init(item, item_par).                                
-    @param      item_copy       Pointer to a specialised copy function for the item object to be called 
-                                at each copy of an item object inside the EOconstvector with arguments item_copy(dest, orig).
-                                If NULL it will be executed a simple memcpy of the size of the item object.                                
-    @param      item_clear      Pointer to a specialised remove function for the item object to be called at each 
-                                removal of an item object from the EOconstvector. If NULL the memory inside the container
-                                will be simply set to zero.
+    @param      size            The number of item objects stored by the EOconstvector.
     @return     Pointer to the required EOconstvector object. The pointer is guaranteed to be always valid and will 
                 never be NULL, because failure is managed by the memory pool.
  **/
 extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data);
 
 
-/** @fn         extern eOsizecntnr_t eo_constvector_Size(EOconstvector * cvect)
+/** @fn         extern void eo_constvector_Delete(EOconstvector *p)
+    @brief      deletes the ram used for the constvector.
+    @param      p           the EOconstvector object. 
+ **/
+extern void eo_constvector_Delete(EOconstvector *p);
+
+
+/** @fn         extern eOsizecntnr_t eo_constvector_Size(EOconstvector *p)
     @brief      Returns the number of item objects that are currently stored in the EOconstvector.
     @param      cvect           Pointer to the EOconstvector object. 
     @return     Number of item objects.
  **/
-extern eOsizecntnr_t eo_constvector_Size(const EOconstvector * cvect);
+extern eOsizecntnr_t eo_constvector_Size(const EOconstvector *p);
 
 
-/** @fn         extern const void* eo_constvector_At(EOconstvector * cvect, eOsizecntnr_t pos)
+/** @fn         extern const void* eo_constvector_At(EOconstvector *p, eOsizecntnr_t pos)
     @brief      Retrieves a reference to the item object in position pos 
     @param      cvect           Pointer to the EOconstvector object. 
     @param      pos             Position of the desired item object.
@@ -115,10 +109,9 @@ extern eOsizecntnr_t eo_constvector_Size(const EOconstvector * cvect);
                 If the item object is a uint32_t, use: 
                 uint32_t *p = (uint32_t*) eo_constvector_At(cvect, pos); 
  **/
-extern const void * eo_constvector_At(const EOconstvector * cvect, eOsizecntnr_t pos);
+extern const void * eo_constvector_At(const EOconstvector *p, eOsizecntnr_t pos);
 
 
-extern void eo_constvector_Delete(EOconstvector * cvect);
 
 /** @}            
     end of group eo_constvector  
