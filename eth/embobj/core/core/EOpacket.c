@@ -119,6 +119,7 @@ extern void eo_packet_Delete(EOpacket *p)
     memset(p, 0, sizeof(EOpacket));
     
     eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
 }
 
 
