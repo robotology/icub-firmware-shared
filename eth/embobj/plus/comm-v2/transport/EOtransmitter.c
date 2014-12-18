@@ -33,7 +33,7 @@
 #include "EOtheErrorManager.h"
 #include "EOvector.h"
 #include "EoProtocol.h"
-
+#include "EOVmutex.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -214,6 +214,71 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     
     return(retptr);
 }
+
+
+extern void eo_transmitter_Delete(EOtransmitter *p)
+{
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == p->txpacket)
+    {
+        return;
+    }
+    
+    if(NULL != p->mtx_replies)
+    {
+        eov_mutex_Delete(p->mtx_replies);
+    }
+    if(NULL != p->mtx_regulars)
+    {
+        eov_mutex_Delete(p->mtx_regulars);
+    }
+    if(NULL != p->mtx_occasionals)
+    {
+        eov_mutex_Delete(p->mtx_occasionals);
+    }
+    if(NULL != p->mtx_roptmp)
+    {
+        eov_mutex_Delete(p->mtx_roptmp);        
+    }   
+
+    if(NULL != p->listofregropinfo)
+    {
+        eo_list_Delete(p->listofregropinfo);
+    }     
+    if(NULL != p->bufferropframeregulars)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(), p->bufferropframeregulars);
+        p->bufferropframeregulars = NULL;
+    }
+    if(NULL != p->bufferropframeoccasionals)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(),  p->bufferropframeoccasionals);
+        p->bufferropframeoccasionals = NULL;
+    }
+    if(NULL != p->bufferropframereplies)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(),  p->bufferropframereplies);
+        p->bufferropframereplies = NULL;
+    }  
+    
+    eo_rop_Delete(p->roptmp);
+    
+    eo_ropframe_Delete(p->ropframereadytotx);
+    eo_ropframe_Delete(p->ropframeregulars);
+    eo_ropframe_Delete(p->ropframeoccasionals);
+    eo_ropframe_Delete(p->ropframereplies);
+   
+    eo_packet_Delete(p->txpacket);
+        
+    memset(p, 0, sizeof(EOtransmitter));
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
 
 extern EOnvSet* eo_transmitter_GetNVset(EOtransmitter *p)
 {

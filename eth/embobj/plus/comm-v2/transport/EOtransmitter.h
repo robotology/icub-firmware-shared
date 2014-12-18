@@ -117,6 +117,7 @@ extern const eOtransmitter_cfg_t eo_transmitter_cfg_default;
  // 
 extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg);
 
+extern void eo_transmitter_Delete(EOtransmitter *p);
 
 extern EOnvSet* eo_transmitter_GetNVset(EOtransmitter *p);
 
