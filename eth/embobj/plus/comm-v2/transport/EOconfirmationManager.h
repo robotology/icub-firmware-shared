@@ -69,9 +69,9 @@ typedef enum
 
 typedef struct
 {
-    eOconfmanmode_t                 mode;
-    uint16_t                        maxnumberofconfreqrops;
-    eov_mutex_fn_mutexderived_new   mutex_fn_new;
+    eOconfmanmode_t                     mode;
+    uint16_t                            maxnumberofconfreqrops;
+    eov_mutex_fn_mutexderived_new       mutex_fn_new;
     void (*on_rop_conf_requested)(eOipv4addr_t toipaddr, eOropdescriptor_t* ropdes);
     void (*on_rop_conf_received)(eOipv4addr_t fromipaddr, eOropdescriptor_t* ropdes);
 } eOconfman_cfg_t;
@@ -94,17 +94,15 @@ extern const eOconfman_cfg_t eOconfman_cfg_default;
 
 extern EOconfirmationManager* eo_confman_New(const eOconfman_cfg_t *cfg);
 
+extern void eo_confman_Delete(EOconfirmationManager *p);
+
 extern eOresult_t eo_confman_ConfirmationRequest_Insert(EOconfirmationManager *p, eOropdescriptor_t* ropdesc);
 
 extern eOresult_t eo_confman_ConfirmationRequests_Process(EOconfirmationManager *p, eOipv4addr_t toipaddr);
-
-          
+    
 extern eOresult_t eo_confman_Confirmation_Requested(EOconfirmationManager *p, eOipv4addr_t toipaddr, eOropdescriptor_t* ropdes);
 
 extern eOresult_t eo_confman_Confirmation_Received(EOconfirmationManager *p, eOipv4addr_t fromipaddr, eOropdescriptor_t* ropdes);
-
-                                                   
-
 
 
 

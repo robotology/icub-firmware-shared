@@ -127,6 +127,28 @@ extern EOconfirmationManager* eo_confman_New(const eOconfman_cfg_t *cfg)
 }
 
 
+extern void eo_confman_Delete(EOconfirmationManager *p)
+{
+    if(NULL == p)
+    {    
+        return;
+    }
+    
+    if(NULL != p->mtx)
+    {
+        eov_mutex_Delete(p->mtx);
+    }
+    
+    if(NULL != p->confrequests)
+    {
+        eo_vector_Delete(p->confrequests);
+    }
+   
+    memset(p, 0, sizeof(EOconfirmationManager));
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;   
+}
+
 
 extern eOresult_t eo_confman_ConfirmationRequests_Process(EOconfirmationManager *p, eOipv4addr_t toipaddr)
 {
