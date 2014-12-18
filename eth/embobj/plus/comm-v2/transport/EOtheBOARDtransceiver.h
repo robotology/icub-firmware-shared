@@ -98,6 +98,13 @@ extern EOtheBOARDtransceiver * eo_boardtransceiver_Initialise(const eOboardtrans
  **/
 extern EOtheBOARDtransceiver * eo_boardtransceiver_GetHandle(void);
 
+
+/** @fn         extern void eo_boardtransceiver_DeInitialise(EOtheBOARDtransceiver* p)
+    @brief      DeInitialise the singleton EOtheBOARDtransceiver. 
+    @param      p           the handle of the object.
+ **/
+extern void eo_boardtransceiver_DeInitialise(EOtheBOARDtransceiver* p);
+
 extern EOtransceiver * eo_boardtransceiver_GetTransceiver(EOtheBOARDtransceiver* p);
 
 extern EOnvSet * eo_boardtransceiver_GetNVset(EOtheBOARDtransceiver* p);

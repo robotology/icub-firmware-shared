@@ -70,6 +70,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 static EOnvSet* s_eo_boardtransceiver_nvset_get(const eOboardtransceiver_cfg_t *cfg);
+static void s_eo_boardtransceiver_nvset_release(EOtheBOARDtransceiver* p);
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -82,7 +83,7 @@ static EOtheBOARDtransceiver s_eo_theboardtrans =
 {
     EO_INIT(.transceiver)               NULL,
     EO_INIT(.nvset)                     NULL,
-    EO_INIT(.boardnumber)               0xff
+    EO_INIT(.boardnumber)               eo_nv_BRDdummy
 };
 
 
@@ -164,6 +165,32 @@ extern EOtheBOARDtransceiver * eo_boardtransceiver_Initialise(const eOboardtrans
     return(&s_eo_theboardtrans);        
 }    
 
+extern void eo_boardtransceiver_DeInitialise(EOtheBOARDtransceiver* p)
+{   
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == s_eo_theboardtrans.transceiver)
+    {
+        return;
+    }
+    
+    // ok. we can delete every object create in _Initialise()
+    
+    eo_transceiver_Delete(s_eo_theboardtrans.transceiver);
+       
+    s_eo_boardtransceiver_nvset_release(&s_eo_theboardtrans);
+    
+    s_eo_theboardtrans.boardnumber  = eo_nv_BRDdummy;
+    s_eo_theboardtrans.nvset        = NULL;
+    s_eo_theboardtrans.transceiver  = NULL;
+    
+    
+    return;
+}
+    
 
 extern EOtheBOARDtransceiver * eo_boardtransceiver_GetHandle(void) 
 {
@@ -255,6 +282,27 @@ static EOnvSet* s_eo_boardtransceiver_nvset_get(const eOboardtransceiver_cfg_t *
     return(nvset);
 
 }
+
+
+static void s_eo_boardtransceiver_nvset_release(EOtheBOARDtransceiver* p)
+{
+    //const uint16_t numofdevices     = 1;    // one device only
+    const uint16_t ondevindexzero   = 0;    // one device only
+
+    if(NULL == p->nvset)
+    {   // if i call it more than once ... 
+        return;
+    }
+
+    eo_nvset_NVSdeinitialise(p->nvset);
+    
+    eo_nvset_DEVpopback(p->nvset, ondevindexzero);
+    
+    eo_nvset_Delete(p->nvset);
+    
+    p->nvset = NULL;
+}
+
 
 
 // --------------------------------------------------------------------------------------------------------------------
