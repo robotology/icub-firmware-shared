@@ -69,15 +69,11 @@ typedef struct EOconstarray_hid EOconstarray;
 // - declaration of extern public functions ---------------------------------------------------------------------------
  
  
-/** @fn         extern EOconstarray* eo_constarray_New(eOsizecntnr_t capacity, eOsizeitem_t itemsize, void *memory)
-    @brief      Creates a new EOconstarray object. If the argument @e memory is not NULL, then it is used for storage
-                inside the object. The function resets
-                the data. If we pass a non NULL @e memory then we consume @a capacity bytes + 4 bytes of memory.
-    @param      capacity        The capacity of the array.
-    @param      itemsize        If not zero, then the array contains fixed-sized items, otherwise just bytes
+/** @fn         xtern EOconstarray* eo_constarray_New(const void *data)
+    @brief      it does not creates a constaarray object, it rather gets a buffer and casts it as a EOconstarray
     @return     The pointer to the required object.
  **/
-extern EOconstarray* eo_constarray_New(eOsizecntnr_t size, eOsizeitem_t itemsize);
+extern EOconstarray* eo_constarray_New(const void *data);
 
 
 /** @fn         extern eOsizecntnr_t eo_constarray_Size(EOconstarray *p)

@@ -77,10 +77,10 @@
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-extern EOconstarray* eo_constarray_New(eOsizecntnr_t size, eOsizeitem_t itemsize)
+extern EOconstarray* eo_constarray_New(const void *data)
 {
-    return(NULL);
-    // dont create it. just bring from a static const variable
+    return((EOconstarray*)data);
+    // doesnt create it. just brings from a static const variable
 }
 
 extern eOsizecntnr_t eo_constarray_Size(EOconstarray *p)
