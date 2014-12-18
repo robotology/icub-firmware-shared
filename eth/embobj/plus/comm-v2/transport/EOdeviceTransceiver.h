@@ -92,6 +92,8 @@ extern const eOdevicetransceiver_cfg_t eo_devicetransceiver_cfg_default;
 extern EOdeviceTransceiver * eo_devicetransceiver_New(const eOdevicetransceiver_cfg_t *cfg);
 
 
+extern void eo_devicetransceiver_Delete(EOdeviceTransceiver* p);
+
 
 extern EOtransceiver * eo_devicetransceiver_GetTransceiver(EOdeviceTransceiver* p);
 

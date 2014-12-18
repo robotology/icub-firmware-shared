@@ -71,6 +71,8 @@
 
 static EOnvSet* s_eo_devicetransceiver_nvset_get(EOdeviceTransceiver* p, const eOdevicetransceiver_cfg_t *cfg);
 
+static void s_eo_devicetransceiver_nvset_release(EOdeviceTransceiver* p);
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -156,6 +158,29 @@ extern EOdeviceTransceiver * eo_devicetransceiver_New(const eOdevicetransceiver_
 }    
 
 
+extern void eo_devicetransceiver_Delete(EOdeviceTransceiver* p) 
+{   
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == p->transceiver)
+    {
+        return;
+    }
+    
+    eo_transceiver_Delete(p->transceiver);
+       
+    s_eo_devicetransceiver_nvset_release(p);
+    
+
+    memset(p, 0, sizeof(EOdeviceTransceiver));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);    
+    return;    
+}
+
 
 extern EOtransceiver * eo_devicetransceiver_GetTransceiver(EOdeviceTransceiver* p)
 {
@@ -227,6 +252,26 @@ static EOnvSet* s_eo_devicetransceiver_nvset_get(EOdeviceTransceiver* p, const e
 
     return(nvset);
 
+}
+
+
+static void s_eo_devicetransceiver_nvset_release(EOdeviceTransceiver* p)
+{
+    //const uint16_t numofdevices     = 1;    // one device only
+    const uint16_t ondevindexzero   = 0;    // one device only
+
+    if(NULL == p->nvset)
+    {   // if i call it more than once ... 
+        return;
+    }
+
+    eo_nvset_NVSdeinitialise(p->nvset);
+    
+    eo_nvset_DEVpopback(p->nvset, ondevindexzero);
+    
+    eo_nvset_Delete(p->nvset);
+    
+    p->nvset = NULL;
 }
 
 
