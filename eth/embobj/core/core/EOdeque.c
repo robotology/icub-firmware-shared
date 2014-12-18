@@ -184,6 +184,26 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
 }
 
 
+extern void eo_deque_Delete(EOdeque * deque)
+{
+    if(NULL == deque) 
+    {   // invalid deque
+        return;    
+    }   
+    
+    if(NULL == deque->stored_items)
+    {
+        return;
+    }
+
+    eo_deque_Clear(deque);
+
+    memset(deque, 0, sizeof(EOdeque));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), deque);
+    return;    
+}
+
+
 extern eOsizecntnr_t eo_deque_Capacity(EOdeque * deque) 
 {
     if(NULL == deque) 

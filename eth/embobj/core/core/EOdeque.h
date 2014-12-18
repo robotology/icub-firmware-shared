@@ -102,6 +102,13 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
                               eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear);
 
 
+/** @fn         extern void eo_deque_Delete(EOdeque * deque)
+    @brief      deletes the EOdeque. It calls eo_deque_Clear() before detroying the object.
+    @param      deque           Pointer to the EOdeque object.
+ **/
+extern void eo_deque_Delete(EOdeque * deque);
+
+
 /** @fn         extern eOsizecntnr_t eo_deque_Capacity(EOdeque * deque)
     @brief      Returns the maximum number of item objects that the EOdeque is able to contain.
     @param      deque           Pointer to the EOdeque object.
