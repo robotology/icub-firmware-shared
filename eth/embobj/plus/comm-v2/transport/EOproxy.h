@@ -68,17 +68,18 @@ typedef enum
 
 typedef struct
 {
-    eOproxymode_t                   mode;
-    uint16_t                        capacityoflistofropdes;
-    eOreltime_t                     replyroptimeout;            // no timeout if EOK_uint64dummy 
-    eov_mutex_fn_mutexderived_new   mutex_fn_new;
-    void*                           transceiver; // points to a EOtransceiver
+    eOproxymode_t                       mode;
+    uint16_t                            capacityoflistofropdes;
+    eOreltime_t                         replyroptimeout;            // no timeout if EOK_uint64dummy 
+    eov_mutex_fn_mutexderived_new       mutex_fn_new;
+    void*                               transceiver; // points to a EOtransceiver
 } eOproxy_cfg_t;
 
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
-// empty-section
+
+extern const eOproxy_cfg_t eo_proxy_cfg_default;
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
@@ -92,6 +93,12 @@ typedef struct
  **/
 extern EOproxy* eo_proxy_New(const eOproxy_cfg_t *cfg);
 
+
+/** @fn         extern void eo_proxy_Delete(EOproxy *p)
+    @brief      deletes the object.
+    @param      p           the object.
+ **/
+extern void eo_proxy_Delete(EOproxy *p);
 
 /** @fn         extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
     @brief      asks the proxy to forward a rop. that is done by calling the update() function of the

@@ -156,6 +156,28 @@ extern EOproxy* eo_proxy_New(const eOproxy_cfg_t *cfg)
 }    
 
 
+extern void eo_proxy_Delete(EOproxy *p) 
+{    
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL != p->mtx)
+    {
+        eov_mutex_Delete(p->mtx);
+    }
+    
+    if(NULL != p->listofropdes)
+    {
+        eo_list_Delete(p->listofropdes);
+    }
+   
+    memset(p, 0, sizeof(EOproxy));
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;   
+}    
+
 
 extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
 {
