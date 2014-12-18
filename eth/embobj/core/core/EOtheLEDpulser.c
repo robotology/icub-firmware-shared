@@ -177,6 +177,42 @@ extern EOtheLEDpulser * eo_ledpulser_GetHandle(void)
     return( (NULL != s_theledpulser.timer) ? (&s_theledpulser) : (NULL) );   
 }
 
+
+extern void eo_ledpulser_DeInitialise(EOtheLEDpulser* p) 
+{
+    uint8_t i = 0;
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(0 == s_theledpulser.initted)
+    {
+        return;
+    }
+    
+    // at first i stop all the leds
+    for(i=0; i<eo_ledpulser_leds_number; i++)
+    {
+        eo_ledpulser_Stop(p, (eOledpulser_led_t)i);
+    }
+    
+    // then i destroy other things
+    eo_action_Delete(p->action);
+    for(i=0; i<eo_ledpulser_leds_number; i++)
+    {
+        if(NULL != p->timer[i])
+        {
+            eo_timer_Delete(p->timer[i]);
+        }
+    }
+    // dont deinit the led
+    
+    memset(p, 0, sizeof(EOtheLEDpulser));
+    return;    
+}    
+
+
 extern void eo_ledpulser_On(EOtheLEDpulser* p, eOledpulser_led_t id)
 {
     if(NULL == p)

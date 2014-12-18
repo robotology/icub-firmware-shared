@@ -108,6 +108,10 @@ extern EOtheLEDpulser * eo_ledpulser_Initialise(const eOledpulser_cfg_t *ledpuls
  **/
 extern EOtheLEDpulser * eo_ledpulser_GetHandle(void); 
 
+
+extern void eo_ledpulser_DeInitialise(EOtheLEDpulser* p);
+
+
 extern void eo_ledpulser_On(EOtheLEDpulser* p, eOledpulser_led_t id);
 
 extern void eo_ledpulser_Off(EOtheLEDpulser* p, eOledpulser_led_t id);
