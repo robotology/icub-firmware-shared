@@ -128,9 +128,15 @@ typedef enum
 
 extern EOnvSet* eo_nvset_New(uint16_t ndevices, eOnvset_protection_t prot, eov_mutex_fn_mutexderived_new mtxnew);
 
+extern void eo_nvset_Delete(EOnvSet* p);
+
 extern eOresult_t eo_nvset_DEVpushback(EOnvSet* p, uint16_t ondevindex, eOnvset_DEVcfg_t* cfgofdev, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress);
 
+extern eOresult_t eo_nvset_DEVpopback(EOnvSet* p, uint16_t ondevindex);
+
 extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p);
+
+extern eOresult_t eo_nvset_NVSdeinitialise(EOnvSet* p);
 
 extern eOresult_t eo_nvset_BRD_Get(EOnvSet* p, eOipv4addr_t ip, eOnvBRD_t* brd);
 

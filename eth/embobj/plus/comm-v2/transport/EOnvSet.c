@@ -71,6 +71,8 @@
 static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t boardnum, eOuint16_fp_voidp_uint8_t fptr_ep2index, uint16_t nendpoints, void *param);
 static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, eOnvset_EPcfg_t *cfgofep, eOnvBRD_t boardnum);
 
+static eOresult_t s_eo_nvset_onDEV_ClearEPs(EOnvSet* p, uint16_t ondevindex);
+static eOresult_t s_eo_nvset_PopBackDEVholder(EOnvSet* p);
 
 static EOVmutexDerived* s_eo_nvset_get_nvmutex(EOnvSet* p, eOnvset_dev_t* thedevice, eOnvset_ep_t* theendpoint, eOnvID32_t id32);
 static eOresult_t s_eo_nvset_hid_get_device(EOnvSet* p, eOipv4addr_t ip, eOnvset_dev_t** thedevice);
@@ -115,6 +117,32 @@ extern EOnvSet* eo_nvset_New(uint16_t ndevices, eOnvset_protection_t prot, eov_m
 }
 
 
+extern void eo_nvset_Delete(EOnvSet* p)
+{   
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == p->thedevices)
+    {
+        return;
+    }
+    
+    if(NULL != p->mtx_object)
+    {
+        eov_mutex_Delete(p->mtx_object);
+    }
+    
+    eo_vector_Delete(p->theipaddresses);
+    eo_vector_Delete(p->thedevices);
+    
+    
+    memset(p, 0, sizeof(EOnvSet));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
 
 extern eOresult_t eo_nvset_DEVpushback(EOnvSet* p, uint16_t ondevindex, eOnvset_DEVcfg_t* cfgofdev, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress)
 {
@@ -136,6 +164,17 @@ extern eOresult_t eo_nvset_DEVpushback(EOnvSet* p, uint16_t ondevindex, eOnvset_
     
     return(eores_OK); 
 }
+
+
+extern eOresult_t eo_nvset_DEVpopback(EOnvSet* p, uint16_t ondevindex)
+{   
+    s_eo_nvset_onDEV_ClearEPs(p, ondevindex); // all the EPs added one by one with s_eo_nvset_onDEV_PushBackEP()
+    
+    s_eo_nvset_PopBackDEVholder(p);
+    
+    return(eores_OK); 
+}
+
 
 static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t boardnum, eOuint16_fp_voidp_uint8_t fptr_ep2index, uint16_t nendpoints, void *param)
 {
@@ -176,6 +215,30 @@ static eOresult_t s_eo_nvset_PushBackDEVholder(EOnvSet* p, eOnvsetOwnership_t ow
     return(eores_OK);
 }
 
+static eOresult_t s_eo_nvset_PopBackDEVholder(EOnvSet* p)
+{
+    eOnvset_dev_t *dev = NULL;
+    eOnvset_dev_t **devitem = NULL;
+    
+    devitem = (eOnvset_dev_t**)eo_vector_Back(p->thedevices);
+    dev = *devitem;
+    
+    eo_vector_Delete(dev->theendpoints);
+    
+    if(NULL != dev->mtx_device)
+    {
+        eov_mutex_Delete(dev->mtx_device);
+    }
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), dev);
+    
+    // not needed so far
+    eo_vector_PopBack(p->thedevices);
+    eo_vector_PopBack(p->theipaddresses);
+    
+ 
+    return(eores_OK);
+}
 
 static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, eOnvset_EPcfg_t *cfgofep, eOnvBRD_t boardnum)
 {
@@ -232,6 +295,49 @@ static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, e
 }
 
 
+
+static eOresult_t s_eo_nvset_onDEV_ClearEPs(EOnvSet* p, uint16_t ondevindex)
+{
+    eOnvset_dev_t** thedev = NULL;
+    eOnvset_ep_t *theendpoint = NULL;
+    
+    uint16_t i = 0;    
+    
+    thedev = (eOnvset_dev_t**) eo_vector_At(p->thedevices, ondevindex);
+    eo_errman_Assert(eo_errman_GetHandle(), (NULL != thedev), "s_eo_nvset_onDEV_ClearEPs(): ->thedevices is indexed in wrong pos", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);    
+    
+    uint16_t endpointsnum = eo_vector_Size((*thedev)->theendpoints);
+ 
+    for(i=0; i<endpointsnum; i++)
+    {
+        eOnvset_ep_t **ppep = (eOnvset_ep_t **)eo_vector_At((*thedev)->theendpoints, i);
+        theendpoint = *ppep;
+        
+        // now i erase memory associated with this endpoint
+        eo_mempool_Delete(eo_mempool_GetHandle(), theendpoint->epram);
+        if(NULL != theendpoint->mtx_endpoint)
+        {
+            eov_mutex_Delete(theendpoint->mtx_endpoint);
+        }
+        if(NULL != theendpoint->themtxofthenvs)
+        {
+            uint16_t size = eo_vector_Size(theendpoint->themtxofthenvs);
+            int j = 0;
+            for(j=0; j<size; j++)
+            {
+                EOVmutexDerived** pmtx =  (EOVmutexDerived**)eo_vector_At(theendpoint->themtxofthenvs, j);
+                eov_mutex_Delete(*pmtx);            
+            } 
+            eo_vector_Delete(theendpoint->themtxofthenvs);
+        }
+        
+        // now i erase the endpoint        
+         eo_mempool_Delete(eo_mempool_GetHandle(), theendpoint);
+       
+    }
+
+    return(eores_OK);
+}
 
 extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p)
 {
@@ -342,6 +448,13 @@ extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p)
     }
 
     return(eores_OK);
+}
+
+extern eOresult_t eo_nvset_NVSdeinitialise(EOnvSet* p)
+{
+    //#warning -> add code in here for eo_nvset_NVSdeinitialise()
+    // so far it is not necessary to deinit    
+    return(eores_OK);    
 }
 
 
