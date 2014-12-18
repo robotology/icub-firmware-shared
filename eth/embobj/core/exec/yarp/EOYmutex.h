@@ -77,6 +77,14 @@ typedef struct EOYmutex_hid EOYmutex;
 extern EOYmutex * eoy_mutex_New(void);
 
 
+
+/** @fn         extern void eom_mutex_Delete(EOYmutex *m)
+    @brief      Deletes a given EOYmutex object 
+    @param      m               The mutex
+ **/
+extern void eoy_mutex_Delete(EOYmutex *m);
+
+
 /** @fn         extern eOresult_t eoy_mutex_Take(EOYmutex *m, eOreltime_t tout)
     @brief      It takes a YARP mutex with a given timeout. If the mutex is already taken by another task,
                 the function waits its release according to the value of @e tout. The mutex has priority inversion.

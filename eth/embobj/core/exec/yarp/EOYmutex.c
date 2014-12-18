@@ -72,7 +72,8 @@
 static eOresult_t s_eoy_mutex_take(void *p, eOreltime_t tout);
 // virtual
 static eOresult_t s_eoy_mutex_release(void *p);
-
+// virtual
+static eOresult_t s_eoy_mutex_delete(void *p);
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -97,7 +98,7 @@ extern EOYmutex* eoy_mutex_New(void)
     retptr->mutex = eov_mutex_hid_New();
 
     // init its vtable
-    eov_mutex_hid_SetVTABLE(retptr->mutex, s_eoy_mutex_take, s_eoy_mutex_release); 
+    eov_mutex_hid_SetVTABLE(retptr->mutex, s_eoy_mutex_take, s_eoy_mutex_release, s_eoy_mutex_delete); 
     
     // i get a new yarp mutex
     retptr->acemutex = ace_mutex_new();
@@ -106,6 +107,30 @@ extern EOYmutex* eoy_mutex_New(void)
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != retptr->acemutex), s_eobj_ownname, "eoy_mutex_New(): ace cannot give a mutex", &eo_errman_DescrRuntimeErrorLocal);
     
     return(retptr);    
+}
+
+
+extern void eoy_mutex_Delete(EOYmutex *m) 
+{    
+    if(NULL == m)
+    {
+        return;
+    }
+    
+    if(NULL == m->acemutex)
+    {
+        return;
+    }
+    
+    #warning -> marco.accame: must uncomment the following but only after ace_mutex_delete() is implemented
+    //ace_mutex_delete(m->acemutex);
+    
+    eov_mutex_hid_Delete(m->mutex);
+    
+    memset(m, 0, sizeof(EOYmutex));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), m);
+    return;
 }
 
 
@@ -159,7 +184,13 @@ static eOresult_t s_eoy_mutex_release(void *p)
     return((eOresult_t)ace_mutex_release(m->acemutex));
 }
 
-
+static eOresult_t s_eoy_mutex_delete(void *p) 
+{
+    EOYmutex *m = (EOYmutex *)p;
+    
+    eoy_mutex_Delete(m);
+    return(eores_OK);
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)

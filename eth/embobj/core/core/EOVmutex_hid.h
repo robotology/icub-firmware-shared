@@ -44,7 +44,8 @@ extern "C" {
 
 #define VF00_take                   0
 #define VF01_release                1
-#define VTABLESIZE_mutex            2
+#define VF02_delete                 2
+#define VTABLESIZE_mutex            3
 
 
 // - definition of the hidden struct implementing the object ----------------------------------------------------------
@@ -77,14 +78,22 @@ struct EOVmutex_hid
 extern EOVmutex* eov_mutex_hid_New(void);
 
 
+/** @fn         extern void eov_mutex_hid_Delete(EOVmutex *p)
+    @brief      deletes a mutex object 
+    @param      p               the object
+ **/
+extern void eov_mutex_hid_Delete(EOVmutex *p);
+
+
 /** @fn         extern eOresult_t eov_mutex_hid_SetVTABLE(EOVmutex *p, eOres_fp_voidp_uint32_t v_take, eOres_fp_voidp_t v_release)
     @brief      Specialise the virtual functions of the abstract object
     @param      p               The object
     @param      v_take          the first virtual function
     @param      v_release       the second virtual function        
+    @param      v_delete        the third virtual function  
     @return     eores_OK.
  **/
-extern eOresult_t eov_mutex_hid_SetVTABLE(EOVmutex *p, eOres_fp_voidp_uint32_t v_take, eOres_fp_voidp_t v_release);
+extern eOresult_t eov_mutex_hid_SetVTABLE(EOVmutex *p, eOres_fp_voidp_uint32_t v_take, eOres_fp_voidp_t v_release, eOres_fp_voidp_t v_delete);
 
 
 #ifdef __cplusplus

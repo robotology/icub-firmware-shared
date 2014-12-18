@@ -76,7 +76,10 @@ typedef void EOVmutexDerived;
  **/
 typedef EOVmutexDerived* (*eov_mutex_fn_mutexderived_new)(void);
 
-
+/** @typedef    typedef void (*eov_mutex_fn_mutexderived_delete)(EOVmutexDerived* m)
+    @brief      eov_mutexderived_fn_delete is used to represent a pointer to a function which deallocates a derived mutex.
+ **/
+typedef void (*eov_mutex_fn_mutexderived_delete)(EOVmutexDerived* m);
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -107,6 +110,14 @@ extern eOpurevirtual eOresult_t eov_mutex_Take(EOVmutexDerived *d, eOreltime_t t
  **/
 extern eOpurevirtual eOresult_t eov_mutex_Release(EOVmutexDerived *d);
 
+
+/** @fn         extern eOpurevirtual void eov_mutex_Delete(EOVmutexDerived *d)
+    @brief      Deletes the mutex. 
+    @param      d               Pointer to the mutex-derived object
+    @warning    This function cannot be used with a EOVmutex object but only with one object derived
+                from it.
+ **/
+extern eOpurevirtual void eov_mutex_Delete(EOVmutexDerived *d);
 
 
 

@@ -78,6 +78,8 @@ typedef struct EONmutex_hid EONmutex;
  **/
 extern EONmutex * eon_mutex_New(void);
 
+extern void eon_mutex_Delete(EONmutex *m);
+
 
 
 /** @}            

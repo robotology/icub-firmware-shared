@@ -68,6 +68,8 @@
 static eOresult_t s_eon_mutex_take(void *p, eOreltime_t tout);
 // virtual
 static eOresult_t s_eon_mutex_release(void *p);
+// virtual
+static eOresult_t s_eon_mutex_delete(void *p);
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -93,13 +95,30 @@ extern EONmutex* eon_mutex_New(void)
     retptr->mutex = eov_mutex_hid_New();
 
     // init its vtable
-    eov_mutex_hid_SetVTABLE(retptr->mutex, s_eon_mutex_take, s_eon_mutex_release); 
+    eov_mutex_hid_SetVTABLE(retptr->mutex, s_eon_mutex_take, s_eon_mutex_release, s_eon_mutex_delete); 
     
     // i get a new none mutex
     retptr->none = NULL;
 
     
     return(retptr);    
+}
+
+
+extern void eon_mutex_Delete(EONmutex *m) 
+{    
+    if(NULL == m)
+    {
+        return;
+    }
+    
+    
+    eov_mutex_hid_Delete(m->mutex);
+    
+    memset(m, 0, sizeof(EONmutex));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), m);
+    return;
 }
 
 
@@ -131,7 +150,13 @@ static eOresult_t s_eon_mutex_release(void *p)
     return(eores_OK);
 }
 
-
+static eOresult_t s_eon_mutex_delete(void *p) 
+{
+    EONmutex *m = (EONmutex *)p;
+    m = m;
+    // we dont use m->none ...
+    return(eores_OK);
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)
