@@ -379,7 +379,7 @@ extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size)
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_New() no more memory", s_eobj_ownname, &errdes);
     }
     
-    s_the_mempool.stats.usedbytespool += eo_common_msize(ret);      
+    s_the_mempool.stats.usedbytesheap += eo_common_msize(ret);      
 
     return(ret);   
 }
@@ -409,7 +409,7 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
     
     if(NULL != m)
     {
-        s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
+        s_the_mempool.stats.usedbytesheap -= eo_common_msize(m); 
     }    
     
     ret = s_the_mempool.theheap.reallocate(m, size);
@@ -424,7 +424,7 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_Realloc() no more memory", s_eobj_ownname, &errdes);
     }
     
-    s_the_mempool.stats.usedbytespool += eo_common_msize(ret);  
+    s_the_mempool.stats.usedbytesheap += eo_common_msize(ret);  
     
     return(ret);   
 }
@@ -443,7 +443,7 @@ extern void eo_mempool_Delete(EOtheMemoryPool *p, void *m)
         return;
     }        
         
-    s_the_mempool.stats.usedbytespool -= eo_common_msize(m); 
+    s_the_mempool.stats.usedbytesheap -= eo_common_msize(m); 
 
     s_the_mempool.theheap.release(m);          
 }
