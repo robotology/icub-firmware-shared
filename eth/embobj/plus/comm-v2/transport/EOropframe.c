@@ -138,6 +138,20 @@ extern EOropframe* eo_ropframe_New(void)
 }
 
 
+extern void eo_ropframe_Delete(EOropframe *p)
+{
+    if(NULL == p)
+    {
+        return;
+    }    
+
+    memset(p, 0, sizeof(EOropframe));
+    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;
+}
+
+
 extern eOresult_t eo_ropframe_Load(EOropframe *p, uint8_t *framedata, uint16_t framesize, uint16_t framecapacity)
 {
     if((NULL == p) || (NULL == framedata)) 
