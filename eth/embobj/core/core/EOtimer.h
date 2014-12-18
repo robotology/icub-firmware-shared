@@ -103,6 +103,14 @@ typedef enum
 extern EOtimer* eo_timer_New(void);
 
 
+
+/** @fn         extern void eo_timer_Delete(EOtimer *t)
+    @brief      Deletes a timer. It stops it before if it running.
+    @param      t               The pointer to the timer object.
+ **/
+extern void eo_timer_Delete(EOtimer *t);
+
+
 /** @fn         extern eOresult_t eo_timer_Start(EOtimer *t, eOabstime_t startat, eOreltime_t countdown, eOtimerMode_t mode, EOaction *action)
     @brief      Starts a timer to execute an action @e action on the expiry of a countdown of @e countdown micro-seconds which begins at the 
                 absolute time specified by @e startat. After the first expiry, the timer can simply stop itself or restart the countdown

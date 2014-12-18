@@ -73,7 +73,8 @@ struct EOtimer_hid
     } envir;
     uint8_t     status: 2;          /**< status of the timer: idle 0, running 1, completed 2   */
     uint8_t     mode:   1;          /**< mode of the timer, singleshot 0, forever 1            */
-    uint8_t     dummy:  5;          /**< for future use                                        */
+    uint8_t     initted: 1;
+    uint8_t     dummy:  4;          /**< for future use                                        */
     EOaction    onexpiry;           /**< action to be executed on expiry                       */
 }; 
 

@@ -115,6 +115,23 @@ extern eOpurevirtual eOresult_t eov_timerman_OnNewTimer(EOVtheTimerManager* p, E
 }
 
 
+extern eOpurevirtual eOresult_t eov_timerman_OnDelTimer(EOVtheTimerManager* p, EOtimer *t)
+{
+    eOres_fp_tmrmanp_tmrp_t fptr;
+
+
+    if((NULL == p) || (NULL == t)) 
+    {
+        return(eores_NOK_nullpointer);    
+    }
+    
+    fptr = (eOres_fp_tmrmanp_tmrp_t)p->vtable[VF03_ondeltimer];
+
+    // if p is not NULL, ftpr cannot be NULL because we have verified that in eov_timerman_hid_Initialise(), thus ...
+    // just call the method initialised by the derived object
+    return(fptr(p, t));
+}
+
 extern eOresult_t eov_timerman_AddTimer(EOVtheTimerManager* p, EOtimer *t) 
 {
     eOres_fp_tmrmanp_tmrp_t fptr;
@@ -168,6 +185,7 @@ extern eOresult_t eov_timerman_Release(EOVtheTimerManager *p)
 
 
 extern EOVtheTimerManager * eov_timerman_hid_Initialise(eOres_fp_tmrmanp_tmrp_t onnewtimer_fn,
+                                                        eOres_fp_tmrmanp_tmrp_t ondeltimer_fn,
                                                         eOres_fp_tmrmanp_tmrp_t addtimer_fn, 
                                                         eOres_fp_tmrmanp_tmrp_t remtimer_fn,
                                                         EOVmutexDerived *mutex)
@@ -181,12 +199,14 @@ extern EOVtheTimerManager * eov_timerman_hid_Initialise(eOres_fp_tmrmanp_tmrp_t 
 
 
     eo_errman_Assert(eo_errman_GetHandle(), NULL != onnewtimer_fn, "eov_timerman_hid_Initialise(): NULL onnewtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    eo_errman_Assert(eo_errman_GetHandle(), NULL != ondeltimer_fn, "eov_timerman_hid_Initialise(): NULL ondeltimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     eo_errman_Assert(eo_errman_GetHandle(), NULL != addtimer_fn, "eov_timerman_hid_Initialise(): NULL addtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     eo_errman_Assert(eo_errman_GetHandle(), NULL != remtimer_fn, "eov_timerman_hid_Initialise(): NULL remtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     s_eov_timermanager.vtable[VF00_onnewtimer]          = onnewtimer_fn;
     s_eov_timermanager.vtable[VF01_addtimer]            = addtimer_fn;
     s_eov_timermanager.vtable[VF02_remtimer]            = remtimer_fn;
+    s_eov_timermanager.vtable[VF03_ondeltimer]          = ondeltimer_fn;
     
     // i copy the mutex. i also accept a NULL mutex.
     s_eov_timermanager.mutex = mutex;

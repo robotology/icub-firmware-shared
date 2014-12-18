@@ -95,7 +95,7 @@ extern EOtimer* eo_timer_New(void)
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtimer), 1);
 
     // now the obj has valid memory. i need to initialise it with user-defined data,
-    // sets dummy values for the timer
+    // sets dummy values for the timer. VERY IMPORTANT: i also set initted = 1.
     eo_timer_hid_Reset(retptr, eo_tmrstat_Idle);
     
     // i get the timer manager of the system.
@@ -115,6 +115,28 @@ extern EOtimer* eo_timer_New(void)
 
 
     return(retptr);
+}
+
+
+extern void eo_timer_Delete(EOtimer *t) 
+{   
+    if(NULL == t)
+    {
+        return;
+    }
+    
+    if(1 != t->initted)
+    {
+        return;
+    }
+
+    eo_timer_Stop(t);
+    
+    eov_timerman_OnDelTimer(eov_timerman_GetHandle(), t);
+    
+    memset(t, 0, sizeof(EOtimer));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), t);
+    return; 
 }
 
 
@@ -283,6 +305,7 @@ extern void eo_timer_hid_Reset(EOtimer *t, eOtimerStatus_t stat)
         t->counting             = 0;
         t->status               = v;
         t->mode                 = 0;
+        t->initted              = 1;
         t->dummy                = 0;
         t->envir.osaltimer      = NULL;
         t->envir.nextexpiry     = 0;
@@ -300,6 +323,7 @@ extern void eo_timer_hid_Reset_but_not_osaltime(EOtimer *t, eOtimerStatus_t stat
     {
         t->status               = v;
         t->mode                 = 0;
+        t->initted              = 1;
         t->dummy                = 0;
         t->startat              = eok_abstimeNOW;
         t->expirytime           = 0;

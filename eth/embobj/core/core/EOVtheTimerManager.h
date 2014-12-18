@@ -98,6 +98,9 @@ extern EOVtheTimerManager* eov_timerman_GetHandle(void);
 extern eOpurevirtual eOresult_t eov_timerman_OnNewTimer(EOVtheTimerManager* p, EOtimer *t);
 
 
+extern eOpurevirtual eOresult_t eov_timerman_OnDelTimer(EOVtheTimerManager* p, EOtimer *t);
+
+
 /** @fn         extern eOpurevirtual eOresult_t eov_timerman_AddTimer(EOVtheTimerManager* p, EOtimer *t)
     @brief      Adds a timer to the timer manager. The function is to be called only by a EOtimer method.
     @param      p               The pointer to the timer manager singleton. 

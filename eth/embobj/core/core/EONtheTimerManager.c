@@ -67,6 +67,8 @@
 
 static eOresult_t s_eon_timerman_OnNewTimer(EOVtheTimerManager* tm, EOtimer *t);
 
+static eOresult_t s_eon_timerman_DelTimer(EOVtheTimerManager* tm, EOtimer *t) ;
+
 static eOresult_t s_eon_timerman_AddTimer(EOVtheTimerManager* tm, EOtimer *t);
 
 
@@ -100,12 +102,11 @@ extern EONtheTimerManager * eon_timerman_Initialise(void)
         return(&s_eon_thetimermanager);
     }
     // i get a basic timer manager with add and rem functions proper for nee. and an EONmutex (by the way ... eon_mutex_New() never returns NULL).
-    s_eon_thetimermanager.tmrman = eov_timerman_hid_Initialise(s_eon_timerman_OnNewTimer, s_eon_timerman_AddTimer, s_eon_timerman_RemTimer, eon_mutex_New()); 
+    s_eon_thetimermanager.tmrman = eov_timerman_hid_Initialise(s_eon_timerman_OnNewTimer, s_eon_timerman_DelTimer, s_eon_timerman_AddTimer, s_eon_timerman_RemTimer, eon_mutex_New()); 
 
     // i prepare the task able to process actions associated to expiry of the timers 
     s_eon_thetimermanager.none = NULL;                              
-       
-   
+         
     return(&s_eon_thetimermanager);
 }    
 
@@ -139,11 +140,15 @@ static eOresult_t s_eon_timerman_OnNewTimer(EOVtheTimerManager* tm, EOtimer *t)
 }
 
 
-static eOresult_t s_eon_timerman_AddTimer(EOVtheTimerManager* tm, EOtimer *t) 
+static eOresult_t s_eon_timerman_DelTimer(EOVtheTimerManager* tm, EOtimer *t) 
 {
     return(eores_NOK_generic);
 }
 
+static eOresult_t s_eon_timerman_AddTimer(EOVtheTimerManager* tm, EOtimer *t) 
+{
+    return(eores_NOK_generic);
+}
 
 static eOresult_t s_eon_timerman_RemTimer(EOVtheTimerManager* tm, EOtimer *t) 
 {

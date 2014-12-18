@@ -47,7 +47,8 @@ extern "C" {
 #define VF00_onnewtimer             0
 #define VF01_addtimer               1
 #define VF02_remtimer               2
-#define VTABLESIZE_timerman         3
+#define VF03_ondeltimer             3
+#define VTABLESIZE_timerman         4
 
 
 
@@ -88,6 +89,7 @@ struct EOVtheTimerManager_hid
  **/
 
 extern EOVtheTimerManager * eov_timerman_hid_Initialise(eOres_fp_tmrmanp_tmrp_t  onnewtimer_fn,
+                                                        eOres_fp_tmrmanp_tmrp_t ondeltimer_fn,
                                                         eOres_fp_tmrmanp_tmrp_t addtimer_fn, 
                                                         eOres_fp_tmrmanp_tmrp_t remtimer_fn,
                                                         EOVmutexDerived *mutex);
