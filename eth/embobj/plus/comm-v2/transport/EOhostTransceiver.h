@@ -106,6 +106,9 @@ extern const eOhosttransceiver_cfg_t eo_hosttransceiver_cfg_default; // = { ... 
  **/
 extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t *cfg);
 
+extern void eo_hosttransceiver_Delete(EOhostTransceiver *p);
+
+
 extern EOtransceiver * eo_hosttransceiver_GetTransceiver(EOhostTransceiver *p);
 
 extern EOnvSet * eo_hosttransceiver_GetNVset(EOhostTransceiver *p);

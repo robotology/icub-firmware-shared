@@ -71,6 +71,8 @@
 
 static EOnvSet* s_eo_hosttransceiver_nvset_get(const eOhosttransceiver_cfg_t *cfg);
 
+static void s_eo_hosttransceiver_nvset_release(EOhostTransceiver *p);
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -159,6 +161,29 @@ extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t 
 }    
 
 
+extern void eo_hosttransceiver_Delete(EOhostTransceiver *p) 
+{    
+    if(NULL == p)
+    {
+        return;
+    }
+    
+    if(NULL == p->transceiver)
+    {   // protection vs multiple calls of _Delete()
+        return;
+    }
+    
+    
+    s_eo_hosttransceiver_nvset_release(p);
+    
+    eo_transceiver_Delete(p->transceiver);
+   
+    memset(p, 0, sizeof(EOhostTransceiver));
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);    
+    return;
+}    
+
+
 extern EOtransceiver* eo_hosttransceiver_GetTransceiver(EOhostTransceiver *p)
 {
     if(NULL == p)
@@ -220,7 +245,7 @@ static EOnvSet* s_eo_hosttransceiver_nvset_get(const eOhosttransceiver_cfg_t *cf
 
     EOnvSet* nvset = eo_nvset_New(numofdevices, cfg->nvsetprotection, cfg->mutex_fn_new);
     
-    //i add the first and only device. it has remote ownership and ipaddress cfg->remoteboardipv4addr.
+    // i add the first and only device. it has remote ownership and ipaddress cfg->remoteboardipv4addr.
     eo_nvset_DEVpushback(nvset, ondevindexzero, (eOnvset_DEVcfg_t*)cfg->nvsetdevcfg, eo_nvset_ownership_remote, cfg->remoteboardipv4addr);
     
     eo_nvset_NVSinitialise(nvset);
@@ -228,6 +253,18 @@ static EOnvSet* s_eo_hosttransceiver_nvset_get(const eOhosttransceiver_cfg_t *cf
     return(nvset);
 }
 
+
+static void s_eo_hosttransceiver_nvset_release(EOhostTransceiver *p)
+{
+//    const uint16_t numofdevices     = 1;    // one device only
+    const uint16_t ondevindexzero   = 0;    // one device only
+    
+    eo_nvset_NVSdeinitialise(p->nvset);
+    
+    eo_nvset_DEVpopback(p->nvset, ondevindexzero);
+    
+    eo_nvset_Delete(p->nvset);       
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)
