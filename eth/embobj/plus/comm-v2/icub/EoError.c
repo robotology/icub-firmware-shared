@@ -134,9 +134,20 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
 const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_MC_first,                "MC: first error message of category hw"},  
-    {eoerror_value_MC_second,               "hi there, i am the second error message of category hw"}, 
-};  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)); 
+    //{eoerror_value_MC_first,                 "MC: first error message of category hw"},  
+    //{eoerror_value_MC_second,                "hi there, i am the second error message of category hw"},
+    {eoerror_value_MC_motor_external_fault,  "MC: 2FOC exernal fault"},
+    {eoerror_value_MC_motor_overcurrent,     "MC: 2FOC overcurrent"},
+    {eoerror_value_MC_motor_i2t_limit,       "MC: 2FOC i2t limit exceeded"},
+    {eoerror_value_MC_motor_hallsensors,     "MC: 2FOC hall sensors fault"},
+    {eoerror_value_MC_motor_qencoder,        "MC: 2FOC quadrature encoder fault"},
+    {eoerror_value_MC_motor_can_invalid_prot,"MC: 2FOC CAN invalid protocol"},
+    {eoerror_value_MC_motor_can_generic,     "MC: 2FOC CAN generic error"},
+    {eoerror_value_MC_motor_can_no_answer,   "MC: 2FOC CAN no answer"},
+    {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout"},
+    {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data"},
+    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout"}   
+};  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
 

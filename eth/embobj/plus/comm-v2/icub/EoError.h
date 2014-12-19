@@ -159,11 +159,20 @@ enum { eoerror_value_HW_numberof = 2 };
  **/
 typedef enum
 {
-    eoerror_value_MC_first            = 0,
-    eoerror_value_MC_second           = 1
+    eoerror_value_MC_motor_external_fault    = 0,
+    eoerror_value_MC_motor_overcurrent       = 1,
+    eoerror_value_MC_motor_i2t_limit         = 2,
+    eoerror_value_MC_motor_hallsensors       = 3,
+    eoerror_value_MC_motor_qencoder          = 4,
+    eoerror_value_MC_motor_can_invalid_prot  = 5,
+    eoerror_value_MC_motor_can_generic       = 6,
+    eoerror_value_MC_motor_can_no_answer     = 7,
+    eoerror_value_MC_axis_torque_sens        = 8,
+    eoerror_value_MC_aea_abs_enc_invalid     = 9,
+    eoerror_value_MC_aea_abs_enc_timeout     = 10
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 2 };
+enum { eoerror_value_MC_numberof = 11 };
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
