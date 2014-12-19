@@ -90,6 +90,8 @@ static eOresult_t s_device_initialise(void *p, eObool_t islocal);
 
 static uint16_t s_eoprot_ep2index(void* p, eOnvEP8_t ep);
 
+static eOresult_t s_eo_nvsetdevbuilder_theendpoints_clear(EOnvsetDEVbuilder* p);
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -157,6 +159,33 @@ extern EOnvsetDEVbuilder* eo_nvsetdevbuilder_New(eOnvBRD_t board)
 }
 
 
+extern void eo_nvsetdevbuilder_Delete(EOnvsetDEVbuilder* p)
+{
+    if(NULL == p)
+    {
+        return;
+    } 
+    
+    if(NULL == p->devcfg)
+    {
+        return;
+    }
+    
+    eo_nvsetdevbuilder_UnPrepare(p);
+    
+    s_eo_nvsetdevbuilder_theendpoints_clear(p);
+    
+    eo_vector_Delete(p->theendpoints);
+    
+    memset(p->devcfg, 0, sizeof(eOnvset_DEVcfg_t)); 
+    eo_mempool_Delete(eo_mempool_GetHandle(), p->devcfg);
+   
+       
+    memset(p, 0, sizeof(EOnvsetDEVbuilder));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;       
+}
+
 extern eOresult_t eo_nvsetdevbuilder_ENDPOINTpushback(EOnvsetDEVbuilder* p, eOnvEP8_t ep) 
 {
     uint16_t size = 0;
@@ -181,7 +210,7 @@ extern eOresult_t eo_nvsetdevbuilder_ENDPOINTpushback(EOnvsetDEVbuilder* p, eOnv
     }
     
     epholder.ep                 = ep;
-    epholder.numofentities      = 0; // or maxentities
+    epholder.numofentities      = 0; // or maxentities in case u dont want using eo_vectorcapacity_dynamic
     epholder.entities           = eo_vector_New(sizeof(ET_holder_t), eo_vectorcapacity_dynamic, NULL, 0, NULL, NULL);  // or maxentities
     
     
@@ -349,14 +378,14 @@ extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
                
     }
        
-    
+    // marco.accame on december 19, 2014: what is inside p cannot be deleted because everything is used for the
+    // configuration of the nvset.
     data = (eOnvset_EPcfg_t*) eo_vector_storage_Get(p->theepcfgs);
     
     p->devcfg->vectorof_epcfg = eo_constvector_New(sizeof(eOnvset_EPcfg_t), numofeps, data);
     
     
-    return(eores_OK);
-    
+    return(eores_OK);    
 }
 
 extern eOnvset_DEVcfg_t* eo_nvsetdevbuilder_DEVcfg_Get(EOnvsetDEVbuilder* p)
@@ -376,10 +405,39 @@ extern eOnvset_DEVcfg_t* eo_nvsetdevbuilder_DEVcfg_Get(EOnvsetDEVbuilder* p)
         }
     }
     
-    return(p->devcfg);
-   
+    return(p->devcfg);   
 }
 
+extern eOresult_t eo_nvsetdevbuilder_UnPrepare(EOnvsetDEVbuilder* p)
+{
+    uint16_t numofeps = 0;
+    eOnvset_EPcfg_t epcfg = {0};
+    eOnvset_EPcfg_t* data = NULL;
+    uint8_t i = 0;
+    uint8_t j = 0;
+    
+ 	if(NULL == p) 
+	{
+		return(eores_NOK_nullpointer); 
+	}
+    
+    if(eo_prot_BRDdummy == p->devcfg->boardnum)
+    {
+        return(eores_OK);
+    }
+    
+    eo_constvector_Delete((EOconstvector*)p->devcfg->vectorof_epcfg);
+    
+    eo_vector_Delete(p->theepcfgs);
+       
+    p->devcfg->boardnum                     = eo_prot_BRDdummy;
+    p->devcfg->param                        = NULL;
+    p->devcfg->fptr_device_initialise       = NULL;  
+    p->devcfg->vectorof_epcfg               = NULL;
+    p->devcfg->fptr_ep2indexofepcfg         = NULL;           
+
+    return(eores_OK);   
+}
 
 
 
@@ -440,6 +498,42 @@ static uint16_t s_eoprot_ep2index(void *param, eOnvEP8_t ep)
     uint16_t epindex = p->ep2indexhashtable[ep];
     return(epindex);
 }
+
+
+static eOresult_t s_eo_nvsetdevbuilder_theendpoints_clear(EOnvsetDEVbuilder* p) 
+{
+    uint16_t size = 0;
+    uint8_t *nn = NULL;
+    ep_holder_t epholder = {0};
+
+ 	if(NULL == p) 
+	{
+		return(eores_NOK_nullpointer); 
+	}
+    
+    
+    size = eo_vector_Size(p->theendpoints);
+    
+    if(0 == size)
+    {
+        return(eores_OK); 
+    }
+    
+    uint16_t i =0;
+    for(i=0; i<size; i++)
+    {
+        ep_holder_t *eph = (ep_holder_t*) eo_vector_Back(p->theendpoints);
+        if(NULL == eph)
+        {
+            break;
+        }
+        eo_vector_Delete(eph->entities);
+        eo_vector_PopBack(p->theendpoints);
+    }
+            
+    return(eores_OK);
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)

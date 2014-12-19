@@ -200,14 +200,42 @@ extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
 }
 
 
+
+extern void eo_protconfig_Delete(EOprotocolConfigurator *p)
+{
+    if(NULL == p)
+    {
+        return;
+    } 
+    
+    if(NULL == p->nvsetdevbuilder)
+    {
+        return;
+    }
+    
+    eo_nvsetdevbuilder_Delete(p->nvsetdevbuilder);
+       
+    memset(p, 0, sizeof(EOprotocolConfigurator));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+    return;    
+}
+    
+
 extern eOnvset_DEVcfg_t* eo_protconfig_DEVcfg_Get(EOprotocolConfigurator* p)
 {
     if(NULL == p)
     {
         return(NULL);
     }
+    
+    eOnvset_DEVcfg_t *ret = eo_nvsetdevbuilder_DEVcfg_Get(p->nvsetdevbuilder);
+    
+    // we can clean some memory used in the EOprotocolConfigurator object. however we cannot delete the p->nvsetdevbuilder.
+    
+    // marco.accame: we cannot clean anything in EOprotocolConfigurator. we could remove the eOprotconfig_cfg_t member, as it is
+    //               used only inside eo_protconfig_New(), but ... we dont save much memory.
 
-    return(eo_nvsetdevbuilder_DEVcfg_Get(p->nvsetdevbuilder));
+    return(ret);
 }
 
 

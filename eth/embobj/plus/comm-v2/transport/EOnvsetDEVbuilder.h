@@ -67,6 +67,7 @@ typedef struct EOnvsetDEVbuilder_hid EOnvsetDEVbuilder;
 
 extern EOnvsetDEVbuilder* eo_nvsetdevbuilder_New(eOnvBRD_t board);
 
+extern void eo_nvsetdevbuilder_Delete(EOnvsetDEVbuilder* p);
 
 extern eOnvset_DEVcfg_t* eo_nvsetdevbuilder_DEVcfg_Get(EOnvsetDEVbuilder* p);
 
@@ -78,6 +79,8 @@ extern eOresult_t eo_nvsetdevbuilder_ENTITYpushback(EOnvsetDEVbuilder* p, eOnvEP
 extern eOresult_t eo_nvsetdevbuilder_PROXIEDRULEset(EOnvsetDEVbuilder* p, eObool_fp_uint32_t isvarproxied_fn);
 
 extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p);
+
+extern eOresult_t eo_nvsetdevbuilder_UnPrepare(EOnvsetDEVbuilder* p);
 
 //extern eOresult_t eo_nvsetdevbuilder_Delete(EOnvsetDEVbuilder* p);
 

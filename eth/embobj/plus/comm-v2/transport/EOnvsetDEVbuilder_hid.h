@@ -38,6 +38,7 @@ extern "C" {
 #include "EOvector.h"
 #include "EOconstvector.h"
 #include "EOVmutex.h"
+#include "EoProtocol.h"
 
 // - declaration of extern public interface ---------------------------------------------------------------------------
  
