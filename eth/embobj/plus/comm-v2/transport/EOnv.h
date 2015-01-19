@@ -133,6 +133,9 @@ extern eOresult_t eo_nv_Set(const EOnv *nv, const void *dat, eObool_t forceset, 
 
 extern eOresult_t eo_nv_Reset(const EOnv *nv, eObool_t forcerst, eOnvUpdate_t upd);
 
+
+extern void* eo_nv_RAM(const EOnv *nv);
+
 extern eOresult_t eo_nv_Get(const EOnv *nv, eOnvStorage_t strg, void *data, uint16_t *size);
 
 extern eOipv4addr_t eo_nv_GetIP(const EOnv *nv);

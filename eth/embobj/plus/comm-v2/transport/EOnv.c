@@ -200,6 +200,15 @@ extern uint16_t eo_nv_Size(const EOnv *nv)
     return(s_eo_nv_get_size2(nv));
 }
 
+extern void* eo_nv_RAM(const EOnv *nv)
+{
+    if(NULL == nv)
+    {
+        return(NULL);
+    }  
+    
+    return(nv->ram);        
+}
 
 extern eOresult_t eo_nv_Get(const EOnv *nv, eOnvStorage_t strg, void *data, uint16_t *size)
 {
