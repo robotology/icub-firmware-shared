@@ -67,6 +67,18 @@ typedef enum
 } eObrd_types_t;
 
 
+typedef enum
+{
+    eobrd_cantype_mc4               = 0,
+    eobrd_cantype_strain            = 1,
+    eobrd_cantype_1foc              = 2,
+    eobrd_cantype_mais              = 3,
+    eobrd_cantype_skin              = 6 	
+} eObrd_cantype_t;
+
+enum { eobrd_cantypes_numberof = 5 };
+
+
 typedef struct                  // size is: 1+1+0 = 2
 {
     uint8_t                     major;
