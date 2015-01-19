@@ -154,6 +154,11 @@ extern void eo_array_Resize(EOarray *p, uint8_t size)
         return;     // nothing to do
     }
     
+    if(size == p->head.size)
+    {
+        return;     // nothing to do
+    }
+    
     if(size > p->head.capacity)
     {
         return;     // nothing to do
