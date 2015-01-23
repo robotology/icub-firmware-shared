@@ -77,7 +77,8 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
 {
     eoerror_value_SYS_numberof,
     eoerror_value_HW_numberof,
-    eoerror_value_MC_numberof
+    eoerror_value_MC_numberof,
+    eoerror_value_DEB_numberof
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -119,7 +120,6 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_runner_udptxfailure,      "SYS: the EOMtheEMSrunner could not tx a UDP packet with eom_emssocket_Transmit()."},
     {eoerror_value_SYS_runner_transceivererror,  "SYS: the EOMtheEMSrunner could not either parse or form a UDP packet."},
     {eoerror_value_SYS_canservices_cantxfailure, "SYS: the EOappCanSP could not tx CAN packets. The wait inside eo_appCanSP_wait_XXX() timed out. In param there is the can channel: 1 or 2."}
-
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
@@ -134,8 +134,6 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
 const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
-    //{eoerror_value_MC_first,                 "MC: first error message of category hw"},  
-    //{eoerror_value_MC_second,                "hi there, i am the second error message of category hw"},
     {eoerror_value_MC_motor_external_fault,  "MC: 2FOC exernal fault"},
     {eoerror_value_MC_motor_overcurrent,     "MC: 2FOC overcurrent"},
     {eoerror_value_MC_motor_i2t_limit,       "MC: 2FOC i2t limit exceeded"},
@@ -150,13 +148,27 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
+const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
+{   // very important: fill table with order of eOerror_value_DEB_t
+    //                 in case of holes, use {0, NULL}
+    {eoerror_value_DEB_tag00,               "DEBUG: tag00"},
+    {eoerror_value_DEB_tag01,               "DEBUG: tag01"},
+    {eoerror_value_DEB_tag02,               "DEBUG: tag02"},
+    {eoerror_value_DEB_tag03,               "DEBUG: tag03"},
+    {eoerror_value_DEB_tag04,               "DEBUG: tag04"},
+    {eoerror_value_DEB_tag05,               "DEBUG: tag05"},
+    {eoerror_value_DEB_tag06,               "DEBUG: tag06"},
+    {eoerror_value_DEB_tag07,               "DEBUG: tag07"} 
+};  EO_VERIFYsizeof(eoerror_valuestrings_DEB, eoerror_value_DEB_numberof*sizeof(const eoerror_valuestring_t)); 
 
-const eoerror_valuestring_t * const eoerror_valuestrings[eoerror_category_numberof] =
+
+const eoerror_valuestring_t * const eoerror_valuestrings[] =
 {   // very important: fill table with order of eOerror_category_t: pos 0 is eoerror_category_EthBoardSystem etc.
     //                 in case of holes use: NULL,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_SYS,   
     (const eoerror_valuestring_t *)&eoerror_valuestrings_HW,        
-    (const eoerror_valuestring_t *)&eoerror_valuestrings_MC
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_MC,
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
 
 
