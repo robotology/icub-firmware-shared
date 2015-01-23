@@ -148,12 +148,7 @@ extern void eo_array_Resize(EOarray *p, uint8_t size)
     {
         return;     // invalid array
     }
-    
-    if(size > p->head.size)
-    {
-        return;     // nothing to do
-    }
-    
+        
     if(size == p->head.size)
     {
         return;     // nothing to do
@@ -307,7 +302,7 @@ extern void eo_array_AssignOne(EOarray *p, uint8_t pos, const void *item)
         
     start = (uint8_t*) (p->data);
     // cast to uint16_t to tell the reader that index of array start[] can be bigger
-    start = &start[(uint16_t)pos * p->head.size]; 
+    start = &start[(uint16_t)pos * p->head.itemsize]; 
     
     memcpy(start, item, p->head.itemsize);
     
@@ -340,7 +335,7 @@ extern void eo_array_Assign(EOarray *p, uint8_t pos, const void *items, uint8_t 
         
     start = (uint8_t*) (p->data);
     // cast to uint16_t to tell the reader that index of array start[] can be bigger
-    start = &start[(uint16_t)pos * p->head.size]; 
+    start = &start[(uint16_t)pos * p->head.itemsize]; 
     
     memcpy(start, items, (uint16_t)nitems*p->head.itemsize);
     
