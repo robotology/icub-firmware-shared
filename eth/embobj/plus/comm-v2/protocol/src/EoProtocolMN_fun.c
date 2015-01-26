@@ -231,18 +231,13 @@ EO_weak extern void eoprot_fun_INIT_mn_info_status(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mn_info_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif  
 
-#if     defined(EOMANAGEMENT_USE_VER_2_4)
 #if !defined(OVERRIDE_eoprot_fun_INIT_mn_info_status_basic)
 EO_weak extern void eoprot_fun_INIT_mn_info_status_basic(const EOnv* nv) {}
 #endif
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mn_info_status_basic)
 EO_weak extern void eoprot_fun_UPDT_mn_info_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
-#elif   defined(EOMANAGEMENT_USE_VER_2_3)
-//
-#else
-    #error -> specify a EOMANAGEMENT_USE_VER_2_x
-#endif     
+    
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 

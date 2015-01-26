@@ -52,8 +52,6 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
-#undef EOMANAGEMENT_USE_VER_2_3
-#define EOMANAGEMENT_USE_VER_2_4
 
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
@@ -352,7 +350,6 @@ typedef struct                      // size is 1+7 = 8 bytes
 } eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8);
 
 
-#if defined(EOMANAGEMENT_USE_VER_2_4)
 
 typedef enum
 {
@@ -414,68 +411,16 @@ typedef struct
 } eOmn_info_basic_t;        EO_VERIFYsizeof(eOmn_info_basic_t, 16);
 
 
-/** @typedef    typedef struct eOmn_info_status_t;
-    @brief      used to report status of the info
- **/
-typedef struct 
-{
-    eOmn_info_basic_t       basic;          /**< the basic info status */  
-    uint8_t                 extra[56];      /**< contains either a descriptive string or a compact representation */
-} eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
-
-
-#elif defined(EOMANAGEMENT_USE_VER_2_3)
-
-
-
-typedef enum
-{
-    eomn_info_format_verbal     = 0,
-    eomn_info_format_compact    = 1   
-} eOmn_info_format_t;
-
-typedef enum
-{
-    eomn_info_type_info         = 0,
-    eomn_info_type_debug        = 1,   
-    eomn_info_type_warning      = 2,
-    eomn_info_type_error        = 3,
-} eOmn_info_type_t;
-
-typedef enum
-{
-    eomn_info_source_board      = 0,
-    eomn_info_source_can1       = 1,   
-    eomn_info_source_can2       = 2
-} eOmn_info_source_t;
-
-typedef struct
-{
-    uint32_t                source : 2;     /**< use eOmn_info_source_t */
-    uint32_t                sourceaddr : 4; /**< it contains the address of the source: if can is the the id-can, if ems it it ... */ 
-    uint32_t                type : 2;       /**< use eOmn_info_type_t. */
-    uint32_t                format : 2;     /**< use eOmn_info_format_t. if 0 data contains a verbal string, if 1 or higher it is a compact representation */        
-    uint32_t                errorcode : 16; /**< used to communicate in a ultra-compact mode what happens. its value must be taken from a table */
-    uint32_t                futureuse : 4;  
-} eOmn_info_properties_t;
-
+enum { eomn_info_status_extra_sizeof = 56 };
 
 /** @typedef    typedef struct eOmn_info_status_t;
     @brief      used to report status of the info
  **/
 typedef struct 
 {
-    uint64_t                timestamp;  /**< it keeps the absolute time in microseconds since the EMS has bootstrapped */
-    eOmn_info_properties_t  properties; /**< specifies the properties of the info */  
-    uint8_t                 data[60];   /**< contains either a descriptive string or a compact representation */
+    eOmn_info_basic_t       basic;                                  /**< the basic info status */  
+    uint8_t                 extra[eomn_info_status_extra_sizeof];   /**< contains either a descriptive string or a compact representation */
 } eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
-
-
-
-                                 
-#else
-    #error --> define a EOMANAGEMENT_USE_VER_2_x
-#endif
 
 
 
