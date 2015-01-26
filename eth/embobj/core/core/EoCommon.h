@@ -515,7 +515,7 @@ typedef struct
 
 /** @typedef    typedef int32_t  eOq17_14_t
     @brief      Q17_14_t represents a number in fixed point format: 1 bit is used for the sign,
-                17 bits are used for real part of numeber and 14 bist for factional part of number.
+                17 bits are used for integer part and 14 bits for fractional part.
  **/  
 typedef int32_t                     eOq17_14_t;
 
