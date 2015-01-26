@@ -56,7 +56,13 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 2 }; 
+#if defined(EOMOTIONCONTROL_USE_VER_1_3)
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 3 }; 
+#elif defined(EOMOTIONCONTROL_USE_VER_1_2)
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 2 };
+#else
+#error -> chose a version
+#endif
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -165,6 +171,39 @@ enum { eoprot_rwms_mc_motor_numberof = 5 };   // it MUST be equal to the number 
 // - definition of the controller
 
 
+#if defined(EOMOTIONCONTROL_USE_VER_1_3)
+
+/** @typedef    typedef enum eOprot_tag_mc_controller_t
+    @brief      It contains the tags for all variables of the controller entity.
+                See definition of eOmc_controller_t (and its fields) in file EoMotionControl.h for explanation of the variables.
+ **/
+typedef enum
+{
+     eoprot_tag_mc_controller_wholeitem                              = 0,
+     eoprot_tag_mc_controller_config                                 = 1,
+     eoprot_tag_mc_controller_config_jointcoupling                   = 2,
+     eoprot_tag_mc_controller_status                                 = 3
+} eOprot_tag_mc_controller_t;
+
+enum { eoprot_tags_mc_controller_numberof = 4 };  // it MUST be equal to the number of tags
+
+
+/** @typedef    typedef enum eOprot_rwm_mc_controller_t
+    @brief      It contains the rw modes for all variables of the motor entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_mc_controller_t.
+                See definition of eOmc_controller_t (and its fields) in file EoMotionControl.h for explanation of the variables.
+ **/
+typedef enum
+{
+    eoprot_rwm_mc_controller_wholeitem                              = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_controller_config                                 = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_controller_config_jointcoupling                   = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_controller_status                                 = eo_nv_rwmode_RO
+} eOprot_rwm_mc_controller_t; 
+
+enum { eoprot_rwms_mc_controller_numberof = 4 };  // it MUST be equal to the number of rw modes 
+
+#else
 
 /** @typedef    typedef enum eOprot_tag_mc_controller_t
     @brief      It contains the tags for all variables of the controller entity.
@@ -195,6 +234,8 @@ typedef enum
 enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the number of rw modes 
 
 
+#endif
+
 // - structures implementing the endpoints
 
 
@@ -202,12 +243,12 @@ enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the num
     @brief      It is a template for the organisation of joint, motor, controller entities in the motion control endpoint.
                 The effective number depends on the board.
  **/
-typedef struct                  // 184*1+40*1+24 = 248              
+typedef struct                  // 188*1+48*1+80 = 316              
 {
     eOmc_joint_t                joints[1]; 
     eOmc_motor_t                motors[1];
     eOmc_controller_t           thecontroller;
-} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 248);
+} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 316);
 
 
   
@@ -311,6 +352,9 @@ extern void eoprot_fun_UPDT_mc_controller_wholeitem(const EOnv* nv, const eOropd
 
 extern void eoprot_fun_INIT_mc_controller_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_controller_config(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_controller_config_jointcoupling(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_controller_config_jointcoupling(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_controller_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_controller_status(const EOnv* nv, const eOropdescriptor_t* rd);

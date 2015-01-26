@@ -308,6 +308,15 @@ EO_weak extern void eoprot_fun_INIT_mc_controller_config(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mc_controller_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_controller_config_jointcoupling)
+EO_weak extern void eoprot_fun_INIT_mc_controller_config_jointcoupling(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_controller_config_jointcoupling)
+EO_weak extern void eoprot_fun_UPDT_mc_controller_config_jointcoupling(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_controller_status)
 EO_weak extern void eoprot_fun_INIT_mc_controller_status(const EOnv* nv) {}
 #endif
