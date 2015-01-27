@@ -49,9 +49,9 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
-#define EOMOTIONCONTROL_USE_VER_1_2
-#undef EOMOTIONCONTROL_USE_VER_1_3
-//#define EOMOTIONCONTROL_USE_VER_1_3
+//#define EOMOTIONCONTROL_USE_VER_1_2
+//#undef EOMOTIONCONTROL_USE_VER_1_3
+#define EOMOTIONCONTROL_USE_VER_1_3
 
 
 
