@@ -55,16 +55,16 @@ extern "C" {
 typedef uint8_t eObrd_boardId_t;
 
 
-typedef enum
-{
-    eobrd_mc4                       = 0,
-    eobrd_strain                    = 1,
-    eobrd_1foc                      = 2,
-    eobrd_mais                      = 3,
-    eobrd_ems                       = 4,
-    eobdr_aea                       = 5,
-    eobrd_skin                      = 6 	
-} eObrd_types_t;
+//typedef enum
+//{
+//    eobrd_mc4                       = 0,
+//    eobrd_cantype_strain                    = 1,
+//    eobrd_cantype_1foc                      = 2,
+//    eobrd_mais                      = 3,
+//    eobrd_ems                       = 4,
+//    eobdr_aea                       = 5,
+//    eobrd_skin                      = 6 	
+//} eObrd_types_t;
 
 
 typedef enum
@@ -73,7 +73,7 @@ typedef enum
     eobrd_cantype_strain            = 1,
     eobrd_cantype_1foc              = 2,
     eobrd_cantype_mais              = 3,
-    eobrd_cantype_skin              = 6 	
+    eobrd_cantype_skin              = 4 	
 } eObrd_cantype_t;
 
 enum { eobrd_cantypes_numberof = 5 };
@@ -211,56 +211,6 @@ typedef struct                      // size is: 4+0 = 4
 // - declaration of extern public functions ---------------------------------------------------------------------------
 // empty-section
 
-
-
-// - removed stuff
-
-
-#if 0
-typedef enum
-{
-    eobrd_axisfault_flag_none                     = 0x00,
-    eobrd_axisfault_flag_undervoltage             = 0x01 << 0,
-    eobrd_axisfault_flag_overvoltage              = 0x01 << 1,
-    eobrd_axisfault_flag_external                 = 0x01 << 2, 
-    eobrd_axisfault_flag_highcurrent              = 0x01 << 3,  
-    eobrd_axisfault_flag_motorhall                = 0x01 << 4, 
-    eobrd_axisfault_flag_absoluteencodereading    = 0x01 << 5,
-    eobrd_axisfault_flag_halltable                = 0x01 << 6,
-    eobrd_axisfault_flag_hallglitch               = 0x01 << 7     
-} eObrd_axis_fault_flags_t;
-#endif
-
-#if 0
-typedef enum
-{
-    eobrd_canboard_mc_info_flag_none                             = 0,
-    eobrd_canboard_mc_info_flag_can_txsoftwarebufferoverrun      = 0x00000001 << 0,
-    eobrd_canboard_mc_info_flag_can_busoff                       = 0x00000001 << 1,
-    eobrd_canboard_mc_info_flag_can_transmittererror             = 0x00000001 << 2, 
-    eobrd_canboard_mc_info_flag_can_receivererror                = 0x00000001 << 3,  
-    eobrd_canboard_mc_info_flag_can_transmitterwarning           = 0x00000001 << 4, 
-    eobrd_canboard_mc_info_flag_can_receiverwarning              = 0x00000001 << 5,
-    eobrd_canboard_mc_info_flag_can_receiverhardwareoverrun      = 0x00000001 << 6,
-    eobrd_canboard_mc_info_flag_notusedpos07                     = 0x00000001 << 7,     
-    eobrd_canboard_mc_info_flag_brd_mainloopoverflow             = 0x00000001 << 8,
-    eobrd_canboard_mc_info_flag_brd_overtemperaturech1           = 0x00000001 << 9,
-    eobrd_canboard_mc_info_flag_brd_overtemperaturech2           = 0x00000001 << 10, 
-    eobrd_canboard_mc_info_flag_brd_errortemperaturech1          = 0x00000001 << 11,  
-    eobrd_canboard_mc_info_flag_brd_errortemperaturech2          = 0x00000001 << 12, 
-    eobrd_canboard_mc_info_flag_brd_i2t                          = 0x00000001 << 13,
-    eobrd_canboard_mc_info_flag_notusedpos14                     = 0x00000001 << 14,
-    eobrd_canboard_mc_info_flag_notusedpos15                     = 0x00000001 << 15,     
-    eobrd_canboard_mc_info_flag_alg_initialrotoraligninprog      = 0x00000001 << 16,
-    eobrd_canboard_mc_info_flag_alg_initialrotoraligncomplete    = 0x00000001 << 17,
-    eobrd_canboard_mc_info_flag_alg_currentrampupinprog          = 0x00000001 << 18,
-    eobrd_canboard_mc_info_flag_alg_currentrampdowninprog        = 0x00000001 << 19, 
-    eobrd_canboard_mc_info_flag_alg_currentrampupcomplete        = 0x00000001 << 20,  
-    eobrd_canboard_mc_info_flag_alg_currentrampdowncomplete      = 0x00000001 << 21, 
-    eobrd_canboard_mc_info_flag_notusedpos22                     = 0x00000001 << 22,
-    eobrd_canboard_mc_info_flag_notusedpos23                     = 0x00000001 << 23     
-} eObrd_canboard_mc_info_flags_t;
-#endif
 
 
 
