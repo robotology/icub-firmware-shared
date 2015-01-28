@@ -125,7 +125,7 @@ typedef struct
 {
     uint32_t        code;           /* the system uses eOerrmanCode_t, other modules may use values defined in a particular table ... see eoerror_code_get() */
     uint16_t        param;          /* it must be 0 unless the code needs one particular param */
-    uint8_t         sourcedevice;   /* the system uses eo_errman_sourcedevice_localboard, others modules may use values defined in a particular enum ... see eOmn_info_source_t */
+    uint8_t         sourcedevice;   /* use values in eOerrmanSourceDevice_t */
     uint8_t         sourceaddress;  /* the system uses 0, other modules may use other values ...  e.g., CAN addresses */   
 } eOerrmanDescriptor_t;
 
