@@ -56,13 +56,8 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-#if defined(EOMOTIONCONTROL_USE_VER_1_3)
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 3 }; 
-#elif defined(EOMOTIONCONTROL_USE_VER_1_2)
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 2 };
-#else
-#error -> chose a version
-#endif
+
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 4 };
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -83,20 +78,21 @@ typedef enum
     eoprot_tag_mc_joint_config_impedance                            =  6,
     eoprot_tag_mc_joint_config_motionmonitormode                    =  7,
     eoprot_tag_mc_joint_config_bemf                                 =  8,
-    eoprot_tag_mc_joint_status                                      =  9,
-    eoprot_tag_mc_joint_status_basic                                = 10,
-    eoprot_tag_mc_joint_status_ofpid                                = 11,
-    eoprot_tag_mc_joint_inputs                                      = 12,
-    eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 13,
-    eoprot_tag_mc_joint_cmmnds_calibration                          = 14,
-    eoprot_tag_mc_joint_cmmnds_setpoint                             = 15,
-    eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 16,
-    eoprot_tag_mc_joint_cmmnds_controlmode                          = 17,
-    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 18,
-    eoprot_tag_mc_joint_status_interactionmodestatus                = 19
+    eoprot_tag_mc_joint_config_tcfiltertype                         =  9,
+    eoprot_tag_mc_joint_status                                      = 10,
+    eoprot_tag_mc_joint_status_basic                                = 11,
+    eoprot_tag_mc_joint_status_ofpid                                = 12,
+    eoprot_tag_mc_joint_inputs                                      = 13,
+    eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 14,
+    eoprot_tag_mc_joint_cmmnds_calibration                          = 15,
+    eoprot_tag_mc_joint_cmmnds_setpoint                             = 16,
+    eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 17,
+    eoprot_tag_mc_joint_cmmnds_controlmode                          = 18,
+    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 19,
+    eoprot_tag_mc_joint_status_interactionmodestatus                = 20
 } eOprot_tag_mc_joint_t;
 
-enum { eoprot_tags_mc_joint_numberof = 20 };  // it MUST be equal to the number of tags    
+enum { eoprot_tags_mc_joint_numberof = 21 };  // it MUST be equal to the number of tags
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_joint_t
@@ -115,6 +111,7 @@ typedef enum
     eoprot_rwm_mc_joint_config_impedance                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_motionmonitormode                    = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_bemf                                 = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_tcfiltertype                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_basic                                = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_ofpid                                = eo_nv_rwmode_RO,
@@ -128,7 +125,7 @@ typedef enum
     eoprot_rwm_mc_joint_status_interactionmodestatus                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_joint_t;    
 
-enum { eoprot_rwms_mc_joint_numberof = 20 };  // it MUST be equal to the number of rw modes  
+enum { eoprot_rwms_mc_joint_numberof = 21 };  // it MUST be equal to the number of rw modes  
 
 
 // - definition of the motor
@@ -171,7 +168,6 @@ enum { eoprot_rwms_mc_motor_numberof = 5 };   // it MUST be equal to the number 
 // - definition of the controller
 
 
-#if defined(EOMOTIONCONTROL_USE_VER_1_3)
 
 /** @typedef    typedef enum eOprot_tag_mc_controller_t
     @brief      It contains the tags for all variables of the controller entity.
@@ -203,38 +199,6 @@ typedef enum
 
 enum { eoprot_rwms_mc_controller_numberof = 4 };  // it MUST be equal to the number of rw modes 
 
-#else
-
-/** @typedef    typedef enum eOprot_tag_mc_controller_t
-    @brief      It contains the tags for all variables of the controller entity.
-                See definition of eOmc_controller_t (and its fields) in file EoMotionControl.h for explanation of the variables.
- **/
-typedef enum
-{
-     eoprot_tag_mc_controller_wholeitem                              = 0,
-     eoprot_tag_mc_controller_config                                 = 1,
-     eoprot_tag_mc_controller_status                                 = 2
-} eOprot_tag_mc_controller_t;
-
-enum { eoprot_tags_mc_controller_numberof = 3 };  // it MUST be equal to the number of tags
-
-
-/** @typedef    typedef enum eOprot_rwm_mc_controller_t
-    @brief      It contains the rw modes for all variables of the motor entity. There must be a one-to-one
-                correspondence to the values in eOprot_tag_mc_controller_t.
-                See definition of eOmc_controller_t (and its fields) in file EoMotionControl.h for explanation of the variables.
- **/
-typedef enum
-{
-    eoprot_rwm_mc_controller_wholeitem                              = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_controller_config                                 = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_controller_status                                 = eo_nv_rwmode_RO
-} eOprot_rwm_mc_controller_t; 
-
-enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the number of rw modes 
-
-
-#endif
 
 // - structures implementing the endpoints
 
@@ -293,6 +257,9 @@ extern void eoprot_fun_UPDT_mc_joint_config_motionmonitormode(const EOnv* nv, co
 
 extern void eoprot_fun_INIT_mc_joint_config_bemf(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_bemf(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_joint_config_tcfiltertype(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_tcfiltertype(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_joint_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_status(const EOnv* nv, const eOropdescriptor_t* rd);

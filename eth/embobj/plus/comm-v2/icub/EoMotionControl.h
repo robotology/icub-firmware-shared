@@ -48,10 +48,7 @@ extern "C" {
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
-
-//#define EOMOTIONCONTROL_USE_VER_1_2
-//#undef EOMOTIONCONTROL_USE_VER_1_3
-#define EOMOTIONCONTROL_USE_VER_1_3
+// empty-section
 
 
 
@@ -490,7 +487,7 @@ typedef struct              // size is 1+3+8+0 = 12
 typedef struct
 {
     int16_t     value;
-    int8_t      offset;
+    int8_t      scale;
     uint8_t     dummy;   
 } eOmc_bemf_t;  EO_VERIFYsizeof(eOmc_bemf_t, 4);
 
@@ -515,6 +512,11 @@ typedef struct
 typedef uint8_t  eOmc_jointId_t;
 
 
+/** @typedef    typedef uint8_t  eOmc_torqueControlFilterType_t
+    @brief      eOmc_torqueControlFilterType_t contains a value (0-255) which select a specific filter type for the torque control algorithm
+ **/
+typedef uint8_t  eOmc_torqueControlFilterType_t;
+
 
 /** @typedef    typedef struct eOmc_joint_config_t
     @brief      eOmc_joint_config_t contains the values required to configure a joint
@@ -532,7 +534,8 @@ typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80
     eOutil_emulfloat32_t        encoderconversionfactor;
     eOutil_emulfloat32_t        encoderconversionoffset;
     eOmc_bemf_t                 bemf;
-    uint8_t                     filler04[4];
+    eOmc_torqueControlFilterType_t tcfiltertype;
+    uint8_t                     filler03[3];
 } eOmc_joint_config_t;          //EO_VERIFYsizeof(eOmc_joint_config_t, 112);
 
 
@@ -684,22 +687,14 @@ typedef enum
     eomc_stateofcontroller_active                       = 2
 } eOmc_stateofcontroller_t;
  
-#if defined(EOMOTIONCONTROL_USE_VER_1_3)
+
 typedef struct                  // size is 4+4+64+0 = 72
 {
     eOreltime_t                 durationofctrlloop;         /**< the duration of the control-loop in micro-sec. its default is 1000. so far it cannot be changed. */
     uint8_t                     filler04[4];   
     eOmc_jointcouplingmatrix_t  jointcoupling;  
 } eOmc_controller_config_t;     EO_VERIFYsizeof(eOmc_controller_config_t, 72); 
-#elif defined(EOMOTIONCONTROL_USE_VER_1_2)
-typedef struct                  // size is 4+4+0 = 8
-{
-    eOreltime_t                 durationofctrlloop;         /**< the duration of the control-loop in micro-sec. its default is 1000. so far it cannot be changed. */
-    uint8_t                     filler04[4];                
-} eOmc_controller_config_t;
-#else
-    #error --> chose a EOMOTIONCONTROL_USE_VER_1_x
-#endif
+
 
 typedef struct                  // size is 1+1+1+1+2+2+0 = 8
 {

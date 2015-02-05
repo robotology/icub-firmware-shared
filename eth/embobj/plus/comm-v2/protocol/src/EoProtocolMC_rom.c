@@ -241,6 +241,21 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_bemf =
 #endif
 }; 
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_tcfiltertype =
+{
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.tcfiltertype),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_tcfiltertype,
+    EO_INIT(.dummy)     0,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.config.tcfiltertype,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_tcfiltertype,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_tcfiltertype
+#endif
+};
+
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status),
@@ -533,7 +548,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_controller_config =
 #endif
 };
 
-#if defined(EOMOTIONCONTROL_USE_VER_1_3)
+
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_controller_config_jointcoupling =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_controller_defaultvalue.config.jointcoupling),
@@ -548,7 +563,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_controller_config_joint
     EO_INIT(.update)    eoprot_fun_UPDT_mc_controller_config_jointcoupling
 #endif
 };
-#endif
+
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_controller_status =
 {   
@@ -591,6 +606,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_config_impedance,
     &eoprot_mc_rom_descriptor_joint_config_motionmonitormode,
     &eoprot_mc_rom_descriptor_joint_config_bemf,
+    &eoprot_mc_rom_descriptor_joint_config_tcfiltertype,
     &eoprot_mc_rom_descriptor_joint_status,
     &eoprot_mc_rom_descriptor_joint_status_basic,
     &eoprot_mc_rom_descriptor_joint_status_ofpid,
@@ -613,7 +629,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_motor_descriptors[] =
     &eoprot_mc_rom_descriptor_motor_status_basic   
 };  EO_VERIFYsizeof(s_eoprot_mc_rom_motor_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_motor_numberof));
 
-#if defined(EOMOTIONCONTROL_USE_VER_1_3)
+
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_controller_descriptors[] =
 {   // here are eoprot_tags_mc_controller_numberof descriptors for the controller entity
     &eoprot_mc_rom_descriptor_controller_wholeitem,
@@ -621,14 +637,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_controller_descriptors[]
     &eoprot_mc_rom_descriptor_controller_config_jointcoupling,
     &eoprot_mc_rom_descriptor_controller_status
 };  EO_VERIFYsizeof(s_eoprot_mc_rom_controller_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_controller_numberof));
-#else
-static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_controller_descriptors[] =
-{   // here are eoprot_tags_mc_controller_numberof descriptors for the controller entity
-    &eoprot_mc_rom_descriptor_controller_wholeitem,
-    &eoprot_mc_rom_descriptor_controller_config,
-    &eoprot_mc_rom_descriptor_controller_status
-};  EO_VERIFYsizeof(s_eoprot_mc_rom_controller_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_controller_numberof));
-#endif
+
 
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mc_rom_descriptors[] = 
 {
@@ -686,6 +695,7 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_config_impedance",
     "eoprot_tag_mc_joint_config_motionmonitormode",
     "eoprot_tag_mc_joint_config_bemf",
+    "eoprot_tag_mc_joint_config_tcfiltertype",
     "eoprot_tag_mc_joint_status",
     "eoprot_tag_mc_joint_status_basic",
     "eoprot_tag_mc_joint_status_ofpid",
@@ -708,7 +718,7 @@ static const char * const s_eoprot_mc_strings_tags_motor[] =
     "eoprot_tag_mc_motor_status_basic"
 };  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)); 
 
-#if defined(EOMOTIONCONTROL_USE_VER_1_3)
+
 static const char * const s_eoprot_mc_strings_tags_controller[] =
 {
      "eoprot_tag_mc_controller_wholeitem",
@@ -716,14 +726,6 @@ static const char * const s_eoprot_mc_strings_tags_controller[] =
      "eoprot_tag_mc_controller_config_jointcoupling",
      "eoprot_tag_mc_controller_status"
 };  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_controller, eoprot_tags_mc_controller_numberof*sizeof(const char*)); 
-#else
-static const char * const s_eoprot_mc_strings_tags_controller[] =
-{
-     "eoprot_tag_mc_controller_wholeitem",
-     "eoprot_tag_mc_controller_config",
-     "eoprot_tag_mc_controller_status"
-};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_controller, eoprot_tags_mc_controller_numberof*sizeof(const char*)); 
-#endif
 
 const char ** const eoprot_mc_strings_tags[] =
 {
