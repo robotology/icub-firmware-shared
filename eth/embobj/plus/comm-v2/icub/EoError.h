@@ -170,10 +170,11 @@ typedef enum
     eoerror_value_MC_motor_can_no_answer     = 7,
     eoerror_value_MC_axis_torque_sens        = 8,
     eoerror_value_MC_aea_abs_enc_invalid     = 9,
-    eoerror_value_MC_aea_abs_enc_timeout     = 10
+    eoerror_value_MC_aea_abs_enc_timeout     = 10,
+    eoerror_value_MC_aea_abs_enc_spikes      = 11
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 11 };
+enum { eoerror_value_MC_numberof = 12 };
 
 
 /** @typedef    typedef enum eOerror_value_DEB_t

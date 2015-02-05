@@ -144,7 +144,8 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_can_no_answer,   "MC: 2FOC CAN no answer"},
     {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout"},
     {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data"},
-    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout"}   
+    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout"},
+    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
