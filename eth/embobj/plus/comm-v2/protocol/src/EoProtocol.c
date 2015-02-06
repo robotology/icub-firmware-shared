@@ -137,6 +137,7 @@ extern eOprotID32_t eoprot_ID_get(eOprotEndpoint_t ep, eOprotEntity_t entity, eO
     id |= (((uint32_t)index & 0xff)<<8);
     id |= (((uint32_t)entity & 0xff)<<16);
     id |= (((uint32_t)ep & 0xff)<<24);
+    //uint32_t xx = EOPROT_ID_GET(ep, entity, index, tag);
     return((eOprotID32_t)id);    
 }
 
