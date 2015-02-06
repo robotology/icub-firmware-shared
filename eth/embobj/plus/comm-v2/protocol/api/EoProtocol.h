@@ -68,6 +68,9 @@ extern "C" {
 #define eo_prot_PROGnumdummy    EOK_uint32dummy
 #define eo_prot_BRDdummy        EOK_uint08dummy
 
+// this macro can be used to obtain a eOprotID32_t value as function eoprot_ID_get() does, but as a macro it can be used for initialisation of constants  
+#define EOPROT_ID_GET(end, ent, ind, tag)   ( (uint32_t)( (((end)&0xff)<<24) | (((ent)&0xff)<<16) | (((ind)&0xff)<<8) | (((tag)&0xff)) ) ) 
+
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
