@@ -45,9 +45,10 @@ extern "C" {
 #include "EoMeasures.h"
 #include "EoUtilities.h"
 #include "EOarray.h"
+#include "iCubCanProto_types.h"
 
 // - public #define  --------------------------------------------------------------------------------------------------
-
+// empty-section
 
 
 
@@ -76,17 +77,28 @@ typedef enum
     eosk_sigmode_signal                             = 2
 } eOsk_sigmode_t;
 
-#define EOSK_SKINTYPE_WITHTEMPCOMP                     0 /**< new version of skin with temperature compensation */
-#define EOSK_SKINTYPE_PALMFINGERTIP                    1 /**< skin for palm and fingertip */
-#define EOSK_SKINTYPE_WITHOUTTEMPCOMP                  2 /**< old version of skin without temperature compensation */
+
 typedef enum
-{
-    eosk_skintype_withtempcomp                      = EOSK_SKINTYPE_WITHTEMPCOMP,  
-    eosk_skintype_palmfingertip                     = EOSK_SKINTYPE_PALMFINGERTIP,  
-    eosk_skintype_withouttempcomp                   = EOSK_SKINTYPE_WITHOUTTEMPCOMP   
+{   // they must be equal to what the can protocol specifies
+    eosk_skintype_withtempcomp                      = icubCanProto_skinType__withtempcomp,      /**< 0 */  
+    eosk_skintype_palmfingertip                     = icubCanProto_skinType__palmfingertip,     /**< 1 */
+    eosk_skintype_withouttempcomp                   = icubCanProto_skinType__withouttempcomp    /**< 2 */   
 } eOsk_skintype_t;
 
 // -- all the possible data service structures
+
+// eOsk_candata_t and EOarray_of_skincandata_t are experimental. they may be used to compress from 16 bytes to 10 bytes the space used by skin data 
+typedef struct
+{
+    uint16_t        info;       // the bytes are formatted with following nibbles: [size | id2 | id1 | id0]
+    uint8_t         data[8];    // the can payload  
+} eOsk_candata_t;   EO_VERIFYsizeof(eOsk_candata_t, 10);
+
+typedef struct              // size is 4+24*10 = 244
+{
+    eOarray_head_t          head;
+    uint8_t                 data[24*sizeof(eOsk_candata_t)];      
+} EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 244);
 
 typedef struct              // size is 4+10*16+0 = 164
 {
