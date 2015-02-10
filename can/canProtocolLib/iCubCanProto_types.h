@@ -45,6 +45,7 @@ extern "C" {
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
+
 // error flags in motor board status message (ICUBCANPROTO_PER_MC_MSG__STATUS)
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_UNDERVOLTAGE    0x01
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_OVERVOLTAGE     0x02
@@ -55,7 +56,7 @@ extern "C" {
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_CANRECERROR     0x08 //in data[4]  
 #define ICUBCANPROTO_PER_MC_STATUS_FLAG_CANRECHWOVERRUN 0x40 //in data[4]
 
-//definition of board types.
+// definition of board types.
 #define ICUBCANPROTO_BOARDTYPE__DSP     0
 #define ICUBCANPROTO_BOARDTYPE__PIC     1
 #define ICUBCANPROTO_BOARDTYPE__2DC     2
@@ -68,6 +69,11 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__6SG     9
 #define ICUBCANPROTO_BOARDTYPE__JOG     10
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
+
+// skin types
+#define ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP    0  
+#define ICUBCANPROTO_SKINTYPE__PALMFINGERTIP   1    
+#define ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP 2    
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
@@ -381,9 +387,7 @@ typedef enum
 } icubCanProto_interactionmode_t;
 
 
-#define ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP    0    /**< with temperature compensator */
-#define ICUBCANPROTO_SKINTYPE__PALMFINGERTIP   1    /**< for palms and fingertips */
-#define ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP 2    /**< without temperature compensator */
+
 /** @typedef    typedef enum icubCanProto_skinType_t
     @brief      contains skyn types
     @warning    if you change values of item of this enum, pay attention to 
