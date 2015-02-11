@@ -129,6 +129,13 @@ typedef uint32_t            eOmeas_stiffness_t;
 typedef uint32_t            eOmeas_damping_t;
 
 
+/** @typedef    typedef int16_t             eOmeas_temperature_t
+    @brief      eOmeas_temperature_t contains the tempeature values.
+                the measurement unit is 0.1 C (range is thus +/- 3200 C, well below the 0 kelvin ....).
+ **/
+typedef int16_t             eOmeas_temperature_t;
+
+
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

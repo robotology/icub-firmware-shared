@@ -646,7 +646,7 @@ typedef struct                  // size is: 4+4+2+2+0 = 12
     eOmeas_position_t           position;                   /**< the position of the motor */         
     eOmeas_velocity_t           velocity;                   /**< the velocity of the motor */ 
     eOmeas_current_t            current;                    /**< the current of the motor */  
-    uint8_t                     filler02[2];
+    eOmeas_temperature_t        temperature;                /**< the temperature of the motor */
 } eOmc_motor_status_basic_t;    //EO_VERIFYsizeof(eOmc_motor_status_basic_t, 12);
 
 
@@ -693,7 +693,7 @@ typedef struct                  // size is 4+4+64+0 = 72
     eOreltime_t                 durationofctrlloop;         /**< the duration of the control-loop in micro-sec. its default is 1000. so far it cannot be changed. */
     uint8_t                     filler04[4];   
     eOmc_jointcouplingmatrix_t  jointcoupling;  
-} eOmc_controller_config_t;     EO_VERIFYsizeof(eOmc_controller_config_t, 72); 
+} eOmc_controller_config_t;     //EO_VERIFYsizeof(eOmc_controller_config_t, 72); 
 
 
 typedef struct                  // size is 1+1+1+1+2+2+0 = 8
