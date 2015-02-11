@@ -371,6 +371,9 @@ typedef enum
     icubCanProto_controlmode_mixed                      = 0x07,
     icubCanProto_controlmode_direct                     = 0x08,
     icubCanProto_controlmode_forceIdle                  = 0x09,
+    icubCanProto_controlmode_speed_voltage              = 0x0A,
+    icubCanProto_controlmode_speed_current              = 0x0B,
+            
     icubCanProto_controlmode_openloop                   = 0x50,
     icubCanProto_controlmode_calibration                = 0x60,
     icubCanProto_controlmode_hwFault                    = 0xA0,
