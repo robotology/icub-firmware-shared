@@ -120,51 +120,51 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_config_sigmode =
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayof10canframes =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_status_arrayofcandata =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.status.arrayof10canframes),
-    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_status_arrayof10canframes,
+    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.status.arrayofcandata),
+    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_status_arrayofcandata,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.status.arrayof10canframes,
+    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.status.arrayofcandata,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_status_arrayof10canframes,
-    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_status_arrayof10canframes
+    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_status_arrayofcandata,
+    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_status_arrayofcandata
 #endif
 };
 
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_cmmnds_boardscfg =
 {
-    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.commands.boardscfg),
-    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmd_boardscfg,
+    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.cmmnds.boardscfg),
+    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmmnds_boardscfg,
     EO_INIT(.dummy)     0,
-    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.commands.boardscfg,
+    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.cmmnds.boardscfg,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_commands_boardscfg,
-    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_commands_boardscfg
+    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_cmmnds_boardscfg,
+    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_cmmnds_boardscfg
 #endif
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg =
+static EOPROT_ROMmap EOnv_rom_t eoprot_sk_rom_descriptor_skin_cmmnds_trianglescfg =
 {
-    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.commands.trianglescfg),
-    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmd_trianglescfg,
+    EO_INIT(.capacity)  sizeof(eoprot_sk_rom_skin_defaultvalue.cmmnds.trianglescfg),
+    EO_INIT(.rwmode)    eoprot_rwm_sk_skin_cmmnds_trianglescfg,
     EO_INIT(.dummy)     0,
-    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.commands.trianglescfg,
+    EO_INIT(.resetval)  (const void*)&eoprot_sk_rom_skin_defaultvalue.cmmnds.trianglescfg,
     #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_commands_trianglescfg,
-    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_commands_trianglescfg
+    EO_INIT(.init)      eoprot_fun_INIT_sk_skin_cmmnds_trianglescfg,
+    EO_INIT(.update)    eoprot_fun_UPDT_sk_skin_cmmnds_trianglescfg
 #endif
 };
 
@@ -186,9 +186,9 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_sk_rom_skin_descriptors[] =
 {   // here are eoprot_tags_sk_skin_numberof descriptors for the skin entity
     &eoprot_sk_rom_descriptor_skin_wholeitem,
     &eoprot_sk_rom_descriptor_skin_config_sigmode,
-    &eoprot_sk_rom_descriptor_skin_status_arrayof10canframes,
-    &eoprot_sk_rom_descriptor_skin_commands_cmd_boardscfg,
-    &eoprot_sk_rom_descriptor_skin_commands_cmd_trianglescfg
+    &eoprot_sk_rom_descriptor_skin_status_arrayofcandata,
+    &eoprot_sk_rom_descriptor_skin_cmmnds_boardscfg,
+    &eoprot_sk_rom_descriptor_skin_cmmnds_trianglescfg
 };  EO_VERIFYsizeof(s_eoprot_sk_rom_skin_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof));
 
 
@@ -229,9 +229,9 @@ static const char * const s_eoprot_sk_strings_tags_skin[] =
 {
     "eoprot_tag_sk_skin_wholeitem",
     "eoprot_tag_sk_skin_config_sigmode",
-    "eoprot_tag_sk_skin_status_arrayof10canframes",
-    "eoprot_tag_sk_skin_cmd_boardscfg",
-    "eoprot_tag_sk_skin_cmd_trianglescfg"
+    "eoprot_tag_sk_skin_status_arrayofcandata",
+    "eoprot_tag_sk_skin_cmmnds_boardscfg",
+    "eoprot_tag_sk_skin_cmmnds_trianglescfg"
 };  EO_VERIFYsizeof(s_eoprot_sk_strings_tags_skin, eoprot_tags_sk_skin_numberof*sizeof(const char*)); 
 
 const char ** const eoprot_sk_strings_tags[] =

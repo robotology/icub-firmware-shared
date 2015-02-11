@@ -87,53 +87,56 @@ typedef enum
 
 // -- all the possible data service structures
 
-// eOsk_candata_t and EOarray_of_skincandata_t are experimental. they may be used to compress from 16 bytes to 10 bytes the space used by skin data 
+#define EOSK_CANDATA_INFO(size, idcan)  ( (uint16_t) ( ((size&0x000f)<<12) | (idcan&0x0fff) ) )
+#define EOSK_CANDATA_INFO2SIZE(info)    ( (uint8_t) ((((uint16_t)info)&0xf000)>>12) ) 
+#define EOSK_CANDATA_INFO2IDCAN(info)   ( (uint16_t) ((((uint16_t)info)&0x0fff)) ) 
+
 typedef struct
 {
-    uint16_t        info;       // the bytes are formatted with following nibbles: [size | id2 | id1 | id0]
+    uint16_t        info;       // the bytes are formatted with following nibbles: [size | id | id | id], with 11 bits id
     uint8_t         data[8];    // the can payload  
 } eOsk_candata_t;   EO_VERIFYsizeof(eOsk_candata_t, 10);
 
-typedef struct              // size is 4+24*10 = 244
+typedef struct              // size is 4+12*10 = 124
 {
     eOarray_head_t          head;
-    uint8_t                 data[24*sizeof(eOsk_candata_t)];      
-} EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 244);
+    uint8_t                 data[12*sizeof(eOsk_candata_t)];      
+} EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 124);
 
-typedef struct              // size is 4+10*16+0 = 164
-{
-    eOarray_head_t          head;
-    uint8_t                 data[10*sizeof(eOutil_canframe_t)];
-} EOarray_of_10canframes;   //EO_VERIFYsizeof(EOarray_of_10canframes, 164);
-
-
-typedef struct              // size is 4+24*16+0 = 388
-{
-    eOarray_head_t          head;
-    uint8_t                 data[24*sizeof(eOutil_canframe_t)];
-} EOarray_of_24canframes;   //EO_VERIFYsizeof(EOarray_of_24canframes, 388);
+//typedef struct              // size is 4+10*16+0 = 164
+//{
+//    eOarray_head_t          head;
+//    uint8_t                 data[10*sizeof(eOutil_canframe_t)];
+//} EOarray_of_10canframes;   //EO_VERIFYsizeof(EOarray_of_10canframes, 164);
 
 
-/** @typedef    typedef struct eOsk_array_data_t
-    @brief      eOsk_array_data_t contains up to 10 can frames as received by hal placed in an EOarray object
-    @warning    This struct must be of fixed size and multiple of 4.
- **/
-typedef struct                  // size is: 164+4+0 = 168 
-{
-    EOarray_of_10canframes  array;
-    uint8_t                 filler04[4];
-} eOsk_array_data_t;        //EO_VERIFYsizeof(eOsk_array_data_t, 168);
+//typedef struct              // size is 4+24*16+0 = 388
+//{
+//    eOarray_head_t          head;
+//    uint8_t                 data[24*sizeof(eOutil_canframe_t)];
+//} EOarray_of_24canframes;   //EO_VERIFYsizeof(EOarray_of_24canframes, 388);
 
 
-/** @typedef    typedef struct eOsk_array_largedata_t
-    @brief      eOsk_array_largedata_t contains up to 24 can frames as received by hal placed in an EOarray object
-    @warning    This struct must be of fixed size and multiple of 8.
- **/
-typedef struct                  // size is: 388+4+0 = 392 
-{
-    EOarray_of_24canframes  array;
-    uint8_t                 filler04[4];
-} eOsk_array_largedata_t;   //EO_VERIFYsizeof(eOsk_array_largedata_t, 392);
+///** @typedef    typedef struct eOsk_array_data_t
+//    @brief      eOsk_array_data_t contains up to 10 can frames as received by hal placed in an EOarray object
+//    @warning    This struct must be of fixed size and multiple of 4.
+// **/
+//typedef struct                  // size is: 164+4+0 = 168 
+//{
+//    EOarray_of_10canframes  array;
+//    uint8_t                 filler04[4];
+//} eOsk_array_data_t;        //EO_VERIFYsizeof(eOsk_array_data_t, 168);
+
+
+///** @typedef    typedef struct eOsk_array_largedata_t
+//    @brief      eOsk_array_largedata_t contains up to 24 can frames as received by hal placed in an EOarray object
+//    @warning    This struct must be of fixed size and multiple of 8.
+// **/
+//typedef struct                  // size is: 388+4+0 = 392 
+//{
+//    EOarray_of_24canframes  array;
+//    uint8_t                 filler04[4];
+//} eOsk_array_largedata_t;   //EO_VERIFYsizeof(eOsk_array_largedata_t, 392);
 
 
 // -- the definition of a skin entity 
@@ -148,32 +151,32 @@ typedef uint8_t  eOsk_skinId_t;
 
 typedef struct
 {
-    eOenum08_t                  skintype;                               /**< use values from eOsk_skintype_t */
+    eOenum08_t                  skintype;       /**< use values from eOsk_skintype_t */
     uint8_t                     period;
     uint8_t                     noload;
     uint8_t                     filler1;
-} eOsk_board_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4);
+} eOsk_board_config_t;          EO_VERIFYsizeof(eOsk_board_config_t, 4);
 
 
 typedef struct                      
 {
-    uint8_t                    enable;
-    uint8_t                    shift;
-    uint16_t                   CDCoffset;
-} eOsk_triangle_config_t;                //EO_VERIFYsizeof(eOsk_triangle_config_t, 4);
+    uint8_t                     enable;
+    uint8_t                     shift;
+    uint16_t                    CDCoffset;
+} eOsk_triangle_config_t;       EO_VERIFYsizeof(eOsk_triangle_config_t, 4);
 
 
 typedef struct                      
 {
-    eOenum08_t                  sigmode;                                   /**< use values from eOsk_sigmode_t */
+    eOenum08_t                  sigmode;        /**< use values from eOsk_sigmode_t */
     uint8_t                     filler[7];
-} eOsk_config_t;                //EO_VERIFYsizeof(eOsk_config_t, 4);
+} eOsk_config_t;                EO_VERIFYsizeof(eOsk_config_t, 8);
 
 
 typedef struct                      
 {
     uint8_t                     filler04[4];                           
-} eOsk_inputs_t;                //EO_VERIFYsizeof(eOsk_inputs_t, 4);
+} eOsk_inputs_t;                EO_VERIFYsizeof(eOsk_inputs_t, 4);
 
 typedef struct                      
 {
@@ -182,7 +185,7 @@ typedef struct
     uint8_t                     idend;
     uint8_t                     filler01;
     eOsk_triangle_config_t      cfg;
-} eOsk_cmd_trianglesCfg_t;               //EO_VERIFYsizeof(eOsk_cmd_tiangleCfg_t, 8);
+} eOsk_cmd_trianglesCfg_t;      EO_VERIFYsizeof(eOsk_cmd_trianglesCfg_t, 8);
 
 
 typedef struct                      
@@ -191,33 +194,28 @@ typedef struct
     uint8_t                     addrend;
     uint8_t                     filler[2];
     eOsk_board_config_t         cfg;
-} eOsk_cmd_boardsCfg_t;               //EO_VERIFYsizeof(eOsk_cmd_boardCfg_t, 8);
+} eOsk_cmd_boardsCfg_t;         EO_VERIFYsizeof(eOsk_cmd_boardsCfg_t, 8);
 
 typedef struct                      
 {
-    eOsk_cmd_boardsCfg_t         boardscfg;
-    eOsk_cmd_trianglesCfg_t      trianglescfg;
-} eOsk_command_t;               //EO_VERIFYsizeof(eOsk_command_t, 16);
+    eOsk_cmd_boardsCfg_t        boardscfg;
+    eOsk_cmd_trianglesCfg_t     trianglescfg;
+} eOsk_command_t;               EO_VERIFYsizeof(eOsk_command_t, 16);
 
 
-typedef struct                  // size is: 164+4+0 = 168                     
+typedef struct                  // size is: 124+4+0 = 128                     
 {
-    EOarray_of_10canframes      arrayof10canframes;
+    EOarray_of_skincandata_t    arrayofcandata;
     uint8_t                     filler04[4];                           
-} eOsk_status_t;                //EO_VERIFYsizeof(eOsk_status_t, 168);
+} eOsk_status_t;                EO_VERIFYsizeof(eOsk_status_t, 128);
 
 
-typedef struct                  // size is: 388+0 = 392                     
+typedef struct                  // size is: 8+128+16 = 152
 {
-    eOsk_array_largedata_t      arrayofcanframes;                         
-} eOsk_status_large_t;          EO_VERIFYsizeof(eOsk_status_large_t, 392);
-
-typedef struct                  // size is: 4+4+168+0 = 176
-{
-    eOsk_config_t               config; //4
-    eOsk_command_t              commands;    
+    eOsk_config_t               config; 
     eOsk_status_t               status;
-} eOsk_skin_t;                  //EO_VERIFYsizeof(eOsk_skin_t, 176);
+    eOsk_command_t              cmmnds;    
+} eOsk_skin_t;                  EO_VERIFYsizeof(eOsk_skin_t, 152);
 
 
 

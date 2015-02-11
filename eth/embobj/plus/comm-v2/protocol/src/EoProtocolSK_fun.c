@@ -124,25 +124,25 @@ EO_weak extern void eoprot_fun_INIT_sk_skin_config_sigmode(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_sk_skin_config_sigmode(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_status_arrayof10canframes)
-EO_weak extern void eoprot_fun_INIT_sk_skin_status_arrayof10canframes(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_status_arrayofcandata)
+EO_weak extern void eoprot_fun_INIT_sk_skin_status_arrayofcandata(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_status_arrayof10canframes)
-EO_weak extern void eoprot_fun_UPDT_sk_skin_status_arrayof10canframes(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
-
-#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_commands_boardscfg)
-EO_weak extern void eoprot_fun_INIT_sk_skin_commands_boardscfg(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_commands_trianglescfg)
-EO_weak extern void eoprot_fun_UPDT_sk_skin_commands_boardscfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_status_arrayofcandata)
+EO_weak extern void eoprot_fun_UPDT_sk_skin_status_arrayofcandata(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_commands_trianglescfg)
-EO_weak extern void eoprot_fun_INIT_sk_skin_commands_trianglescfg(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_cmmnds_boardscfg)
+EO_weak extern void eoprot_fun_INIT_sk_skin_cmmnds_boardscfg(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_commands_trianglescfg)
-EO_weak extern void eoprot_fun_UPDT_sk_skin_commands_trianglescfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_cmmnds_trianglescfg)
+EO_weak extern void eoprot_fun_UPDT_sk_skin_cmmnds_boardscfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_sk_skin_cmmnds_trianglescfg)
+EO_weak extern void eoprot_fun_INIT_sk_skin_cmmnds_trianglescfg(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_sk_skin_cmmnds_trianglescfg)
+EO_weak extern void eoprot_fun_UPDT_sk_skin_cmmnds_trianglescfg(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)

@@ -55,7 +55,7 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-enum { eoprot_version_sk_major = 1, eoprot_version_sk_minor = 0 };
+enum { eoprot_version_sk_major = 1, eoprot_version_sk_minor = 1 };
 
 enum { eoprot_entities_sk_numberof = eosk_entities_numberof };
 
@@ -68,11 +68,11 @@ enum { eoprot_entities_sk_numberof = eosk_entities_numberof };
  **/
 typedef enum
 {
-    eoprot_tag_sk_skin_wholeitem                                     = 0,
-    eoprot_tag_sk_skin_config_sigmode                                = 1,
-    eoprot_tag_sk_skin_status_arrayof10canframes                     = 2,
-    eoprot_tag_sk_skin_cmd_boardscfg                                 = 3,
-    eoprot_tag_sk_skin_cmd_trianglescfg                              = 4
+    eoprot_tag_sk_skin_wholeitem                                    = 0,
+    eoprot_tag_sk_skin_config_sigmode                               = 1,
+    eoprot_tag_sk_skin_status_arrayofcandata                        = 2,
+    eoprot_tag_sk_skin_cmmnds_boardscfg                             = 3,
+    eoprot_tag_sk_skin_cmmnds_trianglescfg                          = 4
 } eOprot_tag_sk_skin_t;
 
 enum { eoprot_tags_sk_skin_numberof = 5 };  // it MUST be equal to the number of tags. 
@@ -85,11 +85,11 @@ enum { eoprot_tags_sk_skin_numberof = 5 };  // it MUST be equal to the number of
  **/
 typedef enum
 {
-    eoprot_rwm_sk_skin_wholeitem                                  = eo_nv_rwmode_RO,
-    eoprot_rwm_sk_skin_config_sigmode                             = eo_nv_rwmode_RW,
-    eoprot_rwm_sk_skin_status_arrayof10canframes                  = eo_nv_rwmode_RO,
-    eoprot_rwm_sk_skin_cmd_boardscfg                              = eo_nv_rwmode_RW,
-    eoprot_rwm_sk_skin_cmd_trianglescfg                           = eo_nv_rwmode_RW
+    eoprot_rwm_sk_skin_wholeitem                                    = eo_nv_rwmode_RO,
+    eoprot_rwm_sk_skin_config_sigmode                               = eo_nv_rwmode_RW,
+    eoprot_rwm_sk_skin_status_arrayofcandata                        = eo_nv_rwmode_RO,
+    eoprot_rwm_sk_skin_cmmnds_boardscfg                             = eo_nv_rwmode_RW,
+    eoprot_rwm_sk_skin_cmmnds_trianglescfg                          = eo_nv_rwmode_RW
 } eOprot_rwm_sk_skin_t; 
 
 enum { eoprot_rwms_sk_skin_numberof = 5 };  // it MUST be equal to the number of rw modes. 
@@ -104,10 +104,10 @@ enum { eoprot_rwms_sk_skin_numberof = 5 };  // it MUST be equal to the number of
     @brief      It is a template for the organisation of skin entities in the skin endpoint.
                 The effective number may depend on the board.
  **/
-typedef struct                  // 176+0 = 176              
+typedef struct                  // 152+0 = 152              
 {
     eOsk_skin_t                 skin;
-} eOprot_template_sk_t;         //EO_VERIFYsizeof(eOprot_template_sk_t, 176);
+} eOprot_template_sk_t;         EO_VERIFYsizeof(eOprot_template_sk_t, 152);
 
 
 
@@ -131,15 +131,15 @@ extern void eoprot_fun_UPDT_sk_skin_wholeitem(const EOnv* nv, const eOropdescrip
 extern void eoprot_fun_INIT_sk_skin_config_sigmode(const EOnv* nv);
 extern void eoprot_fun_UPDT_sk_skin_config_sigmode(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_sk_skin_status_arrayof10canframes(const EOnv* nv);
-extern void eoprot_fun_UPDT_sk_skin_status_arrayof10canframes(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_sk_skin_status_arrayofcandata(const EOnv* nv);
+extern void eoprot_fun_UPDT_sk_skin_status_arrayofcandata(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_sk_skin_commands_boardscfg(const EOnv* nv);
-extern void eoprot_fun_UPDT_sk_skin_commands_boardscfg(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_sk_skin_cmmnds_boardscfg(const EOnv* nv);
+extern void eoprot_fun_UPDT_sk_skin_cmmnds_boardscfg(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
-extern void eoprot_fun_INIT_sk_skin_commands_trianglescfg(const EOnv* nv);
-extern void eoprot_fun_UPDT_sk_skin_commands_trianglescfg(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_sk_skin_cmmnds_trianglescfg(const EOnv* nv);
+extern void eoprot_fun_UPDT_sk_skin_cmmnds_trianglescfg(const EOnv* nv, const eOropdescriptor_t* rd);
 /** @}            
     end of group eo_EoProtocolSK  
  **/
