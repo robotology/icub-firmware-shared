@@ -486,10 +486,12 @@ typedef struct              // size is 1+3+8+0 = 12
 
 typedef struct
 {
-    int16_t     value;
-    int8_t      scale;
-    uint8_t     dummy;   
-} eOmc_bemf_t;  EO_VERIFYsizeof(eOmc_bemf_t, 4);
+    int16_t     bemf_value;
+    int16_t     ktau_value;
+    int8_t      bemf_scale;
+    int8_t      ktau_scale;
+    int8_t      filler02[2];
+} eOmc_motor_params_t;  EO_VERIFYsizeof(eOmc_motor_params_t, 8);
 
 // -- all the possible data holding structures used in a motor
 
@@ -533,10 +535,10 @@ typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80
     uint8_t                     filler01[1];      
     eOutil_emulfloat32_t        encoderconversionfactor;
     eOutil_emulfloat32_t        encoderconversionoffset;
-    eOmc_bemf_t                 bemf;
+    eOmc_motor_params_t         motor_params;
     eOmc_torqueControlFilterType_t tcfiltertype;
     uint8_t                     filler03[3];
-} eOmc_joint_config_t;          //EO_VERIFYsizeof(eOmc_joint_config_t, 112);
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 116);
 
 
 
@@ -604,13 +606,13 @@ typedef struct                  // size is 16+12+1+1+2+0 = 32
 
 
 
-typedef struct                  // size is 112+36+8+32+0 = 188
+typedef struct                  // size is 116+36+8+32+0 = 192
 {
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 188);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 192);
 
 
 // -- the definition of a motor
