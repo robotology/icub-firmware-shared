@@ -117,9 +117,14 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_ipalerror,               "SYS: the IPAL triggered an error. In param there is the relevant ipal code"}, 
     {eoerror_value_SYS_dispatcherfifooverflow,  "SYS: the EOtheInfoDispatcher could not accept a eOmn_info_properties_t item inside its transmitting queue."}, 
     {eoerror_value_SYS_configurator_udptxfailure,"SYS: the EOMtheEMSconfigurator could not tx a UDP packet with eom_emssocket_Transmit()."},
-    {eoerror_value_SYS_runner_udptxfailure,      "SYS: the EOMtheEMSrunner could not tx a UDP packet with eom_emssocket_Transmit()."},
-    {eoerror_value_SYS_runner_transceivererror,  "SYS: the EOMtheEMSrunner could not either parse or form a UDP packet."},
-    {eoerror_value_SYS_canservices_cantxfailure, "SYS: the EOappCanSP could not tx CAN packets. The wait inside eo_appCanSP_wait_XXX() timed out. In param there is the can channel: 1 or 2."}
+    {eoerror_value_SYS_runner_udptxfailure,     "SYS: the EOMtheEMSrunner could not tx a UDP packet with eom_emssocket_Transmit()."},
+    {eoerror_value_SYS_runner_transceivererror, "SYS: the EOMtheEMSrunner could not either parse or form a UDP packet."},
+    {eoerror_value_SYS_canservices_rxfifooverflow, "SYS: the HAL could not put CAN packets in rx fifo. In param there is: on msb the fifo size, in lsb the can channel: 1 or 2."},
+    {eoerror_value_SYS_canservices_txfifooverflow, "SYS: the EOappCanSP could not put CAN packets in tx fifo. In param there is: on msb the fifo size, in lsb the can channel: 1 or 2."},
+    {eoerror_value_SYS_canservices_txbusfailure, "SYS: the EOappCanSP could not tx frames on CAN bus. In param there is: on msb an code, in lsb the can channel: 1 or 2."},
+    {eoerror_value_SYS_canservices_formingfailure, "SYS: the EOappCanSP could not form a can packet. In param there is .... tbd"},
+    {eoerror_value_SYS_canservices_parsingfailure, "SYS: the EOappCanSP could not parse a rx can packet. In param there is .... tbd"},
+    {eoerror_value_SYS_canservices_txfifoputisok, "SYS: the EOappCanSP have just put a can frame in tx fifo. In param there is: on lsnibble the canbus, on the others the count"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
@@ -159,7 +164,10 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
     {eoerror_value_DEB_tag04,               "DEBUG: tag04"},
     {eoerror_value_DEB_tag05,               "DEBUG: tag05"},
     {eoerror_value_DEB_tag06,               "DEBUG: tag06"},
-    {eoerror_value_DEB_tag07,               "DEBUG: tag07"} 
+    {eoerror_value_DEB_tag07,               "DEBUG: tag07"}, 
+    {eoerror_value_DEB_hwfault1,            "DEBUG: hw fault1 detected: in param there are controlmodestatus in lsb and frame[1] in msb"},
+    {eoerror_value_DEB_hwfault2,            "DEBUG: hw fault2 detected: in param there are controlmodestatus in lsb and frame[1] in msb"},
+    {eoerror_value_DEB_hwfault3,            "DEBUG: hw fault3 detected: in param there are controlmodestatus in lsb and frame[1] in msb"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_DEB, eoerror_value_DEB_numberof*sizeof(const eoerror_valuestring_t)); 
 
 

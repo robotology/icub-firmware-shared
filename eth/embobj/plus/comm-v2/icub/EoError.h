@@ -132,10 +132,15 @@ typedef enum
     eoerror_value_SYS_configurator_udptxfailure     = 20,
     eoerror_value_SYS_runner_udptxfailure           = 21,
     eoerror_value_SYS_runner_transceivererror       = 22,
-    eoerror_value_SYS_canservices_cantxfailure      = 23
+    eoerror_value_SYS_canservices_rxfifooverflow    = 23,
+    eoerror_value_SYS_canservices_txfifooverflow    = 24,
+    eoerror_value_SYS_canservices_txbusfailure      = 25,
+    eoerror_value_SYS_canservices_formingfailure    = 26,
+    eoerror_value_SYS_canservices_parsingfailure    = 27,
+    eoerror_value_SYS_canservices_txfifoputisok     = 28
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 24 };
+enum { eoerror_value_SYS_numberof = 29 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
@@ -191,10 +196,13 @@ typedef enum
     eoerror_value_DEB_tag04         = 4,
     eoerror_value_DEB_tag05         = 5,
     eoerror_value_DEB_tag06         = 6,
-    eoerror_value_DEB_tag07         = 7
+    eoerror_value_DEB_tag07         = 7,
+    eoerror_value_DEB_hwfault1      = 8,
+    eoerror_value_DEB_hwfault2      = 9,
+    eoerror_value_DEB_hwfault3      = 10
 } eOerror_value_DEB_t;
 
-enum { eoerror_value_DEB_numberof = 8 };
+enum { eoerror_value_DEB_numberof = 11 };
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
