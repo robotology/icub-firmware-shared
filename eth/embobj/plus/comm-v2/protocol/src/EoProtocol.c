@@ -1369,6 +1369,11 @@ static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, 
     }
     
 
+    if(index >= eoprot_board_numberofeachentity[brd][epi][entity])
+    {
+        return(EOK_uint16dummy);
+    }
+        
     for(i=0; i<entity; i++)
     {   // we sum the size of all the entities before the current one
         offset += (eoprot_board_numberofeachentity[brd][epi][i] * eoprot_ep_entities_sizeof[epi][i]);
