@@ -124,7 +124,16 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_txbusfailure, "SYS: the EOappCanSP could not tx frames on CAN bus. In param there is: on msb an code, in lsb the can channel: 1 or 2."},
     {eoerror_value_SYS_canservices_formingfailure, "SYS: the EOappCanSP could not form a can packet. In param there is .... tbd"},
     {eoerror_value_SYS_canservices_parsingfailure, "SYS: the EOappCanSP could not parse a rx can packet. In param there is .... tbd"},
-    {eoerror_value_SYS_canservices_txfifoputisok, "SYS: the EOappCanSP have just put a can frame in tx fifo. In param there is: on lsnibble the canbus, on the others the count"}
+    {eoerror_value_SYS_canservices_txfifoputisok, "SYS: the EOappCanSP have just put a can frame in tx fifo. In param there is: on lsnibble the canbus, on the others the count"},
+	{eoerror_value_SYS_ctrloop_rxphaseaverage, 	 "SYS: RX phase of the control loop average execution time in usec, monitored for the last 10secs, stored in param "},
+	{eoerror_value_SYS_ctrloop_dophaseaverage, 	 "SYS: DO phase of the control loop average execution time in usec, monitored for the last 10secs, stored in param "},
+	{eoerror_value_SYS_ctrloop_txphaseaverage, 	 "SYS: TX phase of the control loop average execution time in usec, monitored for the last 10secs, stored in param "},
+    {eoerror_value_SYS_ctrloop_rxphasemax, 	     "SYS: RX phase of the control loop max execution time in usec, monitored for the last 10secs, stored in param "},
+	{eoerror_value_SYS_ctrloop_dophasemax, 	     "SYS: DO phase of the control loop max execution time in usec, monitored for the last 10secs, stored in param "},
+	{eoerror_value_SYS_ctrloop_txphasemax, 	     "SYS: TX phase of the control loop max execution time in usec, monitored for the last 10secs, stored in param "},
+    {eoerror_value_SYS_ctrloop_rxphasemin, 	     "SYS: RX phase of the control loop min execution time in usec, monitored for the last 10secs, stored in param "},
+	{eoerror_value_SYS_ctrloop_dophasemin, 	     "SYS: DO phase of the control loop min execution time in usec, monitored for the last 10secs, stored in param "},
+	{eoerror_value_SYS_ctrloop_txphasemin, 	     "SYS: TX phase of the control loop min execution time in usec, monitored for the last 10secs, stored in param "}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
