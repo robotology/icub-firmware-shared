@@ -307,14 +307,16 @@ typedef struct                      // size is 4+3+3 = 8 bytes
 /** @typedef    typedef struct eOmn_appl_status_t;
     @brief      used to report status of the application
  **/
-typedef struct                      // size is 4+2+16+1+1 = 24 bytes
+typedef struct                      // size is 4+2+16+1+1+6+2 = 32 bytes
 {
     eOmn_date_t                     buildate;
     eOmn_version_t                  version;
     uint8_t                         name[16];
     eOenum08_t                      currstate;          /**< use eOmn_appl_state_t */
     eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
-} eOmn_appl_status_t;               //EO_VERIFYsizeof(eOmn_appl_status_t, 24);
+	uint16_t						cloop_timings[3];
+    uint8_t                         filler02[2];
+} eOmn_appl_status_t;               //EO_VERIFYsizeof(eOmn_appl_status_t, 32);
 
                                          
 /** @typedef    typedef struct eOmn_appl_cmmnds_t;
