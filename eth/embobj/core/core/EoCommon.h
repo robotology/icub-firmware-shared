@@ -620,6 +620,17 @@ EO_extern_inline eOresult_t eo_common_Q17_14_division(eOq17_14_t q_num1, eOq17_1
     return(eores_OK);
 }
 
+
+EO_extern_inline uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame)
+{
+    if(NULL == frame)
+    {
+        return(0);
+    }
+    // it works as long as data is aligned at 8 bytes
+    return(*((uint64_t*)(frame->data)));
+}
+
 /** @}            
     end of group eo_common  
  **/

@@ -138,18 +138,19 @@ typedef enum
     eoerror_value_SYS_canservices_formingfailure    = 26,
     eoerror_value_SYS_canservices_parsingfailure    = 27,
     eoerror_value_SYS_canservices_txfifoputisok     = 28,
-	eoerror_value_SYS_ctrloop_rxphaseaverage      	= 29,
-	eoerror_value_SYS_ctrloop_dophaseaverage      	= 30,
-	eoerror_value_SYS_ctrloop_txphaseaverage      	= 31,
-    eoerror_value_SYS_ctrloop_rxphasemax      	    = 32,
-	eoerror_value_SYS_ctrloop_dophasemax      	    = 33,
-	eoerror_value_SYS_ctrloop_txphasemax      	    = 34,
-    eoerror_value_SYS_ctrloop_rxphasemin      	    = 35,
-	eoerror_value_SYS_ctrloop_dophasemin      	    = 36,
-	eoerror_value_SYS_ctrloop_txphasemin      	    = 37
+    eoerror_value_SYS_canservices_genericerror      = 29,
+	eoerror_value_SYS_ctrloop_rxphaseaverage      	= 30,
+	eoerror_value_SYS_ctrloop_dophaseaverage      	= 31,
+	eoerror_value_SYS_ctrloop_txphaseaverage      	= 32,
+    eoerror_value_SYS_ctrloop_rxphasemax      	    = 33,
+	eoerror_value_SYS_ctrloop_dophasemax      	    = 34,
+	eoerror_value_SYS_ctrloop_txphasemax      	    = 35,
+    eoerror_value_SYS_ctrloop_rxphasemin      	    = 36,
+	eoerror_value_SYS_ctrloop_dophasemin      	    = 37,
+	eoerror_value_SYS_ctrloop_txphasemin      	    = 38
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 38 };
+enum { eoerror_value_SYS_numberof = 39 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t

@@ -124,9 +124,10 @@ typedef enum
 typedef struct
 {
     uint32_t        code;           /* the system uses eOerrmanCode_t, other modules may use values defined in a particular table ... see eoerror_code_get() */
-    uint16_t        param;          /* it must be 0 unless the code needs one particular param */
     uint8_t         sourcedevice;   /* use values in eOerrmanSourceDevice_t */
     uint8_t         sourceaddress;  /* the system uses 0, other modules may use other values ...  e.g., CAN addresses */   
+    uint16_t        par16;          /* it must be 0 unless the code needs one particular param */
+    uint64_t        par64;          /* it must be 0 unless the code needs one particular param */
 } eOerrmanDescriptor_t;
 
 

@@ -403,7 +403,7 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
             
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_ropparsingerror;
-        errdes.param            = parsres;
+        errdes.par16            = parsres;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;           
         

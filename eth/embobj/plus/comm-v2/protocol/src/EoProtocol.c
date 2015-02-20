@@ -453,6 +453,12 @@ extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_va
 #endif    
 }
 
+
+extern eOprotBRD_t eoprot_board_local_get(void)
+{
+    return(s_eoprot_localboard);
+}
+
 extern uint8_t eoprot_endpoints_numberof_get(eOprotBRD_t brd)
 {
     uint8_t numberof = 0;

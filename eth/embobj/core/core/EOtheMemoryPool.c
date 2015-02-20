@@ -284,7 +284,7 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
         // manage the ... warning 
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_memory_zerorequested;
-        errdes.param            = 0;
+        errdes.par16            = 0;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_warning, "eo_mempool_GetMemory() is asked 0 bytes", s_eobj_ownname, &errdes);        
@@ -296,7 +296,7 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
     {
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_memory_notinitialised;
-        errdes.param            = 0;
+        errdes.par16            = 0;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;    
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_info, "eo_mempool_GetMemory() not initted uses dyn alloc", s_eobj_ownname, &errdes); 
@@ -341,7 +341,7 @@ extern void * eo_mempool_GetMemory(EOtheMemoryPool *p, eOmempool_alignment_t ali
     {   // manage the fatal error in case memory could not achieved
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_memory_missing;
-        errdes.param            = number*size;
+        errdes.par16            = number*size;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;         
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_GetMemory() no more memory", s_eobj_ownname, &errdes);
@@ -373,7 +373,7 @@ extern void * eo_mempool_New(EOtheMemoryPool *p, uint32_t size)
     {   // manage the fatal error in case memory could not be achieved
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_memory_missing;
-        errdes.param            = size;
+        errdes.par16            = size;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0; 
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_New() no more memory", s_eobj_ownname, &errdes);
@@ -399,7 +399,7 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
     {
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_wrongusage;
-        errdes.param            = 0;
+        errdes.par16            = 0;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;         
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_Realloc() used when non dyn", s_eobj_ownname, &errdes);
@@ -418,7 +418,7 @@ extern void * eo_mempool_Realloc(EOtheMemoryPool *p, void *m, uint32_t size)
     {   // manage the fatal error in case memory could not be achieved
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_memory_missing;
-        errdes.param            = size;
+        errdes.par16            = size;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;         
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_mempool_Realloc() no more memory", s_eobj_ownname, &errdes);
@@ -472,7 +472,7 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
     {
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_mutex_timeout;
-        errdes.param            = s_the_mempool.tout / 1000;
+        errdes.par16            = s_the_mempool.tout / 1000;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_mempool_get_static(): mutex_take() tout", s_eobj_ownname, &errdes);
@@ -542,7 +542,7 @@ static void * s_eo_mempool_get_static(eOmempool_alignment_t alignmode, uint16_t 
     {   // manage error
         eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_memory_missing;
-        errdes.param            = size*number;
+        errdes.par16            = size*number;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
         errdes.sourceaddress    = 0;
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "s_eo_mempool_get_static(): no more mem", s_eobj_ownname, &errdes);

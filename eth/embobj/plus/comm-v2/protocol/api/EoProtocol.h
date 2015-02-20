@@ -491,6 +491,16 @@ extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_en
 extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_variable_descriptor_t *cbkdes);
 
 
+// functions which tell about board properties
+
+
+/** @fn         extern eOprotBRD_t eoprot_board_local_get(void)
+    @brief      tells the id of the local board
+    @return     the local board id in range [0, ...] or eo_prot_BRDdummy if the localbord is not configured yet
+ **/
+extern eOprotBRD_t eoprot_board_local_get(void);
+
+
 // functions which tell about properties of the endpoints and of the entities.
 
 

@@ -316,7 +316,7 @@ typedef struct                      // size is 4+2+16+1+1+6+2 = 32 bytes
     eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
 	uint16_t						cloop_timings[3];
     uint8_t                         filler02[2];
-} eOmn_appl_status_t;               //EO_VERIFYsizeof(eOmn_appl_status_t, 32);
+} eOmn_appl_status_t;               EO_VERIFYsizeof(eOmn_appl_status_t, 32);
 
                                          
 /** @typedef    typedef struct eOmn_appl_cmmnds_t;
@@ -397,11 +397,12 @@ typedef enum
 typedef struct
 {
     uint32_t                code;           /**< the code of the info. used to communicate in a ultra-compact mode what happens. its value must be taken from a table */
-    uint16_t                param;          /**< these bits can be used to specify further the meaning of code. its use id code-dependant */
     uint16_t                flags;          /**< the field flags contains the following sub-fields. type:3 uses eOmn_info_type_t; source:3 uses eOmn_info_source_t; address:4 contains the 
                                                  address of the source (0 for source == eomn_info_source_board); 
                                                  extraformat: 2 uses eOmn_info_extraformat_t to tell how eOmn_info_status_t::extra[] is used  */
-} eOmn_info_properties_t;   EO_VERIFYsizeof(eOmn_info_properties_t, 8);
+    uint16_t                par16;          /**< these 2 bytes can be used to specify further the meaning of code. its use id code-dependant */
+    uint64_t                par64;          /**< these 4 bytes can be used to specify further the meaning of code. its use id code-dependant */
+} eOmn_info_properties_t;   EO_VERIFYsizeof(eOmn_info_properties_t, 16);
 
 
 
@@ -410,10 +411,10 @@ typedef struct
 {
     uint64_t                timestamp;  /**< it keeps the absolute time in microseconds since the EMS has bootstrapped */
     eOmn_info_properties_t  properties; /**< specifies the properties of the info */          
-} eOmn_info_basic_t;        EO_VERIFYsizeof(eOmn_info_basic_t, 16);
+} eOmn_info_basic_t;        EO_VERIFYsizeof(eOmn_info_basic_t, 24);
 
 
-enum { eomn_info_status_extra_sizeof = 56 };
+enum { eomn_info_status_extra_sizeof = 48 };
 
 /** @typedef    typedef struct eOmn_info_status_t;
     @brief      used to report status of the info

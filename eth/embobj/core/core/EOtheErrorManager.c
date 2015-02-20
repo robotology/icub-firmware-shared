@@ -52,6 +52,8 @@
 // - definition (and initialisation) of extern variables, but better using _get(), _set() 
 // --------------------------------------------------------------------------------------------------------------------
 
+#warning marco.accame: think of removing eOerrmanCode_t and use only eoerror_code_get(). OR ... be sure its values are the same as those in EoError.h 
+
 const eOerrman_cfg_t eo_errman_DefaultCfg = 
 {
     EO_INIT(.extfn)
@@ -64,57 +66,64 @@ const eOerrman_cfg_t eo_errman_DefaultCfg =
 const eOerrmanDescriptor_t eo_errman_DescrUnspecified = 
 {
     EO_INIT(.code)          eo_errman_code_sys_unspecified,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 const eOerrmanDescriptor_t eo_errman_DescrTobedecided = 
 {
     EO_INIT(.code)          eo_errman_code_sys_tobedecided,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 const eOerrmanDescriptor_t eo_errman_DescrWrongParamLocal = 
 {
     EO_INIT(.code)          eo_errman_code_sys_wrongparam,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 const eOerrmanDescriptor_t eo_errman_DescrWrongUsageLocal = 
 {
     EO_INIT(.code)          eo_errman_code_sys_wrongusage,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 const eOerrmanDescriptor_t eo_errman_DescrRuntimeErrorLocal = 
 {
     EO_INIT(.code)          eo_errman_code_sys_runtimeerror,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 const eOerrmanDescriptor_t eo_errman_DescrRunningHappily = 
 {
     EO_INIT(.code)          eo_errman_code_sys_runninghappily,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 const eOerrmanDescriptor_t eo_errman_DescrRuntimeFatalErrorState = 
 {
     EO_INIT(.code)          eo_errman_code_sys_runninginfatalerrorstate,
-    EO_INIT(.param)         0,
     EO_INIT(.sourcedevice)  eo_errman_sourcedevice_localboard,
-    EO_INIT(.sourceaddress) 0
+    EO_INIT(.sourceaddress) 0,
+    EO_INIT(.par16)         0,
+    EO_INIT(.par64)         0
 };
 
 

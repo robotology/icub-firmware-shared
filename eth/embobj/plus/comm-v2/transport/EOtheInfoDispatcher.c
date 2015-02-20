@@ -367,14 +367,14 @@ static void s_eo_infodispatcher_overflow_init(EOtheInfoDispatcher* p)
     
     p->overflow->basic.timestamp                = 0;
     p->overflow->basic.properties.code          = eoerror_code_get(eoerror_category_System, eoerror_value_SYS_dispatcherfifooverflow);
-    p->overflow->basic.properties.param         = 0;
+    p->overflow->basic.properties.par16         = 0;
+    p->overflow->basic.properties.par64         = 0;
     
     EOMN_INFO_PROPERTIES_FLAGS_set_type(p->overflow->basic.properties.flags, eomn_info_type_error);
     EOMN_INFO_PROPERTIES_FLAGS_set_source(p->overflow->basic.properties.flags, eomn_info_source_board);
     EOMN_INFO_PROPERTIES_FLAGS_set_address(p->overflow->basic.properties.flags, 0);
     EOMN_INFO_PROPERTIES_FLAGS_set_extraformat(p->overflow->basic.properties.flags, eomn_info_extraformat_none);
-    EOMN_INFO_PROPERTIES_FLAGS_set_futureuse(p->overflow->basic.properties.flags, 0);    
-        
+    EOMN_INFO_PROPERTIES_FLAGS_set_futureuse(p->overflow->basic.properties.flags, 0);            
 }
 
 
@@ -382,7 +382,8 @@ static void s_eo_infodispatcher_overflow_clear(EOtheInfoDispatcher* p)
 {   
     p->overflow->basic.timestamp = 0;
     
-    p->overflow->basic.properties.param = 0;
+    p->overflow->basic.properties.par16 = 0;
+    p->overflow->basic.properties.par64 = 0;
 }
 
 
@@ -394,7 +395,7 @@ static void s_eo_infodispatcher_overflow_fill(EOtheInfoDispatcher* p)
         p->overflow->basic.timestamp = eov_sys_LifeTimeGet(eov_sys_GetHandle());            
     }
     
-    p->overflow->basic.properties.param ++;
+    p->overflow->basic.properties.par16 ++;
 }
 
 
