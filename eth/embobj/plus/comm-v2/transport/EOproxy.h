@@ -70,7 +70,7 @@ typedef struct
 {
     eOproxymode_t                       mode;
     uint16_t                            capacityoflistofropdes;
-    eOreltime_t                         replyroptimeout;            // no timeout if EOK_uint64dummy 
+    eOreltime_t                         replyroptimeout;            // no timeout if eok_reltimeINFINITE 
     eov_mutex_fn_mutexderived_new       mutex_fn_new;
     void*                               transceiver; // points to a EOtransceiver
 } eOproxy_cfg_t;

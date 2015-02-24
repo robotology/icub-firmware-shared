@@ -147,10 +147,14 @@ typedef enum
 	eoerror_value_SYS_ctrloop_txphasemax      	    = 35,
     eoerror_value_SYS_ctrloop_rxphasemin      	    = 36,
 	eoerror_value_SYS_ctrloop_dophasemin      	    = 37,
-	eoerror_value_SYS_ctrloop_txphasemin      	    = 38
+	eoerror_value_SYS_ctrloop_txphasemin      	    = 38,
+    eoerror_value_SYS_proxy_forward_fails           = 39,
+    eoerror_value_SYS_proxy_forward_callback_fails  = 40,
+    eoerror_value_SYS_proxy_reply_fails             = 41,
+    eoerror_value_SYS_proxy_ropdes_notfound         = 42
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 39 };
+enum { eoerror_value_SYS_numberof = 43 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t

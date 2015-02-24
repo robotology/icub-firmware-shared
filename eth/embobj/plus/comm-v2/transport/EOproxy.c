@@ -26,6 +26,7 @@
 #include "stdio.h"
 #include "EOtheMemoryPool.h"
 #include "EOtheErrorManager.h"
+#include "EoError.h"
 #include "EOnv_hid.h"
 #include "EOrop_hid.h"
 #include "EOVtheSystem.h"
@@ -183,9 +184,17 @@ extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
 {
     eOresult_t res = eores_NOK_generic;
     EOnv *nv = NULL;
+    eOerrmanDescriptor_t errdes = {0};
+	errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+    errdes.sourceaddress    = 0;
+    errdes.code             = eoerror_code_get(eoerror_category_System, eoerror_value_SYS_proxy_forward_fails);
+    errdes.par16            = 0; 
+    errdes.par64            = 0; 
+	 
     
     if((NULL == p) || (NULL == rop))
     {
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
         return(eores_NOK_nullpointer);
     }
 
@@ -193,6 +202,9 @@ extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
     
     if(eobool_false == eo_nv_IsProxied(nv))
     {
+        errdes.par16 = (eo_list_Capacity(p->listofropdes) << 8) | (eo_list_Size(p->listofropdes));
+        errdes.par64 = ((uint64_t)rop->ropdes.signature << 32) | (rop->ropdes.id32);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
         return(eores_NOK_generic);
     }
 
@@ -220,6 +232,13 @@ extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
         
     }
     
+    if(eores_OK != res)
+    {
+        errdes.par16 = (eo_list_Capacity(p->listofropdes) << 8) | (eo_list_Size(p->listofropdes));
+        errdes.par64 = ((uint64_t)rop->ropdes.signature << 32) | (rop->ropdes.id32);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);       
+    }
+    
     return(res);
 }
 
@@ -229,12 +248,19 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
     EOlistIter* li = NULL;
     eo_proxy_search_key_t skey = {0};
     eo_proxy_ropdes_plus_t *item = NULL;
+    eOerrmanDescriptor_t errdes = {0};
+	errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+    errdes.sourceaddress    = 0;
+    errdes.code             = eoerror_code_get(eoerror_category_System, eoerror_value_SYS_proxy_reply_fails);
+    errdes.par16            = 0; 
+    errdes.par64            = 0; 
 
     skey.id32 = id32;
     skey.sign = signature;
         
     if(NULL == p)
     {
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
         return(eores_NOK_nullpointer);
     }
         
@@ -245,6 +271,11 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
     if(NULL == li)
     {   // there is no entry with id32 in the list ... i dont load any reply rop
         eov_mutex_Release(p->mtx);
+        
+        errdes.par16 = (eo_list_Capacity(p->listofropdes) << 8) | (eo_list_Size(p->listofropdes));
+        errdes.par64 = ((uint64_t)signature << 32) | (id32);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
+        
         return(eores_NOK_generic);
     }
     
@@ -258,6 +289,12 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
     // item->ropdes is already ok (opc is say, id32 is ..., etc.) ... i just change the time
     item->ropdes.time = 0;    
     res = eo_transceiver_ReplyROP_Load(p->config.transceiver, &item->ropdes);
+    if(eores_OK != res)
+    {
+        errdes.par16 = 0;
+        errdes.par64 = ((uint64_t)signature << 32) | (id32);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
+    }
     
     eo_list_Erase(p->listofropdes, li);
     
@@ -378,7 +415,7 @@ static eOresult_t s_eo_proxy_forward_ask(EOproxy *p, EOrop *rop, EOrop *ropout)
         {
             ropout->stream.head.ctrl.confinfo = eo_ropconf_nak;
         } 
-        #endif
+        #endif       
         
         eov_mutex_Release(p->mtx);
         return(res);
@@ -399,12 +436,15 @@ static eOresult_t s_eo_proxy_forward_ask(EOproxy *p, EOrop *rop, EOrop *ropout)
     ropdesplus.ropdes.id32              = ropdes->id32;
     ropdesplus.ropdes.data              = NULL;
     ropdesplus.ropdes.signature         = ropdes->signature;
-    // in ropdes.time we put the timeout
-    ropdesplus.ropdes.time              =  p->config.replyroptimeout;
-    if(EOK_uint64dummy != p->config.replyroptimeout)
+    // in ropdes.time we put the time at which we want the entry to expire    
+    if(eok_reltimeINFINITE == p->config.replyroptimeout)
     {
-        ropdesplus.ropdes.time += timenow;
-    }   
+        ropdesplus.ropdes.time = EOK_uint64dummy;   // so that the the check of higher than any measured time always gives false
+    } 
+    else
+    {
+        ropdesplus.ropdes.time = timenow + p->config.replyroptimeout;
+    }    
 
     // we copy the nv
     memcpy(&ropdesplus.nv, nv, sizeof(EOnv));
