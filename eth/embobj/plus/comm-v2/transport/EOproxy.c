@@ -78,7 +78,8 @@ typedef struct              // 24+24=48
 {
     eOropdescriptor_t       ropdes; // ropdes.time contains the expiry time ...
     EOnv                    nv;
-} eo_proxy_ropdes_plus_t;
+    eOproxy_params_t        params;
+} eo_proxy_ropdes_plus_t;   //EO_VERIFYsizeof(eo_proxy_ropdes_plus_t, 56); 
 
 typedef struct
 {
@@ -242,7 +243,53 @@ extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout)
     return(res);
 }
 
-extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t signature, void *data)
+extern eOproxy_params_t * eo_proxy_Params_Get(EOproxy *p, eOnvID32_t id32)
+{
+    eOproxy_params_t *par = NULL;
+    
+    EOlistIter* li = NULL;
+    eo_proxy_search_key_t skey = {0};
+    eo_proxy_ropdes_plus_t *item = NULL;
+    
+    eOerrmanDescriptor_t errdes = {0};
+	errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
+    errdes.sourceaddress    = 0;
+    errdes.code             = eoerror_code_get(eoerror_category_System, eoerror_value_SYS_proxy_ropdes_notfound);
+    errdes.par16            = 0; 
+    errdes.par64            = 0; 
+
+    skey.id32 = id32;
+    skey.sign = EOK_uint32dummy;
+    
+    if(NULL == p)
+    {
+        //eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
+        return(par);
+    }
+    
+    eov_mutex_Take(p->mtx, eok_reltimeINFINITE);
+    
+    li = eo_list_Find(p->listofropdes, s_matching_rule_id32, &skey);
+
+    if(NULL == li)
+    {   // there is no entry with id32 in the list ... i cannot give teh param back
+        eov_mutex_Release(p->mtx);
+        
+        errdes.par16 = (eo_list_Capacity(p->listofropdes) << 8) | (eo_list_Size(p->listofropdes));
+        errdes.par64 = (id32);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
+        
+        return(par);
+    }
+    
+    item = (eo_proxy_ropdes_plus_t*) eo_list_At(p->listofropdes, li);       
+    eov_mutex_Release(p->mtx);   
+
+    return(&item->params);   
+}
+
+
+extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, void *data)
 {
     eOresult_t res = eores_NOK_generic;
     EOlistIter* li = NULL;
@@ -256,7 +303,7 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
     errdes.par64            = 0; 
 
     skey.id32 = id32;
-    skey.sign = signature;
+    skey.sign = EOK_uint32dummy;
         
     if(NULL == p)
     {
@@ -273,7 +320,8 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
         eov_mutex_Release(p->mtx);
         
         errdes.par16 = (eo_list_Capacity(p->listofropdes) << 8) | (eo_list_Size(p->listofropdes));
-        errdes.par64 = ((uint64_t)signature << 32) | (id32);
+        //errdes.par64 = ((uint64_t)signature << 32) | (id32);
+        errdes.par64 = (id32);
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
         
         return(eores_NOK_generic);
@@ -292,14 +340,15 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t s
     if(eores_OK != res)
     {
         errdes.par16 = 0;
-        errdes.par64 = ((uint64_t)signature << 32) | (id32);
+        //errdes.par64 = ((uint64_t)signature << 32) | (id32);
+        errdes.par64 = (id32);
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, NULL, NULL, &errdes);
     }
     
     eo_list_Erase(p->listofropdes, li);
     
     eov_mutex_Release(p->mtx);
-
+    
     return(res);    
 }
     
@@ -448,6 +497,9 @@ static eOresult_t s_eo_proxy_forward_ask(EOproxy *p, EOrop *rop, EOrop *ropout)
 
     // we copy the nv
     memcpy(&ropdesplus.nv, nv, sizeof(EOnv));
+    
+    // clear the param
+    memset(&ropdesplus.params, 0, sizeof(ropdesplus.params));
        
     // now we insert the item in the list according to expiry time. 
     // since the timeouts  are all equal, i just append the item at the end of the list

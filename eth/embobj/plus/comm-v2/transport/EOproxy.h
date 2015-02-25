@@ -76,6 +76,13 @@ typedef struct
 } eOproxy_cfg_t;
 
 
+typedef struct
+{
+    uint8_t     p08_1;
+    uint8_t     p08_2;
+    uint16_t    p16_3;
+    uint32_t    p32_4;
+} eOproxy_params_t; //EO_VERIFYsizeof(eOproxy_params_t, 8); 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
@@ -114,8 +121,23 @@ extern void eo_proxy_Delete(EOproxy *p);
 extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout);
 
 
+/** @fn         extern eOproxy_params_t * eo_proxy_Params_Get(EOproxy *p, eOnvID32_t id32)
+    @brief      asks the proxy to retrieve the pointer to the internal struct param associated to the id32.
+                if there is no match for a given id32, then the result is NULL.
+                The user can retrieve the param struct and modify it according to the needs.
+                For instance, if one wants to receive two can frames before issuying the eo_proxy_ReplyROP_Load(),
+                then it is possible to do that. inside the UPDT callback retrieve the param, assign value 2 to param->p08_1 
+                and value 0 to param->p08_2 and tehn sending two can queries. at reception of each can reply, the param is 
+                retrieved and the param->p08_2 is incremented. If equal to param->p08_1 then it is called  eo_proxy_ReplyROP_Load().              
+    @param      p           the object.
+    @param      rop         the rop to forward.
+    @param      ropout      the possible rop to send back (a nak for instance or a ack).
+    @return     eores_NOK_nullpointer if any argument is NULL, eores_NOK_generic if the netvar canot be proxied,
+                or eores_OK on success.    
+ **/
+extern eOproxy_params_t * eo_proxy_Params_Get(EOproxy *p, eOnvID32_t id32); 
 
-/** @fn         extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t signature, void *data)
+/** @fn         extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, void *data)
     @brief      tells the proxy that a reply has arrived. the ropdescriptor to use is searched inside the object using 
                 two keys: the id32 and the signature. If signature has value EOK_uint32dummy then it is not used.
     @param      p           the object.
@@ -125,7 +147,7 @@ extern eOresult_t eo_proxy_ROP_Forward(EOproxy *p, EOrop* rop, EOrop* ropout);
     @return     eores_NOK_nullpointer if any argument is NULL, eores_NOK_generic if the netvar canot be proxied,
                 or eores_OK on success.    
  **/
-extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, uint32_t signature, void *data);
+extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, void *data);
 
 
 /** @fn         extern eOresult_t eo_proxy_Tick(EOproxy *p)

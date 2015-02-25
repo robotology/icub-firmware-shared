@@ -566,7 +566,7 @@ extern eOresult_t eo_transceiver_LoadReplyInProxy(EOtransceiver *p, eOnvID32_t i
     }
 
     // if proxy is NULL eo_proxy function returns eores_NOK_nullpointer 
-    return(eo_proxy_ReplyROP_Load(eo_transceiver_GetProxy(p), id32, EOK_uint32dummy, data));
+    return(eo_proxy_ReplyROP_Load(eo_transceiver_GetProxy(p), id32, data));
 }    
 
 
