@@ -138,7 +138,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_proxy_forward_fails,      "SYS: the proxy fails to forward a request. in par64 there are the [sign|id32], in par16 [capacity|size] of proxy list "},
     {eoerror_value_SYS_proxy_forward_callback_fails,  "SYS: the update callback called by a proxy forward fails to operate properly."},
     {eoerror_value_SYS_proxy_reply_fails,        "SYS: the proxy fails to forward a send back a reply. in par64 there are the [sign|id32], in par16 [capacity|size] of proxy list. if par16 is 0, then the rop could not be tx."},
-    {eoerror_value_SYS_proxy_ropdes_notfound,   "SYS: the proxy fails to find an internally stored rop. maybe forward request was expired. in par64 there are the [0|id32]"}
+    {eoerror_value_SYS_proxy_ropdes_notfound,   "SYS: the proxy fails to find an internally stored rop. maybe forward request was expired. in par64 there are the [0|id32]"},
+    {eoerror_value_SYS_canservices_canprint,   "SYS: CAN print message received. The message is stored inside par64. In par16 is stored a progressive number, in case the message has been splitted"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
