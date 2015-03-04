@@ -221,11 +221,11 @@ extern eObool_t eoprot_b04_isvariableproxied(eOnvID32_t id)
     {
         //VALE get velocity pid not implemented!!!
         case eoprot_tag_mc_joint_config_pidposition:
-        case eoprot_tag_mc_joint_config_pidvelocity:
+        // case eoprot_tag_mc_joint_config_pidvelocity:     // marco.accame on 03mar15: the pidvelocity propagation to mc4 is is not implemented, thus i must remove from proxy.
         case eoprot_tag_mc_joint_config_pidtorque:
         case eoprot_tag_mc_joint_config_limitsofjoint:
         case eoprot_tag_mc_joint_config_impedance:
-        case eoprot_tag_mc_joint_cmmnds_setpoint:
+        case eoprot_tag_mc_joint_cmmnds_setpoint:           // marco.accame on 03mar15: the setpoint should not be asked, thus why in here? i may just remove the handler so that no reply is obtained if wrongly used
         {
             return(eobool_true);
         }
