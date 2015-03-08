@@ -649,24 +649,25 @@ typedef struct                  // size is: 40+4+4+2+2 = 52
     @brief      eOmc_motor_status_t contains the status of a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 4+4+2+2+0 = 12
+typedef struct                  // size is: 4+4+4+2+2+0 = 12
 {
     eOmeas_position_t           mot_position;                   /**< the position of the motor */         
-    eOmeas_velocity_t           mot_velocity;                   /**< the velocity of the motor */ 
+    eOmeas_velocity_t           mot_velocity;                   /**< the velocity of the motor */
+    eOmeas_acceleration_t       mot_acceleration;               /**< the acceleration of the motor */ 
     eOmeas_current_t            mot_current;                    /**< the current of the motor */  
     eOmeas_temperature_t        mot_temperature;                /**< the temperature of the motor */
-} eOmc_motor_status_basic_t;    //EO_VERIFYsizeof(eOmc_motor_status_basic_t, 12);
+} eOmc_motor_status_basic_t;    //EO_VERIFYsizeof(eOmc_motor_status_basic_t, 16);
 
 
 /** @typedef    typedef struct eOmc_motor_status_t
     @brief      eOmc_motor_status_t contains the status of a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 12+4+0 = 16
+typedef struct                  // size is: 16+4+0 = 16
 {
     eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */
     uint8_t                     filler04[4];            
-} eOmc_motor_status_t;          //EO_VERIFYsizeof(eOmc_motor_status_t, 16);
+} eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 20);
 
 
 
@@ -674,7 +675,7 @@ typedef struct                  // size is 52+16+0 = 68
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 68); 
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 72); 
  
 
 // -- the definition of a controller containing a given number of joints and motors  
