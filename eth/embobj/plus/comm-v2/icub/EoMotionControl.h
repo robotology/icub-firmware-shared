@@ -553,10 +553,10 @@ typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80
  **/
 typedef struct                  // size is: 4+4+4+2+1+1+0 = 16
 {
-    eOmeas_position_t           position;                   /**< the position of the joint */           
-    eOmeas_velocity_t           velocity;                   /**< the velocity of the joint */          
-    eOmeas_acceleration_t       acceleration;               /**< the acceleration of the joint */       
-    eOmeas_torque_t             torque;                     /**< the torque of the joint when locally measured */
+    eOmeas_position_t           jnt_position;               /**< the position of the joint */           
+    eOmeas_velocity_t           jnt_velocity;               /**< the velocity of the joint */          
+    eOmeas_acceleration_t       jnt_acceleration;           /**< the acceleration of the joint */       
+    eOmeas_torque_t             jnt_torque;                 /**< the torque of the joint when locally measured */
     eOenum08_t                  motionmonitorstatus;        /**< use eOmc_motionmonitorstatus_t. it is eomc_motionmonitorstatus_notmonitored unless the monitor is activated in jconfig.motionmonitormode */  
     eOenum08_t                  controlmodestatus;          /**< use eOmc_controlmode_t. */
 } eOmc_joint_status_basic_t;    //EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
@@ -650,10 +650,10 @@ typedef struct                  // size is: 24+4+2+2+0 = 32
  **/
 typedef struct                  // size is: 4+4+2+2+0 = 12
 {
-    eOmeas_position_t           position;                   /**< the position of the motor */         
-    eOmeas_velocity_t           velocity;                   /**< the velocity of the motor */ 
-    eOmeas_current_t            current;                    /**< the current of the motor */  
-    eOmeas_temperature_t        temperature;                /**< the temperature of the motor */
+    eOmeas_position_t           mot_position;                   /**< the position of the motor */         
+    eOmeas_velocity_t           mot_velocity;                   /**< the velocity of the motor */ 
+    eOmeas_current_t            mot_current;                    /**< the current of the motor */  
+    eOmeas_temperature_t        mot_temperature;                /**< the temperature of the motor */
 } eOmc_motor_status_basic_t;    //EO_VERIFYsizeof(eOmc_motor_status_basic_t, 12);
 
 
