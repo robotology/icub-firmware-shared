@@ -285,6 +285,13 @@ EO_weak extern void eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor(const EOnv
 EO_weak extern void eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_gearboxratio)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_gearboxratio(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_gearboxratio)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_gearboxratio(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status)
 EO_weak extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv) {}
 #endif

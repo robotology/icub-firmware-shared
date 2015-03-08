@@ -635,13 +635,14 @@ typedef uint8_t  eOmc_motorId_t;
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 24+4+2+2+0 = 32
+typedef struct                  // size is: 40+4+4+2+2 = 52
 {
     eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
+    int32_t                     gearboxratio;               /**< the geatbox reduction ration */
     eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
     uint8_t                     filler02[2];                
-} eOmc_motor_config_t;          //EO_VERIFYsizeof(eOmc_motor_config_t, 32);
+} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 52);
 
 
 /** @typedef    typedef struct eOmc_motor_status_t
@@ -669,11 +670,11 @@ typedef struct                  // size is: 12+4+0 = 16
 
 
 
-typedef struct                  // size is 32+16+0 = 48
+typedef struct                  // size is 52+16+0 = 68
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 64); 
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 68); 
  
 
 // -- the definition of a controller containing a given number of joints and motors  

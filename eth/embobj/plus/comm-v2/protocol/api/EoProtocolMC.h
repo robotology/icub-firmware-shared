@@ -139,12 +139,13 @@ typedef enum
 {
     eoprot_tag_mc_motor_wholeitem                                   = 0,
     eoprot_tag_mc_motor_config                                      = 1,
-    eoprot_tag_mc_motor_config_maxcurrentofmotor                    = 2,    
-    eoprot_tag_mc_motor_status                                      = 3,
-    eoprot_tag_mc_motor_status_basic                                = 4
+    eoprot_tag_mc_motor_config_maxcurrentofmotor                    = 2,
+    eoprot_tag_mc_motor_config_gearboxratio                         = 3,
+    eoprot_tag_mc_motor_status                                      = 4,
+    eoprot_tag_mc_motor_status_basic                                = 5
 } eOprot_tag_mc_motor_t;
 
-enum { eoprot_tags_mc_motor_numberof = 5 };   // it MUST be equal to the number of tags 
+enum { eoprot_tags_mc_motor_numberof = 6 };   // it MUST be equal to the number of tags 
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_motor_t
@@ -157,11 +158,12 @@ typedef enum
     eoprot_rwm_mc_motor_wholeitem                                   = eo_nv_rwmode_RO,    
     eoprot_rwm_mc_motor_config                                      = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_maxcurrentofmotor                    = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_gearboxratio                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_status_basic                                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_motor_t;  
 
-enum { eoprot_rwms_mc_motor_numberof = 5 };   // it MUST be equal to the number of rw modes
+enum { eoprot_rwms_mc_motor_numberof = 6 };   // it MUST be equal to the number of rw modes
 
 
 
@@ -305,6 +307,9 @@ extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescripto
 
 extern void eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_gearboxratio(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_gearboxratio(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_status(const EOnv* nv, const eOropdescriptor_t* rd);
