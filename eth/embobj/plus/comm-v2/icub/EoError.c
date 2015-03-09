@@ -78,6 +78,7 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
     eoerror_value_SYS_numberof,
     eoerror_value_HW_numberof,
     eoerror_value_MC_numberof,
+    eoerror_value_SK_numberof,
     eoerror_value_DEB_numberof
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
 
@@ -139,7 +140,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_proxy_forward_callback_fails,  "SYS: the update callback called by a proxy forward fails to operate properly."},
     {eoerror_value_SYS_proxy_reply_fails,        "SYS: the proxy fails to forward a send back a reply. in par64 there are the [sign|id32], in par16 [capacity|size] of proxy list. if par16 is 0, then the rop could not be tx."},
     {eoerror_value_SYS_proxy_ropdes_notfound,   "SYS: the proxy fails to find an internally stored rop. maybe forward request was expired. in par64 there are the [0|id32]"},
-    {eoerror_value_SYS_canservices_canprint,   "SYS: CAN print message received. The message is stored inside par64. In par16 is stored the size of the message for the single frame"}
+    {eoerror_value_SYS_canservices_canprint,    "SYS: CAN print message received. The message is stored inside par64. In par16 is stored the size of the message for the single frame"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
@@ -169,6 +170,15 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
+
+const eoerror_valuestring_t eoerror_valuestrings_SK[] =
+{   // very important: fill table with order of eOerror_value_MC_t
+    //                 in case of holes, use {0, NULL}
+    {eoerror_value_SYS_unspecified,             "SK: unspecified code."},
+    {eoerror_value_SK_arrayofcandataoverflow,   "SK: cannot put rx can frames into arrayofcandata, thus some skin readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
+};  EO_VERIFYsizeof(eoerror_valuestrings_SK, eoerror_value_SK_numberof*sizeof(const eoerror_valuestring_t)); 
+
+
 const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
 {   // very important: fill table with order of eOerror_value_DEB_t
     //                 in case of holes, use {0, NULL}
@@ -192,6 +202,7 @@ const eoerror_valuestring_t * const eoerror_valuestrings[] =
     (const eoerror_valuestring_t *)&eoerror_valuestrings_SYS,   
     (const eoerror_valuestring_t *)&eoerror_valuestrings_HW,        
     (const eoerror_valuestring_t *)&eoerror_valuestrings_MC,
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_SK,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
 
