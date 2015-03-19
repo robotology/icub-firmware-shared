@@ -88,16 +88,14 @@ static const eOnvset_EPcfg_t s_eoprot_b10_theEPcfgs[] =
         EO_INIT(.endpoint)                          eoprot_endpoint_management,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b10_management_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mn,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface        
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mn      
     },        
 
     {   // skin         
         EO_INIT(.endpoint)                          eoprot_endpoint_skin,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b10_skin_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_sk,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface             
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_sk           
     }     
     
 };  EO_VERIFYsizeof(s_eoprot_b10_theEPcfgs, sizeof(eOnvset_EPcfg_t)*(eoprot_b10_endpoints_numberof));

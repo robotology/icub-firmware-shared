@@ -89,24 +89,21 @@ static const eOnvset_EPcfg_t s_eoprot_b05_theEPcfgs[] =
         EO_INIT(.endpoint)                          eoprot_endpoint_management,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b05_management_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mn,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mn
     },        
 
     {   // motion-control         
         EO_INIT(.endpoint)                          eoprot_endpoint_motioncontrol,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b05_motioncontrol_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mc,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface       
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mc    
     },
  
     {   // analog-sensors         
         EO_INIT(.endpoint)                          eoprot_endpoint_analogsensors,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b05_analogsensors_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_as,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface        
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_as      
     }  
     
 };  EO_VERIFYsizeof(s_eoprot_b05_theEPcfgs, sizeof(eOnvset_EPcfg_t)*(eoprot_b05_endpoints_numberof));

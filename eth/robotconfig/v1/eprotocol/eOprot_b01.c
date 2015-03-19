@@ -89,24 +89,21 @@ static const eOnvset_EPcfg_t s_eoprot_b01_theEPcfgs[] =
         EO_INIT(.endpoint)                          eoprot_endpoint_management,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b01_management_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mn,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mn
     },        
 
     {   // motion-control         
         EO_INIT(.endpoint)                          eoprot_endpoint_motioncontrol,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b01_motioncontrol_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mc,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface       
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_mc      
     },
  
     {   // analog-sensors         
         EO_INIT(.endpoint)                          eoprot_endpoint_analogsensors,
         EO_INIT(.dummy)                             0,
         EO_INIT(.epram_sizeof)                      sizeof(eOprot_b01_analogsensors_t),
-        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_as,
-        EO_INIT(.protif)                            (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface        
+        EO_INIT(.fptr_ram_initialise)               eoprot_fun_INITIALISE_as       
     }  
     
 };  EO_VERIFYsizeof(s_eoprot_b01_theEPcfgs, sizeof(eOnvset_EPcfg_t)*(eoprot_b01_endpoints_numberof));
@@ -168,7 +165,11 @@ const uint8_t eoprot_b01_as_entities_numberofeach[eoas_entities_numberof] =
 
 extern eOresult_t eoprot_b01_Initialise(void* p, eObool_t islocal)
 {
-    // must initialise the mc, the mn, the ...
+    // must initialise the mc, the mn, the ...    
+    
+    //eoprot_config_onsay_endpoint_set(eoprot_endpoint_management, NULL);
+    //eoprot_config_onsay_endpoint_set(eoprot_endpoint_motioncontrol, NULL);
+    //eoprot_config_onsay_endpoint_set(eoprot_endpoint_analogsensors, NULL);
     
     eoprot_config_endpoint_entities(eoprot_b01_boardnumber, eoprot_endpoint_management, eoprot_b01_mn_entities_numberofeach);
     eoprot_config_endpoint_entities(eoprot_b01_boardnumber, eoprot_endpoint_motioncontrol, eoprot_b01_mc_entities_numberofeach);
