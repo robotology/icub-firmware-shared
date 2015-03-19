@@ -348,7 +348,7 @@ extern eOresult_t eo_nvsetdevbuilder_Prepare(EOnvsetDEVbuilder* p)
     
     
     epcfg.dummy         = 0;
-    epcfg.protif        = (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface;
+//    epcfg.protif        = (eOnvset_protocol_Interface_t*)&eoprot_eonvset_Interface;
     
     for(i=0; i<numofeps; i++)
     {   // i is for endpoint

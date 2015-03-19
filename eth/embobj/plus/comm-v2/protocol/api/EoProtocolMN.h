@@ -193,12 +193,14 @@ typedef struct                  // 120+40+80+0 = 240
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram);
+// suggested name for onsay in management. the function is not defined.
+extern void eoprot_fun_ONSAY_mn(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
 // - declaration of extern overridable functions ----------------------------------------------------------------------
 // but if EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME is defined, then these functions are not defined.
 
+extern void eoprot_fun_INITIALISE_mn(eOprotIP_t ip, void *ram);
 
 // - comm
 

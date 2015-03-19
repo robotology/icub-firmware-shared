@@ -460,6 +460,12 @@ static void s_eo_agent_rop_exec(EOrop *rop_in, EOrop *rop_o)
             // force write also if an input, force update.
             source = rop_in->stream.data;
             eo_nv_hid_remoteSetROP(thenv, source, eo_nv_upd_always, theropdes);
+            
+            // if a say, then call the onsay() if not NULL
+            if(eo_ropcode_say == rop_in->stream.head.ropc)
+            {
+                eo_nv_hid_OnSay(thenv, theropdes);
+            }
 
             // in here we manage the case in which the sig message that we have received required an ack.
             if((1 == rop_in->stream.head.ctrl.rqstconf) && (NULL != rop_o) && (eo_ropcode_sig == rop_in->stream.head.ropc))

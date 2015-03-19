@@ -341,12 +341,13 @@ extern eOnvOwnership_t eo_nv_GetOwnership(const EOnv *nv)
 // --------------------------------------------------------------------------------------------------------------------
 
 
-extern eOresult_t eo_nv_hid_Load(EOnv *nv, eOipv4addr_t ip, eOnvBRD_t brd, eObool_t proxied, eOnvID32_t id32, EOnv_rom_t* rom, void* ram, EOVmutexDerived* mtx)
+extern eOresult_t eo_nv_hid_Load(EOnv *nv, eOipv4addr_t ip, eOnvBRD_t brd, eObool_t proxied, eOnvID32_t id32, eOvoid_fp_cnvp_cropdesp_t onsay, EOnv_rom_t* rom, void* ram, EOVmutexDerived* mtx)
 {
     nv->ip          = ip;
     nv->brd         = brd;
     nv->proxied     = proxied;
     nv->id32        = id32;
+    nv->onsay       = onsay;
     nv->rom         = rom;
     nv->ram         = ram; 
     nv->mtx         = mtx;
@@ -446,6 +447,25 @@ extern eOresult_t eo_nv_hid_remoteSetROP(const EOnv *nv, const void *dat, eOnvUp
     }
 
     return(s_eo_nv_SetROP(nv, dat, nv->ram, upd, ropdes));
+}
+
+
+extern eOresult_t eo_nv_hid_OnSay(const EOnv *nv, const eOropdescriptor_t* ropdes)
+{
+    if((NULL == nv) || (NULL == ropdes))
+    {
+        return(eores_NOK_nullpointer);
+    }
+
+    // call the onsay function function if not NULL
+    if(NULL != nv->onsay)
+    {             
+        eov_mutex_Take(nv->mtx, eok_reltimeINFINITE);
+        nv->onsay(nv, ropdes);
+        eov_mutex_Release(nv->mtx);
+    }
+    
+    return(eores_OK);
 }
 
 

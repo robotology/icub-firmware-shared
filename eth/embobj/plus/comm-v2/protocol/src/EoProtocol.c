@@ -69,8 +69,6 @@
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id); // actually brd is not used ...
-
 static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep);
 static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, eOprotEntity_t entity, eOprotIndex_t index);
 static uint16_t s_eoprot_brdid2ramoffset(eOprotBRD_t brd, uint8_t epi, eOprotID32_t id);
@@ -104,17 +102,17 @@ const uint8_t* eoprot_board_numberofeachentity[eoprot_boards_maxnumberof][eoprot
 void* eoprot_board_ramofeachendpoint[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
 eObool_fp_uint32_t eoprot_board_isvarproxied_fns[eoprot_boards_maxnumberof] = { NULL };
 
-const eOprot_nvset_Interface_t eoprot_eonvset_Interface =
-{
-    EO_INIT(.loadram)               eoprot_config_endpoint_ram,
-    EO_INIT(.getvarsnumberof)       s_eoprot_endpoint_numberofvariables_get,       
-    EO_INIT(.isidsupported)         eoprot_id_isvalid,     
-    EO_INIT(.epgetid)               eoprot_endpoint_prognum2id,            
-    EO_INIT(.epgetprognumber)       eoprot_endpoint_id2prognum,     
-    EO_INIT(.getrom)                s_eoprot_eonvrom_get,             
-    EO_INIT(.getram)                eoprot_variable_ramof_get,
-    EO_INIT(.isvarproxied)          eoprot_variable_is_proxied    
-};
+//const eOprot_nvset_Interface_t eoprot_eonvset_Interface =
+//{
+//    EO_INIT(.loadram)               eoprot_config_endpoint_ram,
+//    EO_INIT(.getvarsnumberof)       s_eoprot_endpoint_numberofvariables_get,       
+//    EO_INIT(.isidsupported)         eoprot_id_isvalid,     
+//    EO_INIT(.epgetid)               eoprot_endpoint_prognum2id,            
+//    EO_INIT(.epgetprognumber)       eoprot_endpoint_id2prognum,     
+//    EO_INIT(.getrom)                eoprot_variable_romof_get,             
+//    EO_INIT(.getram)                eoprot_variable_ramof_get,
+//    EO_INIT(.isvarproxied)          eoprot_variable_is_proxied    
+//};
 
 
 
@@ -436,6 +434,34 @@ extern eOresult_t eoprot_config_callbacks_endpoint_set(const eOprot_callbacks_en
     
 #endif    
 }
+
+extern eOresult_t eoprot_config_onsay_endpoint_set(eOprotEndpoint_t ep, eOvoid_fp_cnvp_cropdesp_t onsay)
+{
+    uint8_t epindex = 0;
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(eores_NOK_generic);
+    }
+    epindex = eoprot_ep_ep2index(ep);
+    
+    eoprot_ep_onsay[epindex] = onsay;
+
+    return(eores_OK);      
+}
+
+
+extern eOvoid_fp_cnvp_cropdesp_t eoprot_onsay_endpoint_get(eOprotEndpoint_t ep)
+{
+    uint8_t epindex = 0;
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(NULL);
+    }
+    epindex = eoprot_ep_ep2index(ep);
+    
+    return(eoprot_ep_onsay[epindex]);    
+}    
+   
 
 extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_variable_descriptor_t *cbkdes)
 {
@@ -969,6 +995,26 @@ extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
     return(res);
 }
 
+extern void* eoprot_variable_romof_get(eOprotBRD_t brd, eOprotID32_t id)
+{
+// we dont verify brd validity because the eonvrom is common to every board
+//     if(eoprot_board_localboard == brd)
+//     {
+//         brd = s_eoprot_localboard;
+//     } 
+//     
+//     if(brd >= eoprot_boards_maxnumberof)
+//     {
+//         return(NULL);
+//     }
+    
+// the following is for debug only    
+//    char str[128];
+//    eoprot_ID2information(id, str, sizeof(str));
+//    hal_trace_puts(str);   
+    
+    return(s_eoprot_rom_get_nvrom(id));
+}
 
 extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
 {
@@ -1289,26 +1335,6 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
 
 //#include "hal_trace.h"
 
-static void* s_eoprot_eonvrom_get(eOprotBRD_t brd, eOprotID32_t id)
-{
-// we dont verify brd validity because the eonvrom is common to every board
-//     if(eoprot_board_localboard == brd)
-//     {
-//         brd = s_eoprot_localboard;
-//     } 
-//     
-//     if(brd >= eoprot_boards_maxnumberof)
-//     {
-//         return(NULL);
-//     }
-    
-// the following is for debug only    
-//    char str[128];
-//    eoprot_ID2information(id, str, sizeof(str));
-//    hal_trace_puts(str);   
-    
-    return(s_eoprot_rom_get_nvrom(id));
-}
 
 static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
@@ -1505,7 +1531,7 @@ static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_c
 #if     !defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
     return(eores_NOK_generic);
 #else
-    EOnv_rom_t* nvrom = (EOnv_rom_t*)s_eoprot_eonvrom_get(0, id); // s_eoprot_eonvrom_get() does not use brd param
+    EOnv_rom_t* nvrom = (EOnv_rom_t*)eoprot_variable_romof_get(0, id); // eoprot_variable_romof_get() does not use brd param
     
     if(NULL == nvrom)
     {

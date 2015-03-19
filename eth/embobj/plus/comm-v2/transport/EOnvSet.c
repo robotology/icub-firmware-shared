@@ -253,7 +253,8 @@ static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, e
         return(eores_NOK_nullpointer); 
     }
     
-    epnvsnumberof = cfgofep->protif->getvarsnumberof(boardnum, cfgofep->endpoint);
+    //epnvsnumberof = cfgofep->protif->getvarsnumberof(boardnum, cfgofep->endpoint);
+    epnvsnumberof = eoprot_endpoint_numberofvariables_get(boardnum, cfgofep->endpoint);
     
     eo_errman_Assert(eo_errman_GetHandle(), (0 != epnvsnumberof), "s_eo_nvset_onDEV_PushBackEP(): 0 epnvsnumberof", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal); 
     
@@ -273,9 +274,11 @@ static eOresult_t s_eo_nvset_onDEV_PushBackEP(EOnvSet* p, uint16_t ondevindex, e
     theendpoint->mtx_endpoint       = (eo_nvset_protection_one_per_endpoint == p->protection) ? p->mtxderived_new() : NULL;
         
     // now we must load the ram in the endpoint
-    fptr_loadram = theendpoint->epcfg.protif->loadram;
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != fptr_loadram), "s_eo_nvset_onDEV_PushBackEP(): NULL fptr_loadram", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal); 
-    fptr_loadram((*thedev)->boardnum, theendpoint->epcfg.endpoint, theendpoint->epram, theendpoint->epcfg.epram_sizeof);
+//    fptr_loadram = theendpoint->epcfg.protif->loadram;
+//    eo_errman_Assert(eo_errman_GetHandle(), (NULL != fptr_loadram), "s_eo_nvset_onDEV_PushBackEP(): NULL fptr_loadram", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal); 
+//    fptr_loadram((*thedev)->boardnum, theendpoint->epcfg.endpoint, theendpoint->epram, theendpoint->epcfg.epram_sizeof);
+    
+    eoprot_config_endpoint_ram((*thedev)->boardnum, theendpoint->epcfg.endpoint, theendpoint->epram, theendpoint->epcfg.epram_sizeof);
     
     // now add the vector of mtx if needed.
     if(eo_nvset_protection_one_per_netvar == p->protection)
@@ -400,6 +403,7 @@ extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p)
             eOnvID32_t id32 = EOK_uint32dummy;     
             uint32_t prog = 0;
             eObool_t proxied = eobool_false;
+            eOvoid_fp_cnvp_cropdesp_t onsay = NULL;
 
             for(k=0; k<nvars; k++)
             {
@@ -412,18 +416,24 @@ extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p)
                 
                 prog = k;
                 // - 0. the id32 
-                id32 = (*theEndpoint)->epcfg.protif->epgetid(brd, ep08, prog);    
+                //id32 = (*theEndpoint)->epcfg.protif->epgetid(brd, ep08, prog);   
+                id32 = eoprot_endpoint_prognum2id(brd, ep08, prog);               
                 if(EOK_uint32dummy == id32)
                 {
                     continue;
                 }
 
                 // - 0+. proxied?
-                proxied = (*theEndpoint)->epcfg.protif->isvarproxied(brd, id32);               
+                //proxied = (*theEndpoint)->epcfg.protif->isvarproxied(brd, id32);  
+                proxied = eoprot_variable_is_proxied(brd, id32);                
+                // - 0++ onsay
+                onsay = eoprot_onsay_endpoint_get(ep08); 
                 // - 1. the rom
-                rom = (EOnv_rom_t*) (*theEndpoint)->epcfg.protif->getrom(brd, id32);
+                //rom = (EOnv_rom_t*) (*theEndpoint)->epcfg.protif->getrom(brd, id32);
+                rom = (EOnv_rom_t*) eoprot_variable_romof_get(brd, id32);
                 // - 2. the ram
-                ram = (uint8_t*) ((*theEndpoint)->epcfg.protif->getram(brd, id32));
+                //ram = (uint8_t*) ((*theEndpoint)->epcfg.protif->getram(brd, id32));
+                ram = (uint8_t*) eoprot_variable_ramof_get(brd, id32);
                 // - 3. the mtx
                 mtx2use = s_eo_nvset_get_nvmutex(p, (*theDevice), (*theEndpoint), id32);
 
@@ -433,6 +443,7 @@ extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p)
                                     brd,
                                     proxied,
                                     id32,
+                                    onsay,
                                     rom,
                                     ram,
                                     mtx2use
@@ -551,6 +562,7 @@ extern eOresult_t eo_nvset_NV_Get(EOnvSet* p, eOipv4addr_t ip, eOnvID32_t id32, 
     EOnv_rom_t* rom = NULL;
     uint8_t* ram = NULL;
     EOVmutexDerived* mtx2use = NULL;
+    eOvoid_fp_cnvp_cropdesp_t onsay = NULL;
 
  
     if((NULL == p) || (NULL == thenv)) 
@@ -567,18 +579,24 @@ extern eOresult_t eo_nvset_NV_Get(EOnvSet* p, eOipv4addr_t ip, eOnvID32_t id32, 
     brd = theDevice->boardnum;
     
     // - verify that on the given endpoint there is a valid id32. if the id32 is not recognised, then ... eores_NOK_generic
-    if(eobool_false ==  theEndpoint->epcfg.protif->isidsupported(brd, id32))
+    //if(eobool_false ==  theEndpoint->epcfg.protif->isidsupported(brd, id32))
+    if(eobool_false == eoprot_id_isvalid(brd, id32))
     {
         return(eores_NOK_generic);       
     }
     
     // - retrieve from the device and endpoint what is required to form the netvar: con, ram, mtx, etc.   
     // - 0+. proxied?
-    proxied = theEndpoint->epcfg.protif->isvarproxied(brd, id32);     
+    //proxied = theEndpoint->epcfg.protif->isvarproxied(brd, id32);     
+    proxied = eoprot_variable_is_proxied(brd, id32);
+    // - 0++. the onsay function
+    onsay = eoprot_onsay_endpoint_get(ep8);   
     // - 1. the rom
-    rom = (EOnv_rom_t*) theEndpoint->epcfg.protif->getrom(brd, id32);
+    //rom = (EOnv_rom_t*) theEndpoint->epcfg.protif->getrom(brd, id32);
+    rom = (EOnv_rom_t*) eoprot_variable_romof_get(brd, id32);
     // - 2. the ram
-    ram = (uint8_t*)theEndpoint->epcfg.protif->getram(brd, id32);
+    //ram = (uint8_t*)theEndpoint->epcfg.protif->getram(brd, id32);
+    ram = (uint8_t*) eoprot_variable_ramof_get(brd, id32);
     // - 3. the mtx
     mtx2use = s_eo_nvset_get_nvmutex(p, theDevice, theEndpoint, id32);
     
@@ -598,6 +616,7 @@ extern eOresult_t eo_nvset_NV_Get(EOnvSet* p, eOipv4addr_t ip, eOnvID32_t id32, 
                         brd,
                         proxied,
                         id32,  
+                        onsay,
                         rom,
                         ram,
                         mtx2use
@@ -631,12 +650,13 @@ extern eOnvPROGnum_t eo_nvset_hid_EPprogressivenumber(EOnvSet* p, eOipv4addr_t i
         return(EOK_uint32dummy);
     }
     
-    if(NULL == theEndpoint->epcfg.protif->epgetprognumber)
-    {
-        return(EOK_uint32dummy);
-    }
-    
-    return(theEndpoint->epcfg.protif->epgetprognumber(theDevice->boardnum, id32));
+//    if(NULL == theEndpoint->epcfg.protif->epgetprognumber)
+//    {
+//        return(EOK_uint32dummy);
+//    }
+//    
+//    return(theEndpoint->epcfg.protif->epgetprognumber(theDevice->boardnum, id32));
+    return(eoprot_endpoint_id2prognum(theDevice->boardnum, id32));
 }
 
 extern uint16_t eo_nvset_hid_ip2index(EOnvSet* p, eOipv4addr_t ip)
@@ -690,7 +710,8 @@ static EOVmutexDerived* s_eo_nvset_get_nvmutex(EOnvSet* p, eOnvset_dev_t* thedev
             case eo_nvset_protection_one_per_netvar:
             {
                 //#warning .... i think of void* as a uint32_t*
-                uint32_t nvprognumber = theendpoint->epcfg.protif->epgetprognumber(thedevice->boardnum, id32);
+                //uint32_t nvprognumber = theendpoint->epcfg.protif->epgetprognumber(thedevice->boardnum, id32);
+                uint32_t nvprognumber = eoprot_endpoint_id2prognum(thedevice->boardnum, id32);
                 uint32_t** addr = eo_vector_At(theendpoint->themtxofthenvs, nvprognumber);
                 mtx2use = (EOVmutexDerived*) (*addr);
             } break;  

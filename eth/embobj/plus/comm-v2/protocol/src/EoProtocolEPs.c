@@ -105,6 +105,15 @@ const uint8_t eoprot_ep_entities_numberof[] =
 };  EO_VERIFYsizeof(eoprot_ep_entities_numberof, eoprot_endpoints_numberof*sizeof(uint8_t)); 
 
 
+eOvoid_fp_cnvp_cropdesp_t eoprot_ep_onsay[] = 
+{   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};  EO_VERIFYsizeof(eoprot_ep_onsay, eoprot_endpoints_numberof*sizeof(eOvoid_fp_cnvp_cropdesp_t)); 
+
+
 EOPROT_ROMmap EOnv_rom_t * const * const * const eoprot_ep_descriptors[] = 
 {   // very important: use order of eOprot_endpoint_t: pos 0 is eoprot_endpoint_management etc.
     eoprot_mn_rom_descriptors,

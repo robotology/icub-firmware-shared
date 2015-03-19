@@ -242,21 +242,21 @@ typedef enum
 
 
 
-/** @typedef    typedef struct eOprot_nvset_interface_t;
-    @brief      It contains those functions which are required to offer services to the EOnvset object. The functions in here must
-                match those defined inside eOnvset_protocol_Interface_t. Every endpoint must export a variables of this type.    
- **/ 
-typedef struct
-{
-    eOres_fp_uint8_uint8_voidp_uint16_t loadram;            /*< a function which loads the ram of the endpoint given: (brd, ep, ram, sizeof) */
-    eOuint16_fp_uint8_uint8_t           getvarsnumberof;    /*< a function which returns the total number of variables given: (brd, ep) */
-    eObool_fp_uint8_uint32_t            isidsupported;      /*< a function which tells if the id is supported given: (brd, id) */
-    eOuint32_fp_uint8_uint8_uint32_t    epgetid;              /*< a function which returns the full ID given: (brd, ep, prognumber)  */
-    eOuint32_fp_uint8_uint32_t          epgetprognumber;      /*< a function which returns a progressive number given: (brd, id) */
-    eOvoidp_fp_uint8_uint32_t           getrom;             /*< a function which returns the .rom part of the NV given: (brd, id) */
-    eOvoidp_fp_uint8_uint32_t           getram;             /*< a function which returns the .ram part of the NV given: (brd, id) */  
-    eObool_fp_uint8_uint32_t            isvarproxied;
-} eOprot_nvset_Interface_t;
+///** @typedef    typedef struct eOprot_nvset_interface_t;
+//    @brief      It contains those functions which are required to offer services to the EOnvset object. The functions in here must
+//                match those defined inside eOnvset_protocol_Interface_t. Every endpoint must export a variables of this type.    
+// **/ 
+//typedef struct
+//{
+//    eOres_fp_uint8_uint8_voidp_uint16_t loadram;            /*< a function which loads the ram of the endpoint given: (brd, ep, ram, sizeof) */
+//    eOuint16_fp_uint8_uint8_t           getvarsnumberof;    /*< a function which returns the total number of variables given: (brd, ep) */
+//    eObool_fp_uint8_uint32_t            isidsupported;      /*< a function which tells if the id is supported given: (brd, id) */
+//    eOuint32_fp_uint8_uint8_uint32_t    epgetid;            /*< a function which returns the full ID given: (brd, ep, prognumber)  */
+//    eOuint32_fp_uint8_uint32_t          epgetprognumber;    /*< a function which returns a progressive number given: (brd, id) */
+//    eOvoidp_fp_uint8_uint32_t           getrom;             /*< a function which returns the .rom part of the NV given: (brd, id) */
+//    eOvoidp_fp_uint8_uint32_t           getram;             /*< a function which returns the .ram part of the NV given: (brd, id) */  
+//    eObool_fp_uint8_uint32_t            isvarproxied;
+//} eOprot_nvset_Interface_t;
 
 
 
@@ -283,7 +283,7 @@ typedef struct
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOprot_nvset_Interface_t eoprot_eonvset_Interface;
+//extern const eOprot_nvset_Interface_t eoprot_eonvset_Interface;
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
@@ -470,6 +470,22 @@ extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uin
 extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep);
 
 
+/** @fn         extern eOresult_t eoprot_config_onsay_endpoint_set(eOprotEndpoint_t ep, eOvoid_fp_cnvp_cropdesp_t onsay)
+    @brief      it sets the onsay() callback function which is common to every board but specific for a given endpoint.
+    @param      ep                  the endpoint
+    @param      onsay               the function
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_config_onsay_endpoint_set(eOprotEndpoint_t ep, eOvoid_fp_cnvp_cropdesp_t onsay);
+
+
+/** @fn         extern eOvoid_fp_cnvp_cropdesp_t eoprot_onsay_endpoint_get(eOprotEndpoint_t ep)
+    @brief      it gets the onsay() callback function which is common to every board but specific for a given endpoint.
+    @param      ep                  the endpoint
+    @return     the function pointer if configured or NULL if not configured. NULL also if the ep is wrong.
+ **/
+extern eOvoid_fp_cnvp_cropdesp_t eoprot_onsay_endpoint_get(eOprotEndpoint_t ep);
+
 
 /** @fn         extern eOresult_t eoprot_config_endpoint_callback(const eOprot_callbacks_endpoint_descriptor_t* cbkdes)
     @brief      it configures the ram initialisation function functions associated to a given endpoint.
@@ -622,12 +638,20 @@ extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id);
 /** @fn         extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
     @brief      tells if the variable is proxied. the result is meaningful only after eoprot_config_proxied_variables()
                 has been called, otherwise this function returns false.
+    @param      brd             the number of the board.
     @param      id              the identifier of the variable.
     @return     a boolean value.
  **/
 extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id);
 
 
+/** @fn         extern void* eoprot_variable_nvrom_get(eOprotBRD_t brd, eOprotID32_t id)
+    @brief      retrieves the rom of the EOnv on the given board and given id32.
+    @param      brd             the number of the board.
+    @param      id              the identifier of the variable.
+    @return     the pointer to the requested EOnv_rom_t or NULL if the (brd, id) pair does not exists.
+ **/
+extern void* eoprot_variable_romof_get(eOprotBRD_t brd, eOprotID32_t id);
 
 /** @fn         extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
     @brief      tells if the entity is configured.

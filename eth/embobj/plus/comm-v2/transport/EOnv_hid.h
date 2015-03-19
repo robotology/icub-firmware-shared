@@ -62,17 +62,18 @@ typedef struct EOnv_rom_T           // 16 bytes on arm
 
 
 
-struct EOnv_hid                    // 24 bytes ... multiple of 8
+struct EOnv_hid                    // 28 bytes ... 
 {
     eOipv4addr_t                    ip;         // ip address of the device owning the nv. if equal to eok_ipv4addr_localhost, then the nv is owned by the device.
     eOnvBRD_t                       brd;        // brd number. it is a short of the ip address.
     eObool_t                        proxied;    // if eobool_true then the variable contains values which resides on a another entity (e.g., a can board) 
     uint8_t                         filler2[2];
     eOnvID32_t                      id32;
+    eOvoid_fp_cnvp_cropdesp_t       onsay;      // called after the protocol parser has changed the nv value upon reception of a say<>. it is called after update() 
     EOnv_rom_t*                     rom;        // pointer to the constant part common to every device which uses this nv
     void*                           ram;        // the ram which keeps the LOCAL value of nv 
     EOVmutexDerived*                mtx;        // the mutex which protects concurrent access to the ram of this nv 
-};  //EO_VERIFYsizeof(EOnv, 24);   
+};  //EO_VERIFYsizeof(EOnv, 28);   
 
 
 
@@ -86,7 +87,7 @@ struct EOnv_hid                    // 24 bytes ... multiple of 8
 //extern EOnv * eo_nv_hid_New(uint8_t fun, uint8_t typ, uint32_t otherthingsmaybe);
 
 
-extern eOresult_t eo_nv_hid_Load(EOnv *nv, eOipv4addr_t ip, eOnvBRD_t brd, eObool_t proxied, eOnvID32_t id32, EOnv_rom_t* rom, void* ram, EOVmutexDerived* mtx);
+extern eOresult_t eo_nv_hid_Load(EOnv *nv, eOipv4addr_t ip, eOnvBRD_t brd, eObool_t proxied, eOnvID32_t id32, eOvoid_fp_cnvp_cropdesp_t onsay, EOnv_rom_t* rom, void* ram, EOVmutexDerived* mtx);
 
 extern void eo_nv_hid_Fast_LocalMemoryGet(EOnv *nv, void* dest);
 
@@ -98,7 +99,7 @@ extern eOresult_t eo_nv_hid_UpdateROP(const EOnv *nv, eOnvUpdate_t upd, const eO
 extern eOresult_t eo_nv_hid_ResetROP(const EOnv *nv, eOnvUpdate_t upd, const eOropdescriptor_t *ropdes);
 extern eOresult_t eo_nv_hid_SetROP(const EOnv *nv, const void *dat, eOnvUpdate_t upd, const eOropdescriptor_t *ropdes);
 extern eOresult_t eo_nv_hid_remoteSetROP(const EOnv *nv, const void *dat, eOnvUpdate_t upd, const eOropdescriptor_t* ropdes);
-
+extern eOresult_t eo_nv_hid_OnSay(const EOnv *nv, const eOropdescriptor_t* ropdes);
 
 EO_extern_inline eOnvEP8_t eo_nv_hid_id32_extract_ep8(eOnvID32_t id32)
 {

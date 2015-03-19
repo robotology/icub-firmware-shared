@@ -224,11 +224,13 @@ typedef struct                  // 188*1+48*1+80 = 316
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-extern void eoprot_fun_INITIALISE_mc(eOprotIP_t ip, void *ram);
+// suggested name for onsay in motion control. the function is not defined.
+extern void eoprot_fun_ONSAY_mc(const EOnv* nv, const eOropdescriptor_t* rd);
 
 // - declaration of extern overridable functions ----------------------------------------------------------------------
 // but if EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME is defined, then these functions are not defined.
 
+extern void eoprot_fun_INITIALISE_mc(eOprotIP_t ip, void *ram);
 
 
 // -- joint
