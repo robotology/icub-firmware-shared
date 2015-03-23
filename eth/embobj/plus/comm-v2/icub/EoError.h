@@ -207,10 +207,12 @@ enum { eoerror_value_MC_numberof = 12 };
 typedef enum
 {
     eoerror_value_SK_unspecified                    = 0,
-    eoerror_value_SK_arrayofcandataoverflow         = 1
+    eoerror_value_SK_arrayofcandataoverflow         = 1,
+    eoerror_value_SK_onoroff                        = 2,
+    eoerror_value_SK_unexpecteddata                 = 3
 } eOerror_value_SK_t;
 
-enum { eoerror_value_SK_numberof = 2 };
+enum { eoerror_value_SK_numberof = 4 };
 
 
 
