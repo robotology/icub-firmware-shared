@@ -635,7 +635,7 @@ typedef uint8_t  eOmc_motorId_t;
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+2+2 = 52
+typedef struct                  // size is: 40+4+4+4+2+2 = 56
 {
     eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
     int32_t                     gearboxratio;               /**< the gearbox reduction ration */
@@ -672,7 +672,7 @@ typedef struct                  // size is: 16+4+0 = 16
 
 
 
-typedef struct                  // size is 52+16+0 = 68
+typedef struct                  // size is 56+20+0 = 76
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
