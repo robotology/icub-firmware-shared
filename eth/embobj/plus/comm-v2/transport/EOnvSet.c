@@ -304,12 +304,13 @@ static eOresult_t s_eo_nvset_onDEV_ClearEPs(EOnvSet* p, uint16_t ondevindex)
     eOnvset_dev_t** thedev = NULL;
     eOnvset_ep_t *theendpoint = NULL;
     
-    uint16_t i = 0;    
+    uint16_t i = 0;  
+    uint16_t endpointsnum = 0;
     
     thedev = (eOnvset_dev_t**) eo_vector_At(p->thedevices, ondevindex);
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != thedev), "s_eo_nvset_onDEV_ClearEPs(): ->thedevices is indexed in wrong pos", s_eobj_ownname, &eo_errman_DescrRuntimeErrorLocal);    
     
-    uint16_t endpointsnum = eo_vector_Size((*thedev)->theendpoints);
+    endpointsnum = eo_vector_Size((*thedev)->theendpoints);
  
     for(i=0; i<endpointsnum; i++)
     {

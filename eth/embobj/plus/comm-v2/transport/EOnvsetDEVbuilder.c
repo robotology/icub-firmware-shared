@@ -505,6 +505,7 @@ static eOresult_t s_eo_nvsetdevbuilder_theendpoints_clear(EOnvsetDEVbuilder* p)
     uint16_t size = 0;
     uint8_t *nn = NULL;
     ep_holder_t epholder = {0};
+    uint16_t i = 0;
 
  	if(NULL == p) 
 	{
@@ -519,7 +520,6 @@ static eOresult_t s_eo_nvsetdevbuilder_theendpoints_clear(EOnvsetDEVbuilder* p)
         return(eores_OK); 
     }
     
-    uint16_t i =0;
     for(i=0; i<size; i++)
     {
         ep_holder_t *eph = (ep_holder_t*) eo_vector_Back(p->theendpoints);

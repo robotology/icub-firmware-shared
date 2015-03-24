@@ -122,7 +122,7 @@ extern void eoy_mutex_Delete(EOYmutex *m)
         return;
     }
     
-    #warning -> marco.accame: must uncomment the following but only after ace_mutex_delete() is implemented
+    //#warning -> marco.accame: must uncomment the following but only after ace_mutex_delete() is implemented
     //ace_mutex_delete(m->acemutex);
     
     eov_mutex_hid_Delete(m->mutex);

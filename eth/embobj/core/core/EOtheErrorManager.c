@@ -52,7 +52,7 @@
 // - definition (and initialisation) of extern variables, but better using _get(), _set() 
 // --------------------------------------------------------------------------------------------------------------------
 
-#warning marco.accame: think of removing eOerrmanCode_t and use only eoerror_code_get(). OR ... be sure its values are the same as those in EoError.h 
+//#warning marco.accame: think of removing eOerrmanCode_t and use only eoerror_code_get(). OR ... be sure its values are the same as those in EoError.h 
 
 const eOerrman_cfg_t eo_errman_DefaultCfg = 
 {

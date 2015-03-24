@@ -223,12 +223,13 @@ extern void eo_protconfig_Delete(EOprotocolConfigurator *p)
 
 extern eOnvset_DEVcfg_t* eo_protconfig_DEVcfg_Get(EOprotocolConfigurator* p)
 {
+    eOnvset_DEVcfg_t *ret = NULL;
     if(NULL == p)
     {
         return(NULL);
     }
     
-    eOnvset_DEVcfg_t *ret = eo_nvsetdevbuilder_DEVcfg_Get(p->nvsetdevbuilder);
+    ret = eo_nvsetdevbuilder_DEVcfg_Get(p->nvsetdevbuilder);
     
     // we can clean some memory used in the EOprotocolConfigurator object. however we cannot delete the p->nvsetdevbuilder.
     

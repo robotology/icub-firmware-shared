@@ -397,11 +397,12 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
     res = eo_parser_GetROP(eo_parser_GetHandle(), ropstream, unparsed, rop, &consumedbytes, &parsres);
     
     if(eores_OK != res)
-    {   
+    { 
+        eOerrmanDescriptor_t errdes = {0};
+
         // in case of failure, at first reset the rop. then ... it is possible to go on unless there are some serious problems, such as NULL pointer.
         eo_rop_Reset(rop);
             
-        eOerrmanDescriptor_t errdes = {0};
         errdes.code             = eo_errman_code_sys_ropparsingerror;
         errdes.par16            = parsres;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
