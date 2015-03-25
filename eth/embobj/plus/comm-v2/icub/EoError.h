@@ -153,10 +153,11 @@ typedef enum
     eoerror_value_SYS_proxy_forward_callback_fails  = 40,
     eoerror_value_SYS_proxy_reply_fails             = 41,
     eoerror_value_SYS_proxy_ropdes_notfound         = 42,
-    eoerror_value_SYS_canservices_canprint          = 43
+    eoerror_value_SYS_canservices_canprint          = 43,
+    eoerror_value_SYS_canservices_rxmaisbug         = 44
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 44 };
+enum { eoerror_value_SYS_numberof = 45 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
