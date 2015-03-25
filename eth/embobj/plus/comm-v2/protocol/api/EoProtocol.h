@@ -237,7 +237,8 @@ typedef enum
  **/
 typedef enum
 {
-    eoprot_tag_xx_nameofentity_nameoftag    = 0     /**< xx is the two-letter short for the entity: as, mn, mc, sk, etc. */
+    eoprot_tag_xx_nameofentity_nameoftag    = 0,    /**< xx is the two-letter short for the entity: as, mn, mc, sk, etc. */
+    eoprot_tag_none                         = EOK_uint08dummy   /**< the dummy tag */
 } eOprot_tag_t;
 
 
