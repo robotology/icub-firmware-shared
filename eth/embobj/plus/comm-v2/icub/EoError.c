@@ -141,7 +141,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_proxy_reply_fails,        "SYS: the proxy fails to forward a send back a reply. in par64 there are the [sign|id32], in par16 [capacity|size] of proxy list. if par16 is 0, then the rop could not be tx."},
     {eoerror_value_SYS_proxy_ropdes_notfound,   "SYS: the proxy fails to find an internally stored rop. maybe forward request was expired. in par64 there are the [0|id32]"},
     {eoerror_value_SYS_canservices_canprint,    "SYS: CAN print message received. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
-    {eoerror_value_SYS_canservices_rxmaisbug,   "SYS: the EOappCanSP received a canframe caused by MAISbug. The message is stored inside par64. In par16 is stored the size of the message for the single frame"}
+    {eoerror_value_SYS_canservices_rxmaisbug,   "SYS: the EOappCanSP received a canframe caused by MAISbug. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
+    {eoerror_value_SYS_canservices_rxfromwrongboard, "SYS: the EOappCanSP received a canframe from a wrong board. The message is stored inside par64. In par16 is stored the size of the message for the single frame"}    
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
