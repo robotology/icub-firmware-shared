@@ -31,7 +31,8 @@ extern "C" {
 **/
 
 /** @defgroup eos_thesystem Singleton EONtheSystem
-    The EONtheSystem is derived from abstract object EOVtheSystem      
+    The EONtheSystem is derived from abstract object EOVtheSystem     
+    bla bla bla    
     @{        
  **/
 
