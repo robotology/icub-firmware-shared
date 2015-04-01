@@ -35,7 +35,7 @@ extern "C" {
     The EONtask object implements a task in the neutral-tasking execution environment (NEE). 
     It does nothing. Its use is twofold: (1) for example of how to make a object for a specific execution environment,  
     and (2) for use in a context where the functionality is not needed (even if a NULL EOVtaskDerived pointer can be 
-    used instead).
+    used instead)..
     
     
     @{        
