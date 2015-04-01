@@ -16,6 +16,7 @@
  * Public License for more details
 */
 
+
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EONTASK_H_
 #define _EONTASK_H_
@@ -25,7 +26,7 @@ extern "C" {
 #endif
 
 /** @file       EONtask.h
-    @brief      This header file implements public interface to a task for NEE
+    @brief      This header file implements public interface to a task for NEE.
     @author     marco.accame@iit.it
     @date       11/21/2013
 **/
