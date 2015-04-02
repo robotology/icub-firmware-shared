@@ -320,14 +320,34 @@ typedef struct
 } eOipv4addressing_t; 
 
 
+/** @typedef    typedef enum eOcanframe_IDtype_t 
+    @brief      It is used to identify the type of CAN frames (must be the same as hal_can_frameID_format_t).
+ **/ 
+typedef enum
+{ 
+    eocanframeID_std11bits  = 0,   /**< CAN frame ID of standard 11 bits format. In iCub we use only this one */
+    eocanframeID_ext29bits  = 1    /**< CAN frame ID of extended format */
+} eOcanframe_IDtype_t; 
+
+
+/** @typedef    typedef enum hal_can_frame_type_t 
+    @brief      hal_can_frame_type_t is used to identify the type of CAN frames.
+ **/ 
+typedef enum
+{ 
+    eocanframetype_data     = 0,    /**< CAN frame of type DATA. In iCub we use only this one */
+    eocanframetype_remote   = 1     /**< CAN frame of type REMOTE */
+} eOcanframe_type_t; 
+
+
 /** @typedef    typedef struct eOutil_canframe_t
     @brief      eOcanframe_t contains a can frame as defined in hal_can.h. 
  **/
 typedef struct              // size is 16 bytes
 {
     uint32_t                id;             /**< can frame id    */
-    uint8_t                 id_type;        /**< can frame id format */
-    uint8_t                 frame_type;     /**< frame type */
+    uint8_t                 id_type;        /**< can frame id format. use eOcanframe_IDtype_t*/
+    uint8_t                 frame_type;     /**< frame type. use eOcanframe_type_t */
     uint8_t                 size;           /**< data size */
     uint8_t                 unused;         /**< filler */
     uint8_t                 data[8];        /**< the data (payload) */    

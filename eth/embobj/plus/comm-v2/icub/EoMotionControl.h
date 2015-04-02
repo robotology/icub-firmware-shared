@@ -570,7 +570,7 @@ typedef struct                  // size is: 4+4+4+2+1+1+0 = 16
  **/
 typedef struct                  // size is: 4+4+4+0 = 16
 {
-    int32_t                     positionreference;              /**< the reference of the position pid */
+    int32_t                     positionreference;      /**< the reference of the position pid */
     int32_t                     torquereference;        /**< the reference of the torque pid */
     int32_t                     error;                  /**< the error of the pid */ 
     int32_t                     output;                 /**< the output of the pid */ 
