@@ -142,7 +142,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_proxy_ropdes_notfound,   "SYS: the proxy fails to find an internally stored rop. maybe forward request was expired. in par64 there are the [0|id32]"},
     {eoerror_value_SYS_canservices_canprint,    "SYS: CAN print message received. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
     {eoerror_value_SYS_canservices_rxmaisbug,   "SYS: the EOappCanSP received a canframe caused by MAISbug. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
-    {eoerror_value_SYS_canservices_rxfromwrongboard, "SYS: the EOappCanSP received a canframe from a wrong board. The message is stored inside par64. In par16 is stored the size of the message for the single frame"}    
+    {eoerror_value_SYS_canservices_rxfromwrongboard, "SYS: the EOappCanSP received a canframe from a wrong board. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
+    {eoerror_value_SYS_transceiver_rxseqnumber_error, "SYS: the board has detecetd a hole in rx ropframe sequence number. In par64 there is the expected number. The received is obtained by adding par64 with par16 treated as a int16_t"}    
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
