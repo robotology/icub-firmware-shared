@@ -650,7 +650,7 @@ typedef struct                  // size is: 40+4+4+4+2+2 = 56
     @brief      eOmc_motor_status_t contains the status of a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 4+4+4+2+2+0 = 12
+typedef struct                  // size is: 4+4+4+2+2+0 = 16
 {
     eOmeas_position_t           mot_position;                   /**< the position of the motor */         
     eOmeas_velocity_t           mot_velocity;                   /**< the velocity of the motor */
