@@ -143,7 +143,11 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_canprint,    "SYS: CAN print message received. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
     {eoerror_value_SYS_canservices_rxmaisbug,   "SYS: the EOappCanSP received a canframe caused by MAISbug. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
     {eoerror_value_SYS_canservices_rxfromwrongboard, "SYS: the EOappCanSP received a canframe from a wrong board. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
-    {eoerror_value_SYS_transceiver_rxseqnumber_error, "SYS: the board has detecetd a hole in rx ropframe sequence number. In par64 there is the expected number. The received is obtained by adding par64 with par16 treated as a int16_t"}    
+    {eoerror_value_SYS_transceiver_rxseqnumber_error, "SYS: the board has detected a hole in rx ropframe sequence number. In par64 there is the expected number. The received is obtained by adding par64 with par16 treated as a int16_t"},    
+    {eoerror_value_SYS_canservices_boards_missing, "SYS: the can discovery service detected that some boards are missing. Check with canLoader. In par64 MS 32 bits there is the bit mask of the searched, in LS 32 bits the mask of the found ones."},    
+    {eoerror_value_SYS_canservices_boards_searched, "SYS: the can discovery service searched the following boards on the specified CAN bus. In par64 there are the searched addresses represented as nibbles."},    
+    {eoerror_value_SYS_canservices_boards_found, "SYS: the can discovery service found the following boards on the specified CAN bus. In par64 there are the found addresses represented as nibbles."}    
+
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 

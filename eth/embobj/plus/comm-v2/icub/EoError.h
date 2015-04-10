@@ -156,10 +156,13 @@ typedef enum
     eoerror_value_SYS_canservices_canprint          = 43,
     eoerror_value_SYS_canservices_rxmaisbug         = 44,
     eoerror_value_SYS_canservices_rxfromwrongboard  = 45,
-    eoerror_value_SYS_transceiver_rxseqnumber_error = 46
+    eoerror_value_SYS_transceiver_rxseqnumber_error = 46,
+    eoerror_value_SYS_canservices_boards_missing    = 47,
+    eoerror_value_SYS_canservices_boards_searched   = 48,
+    eoerror_value_SYS_canservices_boards_found      = 49
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 47 };
+enum { eoerror_value_SYS_numberof = 50 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
