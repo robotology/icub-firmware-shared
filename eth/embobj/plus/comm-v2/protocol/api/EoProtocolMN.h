@@ -58,7 +58,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 6 };
+enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 7 };
 
 
 enum { eoprot_entities_mn_numberof = eomn_entities_numberof };
@@ -117,11 +117,12 @@ typedef enum
 {
     eoprot_tag_mn_appl_wholeitem                                    = 0,
     eoprot_tag_mn_appl_config                                       = 1,
-    eoprot_tag_mn_appl_status                                       = 2,
-    eoprot_tag_mn_appl_cmmnds_go2state                              = 3
+    eoprot_tag_mn_appl_config_txratedivider                         = 2,
+    eoprot_tag_mn_appl_status                                       = 3,
+    eoprot_tag_mn_appl_cmmnds_go2state                              = 4
 } eOprot_tag_mn_appl_t;
 
-enum { eoprot_tags_mn_appl_numberof = 4 };  // it MUST be equal to the number of tags. 
+enum { eoprot_tags_mn_appl_numberof = 5 };  // it MUST be equal to the number of tags. 
 
 
 /** @typedef    typedef enum eOprot_rwm_mn_appl_t
@@ -132,11 +133,12 @@ typedef enum
 {
     eoprot_rwm_mn_appl_wholeitem                                    = eo_nv_rwmode_RO,
     eoprot_rwm_mn_appl_config                                       = eo_nv_rwmode_RW,
+    eoprot_rwm_mn_appl_config_txratedivider                         = eo_nv_rwmode_RW,
     eoprot_rwm_mn_appl_status                                       = eo_nv_rwmode_RO,
     eoprot_rwm_mn_appl_cmmnds_go2state                              = eo_nv_rwmode_RW
 } eOprot_rwm_mn_appl_t; 
 
-enum { eoprot_rwms_mn_appl_numberof = 4 };  // it MUST be equal to the number of rw modes. 
+enum { eoprot_rwms_mn_appl_numberof = 5 };  // it MUST be equal to the number of rw modes. 
 
 
 // - entity info
@@ -233,6 +235,9 @@ extern void eoprot_fun_UPDT_mn_comm_cmmnds_command_config(const EOnv* nv, const 
 
 extern void eoprot_fun_INIT_mn_appl_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mn_appl_config(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mn_appl_config_txratedivider(const EOnv* nv);
+extern void eoprot_fun_UPDT_mn_appl_config_txratedivider(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mn_appl_wholeitem(const EOnv* nv);
 extern void eoprot_fun_UPDT_mn_appl_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);

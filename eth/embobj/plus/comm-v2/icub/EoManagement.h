@@ -299,7 +299,7 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
 typedef struct                      // size is 4+3+3 = 8 bytes
 {
     eOreltime_t                     cycletime;      /**< FOR-FUTURE_USE: the time to be used for the control loop expressed in microseconds */
-    uint8_t                         txratedivider;  /**< FOR-FUTURE_USE: if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles */ 
+    uint8_t                         txratedivider;  /**< if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles */ 
     uint8_t                         filler03[3];
 } eOmn_appl_config_t;               //EO_VERIFYsizeof(eOmn_appl_config_t, 8);
 
@@ -315,7 +315,8 @@ typedef struct                      // size is 4+2+16+1+1+6+2 = 32 bytes
     eOenum08_t                      currstate;          /**< use eOmn_appl_state_t */
     eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
 	uint16_t						cloop_timings[3];
-    uint8_t                         filler02[2];
+    uint8_t                         txdecimationfactor;
+    uint8_t                         filler01;
 } eOmn_appl_status_t;               EO_VERIFYsizeof(eOmn_appl_status_t, 32);
 
                                          
