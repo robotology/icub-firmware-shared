@@ -68,7 +68,7 @@ extern "C" {
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-extern opcprotman_cfg_t* OPCprotocolManager_Cfg_getconfig(void);
+
   
 
 /** @}            

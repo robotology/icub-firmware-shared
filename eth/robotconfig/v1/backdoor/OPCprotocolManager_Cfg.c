@@ -128,7 +128,15 @@ opcprotman_cfg_t opcprotmanCFGv0x1234 =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-extern opcprotman_cfg_t* OPCprotocolManager_Cfg_getconfig(void)
+// marco.accame: it was formely called OPCprotocolManager_Cfg_getconfig(),
+// thus for compilation under linux use the new function name opcprotman_getconfiguration(), or ...
+// add an extra funtion in here defined as OPCprotocolManager_Cfg_getconfig() whcih does the same things
+//extern opcprotman_cfg_t* OPCprotocolManager_Cfg_getconfig(void)
+//{
+//    return(&opcprotmanCFGv0x1234);
+//}
+
+extern opcprotman_cfg_t* opcprotman_getconfiguration(void)
 {
     return(&opcprotmanCFGv0x1234);
 }

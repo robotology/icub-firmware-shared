@@ -128,11 +128,129 @@ opcprotman_cfg_t opcprotmanCFGv0x1234 =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-extern opcprotman_cfg_t* OPCprotocolManager_Cfg_getconfig(void)
+
+// use this in case you dont want use the backdoortransceiver
+extern opcprotman_cfg_t* opcprotman_getconfiguration(void)
+{
+    return(NULL);
+}
+
+
+// this one is used only in the ems board. use it if you dont want to use the backdoortransceiver.
+// otehrwise use calls to opcprotman_personalize_var() function 
+extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p)
+{
+    return(opcprotman_NOK_generic);
+}
+
+
+
+extern opcprotman_cfg_t* opcprotman_getconfiguration(void)
 {
     return(&opcprotmanCFGv0x1234);
 }
 
+extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p)
+{
+    opcprotman_res_t res = opcprotman_OK;
+    
+
+/* personalize eodgn_nvidbdoor_cmds var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_cmds,
+                                        (uint8_t*) &eo_dgn_cmds, 
+                                        on_rec_dgn_cmds);
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+    
+/* personalize eodgn_nvidbdoor_errorlog var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_errorlog,
+                                        (uint8_t*) &eo_dgn_errorlog, 
+                                        NULL);
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+    
+/* personalize eodgn_nvidbdoor_emsperiph var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_emsperiph,
+                                        (uint8_t*)&eo_dgn_emsperiph, 
+                                        NULL); //on ems i don't receive this data
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+    
+/* personalize eodgn_nvidbdoor_emsapplcore var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_emsapplcommon,
+                                        (uint8_t*)&eo_dgn_emsapplcore, 
+                                        NULL); //on ems i don't receive this data
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+    
+/* personalize eodgn_nvidbdoor_emsapplmc var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_emsapplmc,
+                                        (uint8_t*)&eo_dgn_emsappmc, 
+                                        NULL); //on ems i don't receive this data
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+  
+
+/* personalize eodgn_nvidbdoor_motorstatus var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_motorstatus,
+                                        (uint8_t*)&eo_dgn_motorstflag, 
+                                        NULL); //on ems i don't receive this data
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+
+    
+    /* personalize eodgn_nvidbdoor_motorstatus var*/
+	res = opcprotman_personalize_var(   p, 
+                                        eodgn_nvidbdoor_canQueueStatistics,
+                                        (uint8_t*)&eo_dgn_canstatistics, 
+                                        NULL); //on ems i don't receive this data
+
+    if(opcprotman_OK != res)
+    {
+        return(res);
+    }
+    
+    
+//#if defined(VERIFY_ROP_SETIMPEDANCE) | defined(VERIFY_ROP_SETPOSITIONRAW)
+//
+//    /* personalize eodgn_nvidbdoor_rxcheckSetpoints var*/
+//	res = opcprotman_personalize_var(   p, 
+//                                        eodgn_nvidbdoor_rxcheckSetpoints,
+//                                        (uint8_t*)&eo_dgn_rxchecksepoints, 
+//                                         NULL); //on ems i don't receive this data
+//
+//    if(opcprotman_OK != res)
+//    {
+//        return(res);
+//    }
+//    
+//#endif   
+    return(res);
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

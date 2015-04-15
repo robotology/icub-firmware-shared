@@ -154,7 +154,13 @@ typedef struct
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-// it must be defined in an external configuration file. see examples in OPCprotocolManager_Cfg.template.c
+
+// it must be defined in an external configuration file. if one does not want use it (or if backdoor is disabled) 
+// one can just prepare a function which returns NULL. otherwise see examples in OPCprotocolManager_Cfg.template.c
+extern opcprotman_cfg_t* opcprotman_getconfiguration(void);
+
+// it must be defined in an external configuration file. if one does not want use it (or if backdoor is disabled) 
+// one can just prepare a function which returns opcprotman_NOK_generic. otherwise see examples in OPCprotocolManager_Cfg.template.c
 extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p);
 
 
@@ -164,7 +170,6 @@ extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p);
     @return     The handle to the OPCprotocolManager
  **/
 extern OPCprotocolManager * opcprotman_New(const opcprotman_cfg_t *cfg);
-
 
 
 // opcprotman_OK if it has signature, opcprotman_NOK_generic otherwise

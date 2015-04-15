@@ -112,6 +112,17 @@ extern OPCprotocolManager * opcprotman_New(const opcprotman_cfg_t *cfg)
 
 }
 
+// they must be defined externally, even if we dont use the opcprotocol manager
+//__weak extern opcprotman_cfg_t* opcprotman_getconfiguration(void)
+//{
+//    return(NULL);
+//}
+
+//__weak extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p)
+//{
+//   return(opcprotman_NOK_generic);
+//}
+
 extern opcprotman_res_t opcprotman_personalize_var(OPCprotocolManager* p, uint16_t var, uint8_t* var_ram, opcprotman_fp_onrec_t fn)
 {
     opcprotman_var_map_t* map_ptr;
