@@ -26,7 +26,7 @@ extern "C" {
 
 
 
-/** @file       EoCommon.h
+/** @file       eOcommon.h
     @brief      This header file implements public interface to the common types used by the EmbObj
     @author     marco.accame@iit.it
     @date       10/26/2010
