@@ -379,6 +379,7 @@ typedef enum
     icubCanProto_controlmode_hwFault                    = 0xA0,
     icubCanProto_controlmode_notConfigured              = 0xB0,
     icubCanProto_controlmode_configured                 = 0xB1,
+    icubCanProto_controlmode_no_request                 = 0xB2,
     icubCanProto_controlmode_unknownError               = 0xFF
 } icubCanProto_controlmode_t;
 
