@@ -83,7 +83,7 @@ static const char s_eobj_ownname[] = "EOhostTransceiver";
 
 const eOhosttransceiver_cfg_t eo_hosttransceiver_cfg_default = 
 {
-    EO_INIT(.nvsetdevcfg)               NULL,
+    EO_INIT(.nvsetbrdcfg)               NULL,
     EO_INIT(.remoteboardipv4addr)       EO_COMMON_IPV4ADDR(10, 0, 1, 1), 
     EO_INIT(.remoteboardipv4port)       12345,
     EO_INIT(.sizes)
@@ -122,9 +122,9 @@ extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t 
         cfg = &eo_hosttransceiver_cfg_default;
     }
     
-    if(NULL == cfg->nvsetdevcfg)
+    if(NULL == cfg->nvsetbrdcfg)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_hosttransceiver_New(): NULL nvsetdevcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_hosttransceiver_New(): NULL nvsetbrdcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }  
     
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOhostTransceiver), 1);
@@ -155,7 +155,7 @@ extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t 
     
     retptr->ipaddressofboard = cfg->remoteboardipv4addr;
     
-    eo_nvset_BRD_Get(retptr->nvset, cfg->remoteboardipv4addr, &retptr->boardnumber);
+    eo_nvset_BRD_Get(retptr->nvset, &retptr->boardnumber);
     
     return(retptr);        
 }    
@@ -239,31 +239,23 @@ extern eOipv4addr_t eo_hosttransceiver_GetRemoteIP(EOhostTransceiver* p)
 
 static EOnvSet* s_eo_hosttransceiver_nvset_get(const eOhosttransceiver_cfg_t *cfg)
 {
-    const uint16_t numofdevices     = 1;    // one device only
-    const uint16_t ondevindexzero   = 0;    // one device only
-
-
-    EOnvSet* nvset = eo_nvset_New(numofdevices, cfg->nvsetprotection, cfg->mutex_fn_new);
-    
-    // i add the first and only device. it has remote ownership and ipaddress cfg->remoteboardipv4addr.
-    eo_nvset_DEVpushback(nvset, ondevindexzero, (eOnvset_DEVcfg_t*)cfg->nvsetdevcfg, eo_nvset_ownership_remote, cfg->remoteboardipv4addr);
-    
-    eo_nvset_NVSinitialise(nvset);
-
+    EOnvSet* nvset = eo_nvset_New(cfg->nvsetprotection, cfg->mutex_fn_new);    
+    eo_nvset_InitBRD_LoadEPs(nvset, eo_nvset_ownership_remote, cfg->remoteboardipv4addr, (eOnvset_BRDcfg_t*)cfg->nvsetbrdcfg, eobool_true);   
     return(nvset);
 }
-
+ 
+  
 
 static void s_eo_hosttransceiver_nvset_release(EOhostTransceiver *p)
 {
-//    const uint16_t numofdevices     = 1;    // one device only
-    const uint16_t ondevindexzero   = 0;    // one device only
+    if((NULL == p) || (NULL == p->nvset))
+    {
+        return;
+    }
     
-    eo_nvset_NVSdeinitialise(p->nvset);
-    
-    eo_nvset_DEVpopback(p->nvset, ondevindexzero);
-    
-    eo_nvset_Delete(p->nvset);       
+    // _delete also unit the brd etc.            
+    eo_nvset_Delete(p->nvset);   
+    p->nvset = NULL;  
 }
 
 // --------------------------------------------------------------------------------------------------------------------

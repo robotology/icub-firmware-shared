@@ -510,7 +510,6 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     uint16_t ropsize;
     EOnv nv;
     EOnv* tmpnvptr = NULL;
-    eOnvOwnership_t nvownership;
 
     if((NULL == p) || (NULL == ropdesc)) 
     {
@@ -555,10 +554,8 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     ropdescriptor.control.confinfo  = eo_ropconf_none;  // VERY IMPORTANT: the regulars cannot be a ack/nack
     ropdescriptor.control.version   = EOK_ROP_VERSION_0;
     
-    nvownership = eo_rop_get_ownership(ropdescriptor.ropcode, eo_ropconf_none, eo_rop_dir_outgoing);
       
     res = eo_nvset_NV_Get(  (p->nvset),  
-                            (eo_nv_ownership_local == nvownership) ? (eok_ipv4addr_localhost) : (p->ipv4addr), 
                             ropdescriptor.id32,
                             &nv
                             );   
@@ -575,7 +572,8 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     
     // now we have the nv. we set its value in local ram
     if(eobool_true == eo_rop_ropcode_has_data(ropdescriptor.ropcode))
-    {  
+    { 
+        eOnvOwnership_t nvownership = eo_rop_get_ownership(ropdescriptor.ropcode, eo_ropconf_none, eo_rop_dir_outgoing);        
         if(eo_nv_ownership_local == nvownership)
         {   // if the nv is local, then take data from nv, thus no need to write the data field of the nv using ropdescriptor.data.
             ropdescriptor.data = NULL;   // set ropdescriptor.data to NULL to force eo_agent_OutROPfromNV() to get data from EOnv
@@ -1039,7 +1037,6 @@ static void s_eo_transmitter_list_shiftdownropinfo(void *item, void *param)
 static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc, EOropframe* intoropframe, EOVmutexDerived* mtx)
 {
     // marco.accame on 23oct14: mtx protects the occasional or replies ropframe. p->mtx_roptmp protects the use of tmprop
-    eOnvOwnership_t nvownership;
     eOresult_t res;
     uint16_t usedbytes;
     uint16_t ropsize;
@@ -1069,10 +1066,8 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
         return(eores_NOK_generic);
     }
     
-    nvownership = eo_rop_get_ownership(ropdesc->ropcode, eo_ropconf_none, eo_rop_dir_outgoing);
       
     res = eo_nvset_NV_Get(  (p->nvset),  
-                            (eo_nv_ownership_local == nvownership) ? (eok_ipv4addr_localhost) : (p->ipv4addr), 
                             ropdesc->id32,
                             &nv
                             );   
@@ -1090,6 +1085,7 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     // now we have the nv. we set its value in local ram
     if(eobool_true == eo_rop_ropcode_has_data(ropdesc->ropcode))
     {  
+        eOnvOwnership_t nvownership = eo_rop_get_ownership(ropdesc->ropcode, eo_ropconf_none, eo_rop_dir_outgoing);
         if(eo_nv_ownership_local == nvownership)
         {   // if the nv is local, then take data from nv, thus no need to write the data field of the nv using ropdesc->data.
             ropdesc->data = NULL;   // set ropdesc->data to NULL to force eo_agent_OutROPfromNV() to get data from EOnv

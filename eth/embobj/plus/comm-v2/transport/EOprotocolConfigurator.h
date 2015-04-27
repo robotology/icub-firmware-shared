@@ -43,10 +43,7 @@ extern "C" {
 #include "EoCommon.h"
 
 #include "EoProtocol.h"
-//#include "EoProtocolMN.h"
-//#include "EoProtocolMC.h"
-//#include "EoProtocolAS.h"
-//#include "EoProtocolSK.h"
+
 
 #include "EOnvSet.h"
 
@@ -99,7 +96,7 @@ extern const eOprotconfig_cfg_t eo_protconfig_cfg_default; // = { ... };
 
 
 /** @fn         extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
-    @brief      creates the object EOprotocolConfigurator, whihc is used to obtain the eOnvset_DEVcfg_t data structure
+    @brief      creates the object EOprotocolConfigurator, whihc is used to obtain the eOnvset_BRDcfg_t data structure
                 used by the EOtransceiver.  
     @param      cfg             the required protocol information        
     @return     a valid object or NULL in case of failure
@@ -108,19 +105,19 @@ extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg);
 
 
 /** @fn         extern void eo_protconfig_Delete(EOprotocolConfigurator *p)
-    @brief      deletes the object EOprotocolConfigurator ... but also the eOnvset_DEVcfg_t data structure used to configure
+    @brief      deletes the object EOprotocolConfigurator ... but also the eOnvset_BRDcfg_t data structure used to configure
                 the EOtransceiver, but also to run it. THUS: the call of eo_protconfig_Delete() makes the EOtransceiver unusable.  
     @param      p               the object        
  **/
 extern void eo_protconfig_Delete(EOprotocolConfigurator *p);
  
  
-/** @fn         extern eOnvset_DEVcfg_t* eo_protconfig_DEVcfg_Get(EOprotocolConfigurator* p)
-    @brief      retrieves the eOnvset_DEVcfg_t data structure used to configure the EOtransceiver, but also to run it. 
+/** @fn         extern eOnvset_BRDcfg_t* eo_protconfig_BRDcfg_Get(EOprotocolConfigurator* p)
+    @brief      retrieves the eOnvset_BRDcfg_t data structure used to configure the EOtransceiver, but also to run it. 
     @param      p               the object      
     @return     a valid pointer or NULL in case of failure    
  **/ 
-extern eOnvset_DEVcfg_t* eo_protconfig_DEVcfg_Get(EOprotocolConfigurator* p);
+extern eOnvset_BRDcfg_t* eo_protconfig_BRDcfg_Get(EOprotocolConfigurator* p);
 
 
 /** @}            

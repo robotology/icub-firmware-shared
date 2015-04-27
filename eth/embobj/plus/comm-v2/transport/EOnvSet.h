@@ -44,6 +44,7 @@ extern "C" {
 #include "EOnv.h"
 #include "EOconstvector.h"
 #include "EOVmutex.h"
+#include "EoProtocol.h"
 
 // - public #define  --------------------------------------------------------------------------------------------------
 // empty-section
@@ -67,45 +68,29 @@ typedef enum
 } eOnvsetOwnership_t; 
 
 
-/** @typedef    typedef struct eOnvset_DEVcfg_t
-    @brief      It contains the configuration of the managed NVs in a device, organised by endpoints 
+enum { eonvset_max_endpoint_value = 7 };     // or 15 (they start from 0 and go to ...)
+
+
+///** @typedef    typedef struct eOnvset_EPcfg_t
+//    @brief      It contains the configuration of the managed NVs inside an endpoint. 
+// **/ 
+//typedef struct                     
+//{
+//    eOnvEP8_t           endpoint;                                       /*< the endpoint value */
+//    uint8_t             numberofsentities[eonvset_max_entity_value+1];  /*< the multiplicity of each entity in position of the entity */
+//} eOnvset_EPcfg_t;
+
+
+/** @typedef    typedef struct eOnvset_BRDcfg_t
+    @brief      It contains the configuration of the managed NVs in a board, organised by endpoints 
  **/  
 typedef struct
 {
-    eOnvBRD_t                   boardnum;
-    uint8_t                     dummy[3];
-    void*                       param;
-    eOres_fp_voidp_uint8_t      fptr_device_initialise; /*< used to initialise whatever is needed before using the eOnvset_EPcfg_t. for instance the number of entities in the board */
-    const EOconstvector*        vectorof_epcfg;         /*< a const vector of eOnvset_EPcfg_t items, of size equal to the number of managed endpoints */
-    eOuint16_fp_voidp_uint8_t   fptr_ep2indexofepcfg;   /*< a function which maps a given ep to and index inside @e vectorof_epcfg. It returns EOK_uint16dummy if the ep is not managed */
-} eOnvset_DEVcfg_t;
-
-
-//typedef struct
-//{
-//    eOres_fp_uint8_uint8_voidp_uint16_t loadram;            /*< a function which loads the ram of the endpoint given: (brd, ep, ram, sizeof) */
-//    eOuint16_fp_uint8_uint8_t           getvarsnumberof;    /*< a function which returns the total number of variables given: (brd, ep) */
-//    eObool_fp_uint8_uint32_t            isidsupported;      /*< a function which tells if the id is supported given: (brd, id) */
-//    eOuint32_fp_uint8_uint8_uint32_t    epgetid;            /*< a function which returns the full ID given: (brd, ep, prognumber)  */
-//    eOuint32_fp_uint8_uint32_t          epgetprognumber;    /*< a function which returns a progressive number given: (brd, id) */
-//    eOvoidp_fp_uint8_uint32_t           getrom;             /*< a function which returns the .rom part of the NV given: (brd, id) */
-//    eOvoidp_fp_uint8_uint32_t           getram; 
-//    eObool_fp_uint8_uint32_t            isvarproxied;       /*< a function which tells if the var is proxied given: (brd, id) */    
-//} eOnvset_protocol_Interface_t;
-
-
-/** @typedef    typedef struct eOnvset_EPcfg_t
-    @brief      It contains the configuration of the managed NVs inside an endpoint. 
- **/ 
-typedef struct                     
-{
-    eOnvEP8_t                           endpoint;                   /*< the endpoint value */
-    uint8_t                             dummy;
-    uint16_t                            epram_sizeof;               /*< the size of the ram used for the NVs in the endpoint */
-    eOvoid_fp_uint32_voidp_t            fptr_ram_initialise;        /*< a function which initialises the ram (ram) */
-    //eOnvset_protocol_Interface_t*       protif;                     /* functions used to interface with the protocol library */
-} eOnvset_EPcfg_t;
-
+    eOnvBRD_t           boardnum;
+    uint8_t             dummy[3];
+    EOconstvector*      epcfg_constvect; /*< a const vector of eOprot_EPcfg_t items, of size equal to the number of managed endpoints */
+} eOnvset_BRDcfg_t;
+                           
 
 /** @typedef    typedef enum eOnvset_protection_t
     @brief      It contains the protection to be used in the NV set. 
@@ -113,40 +98,48 @@ typedef struct
 typedef enum
 {
     eo_nvset_protection_none               = 0,    /**< we dont protect vs concurrent access at all */
-    eo_nvset_protection_one_per_object     = 1,    /**< all the NVs in the object share the same mutex: reduced use of memory but minimum concurrency */
-    eo_nvset_protection_one_per_device     = 2,    /**< all the NVs in a device inside the object share the same mutex */
-    eo_nvset_protection_one_per_endpoint   = 3,    /**< all the NVs in an endpoint inside each device inside the object share the same mutex */
+    eo_nvset_protection_one_per_board      = 2,    /**< all the NVs in a booard share the same mutex */
+    eo_nvset_protection_one_per_endpoint   = 3,    /**< all the NVs in an endpoint inside each board share the same mutex */
     eo_nvset_protection_one_per_netvar     = 4     /**< every NV has its own mutex: heavy use of memory but maximum concurrency */
 } eOnvset_protection_t;
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
-// empty-section
+
+extern const eOnvset_BRDcfg_t eonvset_BRDcfgBasic; // it contains numofboard 99, and only management (eoprot_mn_basicEPcfg)
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-extern EOnvSet* eo_nvset_New(uint16_t ndevices, eOnvset_protection_t prot, eov_mutex_fn_mutexderived_new mtxnew);
+extern EOnvSet* eo_nvset_New(eOnvset_protection_t prot, eov_mutex_fn_mutexderived_new mtxnew);
+
 
 extern void eo_nvset_Delete(EOnvSet* p);
 
-extern eOresult_t eo_nvset_DEVpushback(EOnvSet* p, uint16_t ondevindex, eOnvset_DEVcfg_t* cfgofdev, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress);
 
-extern eOresult_t eo_nvset_DEVpopback(EOnvSet* p, uint16_t ondevindex);
+extern eOresult_t eo_nvset_InitBRD(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvBRD_t brdnum);
 
-extern eOresult_t eo_nvset_NVSinitialise(EOnvSet* p);
 
-extern eOresult_t eo_nvset_NVSdeinitialise(EOnvSet* p);
+extern eOresult_t eo_nvset_LoadEP(EOnvSet* p, eOprot_EPcfg_t *cfgofep, eObool_t initNVs);
 
-extern eOresult_t eo_nvset_BRD_Get(EOnvSet* p, eOipv4addr_t ip, eOnvBRD_t* brd);
+// it calls eo_nvset_InitBRD() and then for all the endpoint descriptors inside cfgofdev: { eo_nvset_EPcfg_IsValid() and eo_nvset_LoadEP() }
+extern eOresult_t eo_nvset_InitBRD_LoadEPs(EOnvSet* p, eOnvsetOwnership_t ownership, eOipv4addr_t ipaddress, eOnvset_BRDcfg_t* cfgofdev, eObool_t initNVs);
 
-extern eOresult_t eo_nvset_NV_Get(EOnvSet* p, eOipv4addr_t ip, eOnvID32_t id32, EOnv* thenv);
 
-extern void* eo_nvset_RAMofEndpoint_Get(EOnvSet* p, eOipv4addr_t ip, eOnvEP8_t ep8);
+extern eOresult_t eo_nvset_BRDlocalsetnumber(EOnvSet* p, eOnvBRD_t brdnum);
 
-extern void* eo_nvset_RAMofEntity_Get(EOnvSet* p, eOipv4addr_t ip, eOnvEP8_t ep8, eOnvENT_t ent, uint8_t index);
+extern eOresult_t eo_nvset_DeinitBRD(EOnvSet* p);
 
-extern void* eo_nvset_RAMofVariable_Get(EOnvSet* p, eOipv4addr_t ip, eOnvID32_t id32);
+// local, 0, 1, 2, 3
+extern eOresult_t eo_nvset_BRD_Get(EOnvSet* p, eOnvBRD_t* brd);
+
+extern eOresult_t eo_nvset_NV_Get(EOnvSet* p, eOnvID32_t id32, EOnv* thenv);
+
+extern void* eo_nvset_RAMofEndpoint_Get(EOnvSet* p, eOnvEP8_t ep8);
+
+extern void* eo_nvset_RAMofEntity_Get(EOnvSet* p, eOnvEP8_t ep8, eOnvENT_t ent, uint8_t index);
+
+extern void* eo_nvset_RAMofVariable_Get(EOnvSet* p, eOnvID32_t id32);
 
 
 /** @}            

@@ -214,7 +214,6 @@ extern eOresult_t eo_agent_InpROPprocess(EOagent *p, EOrop *ropin, eOipv4addr_t 
         
 
         res = eo_nvset_NV_Get(  p->config.nvset, 
-                                (eo_nv_ownership_local == ownership) ? (eok_ipv4addr_localhost) : (fromipaddr),
                                 ropin->stream.head.id32,  
                                 &ropin->netvar
                                 );

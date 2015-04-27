@@ -53,7 +53,7 @@ extern "C" {
 
 typedef struct
 {
-    const eOnvset_DEVcfg_t*         nvsetdevcfg;          
+    const eOnvset_BRDcfg_t*         nvsetbrdcfg;          
     eOipv4addr_t                    remotehostipv4addr;
     eOipv4port_t                    remotehostipv4port;
     eOtransceiver_sizes_t           sizes; 

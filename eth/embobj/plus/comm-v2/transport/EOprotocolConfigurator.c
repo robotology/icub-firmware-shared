@@ -102,11 +102,11 @@ const eOprotconfig_cfg_t eo_protconfig_cfg_default =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-
  
 extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
 {
     EOprotocolConfigurator *p = NULL;  
+    eOprot_EPcfg_t epcfg = {0};
 
     if(NULL == cfg)
     {
@@ -122,83 +122,63 @@ extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
     // i get the memory for the object
     p = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOprotocolConfigurator), 1);
     
-    p->nvsetdevbuilder = eo_nvsetdevbuilder_New(cfg->board);
+    p->nvsetbrdbuilder = eo_nvsetbrdbuilder_New(cfg->board);
     
     memcpy(&p->config, cfg, sizeof(eOprotconfig_cfg_t));
     
     // ok, now i load everything
     
     // load mn ...
-    if(eobool_true == p->config.ep_management_is_present)
-    {
-        eo_nvsetdevbuilder_ENDPOINTpushback(p->nvsetdevbuilder, eoprot_endpoint_management);
-        if(p->config.en_mn_entity_comm_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_management, eoprot_entity_mn_comm, p->config.en_mn_entity_comm_numberof);
-        }
-        if(p->config.en_mn_entity_appl_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_management, eoprot_entity_mn_appl, p->config.en_mn_entity_appl_numberof);
-        }  
-        if(p->config.en_mn_entity_info_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_management, eoprot_entity_mn_info, p->config.en_mn_entity_info_numberof);
-        }          
-    }
+//    if(eobool_true == p->config.ep_management_is_present)
+//    {
+//        epcfg.endpoint = eoprot_endpoint_management;
+//        memset(epcfg.numberofentities, 0, sizeof(epcfg.numberofentities));
+//        epcfg.numberofentities[0] = p->config.en_mn_entity_comm_numberof;
+//        epcfg.numberofentities[1] = p->config.en_mn_entity_appl_numberof;
+//        epcfg.numberofentities[2] = p->config.en_mn_entity_info_numberof;
+//       
+//        eo_nvsetbrdbuilder_EP_Load(p->nvsetbrdbuilder, &epcfg);
+//    }
+
+    // mn is always present
+    eo_nvsetbrdbuilder_EP_Load(p->nvsetbrdbuilder, (eOprot_EPcfg_t*)&eoprot_mn_basicEPcfg);
     
     // load mc ...
     if(eobool_true == p->config.ep_motioncontrol_is_present)
-    {
-        eo_nvsetdevbuilder_ENDPOINTpushback(p->nvsetdevbuilder, eoprot_endpoint_motioncontrol);
-        if(p->config.en_mc_entity_joint_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_motioncontrol, eoprot_entity_mc_joint, p->config.en_mc_entity_joint_numberof);
-        }
-        if(p->config.en_mc_entity_motor_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_motioncontrol, eoprot_entity_mc_motor, p->config.en_mc_entity_motor_numberof);
-        } 
-        if(p->config.en_mc_entity_controller_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_motioncontrol, eoprot_entity_mc_controller, p->config.en_mc_entity_controller_numberof);
-        }          
+    {       
+        epcfg.endpoint = eoprot_endpoint_motioncontrol;
+        memset(epcfg.numberofentities, 0, sizeof(epcfg.numberofentities));
+        epcfg.numberofentities[0] = p->config.en_mc_entity_joint_numberof;
+        epcfg.numberofentities[1] = p->config.en_mc_entity_motor_numberof;
+        epcfg.numberofentities[2] = p->config.en_mc_entity_controller_numberof;
+       
+        eo_nvsetbrdbuilder_EP_Load(p->nvsetbrdbuilder, &epcfg);         
     }    
     
      // load as ...
     if(eobool_true == p->config.ep_analogsensors_is_present)
     {
-        eo_nvsetdevbuilder_ENDPOINTpushback(p->nvsetdevbuilder, eoprot_endpoint_analogsensors);
-        if(p->config.en_as_entity_strain_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_analogsensors, eoprot_entity_as_strain, p->config.en_as_entity_strain_numberof);
-        }
-        if(p->config.en_as_entity_mais_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_analogsensors, eoprot_entity_as_mais, p->config.en_as_entity_mais_numberof);
-        } 
-        if(p->config.en_as_entity_extorque_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_analogsensors, eoprot_entity_as_extorque, p->config.en_as_entity_extorque_numberof);
-        }          
+        epcfg.endpoint = eoprot_endpoint_analogsensors;
+        memset(epcfg.numberofentities, 0, sizeof(epcfg.numberofentities));
+        epcfg.numberofentities[0] = p->config.en_as_entity_strain_numberof;
+        epcfg.numberofentities[1] = p->config.en_as_entity_mais_numberof;
+        epcfg.numberofentities[2] = p->config.en_as_entity_extorque_numberof;
+       
+        eo_nvsetbrdbuilder_EP_Load(p->nvsetbrdbuilder, &epcfg);            
     }
 
      // load sk ...
     if(eobool_true == p->config.ep_skin_is_present)
     {
-        eo_nvsetdevbuilder_ENDPOINTpushback(p->nvsetdevbuilder, eoprot_endpoint_skin);
-        if(p->config.en_sk_entity_skin_numberof > 0)
-        {
-            eo_nvsetdevbuilder_ENTITYpushback(p->nvsetdevbuilder, eoprot_endpoint_skin, eoprot_entity_sk_skin, p->config.en_sk_entity_skin_numberof);
-        }    
+        epcfg.endpoint = eoprot_endpoint_skin;
+        memset(epcfg.numberofentities, 0, sizeof(epcfg.numberofentities));
+        epcfg.numberofentities[0] = p->config.en_sk_entity_skin_numberof;
+       
+        eo_nvsetbrdbuilder_EP_Load(p->nvsetbrdbuilder, &epcfg);          
     } 
-
-
-    // ok, now prepare everything
-    eo_nvsetdevbuilder_Prepare(p->nvsetdevbuilder);
     
     return(p);
 }
-
 
 
 extern void eo_protconfig_Delete(EOprotocolConfigurator *p)
@@ -208,12 +188,12 @@ extern void eo_protconfig_Delete(EOprotocolConfigurator *p)
         return;
     } 
     
-    if(NULL == p->nvsetdevbuilder)
+    if(NULL == p->nvsetbrdbuilder)
     {
         return;
     }
     
-    eo_nvsetdevbuilder_Delete(p->nvsetdevbuilder);
+    eo_nvsetbrdbuilder_Delete(p->nvsetbrdbuilder);
        
     memset(p, 0, sizeof(EOprotocolConfigurator));    
     eo_mempool_Delete(eo_mempool_GetHandle(), p);
@@ -221,21 +201,16 @@ extern void eo_protconfig_Delete(EOprotocolConfigurator *p)
 }
     
 
-extern eOnvset_DEVcfg_t* eo_protconfig_DEVcfg_Get(EOprotocolConfigurator* p)
+extern eOnvset_BRDcfg_t* eo_protconfig_BRDcfg_Get(EOprotocolConfigurator* p)
 {
-    eOnvset_DEVcfg_t *ret = NULL;
+    eOnvset_BRDcfg_t *ret = NULL;
     if(NULL == p)
     {
         return(NULL);
     }
     
-    ret = eo_nvsetdevbuilder_DEVcfg_Get(p->nvsetdevbuilder);
+    ret = eo_nvsetbrdbuilder_BRDcfg_Get(p->nvsetbrdbuilder);
     
-    // we can clean some memory used in the EOprotocolConfigurator object. however we cannot delete the p->nvsetdevbuilder.
-    
-    // marco.accame: we cannot clean anything in EOprotocolConfigurator. we could remove the eOprotconfig_cfg_t member, as it is
-    //               used only inside eo_protconfig_New(), but ... we dont save much memory.
-
     return(ret);
 }
 

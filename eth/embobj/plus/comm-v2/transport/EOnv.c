@@ -32,6 +32,8 @@
 #include "EOrop.h" 
 #include "EOarray.h" 
 
+#include "EoProtocol.h"
+
 
 
 
@@ -288,7 +290,7 @@ extern eOnvEP8_t eo_nv_GetEP8(const EOnv *nv)
     {
         return(eo_nv_EP8dummy);
     }
-    return(eo_nv_hid_id32_extract_ep8(nv->id32));
+    return(eoprot_ID2endpoint(nv->id32));
 }
 
 

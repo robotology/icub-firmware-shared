@@ -51,7 +51,7 @@ extern "C" {
 
 typedef struct
 {
-    eOnvset_EPcfg_t                     epcfg;
+    eOprot_EPcfg_t                      epcfg;
     uint16_t                            epnvsnumberof;
     eObool_t                            initted;
     uint8_t                             dummy; 
@@ -66,22 +66,12 @@ typedef struct
     eOipv4addr_t                    ipaddress;
     eOnvBRD_t                       boardnum;
     eOnvsetOwnership_t              ownership;
-    uint16_t                        theendpoints_numberof;     
-    EOvector*                       theendpoints;
-    eOuint16_fp_voidp_uint8_t       fptr_ep2index;   
-    void*                           ep2index_param;
-    EOVmutexDerived*                mtx_device;      
-} eOnvset_dev_t;
+    EOvector*                       theendpoints;       // of eOnvset_ep_t items
+    EOVmutexDerived*                mtx_board;    
+    uint16_t                        ep2indexlut[eonvset_max_endpoint_value+1];    
+} eOnvset_brd_t;
 
 
-
-typedef enum
-{
-    eo_nvset_devicesownership_none                  = 0,
-    eo_nvset_devicesownership_onelocal              = 1,
-    eo_nvset_devicesownership_onelocalsomeremote    = 2,
-    eo_nvset_devicesownership_someremote            = 3
-} eOnvsetDevicesOwnership_t;
 
 
 /** @struct     EOnvSet_hid
@@ -91,26 +81,16 @@ typedef enum
  **/
 struct EOnvSet_hid 
 {
-    EOvector*                       thedevices;
-    EOvector*                       theipaddresses;
-    uint16_t                        devindexoflocaldevice;
-    eOnvsetDevicesOwnership_t       devicesowneship;
+    eOnvset_brd_t                   theboard;
     eOnvset_protection_t            protection;
     eov_mutex_fn_mutexderived_new   mtxderived_new;
-    EOVmutexDerived*                mtx_object;
 };   
  
 
 
 
-
 // - declaration of extern hidden functions ---------------------------------------------------------------------------
-
-
-extern eOnvPROGnum_t eo_nvset_hid_EPprogressivenumber(EOnvSet* p, eOipv4addr_t ip, eOnvID32_t id32);
-
-
-
+// empty-section
  
 
 #ifdef __cplusplus

@@ -146,12 +146,12 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     s_eo_theinfodispatcher.transmitter = cfg->transmitter;
     EOnvSet* nvset = eo_transmitter_GetNVset(s_eo_theinfodispatcher.transmitter);   
     s_eo_theinfodispatcher.nvinfostatus = eo_nv_New();    
-    eo_nvset_NV_Get(nvset, eok_ipv4addr_localhost, 
+    eo_nvset_NV_Get(nvset, 
                     eoprot_ID_get(eoprot_endpoint_management, eoprot_entity_mn_info, 0, eoprot_tag_mn_info_status),
                     s_eo_theinfodispatcher.nvinfostatus
                     );   
     s_eo_theinfodispatcher.nvinfostatusbasic = eo_nv_New();
-    eo_nvset_NV_Get(nvset, eok_ipv4addr_localhost, 
+    eo_nvset_NV_Get(nvset,
                     eoprot_ID_get(eoprot_endpoint_management, eoprot_entity_mn_info, 0, eoprot_tag_mn_info_status_basic),
                     s_eo_theinfodispatcher.nvinfostatusbasic
                     ); 

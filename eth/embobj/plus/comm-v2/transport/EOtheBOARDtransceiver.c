@@ -89,7 +89,7 @@ static EOtheBOARDtransceiver s_eo_theboardtrans =
 
 const eOboardtransceiver_cfg_t eo_boardtransceiver_cfg_default = 
 {
-    EO_INIT(.nvsetdevcfg)               NULL,
+    EO_INIT(.nvsetbrdcfg)               NULL,
     EO_INIT(.remotehostipv4addr)        0,
     EO_INIT(.remotehostipv4port)        0,
     EO_INIT(.sizes)                     {0},
@@ -126,9 +126,9 @@ extern EOtheBOARDtransceiver * eo_boardtransceiver_Initialise(const eOboardtrans
         cfg = &eo_boardtransceiver_cfg_default;
     }
     
-    if(NULL == cfg->nvsetdevcfg)
+    if(NULL == cfg->nvsetbrdcfg)
     {
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_boardtransceiver_Initialise(): NULL nvsetdevcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_boardtransceiver_Initialise(): NULL nvsetbrdcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }
 
     if((0 == cfg->sizes.capacityoftxpacket) || (0 == cfg->sizes.capacityofrop) || (0 == cfg->sizes.capacityofropframeregulars) ||
@@ -141,7 +141,7 @@ extern EOtheBOARDtransceiver * eo_boardtransceiver_Initialise(const eOboardtrans
 
     s_eo_theboardtrans.nvset = s_eo_boardtransceiver_nvset_get(cfg);
     
-    s_eo_theboardtrans.boardnumber = cfg->nvsetdevcfg->boardnum;
+    s_eo_theboardtrans.boardnumber = cfg->nvsetbrdcfg->boardnum;
     
 
     txrxcfg.sizes.capacityoftxpacket            = cfg->sizes.capacityoftxpacket;
@@ -265,42 +265,27 @@ extern eOnvBRD_t eo_boardtransceiver_GetBoardNumber(EOtheBOARDtransceiver* p)
 
 static EOnvSet* s_eo_boardtransceiver_nvset_get(const eOboardtransceiver_cfg_t *cfg)
 {
-    const uint16_t numofdevices     = 1;    // one device only
-    const uint16_t ondevindexzero   = 0;    // one device only
-
     if(NULL != s_eo_theboardtrans.nvset)
     {   // if i call it more than once ... then i return the configuration but allocate and init only once 
         return(s_eo_theboardtrans.nvset);
     }
 
-    EOnvSet* nvset = eo_nvset_New(numofdevices, cfg->nvsetprotection, cfg->mutex_fn_new);
-    
-    eo_nvset_DEVpushback(nvset, ondevindexzero, (eOnvset_DEVcfg_t*)cfg->nvsetdevcfg, eo_nvset_ownership_local, EO_COMMON_IPV4ADDR_LOCALHOST);
-    
-    eo_nvset_NVSinitialise(nvset);
-
+    EOnvSet* nvset = eo_nvset_New(cfg->nvsetprotection, cfg->mutex_fn_new);
+    eo_nvset_InitBRD_LoadEPs(nvset, eo_nvset_ownership_local, EO_COMMON_IPV4ADDR_LOCALHOST, (eOnvset_BRDcfg_t*)cfg->nvsetbrdcfg, eobool_true);           
     return(nvset);
-
 }
 
 
 static void s_eo_boardtransceiver_nvset_release(EOtheBOARDtransceiver* p)
 {
-    //const uint16_t numofdevices     = 1;    // one device only
-    const uint16_t ondevindexzero   = 0;    // one device only
-
-    if(NULL == p->nvset)
+    if((NULL == p) || (NULL == p->nvset))
     {   // if i call it more than once ... 
         return;
     }
 
-    eo_nvset_NVSdeinitialise(p->nvset);
-    
-    eo_nvset_DEVpopback(p->nvset, ondevindexzero);
-    
-    eo_nvset_Delete(p->nvset);
-    
-    p->nvset = NULL;
+    // _delete also unit the brd etc.            
+    eo_nvset_Delete(p->nvset);   
+    p->nvset = NULL;  
 }
 
 

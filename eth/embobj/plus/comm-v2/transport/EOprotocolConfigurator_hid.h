@@ -34,7 +34,7 @@ extern "C" {
 // - external dependencies --------------------------------------------------------------------------------------------
 
 #include "EoCommon.h"
-#include "EOnvsetDEVbuilder.h"
+#include "EOnvsetBRDbuilder.h"
 
 // - declaration of extern public interface ---------------------------------------------------------------------------
  
@@ -55,7 +55,7 @@ extern "C" {
  **/
 struct EOprotocolConfigurator_hid 
 {
-    EOnvsetDEVbuilder*      nvsetdevbuilder;
+    EOnvsetBRDbuilder*      nvsetbrdbuilder;
     eOprotconfig_cfg_t      config;
 };   
  
