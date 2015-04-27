@@ -333,12 +333,12 @@ typedef struct                      // size is 1+7 = 8 bytes
 /** @typedef    typedef struct eOmn_appl_t;
     @brief      used to represent the application with config, status, commands
  **/
-typedef struct                      // size is 8+24+8 = 40 bytes
+typedef struct                      // size is 8+32+8 = 48 bytes
 {
     eOmn_appl_config_t              config;
     eOmn_appl_status_t              status;
     eOmn_appl_cmmnds_t              cmmnds;
-} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 40);
+} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 48);
 
 
 // -- the definition of info entity
