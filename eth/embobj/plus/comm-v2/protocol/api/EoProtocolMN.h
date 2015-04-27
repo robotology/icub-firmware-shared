@@ -190,7 +190,8 @@ typedef struct                  // 120+40+80+0 = 240
 
   
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
-// empty-section
+
+extern const eOprot_EPcfg_t eoprot_mn_basicEPcfg;
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------

@@ -62,7 +62,7 @@ extern "C" {
 //#define EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
 //#undef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
 
-
+#define EOPROT_CFG_REMOTE_BOARDS_USE_DYNAMIC_MODE
 
 #define eo_prot_ID32dummy       EOK_uint32dummy
 #define eo_prot_PROGnumdummy    EOK_uint32dummy
@@ -84,11 +84,15 @@ typedef uint32_t eOprotIP_t;
 
 
 /** @typedef    typedef uint8_t eOprotBRD_t
-    @brief      used as a short identifier of an IP address with values starting from 0 upto the max number of boards in the network
+    @brief      used to identify a board with values starting from 0 upto the max number of boards in the network.
  **/
 typedef uint8_t eOprotBRD_t;
 
-enum { eoprot_boards_maxnumberof = 16 };    // this number forces static allocation of some data structure, thus keep it low
+#if defined(EOPROT_CFG_REMOTE_BOARDS_USE_DYNAMIC_MODE)
+enum { eoprot_board_remotes_maxnumberof = 128 };    // this number just limits the max number of allocable remote boards
+#else
+enum { eoprot_board_remotes_maxnumberof = 32 };    // this number forces static allocation of some data structure, thus keep it low
+#endif
 
 enum { eoprot_board_localboard = 254 };     // use this value to retrieve info about the board configured as local
 
@@ -215,7 +219,6 @@ typedef enum
 
 enum { eoprot_entities_numberof = 9 }; // it does not count the eoprot_entity_none.
 
-//#warning --> evalate changing teh name eoprot_entity_mn_comm into eoprot_entity_mn_communication
 
 /** @typedef    typedef enum eOprot_index_t
     @brief      It describes the index of the entity.  It is simply a number from 0 to EOK_uint08dummy-1.                
@@ -242,25 +245,6 @@ typedef enum
 } eOprot_tag_t;
 
 
-
-///** @typedef    typedef struct eOprot_nvset_interface_t;
-//    @brief      It contains those functions which are required to offer services to the EOnvset object. The functions in here must
-//                match those defined inside eOnvset_protocol_Interface_t. Every endpoint must export a variables of this type.    
-// **/ 
-//typedef struct
-//{
-//    eOres_fp_uint8_uint8_voidp_uint16_t loadram;            /*< a function which loads the ram of the endpoint given: (brd, ep, ram, sizeof) */
-//    eOuint16_fp_uint8_uint8_t           getvarsnumberof;    /*< a function which returns the total number of variables given: (brd, ep) */
-//    eObool_fp_uint8_uint32_t            isidsupported;      /*< a function which tells if the id is supported given: (brd, id) */
-//    eOuint32_fp_uint8_uint8_uint32_t    epgetid;            /*< a function which returns the full ID given: (brd, ep, prognumber)  */
-//    eOuint32_fp_uint8_uint32_t          epgetprognumber;    /*< a function which returns a progressive number given: (brd, id) */
-//    eOvoidp_fp_uint8_uint32_t           getrom;             /*< a function which returns the .rom part of the NV given: (brd, id) */
-//    eOvoidp_fp_uint8_uint32_t           getram;             /*< a function which returns the .ram part of the NV given: (brd, id) */  
-//    eObool_fp_uint8_uint32_t            isvarproxied;
-//} eOprot_nvset_Interface_t;
-
-
-
 // the callbacks are the same for every board and every index. they can be differentiated only by endpoint, entity and tag.
 // however, when called by the protocol they are associated to a single variable. To clarify, if we specify a myinit() function
 // for endpoint eoprot_endpoint_motioncontrol, entity eoprot_entity_mc_joint, and tag eoprot_tag_mc_joint_config, the same myinit()
@@ -281,6 +265,15 @@ typedef struct
     eOprotEndpoint_t            endpoint;
     eOvoid_fp_uint32_voidp_t    raminitialise;  /**< useful to initialise the entire ram of the endpoint */   
 } eOprot_callbacks_endpoint_descriptor_t;
+
+
+enum { eoprot_maxvalueof_entity = 6 }; // must be higher equal than the values inside eOprot_entity_t
+// it is what is enough to configure an endpoint
+typedef struct                     
+{
+    eOprotEndpoint_t    endpoint;                                       /*< the endpoint */
+    uint8_t             numberofentities[eoprot_maxvalueof_entity+1];   /*< the multiplicity of each entity in position of the entity */
+} eOprot_EPcfg_t;
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
@@ -410,6 +403,8 @@ extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint16_t 
 
 
 
+extern eObool_t eoprot_EPcfg_isvalid(eOprot_EPcfg_t *cfgofep);
+
 // functions which manage protocol version
 
 
@@ -424,8 +419,24 @@ extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t 
 // functions which allow to use the variables etc.
 
 
+
+/** @fn         extern eOresult_t eoprot_config_board_reserve(eOprotBRD_t brd)
+    @brief      it configures the library so that this particular board can be managed.
+                if the board is eoprot_board_localboard then the space is already allocated.
+                if instead is a given number then if we use dynamic mode then the memory is allocated / reallocated
+                to host an array index of value equal to brd. thus if we reserve for brd = 2, then 4, then 0, then 1
+                the memory is allocated to host 3 boards, then 4, then nothing is done because 0 and 1 are already supported.
+                in case of static allocation we never allocate.
+                in both cases we retrun error if brd >= eoprot_boards_maxnumberof
+    @param      brd                 the number of board 
+    @return     eores_OK or eores_NOK_generic upon failure.
+ **/
+extern eOresult_t eoprot_config_board_reserve(eOprotBRD_t brd);
+
+
 /** @fn         extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
-    @brief      it configure the library to use a given number of boards.
+    @brief      it configures the library to use a given number of boards. it is the same as calling
+                eoprot_config_board_reserve(numofboards-1);
     @param      numofboards         the number of boards.
     @return     eores_OK or eores_NOK_generic upon failure.
  **/
@@ -453,13 +464,13 @@ extern eOresult_t eoprot_config_board_local(eOprotBRD_t brd);
     @param      brd                 the number of board 
     @param      ep                  the endpoint
     @param      numberofentities    the number of entities expressed as a const array whose address will be copied and used in the
-                                    entire lifetime of the library.    
+                                    entire lifetime of the library. If NULL, then it de-configures. 
     @return     eores_OK or eores_NOK_generic upon failure.
  **/
 extern eOresult_t eoprot_config_endpoint_entities(eOprotBRD_t brd, eOprotEndpoint_t ep, const uint8_t* numberofentities);
 
 
-extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uint32_t isvarproxied_fn);
+extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eOprotEndpoint_t ep, eObool_fp_uint32_t isvarproxied_fn);
 
 
 /** @fn         extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep)
@@ -513,7 +524,9 @@ extern eOresult_t eoprot_config_callbacks_variable_set(const eOprot_callbacks_va
 
 /** @fn         extern eOprotBRD_t eoprot_board_local_get(void)
     @brief      tells the id of the local board
-    @return     the local board id in range [0, ...] or eo_prot_BRDdummy if the localbord is not configured yet
+    @return     the local board id in range [0, ...] or eo_prot_BRDdummy if the localboard is not configured yet
+    @warning    DO NOT EVER use the value returned as a parameter for other functions.
+                if you want to refer to the local board use eoprot_board_localboard.
  **/
 extern eOprotBRD_t eoprot_board_local_get(void);
 
@@ -593,6 +606,9 @@ extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprot
 extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t brd, eOprotEndpoint_t ep, EOarray* array, uint8_t startfrom);
 
 
+extern eOvoid_fp_uint32_voidp_t eoprot_endpoint_get_initialiser(eOprotEndpoint_t ep);
+
+extern uint8_t eoprot_endpoint_get_numberofentities(eOprotEndpoint_t ep);
 
 /** @fn         extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
     @brief      it tells the size of the ram used for a given board and endpoint.
@@ -606,7 +622,7 @@ extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 /** @fn         extern eOresult_t eoprot_config_endpoint_ram(eOprotBRD_t brd, eOprotEndpoint_t ep, void* ram, uint16_t sizeofram)
     @brief      it configures the library to use some ram for that board and endpoint. The ram must be externally allocated and be
                 of the correct dimension. One can use a sizeof(eOprot_bxx_endpointname_t) or use the function 
-                eoprot_endpoint_sizeof_get().
+                eoprot_endpoint_sizeof_get(). If ram is NULL, then it de-configures.
     @param      brd                 the number of board 
     @param      ep                  the endpoint
     @param      ram                 the ram
@@ -743,6 +759,8 @@ extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t
  **/
 extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32_t id);
 
+
+extern void* eoprot_endpoint_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep);
 
 
 /** @}            

@@ -84,8 +84,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-const uint8_t eoprot_ep_board_numberofthem = eoprot_boards_maxnumberof;
-
 
 const eoprot_version_t * const eoprot_endpoint_version[eoprot_endpoints_numberof] =
 {

@@ -62,7 +62,6 @@
 
 extern EOPROT_ROMmap EOnv_rom_t * const * const * const eoprot_ep_descriptors[];
     
-extern const uint8_t eoprot_ep_board_numberofthem;
 extern eOvoid_fp_cnvp_cropdesp_t eoprot_ep_onsay[];                 // eoprot_endpoints_numberof
 extern const eoprot_version_t * const eoprot_endpoint_version[];    // eoprot_endpoints_numberof
 extern const uint8_t eoprot_ep_entities_numberof[];                 // eoprot_endpoints_numberof

@@ -386,6 +386,13 @@ const eoprot_version_t eoprot_mn_version =
     EO_INIT(.minor)     eoprot_version_mn_minor
 };
 
+
+const eOprot_EPcfg_t eoprot_mn_basicEPcfg =
+{
+    EO_INIT(.endpoint)          eoprot_endpoint_management,
+    EO_INIT(.numberofentities)  {1, 1, 1, 0, 0, 0, 0}
+};    
+
 // -- collector of eonv descriptors for the endpoint
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_comm_descriptors[] =

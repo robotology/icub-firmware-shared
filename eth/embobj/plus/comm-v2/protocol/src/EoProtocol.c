@@ -58,11 +58,16 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-
 // --------------------------------------------------------------------------------------------------------------------
 // - typedef with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+typedef struct
+{
+    const uint8_t*      numberofeachentity[eoprot_endpoints_numberof];   
+    void*               ramofeachendpoint[eoprot_endpoints_numberof];   
+    eObool_fp_uint32_t  isvarproxied_fn[eoprot_endpoints_numberof];        
+} eOprot_board_data_t;
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -85,6 +90,8 @@ static uint16_t s_eoprot_rom_get_prognum(eOprotID32_t id);
 static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_cnvp_t init, eOvoid_fp_cnvp_cropdesp_t update);
 #endif
 
+static eOprot_board_data_t* s_eoprot_board_data_get(eOprotBRD_t brd);
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -98,23 +105,15 @@ static eOprotBRD_t s_eoprot_localboard = eo_prot_BRDdummy; // initted as 255. ho
 // --------------------------------------------------------------------------------------------------------------------
 
 
-const uint8_t* eoprot_board_numberofeachentity[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
-void* eoprot_board_ramofeachendpoint[eoprot_boards_maxnumberof][eoprot_endpoints_numberof] = { NULL };
-eObool_fp_uint32_t eoprot_board_isvarproxied_fns[eoprot_boards_maxnumberof] = { NULL };
+eOprot_board_data_t eoprot_loc_board_data = { NULL };
 
-//const eOprot_nvset_Interface_t eoprot_eonvset_Interface =
-//{
-//    EO_INIT(.loadram)               eoprot_config_endpoint_ram,
-//    EO_INIT(.getvarsnumberof)       s_eoprot_endpoint_numberofvariables_get,       
-//    EO_INIT(.isidsupported)         eoprot_id_isvalid,     
-//    EO_INIT(.epgetid)               eoprot_endpoint_prognum2id,            
-//    EO_INIT(.epgetprognumber)       eoprot_endpoint_id2prognum,     
-//    EO_INIT(.getrom)                eoprot_variable_romof_get,             
-//    EO_INIT(.getram)                eoprot_variable_ramof_get,
-//    EO_INIT(.isvarproxied)          eoprot_variable_is_proxied    
-//};
-
-
+#if     defined(EOPROT_CFG_REMOTE_BOARDS_USE_DYNAMIC_MODE)
+eOprot_board_data_t * eoprot_rem_board_data =  NULL ;
+uint8_t eoprot_rem_board_data_size = 0;
+#else
+eOprot_board_data_t eoprot_rem_board_data[eoprot_board_remotes_maxnumberof] = { NULL };
+uint8_t eoprot_rem_board_data_size = eoprot_board_remotes_maxnumberof;
+#endif
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions
@@ -249,6 +248,53 @@ extern eOresult_t eoprot_ID2information(eOprotID32_t id, char* string, uint16_t 
     return(eores_OK);    
 }
 
+
+extern eObool_t eoprot_EPcfg_isvalid(eOprot_EPcfg_t *cfgofep)
+{
+
+    uint8_t max = 0;
+    uint16_t count = 0;
+    uint8_t i = 0;
+    
+    if(NULL == cfgofep)
+    {
+        return(eobool_false);
+    }
+    
+    if(0 == (max = eoprot_endpoint_get_numberofentities(cfgofep->endpoint)))
+    {   // dont have entities in this endpoint (the endpoint is invalid)
+        return(eobool_false);
+    }
+    
+    if(max > eoprot_maxvalueof_entity+1)
+    {   // have too many entities in this endpoint, and my data structure dont manage them
+        return(eobool_false);
+    }
+    
+    for(i=0, count=0; i<max; i++)
+    {
+        count += cfgofep->numberofentities[i];
+    }
+    
+    if(0 == count)
+    {   // my config does not contain any entity .... it is a dummy configuration
+        return(eobool_false);
+    }
+    
+//    for(i=max, count=0; i<(eonvset_max_entity_value+1))
+//    {   
+//        count += cfgofep->numberofsentities[i];        
+//    }
+//    
+//    if(count > 0)
+//    {   // my configuration contains non-zero values beyond the limit of what the protocol manages for this endpoint
+//        return(eobool_false);
+//    }
+    
+    return(eobool_true);
+}
+    
+
 extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t ep)
 {
     uint8_t epi = 0;
@@ -263,59 +309,84 @@ extern const eoprot_version_t * eoprot_version_of_endpoint_get(eOprotEndpoint_t 
     return(eoprot_endpoint_version[epi]);
 }
 
+extern eOresult_t eoprot_config_board_reserve(eOprotBRD_t brd)
+{
+    if(eoprot_board_localboard == brd)
+    {
+        return(eores_OK);
+    }
+    
+#if     defined(EOPROT_CFG_REMOTE_BOARDS_USE_DYNAMIC_MODE)
+    
+    if(brd >= eoprot_board_remotes_maxnumberof)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    if(brd < eoprot_rem_board_data_size)
+    {   // already allocated
+        return(eores_OK);        
+    }
+    else
+    {   
+        // ok. just realloc   
+        uint8_t oldsize = eoprot_rem_board_data_size;
+        void *p = realloc(eoprot_rem_board_data, (brd+1)*sizeof(eOprot_board_data_t));  
+        if(NULL == p)
+        {
+            return(eores_NOK_generic);
+        }
+        // if we can reallocate ...
+        eoprot_rem_board_data_size = (brd+1);
+        eoprot_rem_board_data = p;        
+        memset(&eoprot_rem_board_data[oldsize], 0, (eoprot_rem_board_data_size-oldsize)*sizeof(eOprot_board_data_t));          
+        return(eores_OK);
+    }
+    
+#else
 
-extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
-{   
-    // when and if we allow dynamic allocation of numboards ...
-    // in such a case the > is ok, we dont need the >=.
-    if(numofboards > eoprot_boards_maxnumberof)
+    if(brd >= eoprot_board_remotes_maxnumberof)
     {
         return(eores_NOK_generic);
     }
     return(eores_OK);
+    
+#endif       
+}
+
+extern eOresult_t eoprot_config_board_numberof(uint8_t numofboards)
+{   
+    return(eoprot_config_board_reserve(numofboards-1)); 
 }
 
 extern eObool_t eoprot_board_can_be_managed(eOprotBRD_t brd)
 {
     if(eoprot_board_localboard == brd)
     {
-        brd = s_eoprot_localboard;
+        return(eobool_true);
     }    
-    
-    if(brd >= eoprot_boards_maxnumberof)
+
+    if(brd >= eoprot_rem_board_data_size)
     {
         return(eobool_false);
     }  
-
+ 
     return(eobool_true);    
 }
 
 extern eOresult_t eoprot_config_board_local(eOprotBRD_t brd)
 {
-    eOresult_t res = eores_OK;
-    
-    if(brd >= eoprot_boards_maxnumberof)
-    {
-        return(eores_NOK_generic);
-    }
-    
     s_eoprot_localboard = brd;
-    s_eoprot_localboard = s_eoprot_localboard;
-
-    return(res);
+    return(eores_OK);
 }
 
 extern eOresult_t eoprot_config_endpoint_entities(eOprotBRD_t brd, eOprotEndpoint_t ep, const uint8_t* numberofentities)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOresult_t res = eores_OK;
     uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if((brd >= eoprot_boards_maxnumberof) || (NULL == numberofentities))
+    if(NULL == data)
     {
         return(eores_NOK_generic);
     }
@@ -327,42 +398,45 @@ extern eOresult_t eoprot_config_endpoint_entities(eOprotBRD_t brd, eOprotEndpoin
     
     epi = eoprot_ep_ep2index(ep);
             
-    eoprot_board_numberofeachentity[brd][epi] = numberofentities;    
+    data->numberofeachentity[epi] = numberofentities;    
         
     return(res);
 }
 
-extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eObool_fp_uint32_t isvarproxied_fn)
+extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eOprotEndpoint_t ep, eObool_fp_uint32_t isvarproxied_fn)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOresult_t res = eores_OK;
+    uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if((brd >= eoprot_boards_maxnumberof) || (NULL == isvarproxied_fn))
+    if(eoprot_board_localboard != brd)
     {
         return(eores_NOK_generic);
     }
-       
-            
-    eoprot_board_isvarproxied_fns[brd] = isvarproxied_fn;    
+    
+    if((NULL == data) || (NULL == isvarproxied_fn))
+    {
+        return(eores_NOK_generic);
+    }
 
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    epi = eoprot_ep_ep2index(ep);
+    
+    data->isvarproxied_fn[epi] = isvarproxied_fn;    
     
     return(res);        
 }
 
 extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint8_t epi = 0;
 
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(eobool_false);
     }
@@ -374,7 +448,7 @@ extern eObool_t eoprot_endpoint_configured_is(eOprotBRD_t brd, eOprotEndpoint_t 
     
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(eobool_false);
     }
@@ -487,24 +561,19 @@ extern eOprotBRD_t eoprot_board_local_get(void)
 
 extern uint8_t eoprot_endpoints_numberof_get(eOprotBRD_t brd)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint8_t numberof = 0;
     uint8_t ep = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(0);
     }
 
-    ep = 0;
     for(ep=0; ep<eoprot_endpoints_numberof; ep++)
     {
         uint8_t epi = eoprot_ep_ep2index(ep);
-        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        if(NULL != data->numberofeachentity[epi])
         {
             numberof++;
         }
@@ -513,17 +582,14 @@ extern uint8_t eoprot_endpoints_numberof_get(eOprotBRD_t brd)
     return(numberof);
 }
 
+
 extern eOresult_t eoprot_endpoints_array_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
-{   
-    uint8_t ep=0;
+{  
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);    
+    uint8_t ep = 0;
     uint8_t numberof = 0;
 
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if(brd >= eoprot_boards_maxnumberof)
+    if(NULL == data)
     {
         return(eores_NOK_generic);
     }
@@ -542,7 +608,7 @@ extern eOresult_t eoprot_endpoints_array_get(eOprotBRD_t brd, EOarray* array, ui
     for(ep=0; ep<eoprot_endpoints_numberof; ep++)
     {
         uint8_t epi = eoprot_ep_ep2index(ep);
-        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        if(NULL != data->numberofeachentity[epi])
         {
             numberof++;
             if(numberof>startfrom)
@@ -559,21 +625,18 @@ extern eOresult_t eoprot_endpoints_array_get(eOprotBRD_t brd, EOarray* array, ui
     return(eores_OK);   
 }
 
+
 extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
 { 
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOresult_t res = eores_NOK_generic;
-    uint8_t ep=0;
+    uint8_t ep = 0;
     uint8_t numberof = 0;
 
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if(brd >= eoprot_boards_maxnumberof)
+    if(NULL == data)
     {
         return(eores_NOK_generic);
-    }
+    }  
     
     if((NULL == array) || (sizeof(eoprot_endpoint_descriptor_t) != eo_array_ItemSize(array)))
     {   // mild control: the array must be non NULL and with itemsize equal to 4
@@ -589,7 +652,7 @@ extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarr
     for(ep=0; ep<eoprot_endpoints_numberof; ep++)
     {
         uint8_t epi = eoprot_ep_ep2index(ep);
-        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        if(NULL != data->numberofeachentity[epi])
         {
             numberof++;
             if(numberof>startfrom)
@@ -603,7 +666,7 @@ extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarr
                 epdes.version.minor     = eoprot_endpoint_version[epi]->minor;
                 for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
                 {
-                    if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+                    if(0 != data->numberofeachentity[epi][ent])
                     {
                         entitiesinside++;
                     }     
@@ -623,21 +686,18 @@ extern eOresult_t eoprot_endpoints_arrayofdescriptors_get(eOprotBRD_t brd, EOarr
     return(eores_OK);   
 }
 
+
 extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t numberof = 0;
     uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(0);
     }
-    
+     
     if(eoprot_endpoint_all == ep)
     {
         return(eoprot_entities_numberof_get(brd));
@@ -649,12 +709,12 @@ extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprot
     }
 
     epi = eoprot_ep_ep2index(ep);
-    if(NULL != eoprot_board_numberofeachentity[brd][epi])
+    if(NULL != data->numberofeachentity[epi])
     {
         uint8_t ent;
         for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
         {
-            if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+            if(0 != data->numberofeachentity[epi][ent])
             {
                 numberof++;
             }
@@ -665,30 +725,27 @@ extern uint16_t eoprot_entities_in_endpoint_numberof_get(eOprotBRD_t brd, eOprot
     return(numberof);       
 }
 
+
 extern uint16_t eoprot_entities_numberof_get(eOprotBRD_t brd)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t numberof = 0;
     uint8_t ep = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(0);
     }
-
+    
     for(ep=0; ep<eoprot_endpoints_numberof; ep++)
     {
         uint8_t epi = eoprot_ep_ep2index(ep);
-        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        if(NULL != data->numberofeachentity[epi])
         {
             uint8_t ent;
             for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
             {
-                if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+                if(0 != data->numberofeachentity[epi][ent])
                 {
                     numberof++;
                 }
@@ -700,22 +757,19 @@ extern uint16_t eoprot_entities_numberof_get(eOprotBRD_t brd)
     return(numberof);       
 }
 
+
 extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarray* array, uint8_t startfrom)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOresult_t res = eores_NOK_generic;
     uint16_t numberof = 0;
     uint8_t ep = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(eores_NOK_generic);
     }
-
+    
     if((NULL == array) || (sizeof(eoprot_entity_descriptor_t) != eo_array_ItemSize(array)))
     {   // mild control: the array must be non NULL and with itemsize equal to sizeof(eoprot_entity_descriptor_t)
         return(eores_NOK_generic);
@@ -727,12 +781,12 @@ extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarra
     for(ep=0; ep<eoprot_endpoints_numberof; ep++)
     {
         uint8_t epi = eoprot_ep_ep2index(ep);
-        if(NULL != eoprot_board_numberofeachentity[brd][epi])
+        if(NULL != data->numberofeachentity[epi])
         {
             uint8_t ent;
             for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
             {
-                if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+                if(0 != data->numberofeachentity[epi][ent])
                 {
                     numberof++;
                     
@@ -742,7 +796,7 @@ extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarra
                         
                         entdes.endpoint         = ep;
                         entdes.entity           = ent;
-                        entdes.multiplicity     = eoprot_board_numberofeachentity[brd][epi][ent];
+                        entdes.multiplicity     = data->numberofeachentity[epi][ent];
                         entdes.numberoftags     = eoprot_ep_tags_numberof[epi][ent];
                         
                         res = eo_array_PushBack(array, &entdes);
@@ -763,20 +817,16 @@ extern eOresult_t eoprot_entities_arrayofdescriptors_get(eOprotBRD_t brd, EOarra
 
 extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t brd, eOprotEndpoint_t ep, EOarray* array, uint8_t startfrom)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOresult_t res = eores_NOK_generic;
     uint16_t numberof = 0;
     uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(eores_NOK_generic);
     }
-
+    
     if((NULL == array) || (sizeof(eoprot_entity_descriptor_t) != eo_array_ItemSize(array)))
     {   // mild control: the array must be non NULL and with itemsize equal to sizeof(eoprot_entity_descriptor_t)
         return(eores_NOK_generic);
@@ -796,12 +846,12 @@ extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t
     eo_array_Reset(array);
     
     epi = eoprot_ep_ep2index(ep);
-    if(NULL != eoprot_board_numberofeachentity[brd][epi])
+    if(NULL != data->numberofeachentity[epi])
     {
         uint8_t ent;
         for(ent=0; ent<eoprot_ep_entities_numberof[epi]; ent++)
         {
-            if(0 != eoprot_board_numberofeachentity[brd][epi][ent])
+            if(0 != data->numberofeachentity[epi][ent])
             {
                 numberof++;
                 
@@ -811,7 +861,7 @@ extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t
                     
                     entdes.endpoint         = ep;
                     entdes.entity           = ent;
-                    entdes.multiplicity     = eoprot_board_numberofeachentity[brd][epi][ent];
+                    entdes.multiplicity     = data->numberofeachentity[epi][ent];
                     entdes.numberoftags     = eoprot_ep_tags_numberof[epi][ent];
                     
                     res = eo_array_PushBack(array, &entdes);
@@ -829,22 +879,45 @@ extern eOresult_t eoprot_entities_in_endpoint_arrayofdescriptors_get(eOprotBRD_t
     return(eores_OK);       
 }
 
+extern eOvoid_fp_uint32_voidp_t eoprot_endpoint_get_initialiser(eOprotEndpoint_t ep)
+{
+    eOvoid_fp_uint32_voidp_t fn = NULL;
+    
+    switch(ep)
+    {
+        case eoprot_endpoint_management:            fn = eoprot_fun_INITIALISE_mn;      break;
+        case eoprot_endpoint_motioncontrol:         fn = eoprot_fun_INITIALISE_mc;      break;
+        case eoprot_endpoint_analogsensors:         fn = eoprot_fun_INITIALISE_as;      break;
+        case eoprot_endpoint_skin:                  fn = eoprot_fun_INITIALISE_sk;      break;
+        
+        default:                                    fn = NULL;                          break;
+    }
+    
+    return(fn);
+}
+
+extern uint8_t eoprot_endpoint_get_numberofentities(eOprotEndpoint_t ep)
+{
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(0);
+    }
+    
+    return(eoprot_ep_entities_numberof[eoprot_ep_ep2index(ep)]);   
+}
+
 extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t size = 0;
     uint8_t epi = 0;
     uint8_t i;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof))
+    if(NULL == data)
     {
         return(0);
     }
-
+    
     if(ep >= eoprot_endpoints_numberof)
     {
         return(0);
@@ -852,7 +925,7 @@ extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
     
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(0);
     }
@@ -860,7 +933,7 @@ extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
     
     for(i=0; i<eoprot_ep_entities_numberof[epi]; i++)
     {
-        size += eoprot_ep_entities_sizeof[epi][i] * eoprot_board_numberofeachentity[brd][epi][i];
+        size += eoprot_ep_entities_sizeof[epi][i] * data->numberofeachentity[epi][i];
     }
     
     return(size);
@@ -869,18 +942,19 @@ extern uint16_t eoprot_endpoint_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 
 extern eOresult_t eoprot_config_endpoint_ram(eOprotBRD_t brd, eOprotEndpoint_t ep, void* ram, uint16_t sizeofram)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOresult_t res = eores_OK;
     uint8_t epi = 0;
-    
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if((brd >= eoprot_boards_maxnumberof) || (0 == sizeofram) || (NULL == ram))
+         
+    if(NULL == data) 
     {
         return(eores_NOK_generic);
     }
+    
+//    if((0 == sizeofram) || (NULL == ram))
+//    {
+//        return(eores_NOK_generic);
+//    }
 
     if(ep >= eoprot_endpoints_numberof)
     {
@@ -889,7 +963,7 @@ extern eOresult_t eoprot_config_endpoint_ram(eOprotBRD_t brd, eOprotEndpoint_t e
     
     epi = eoprot_ep_ep2index(ep);    
         
-    eoprot_board_ramofeachendpoint[brd][epi] = ram;    
+    data->ramofeachendpoint[epi] = ram;    
         
     return(res);
 }
@@ -898,18 +972,13 @@ extern eOresult_t eoprot_config_endpoint_ram(eOprotBRD_t brd, eOprotEndpoint_t e
 
 extern void* eoprot_variable_ramof_get(eOprotBRD_t brd, eOprotID32_t id)
 {
-   
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
     uint8_t epi = 0;
     uint8_t* startofdata = NULL;
     uint16_t offset = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if(brd >= eoprot_boards_maxnumberof)
+    if(NULL == data) 
     {
         return(NULL);
     }     
@@ -922,7 +991,7 @@ extern void* eoprot_variable_ramof_get(eOprotBRD_t brd, eOprotID32_t id)
     epi = eoprot_ep_ep2index(ep); 
     
     
-    startofdata = (uint8_t*)eoprot_board_ramofeachendpoint[brd][epi];
+    startofdata = (uint8_t*)data->ramofeachendpoint[epi];
     
     if(NULL == startofdata)
     {
@@ -936,24 +1005,19 @@ extern void* eoprot_variable_ramof_get(eOprotBRD_t brd, eOprotID32_t id)
         return(NULL);
     }   
 
-    return(&startofdata[offset]);    
- 
+    return(&startofdata[offset]);     
 }
 
 extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t size = 0;
     uint8_t epi = 0;
     
     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
-    
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }     
-    
-    if(brd >= eoprot_boards_maxnumberof)
-    {
+      
+    if(NULL == data)
+    {   // because we dont have such a board. however, the size of a variable is independent by the board
         return(0);
     }
     
@@ -965,27 +1029,35 @@ extern uint16_t eoprot_variable_sizeof_get(eOprotBRD_t brd, eOprotID32_t id)
     epi = eoprot_ep_ep2index(ep);
     
     size = s_eoprot_rom_get_sizeofvar(epi, id);
-    
-    
+        
     return(size);
 }
 
 extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eObool_t res = eobool_false;
     eObool_fp_uint32_t fptr = NULL;
-
+    eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
+    uint8_t epi = 0;
+    
     if(eoprot_board_localboard == brd)
     {
-        brd = s_eoprot_localboard;
-    }  
-    
-    if(brd >= eoprot_boards_maxnumberof)
-    {
-        return(res);
+        return(eobool_false);
     }
 
-    fptr = eoprot_board_isvarproxied_fns[brd];
+    if(NULL == data)
+    {
+        return(eobool_false);
+    }
+    
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(eobool_false);
+    }
+    
+    epi = eoprot_ep_ep2index(ep);
+    fptr = data->isvarproxied_fn[epi];
     
     if(NULL != fptr)
     {
@@ -997,35 +1069,16 @@ extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
 
 extern void* eoprot_variable_romof_get(eOprotBRD_t brd, eOprotID32_t id)
 {
-// we dont verify brd validity because the eonvrom is common to every board
-//     if(eoprot_board_localboard == brd)
-//     {
-//         brd = s_eoprot_localboard;
-//     } 
-//     
-//     if(brd >= eoprot_boards_maxnumberof)
-//     {
-//         return(NULL);
-//     }
-    
-// the following is for debug only    
-//    char str[128];
-//    eoprot_ID2information(id, str, sizeof(str));
-//    hal_trace_puts(str);   
-    
+    // we dont verify brd validity because the eonvrom is common to every board
     return(s_eoprot_rom_get_nvrom(id));
 }
 
 extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint8_t epi = 0;
-
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }  
-    
-    if(brd >= eoprot_boards_maxnumberof)
+      
+    if(NULL == data)
     {
         return(eobool_false);
     }
@@ -1037,12 +1090,11 @@ extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep
 
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(eobool_false);
     }
-
-    
+   
     if(entity < eoprot_ep_entities_numberof[epi])
     {   // is supported if we have a valid entity number
         return(eobool_true);
@@ -1053,16 +1105,12 @@ extern eObool_t eoprot_entity_configured_is(eOprotBRD_t brd, eOprotEndpoint_t ep
 
 extern void* eoprot_entity_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity, eOprotIndex_t index)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint8_t epi = 0;
     uint16_t offset = 0;
     uint8_t* startofdata = NULL;
-
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }    
-    
-    if(brd >= eoprot_boards_maxnumberof)
+          
+    if(NULL == data)
     {
         return(NULL);
     }
@@ -1074,7 +1122,7 @@ extern void* eoprot_entity_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOpro
     
     epi = eoprot_ep_ep2index(ep);
 
-    startofdata = (uint8_t*)eoprot_board_ramofeachendpoint[brd][epi];
+    startofdata = (uint8_t*)data->ramofeachendpoint[epi];
     if(NULL == startofdata)
     {
         return(NULL);
@@ -1093,16 +1141,12 @@ extern void* eoprot_entity_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOpro
 
 extern uint16_t eoprot_entity_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t size = 0;
     uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }  
-    
-    if(brd >= eoprot_boards_maxnumberof)
-    {
+    if(NULL == data)
+    {   // because we dont have such a board. however, the size of an entity is independent by the board
         return(0);
     }
     
@@ -1124,15 +1168,11 @@ extern uint16_t eoprot_entity_sizeof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, e
 
 extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotEntity_t entity)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint8_t numberof = 0;
     uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    }  
-    
-    if(brd >= eoprot_boards_maxnumberof)
+    if(NULL == data)
     {
         return(0);
     }
@@ -1144,14 +1184,14 @@ extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, 
 
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(0);
     }
 
     if(entity < eoprot_ep_entities_numberof[epi])
     {
-        numberof = eoprot_board_numberofeachentity[brd][ep][entity];
+        numberof = data->numberofeachentity[ep][entity];
     }
     
     return(numberof);
@@ -1160,44 +1200,38 @@ extern uint8_t eoprot_entity_numberof_get(eOprotBRD_t brd, eOprotEndpoint_t ep, 
 
 extern eObool_t eoprot_id_isvalid(eOprotBRD_t brd, eOprotID32_t id)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOprotEntity_t ent = eoprot_ID2entity(id);
     eOprotIndex_t  ind = eoprot_ID2index(id);
     eOprotTag_t    tag = eoprot_ID2tag(id);
-
     uint8_t epi = 0;
+    
+    if(NULL == data)
+    {
+        return(eobool_false);
+    }    
 
     // just verifies that the entity, index, and tag have numbers which are consistent with their maximum number
     
     if(id == eo_prot_ID32dummy)
     {
         return(eobool_false);
-    }
-    
-    
+    }      
     
     epi = eoprot_ep_ep2index(eoprot_ID2endpoint(id));
 
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if(brd >= eoprot_boards_maxnumberof)
-    {
-        return(eobool_false);
-    }    
     
     if(ent >= eoprot_ep_entities_numberof[epi])
     {
         return(eobool_false);
     }
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(eobool_false);
     }      
     
-    if(ind >= eoprot_board_numberofeachentity[brd][epi][ent])
+    if(ind >= data->numberofeachentity[epi][ent])
     {
         return(eobool_false);
     }   
@@ -1212,18 +1246,14 @@ extern uint16_t eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEnd
 
 extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t ep, eOprotProgNumber_t prog)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOprotTag_t tag = 0xff;
     eOprotIndex_t index = 0xff;
     eOprotEntity_t entity = 0xff;
     uint8_t epi = 0;
     uint8_t i;
-
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if(brd >= eoprot_boards_maxnumberof)
+     
+    if(NULL == data)
     {
         return(EOK_uint32dummy);
     }
@@ -1235,18 +1265,17 @@ extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t
     
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(EOK_uint32dummy);
     }
     
-    
-    
+       
     for(i=0; i<eoprot_ep_entities_numberof[epi]; i++)
     {
         // starting from the first entity (if it present in the board) we progressively check if the signedprog is in its relevant range.
         uint8_t tags_number_ith = eoprot_ep_tags_numberof[epi][i];
-        eOprotProgNumber_t progs_ith = tags_number_ith * eoprot_board_numberofeachentity[brd][epi][i]; // num of progs in all the entities i-th
+        eOprotProgNumber_t progs_ith = tags_number_ith * data->numberofeachentity[epi][i]; // num of progs in all the entities i-th
         if((0 != progs_ith) && (prog < (progs_ith)))
         {   // entity is the i-th 
             entity  = i;
@@ -1264,6 +1293,7 @@ extern eOprotID32_t eoprot_endpoint_prognum2id(eOprotBRD_t brd, eOprotEndpoint_t
 
 extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32_t id)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOprotProgNumber_t prog = 0;
     uint8_t epi = 0;
     eOprotEntity_t entity = eoprot_ID2entity(id);
@@ -1271,13 +1301,7 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
     uint8_t i;
     eOprotEndpoint_t ep;
 
-    
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if(brd >= eoprot_boards_maxnumberof)
+    if(NULL == data)
     {
         return(EOK_uint32dummy);
     }    
@@ -1291,7 +1315,7 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
     
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(EOK_uint32dummy);
     }
@@ -1304,7 +1328,7 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
     
     for(i=0; i<entity; i++)
     {   // we add all the tags in the entities below
-        prog += (eoprot_ep_tags_numberof[epi][i] * eoprot_board_numberofeachentity[brd][epi][i]);
+        prog += (eoprot_ep_tags_numberof[epi][i] * data->numberofeachentity[epi][i]);
     }
     // then we add only the tags of the entities equal to the current one + the progressive number of the tag
     prog += (index*eoprot_ep_tags_numberof[epi][entity] + s_eoprot_rom_get_prognum(id));
@@ -1312,6 +1336,25 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
     return(prog);
 }    
 
+extern void* eoprot_endpoint_ramof_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
+{
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
+    uint8_t epi = 0;
+    
+    if(NULL == data)
+    {
+        return(NULL);
+    }
+    
+    if(ep >= eoprot_endpoints_numberof)
+    {
+        return(NULL);
+    }
+    
+    epi = eoprot_ep_ep2index(ep);
+    
+    return(data->ramofeachendpoint[epi]); 
+}
 
 // extern eOprotID32_t eoprot_prognum2id(eOprotBRD_t brd, eOprotProgNumber_t prog)
 // {
@@ -1333,21 +1376,15 @@ extern eOprotProgNumber_t eoprot_endpoint_id2prognum(eOprotBRD_t brd, eOprotID32
 // - definition of static functions 
 // --------------------------------------------------------------------------------------------------------------------
 
-//#include "hal_trace.h"
-
 
 static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotEndpoint_t ep)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t num = 0;
     uint8_t epi = 0;
     uint8_t i = 0;
-    
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
-    
-    if(brd >= eoprot_boards_maxnumberof)
+
+    if(NULL == data)
     {
         return(0);
     }    
@@ -1359,7 +1396,7 @@ static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotE
     
     epi = eoprot_ep_ep2index(ep);
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(0);
     }
@@ -1368,24 +1405,19 @@ static uint16_t s_eoprot_endpoint_numberofvariables_get(eOprotBRD_t brd, eOprotE
     {   
         // simply the sum for each entity of the number of tags multiplied the number of each entity. 
         // it also works if an entity is not present in the board
-        num += (eoprot_ep_tags_numberof[epi][i] * eoprot_board_numberofeachentity[brd][epi][i]);
+        num += (eoprot_ep_tags_numberof[epi][i] * data->numberofeachentity[epi][i]);
     }
 
     return(num);
 }
 
-
 static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, eOprotEntity_t entity, eOprotIndex_t index)
 {
+    eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     uint16_t offset = 0;
     uint8_t i = 0;
-
-    if(eoprot_board_localboard == brd)
-    {
-        brd = s_eoprot_localboard;
-    } 
     
-    if(brd >= eoprot_boards_maxnumberof)
+    if(NULL == data)
     {
         return(EOK_uint16dummy);
     }
@@ -1395,20 +1427,19 @@ static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, 
         return(EOK_uint16dummy);
     }
     
-    if(NULL == eoprot_board_numberofeachentity[brd][epi])
+    if(NULL == data->numberofeachentity[epi])
     {
         return(EOK_uint16dummy);
     }
     
-
-    if(index >= eoprot_board_numberofeachentity[brd][epi][entity])
+    if(index >= data->numberofeachentity[epi][entity])
     {
         return(EOK_uint16dummy);
     }
         
     for(i=0; i<entity; i++)
     {   // we sum the size of all the entities before the current one
-        offset += (eoprot_board_numberofeachentity[brd][epi][i] * eoprot_ep_entities_sizeof[epi][i]);
+        offset += (data->numberofeachentity[epi][i] * eoprot_ep_entities_sizeof[epi][i]);
     }
     // then we add the offset of the current entity
     offset += (index*eoprot_ep_entities_sizeof[epi][entity]);
@@ -1419,6 +1450,7 @@ static uint16_t s_eoprot_brdentityindex2ramoffset(eOprotBRD_t brd, uint8_t epi, 
 
 static uint16_t s_eoprot_brdid2ramoffset(eOprotBRD_t brd, uint8_t epi, eOprotID32_t id)
 {
+    //eOprot_board_data_t *data = s_eoprot_board_data_get(brd);
     eOprotEntity_t entity = eoprot_ID2entity(id);
     eOprotIndex_t index = eoprot_ID2index(id);
     eOprotTag_t tag = eoprot_ID2tag(id);
@@ -1553,6 +1585,24 @@ static eOresult_t s_eoprot_config_variable_callback(eOprotID32_t id, eOvoid_fp_c
 #endif    
 }
 #endif
+
+
+
+static eOprot_board_data_t* s_eoprot_board_data_get(eOprotBRD_t brd)
+{
+    if(eoprot_board_localboard == brd)
+    {
+        return(&eoprot_loc_board_data);
+    } 
+    else if((brd >= eoprot_rem_board_data_size))
+    {
+        return(NULL);
+    } 
+    else
+    {
+        return(&eoprot_rem_board_data[brd]);        
+    }    
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)
