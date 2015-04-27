@@ -82,21 +82,55 @@ static const char s_eobj_ownname[] = "EOconstvector";
 extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data)
 {
     EOconstvector *retptr = NULL;
+    
+    if(NULL == data)
+    {
+        item_size = 0;
+        size = 0;
+    }
+    else
+    {
+        if((0 == size) || (0 == item_size))
+        {
+            return(NULL);
+        }        
+    }
  
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
     retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOconstvector), 1);
 
-
-    // now the obj has valid memory. i need to initialise it with user-defined data,
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_constvector_New(): 0 itemsize", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
-    eo_errman_Assert(eo_errman_GetHandle(), (0 != size), "eo_constvector_New(): 0 size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
-    eo_errman_Assert(eo_errman_GetHandle(), (NULL != data), "eo_constvector_New(): NULL data", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
-    
     retptr->item_size           = item_size;
     retptr->size                = size;
     retptr->item_array_data     = data;     
     
     return(retptr);   
+}
+
+extern EOconstvector * eo_constvector_Load(EOconstvector *p, eOsizeitem_t item_size, eOsizecntnr_t size, const void *data)
+{
+    if(NULL == p)
+    {
+        return(NULL);
+    }
+    
+    if(NULL == data)
+    {
+        item_size = 0;
+        size = 0;
+    }
+    else
+    {
+        if((0 == size) || (0 == item_size))
+        {
+            return(NULL);
+        }        
+    }
+    
+    p->item_size            = item_size;
+    p->size                 = size;
+    p->item_array_data      = data;   
+    
+    return(p);
 }
 
 

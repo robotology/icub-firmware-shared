@@ -84,6 +84,9 @@ typedef struct EOconstvector_hid EOconstvector;
 extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data);
 
 
+extern EOconstvector * eo_constvector_Load(EOconstvector *p, eOsizeitem_t item_size, eOsizecntnr_t size, const void *data);
+
+
 /** @fn         extern void eo_constvector_Delete(EOconstvector *p)
     @brief      deletes the ram used for the constvector.
     @param      p           the EOconstvector object. 
