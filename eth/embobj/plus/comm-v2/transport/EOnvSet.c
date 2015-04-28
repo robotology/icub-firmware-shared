@@ -60,9 +60,9 @@
 
 static const EOconstvector s_eonvset_constvectofEPcfgBasic = 
 {
-    .size               = sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t),
-    .item_size          = sizeof(eOprot_EPcfg_t),
-    .item_array_data    = &eoprot_mn_basicEPcfg
+    EO_INIT(.size)                  sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t),
+    EO_INIT(.item_size)             sizeof(eOprot_EPcfg_t),
+    EO_INIT(.item_array_data)       &eoprot_mn_basicEPcfg
 };
 
 const eOnvset_BRDcfg_t eonvset_BRDcfgBasic =
@@ -164,7 +164,7 @@ extern eOresult_t eo_nvset_InitBRD(EOnvSet* p, eOnvsetOwnership_t ownership, eOi
     {   // by this call the eoprot library reserves space for a given board number
         if(eores_OK != eoprot_config_board_reserve(brdnum))
         {
-            #warning TBD: shall i call the error manager?
+            //#warning TBD: shall i call the error manager?
             return(eores_NOK_generic);
         }
     }    
@@ -225,7 +225,7 @@ extern eOresult_t eo_nvset_InitBRD_LoadEPs(EOnvSet* p, eOnvsetOwnership_t owners
         }
         else
         {
-            #warning TBD: put diagnostic message
+            //#warning TBD: put diagnostic message
         }
     }
     
@@ -249,7 +249,7 @@ extern eOresult_t eo_nvset_DeinitBRD(EOnvSet* p)
     s_eo_nvset_DeinitDEV(p);        // deinit what done with eo_nvset_InitBRD()
     
     
-    #warning TBD: we should also call something to revert eoprot_config_board_reserve() ... but see comment
+    //#warning TBD: we should also call something to revert eoprot_config_board_reserve() ... but see comment
     // it is tricky to do it because i should also add a .used flag. then if i unreserve(brd) i should:
     // 1. set .used = 0 in entry brd
     // 2. verify from maxusedbrd down to 0 and find the first .used == 1. then call a realloc to that index ...
@@ -337,7 +337,7 @@ static eOresult_t s_eo_nvset_NVsOfEP_Initialise(EOnvSet* p, eOnvset_ep_t* endpoi
         {
             if(eo_nvset_protection_one_per_netvar == p->protection)
             {
-                #warning -> think of uint32 and void* maybe use uint64
+                //#warning -> think of uint32 and void* maybe use uint64
                 uint32_t** addr = eo_vector_At(theEndpoint->themtxofthenvs, k);
                 mtx2use = (EOVmutexDerived*) (*addr);
             }
@@ -556,11 +556,13 @@ static eOresult_t s_eo_nvset_InitBRD(EOnvSet* p, eOnvsetOwnership_t ownership, e
     theBoard->theendpoints          = eo_vector_New(sizeof(eOnvset_ep_t*), eo_vectorcapacity_dynamic, NULL, 0, NULL, NULL);    
     theBoard->mtx_board             = (eo_nvset_protection_one_per_board == p->protection) ? p->mtxderived_new() : NULL;
     // reset the ep2indexlut to have all values EOK_uint16dummy
-    uint8_t i = 0;
-    const uint8_t lutsize = eonvset_max_endpoint_value+1;
-    for(i=0; i<lutsize; i++)
     {
-        theBoard->ep2indexlut[i] = EOK_uint16dummy;
+        uint8_t i = 0;
+        const uint8_t lutsize = eonvset_max_endpoint_value+1;
+        for(i=0; i<lutsize; i++)
+        {
+            theBoard->ep2indexlut[i] = EOK_uint16dummy;
+        }
     }
 
     return(eores_OK);
@@ -595,6 +597,7 @@ extern eOresult_t eo_nvset_LoadEP(EOnvSet* p, eOprot_EPcfg_t *cfgofep, eObool_t 
     eOnvBRD_t brd = 0;      // local or 0, 1, 2, etc.
     eOnvset_ep_t *theEndpoint = NULL;
     uint16_t epnvsnumberof = 0;  
+    uint16_t sizeofram =0;
  
     if((NULL == p) || (NULL == cfgofep)) 
     {
@@ -612,13 +615,13 @@ extern eOresult_t eo_nvset_LoadEP(EOnvSet* p, eOprot_EPcfg_t *cfgofep, eObool_t 
     // ok, now in theEndpoint->epcfg.numberofsentities[] we have some ram. we use it to load the protocol.
     eoprot_config_endpoint_entities(brd, theEndpoint->epcfg.endpoint, theEndpoint->epcfg.numberofentities);
     // now it is ok to compute the size of the endpoint using the proper protocol function
-    uint16_t sizeofram = eoprot_endpoint_sizeof_get(brd, theEndpoint->epcfg.endpoint); 
+    sizeofram = eoprot_endpoint_sizeof_get(brd, theEndpoint->epcfg.endpoint); 
     
     // now that i have loaded  the number of entities i verify if they are ok by checking the number of variables in the endpoint.
     epnvsnumberof = eoprot_endpoint_numberofvariables_get(brd, cfgofep->endpoint);   
     if(0 == epnvsnumberof)
     {
-        #warning TBD: see how we continue in here ....
+        //#warning TBD: see how we continue in here ....
         char str[64] = {0};
         snprintf(str, sizeof(str), "EOnvSet: ep %d has 0 nvs", cfgofep->endpoint);  
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, str, NULL, &eo_errman_DescrRuntimeErrorLocal); 
@@ -751,7 +754,7 @@ static EOVmutexDerived* s_eo_nvset_get_nvmutex(EOnvSet* p, eOnvID32_t id32)
                 eOnvset_ep_t* theEndpoint = s_eo_nvset_get_endpoint(p, eoprot_ID2endpoint(id32));
                 if(NULL != theEndpoint)
                 {
-                    #warning .... i think of void* as a uint32_t* ///////////// think of it
+                    //#warning .... i think of void* as a uint32_t* ///////////// think of it
                     uint32_t nvprognumber = eoprot_endpoint_id2prognum(p->theboard.boardnum, id32);
                     uint32_t** addr = eo_vector_At(theEndpoint->themtxofthenvs, nvprognumber);
                     mtx2use = (EOVmutexDerived*) (*addr);
