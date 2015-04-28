@@ -71,7 +71,7 @@
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char s_eobj_ownname[] = "EOconstvector";
+//static const char s_eobj_ownname[] = "EOconstvector";
 
 
 // --------------------------------------------------------------------------------------------------------------------
