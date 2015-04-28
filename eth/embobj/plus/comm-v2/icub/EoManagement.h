@@ -114,7 +114,11 @@ typedef enum
     eomn_opc_config_REGROPs_clear       = 15,               /**< it forces a clear of all the regular rops in the transceiver */
     eomn_opc_config_REGROPs_assign      = 16,               /**< it copies in the reg rops all of the content of the delivered array */
     eomn_opc_config_REGROPs_append      = 17,               /**< it appends to the reg rops all of the content of the delivered array (if size is 1 then it is a pushback)*/
-    eomn_opc_config_REGROPs_remove      = 18                /**< it searches and removes from the reg rops all the items of the delivered array (its size must be > 0)*/
+    eomn_opc_config_REGROPs_remove      = 18,               /**< it searches and removes from the reg rops all the items of the delivered array (its size must be > 0)*/
+
+    eomn_opc_config_PROT_boardnumber    = 19,
+    eomn_opc_config_PROT_endpoint       = 20
+
 } eOmn_opc_t;
 
 
