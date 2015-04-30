@@ -33,7 +33,7 @@
 
 #include "EoCommon.h"
 #include "EOnv_hid.h"
-#include "EOconstvector_hid.h"
+//#include "EOconstvector_hid.h"
 
 #include "EoProtocolMC.h"
 #include "EoMotionControl.h"

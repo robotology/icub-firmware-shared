@@ -33,7 +33,7 @@
 
 #include "EoCommon.h"
 #include "EOnv_hid.h"
-#include "EOconstvector_hid.h"
+//#include "EOconstvector_hid.h"
 
 #include "EoProtocolAS.h"
 #include "EoAnalogSensors.h"
