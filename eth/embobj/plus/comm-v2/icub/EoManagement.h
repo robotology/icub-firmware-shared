@@ -83,7 +83,9 @@ typedef enum
 {
     applstate_config        = 0,                /**< config */
     applstate_running       = 1,                /**< running */
-    applstate_error         = 2                 /**< error */
+    applstate_error         = 2,                /**< error */
+    applstate_resetmicro    = 3,                /**< reset the micro and restart the system: loader, updater, ... */
+    applstate_restartapp    = 4                 /**< reset the micro and restart the system BUT loader jumps immediately to application */
 } eOmn_appl_state_t;
 
 
