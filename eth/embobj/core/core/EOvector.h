@@ -111,6 +111,14 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
 extern eOsizecntnr_t eo_vector_Capacity(EOvector * vector);
 
 
+/** @fn         extern eOsizecntnr_t eo_vector_ItemSize(EOvector * vector)
+    @brief      Returns the size of the item objects that the EOvector is able to contain.
+    @param      vector           Pointer to the EOvector object.
+    @return     the size of item objects.
+ **/
+extern eOsizecntnr_t eo_vector_ItemSize(EOvector * vector);
+
+
 /** @fn         extern eOsizecntnr_t eo_vector_Size(EOvector * vector)
     @brief      Returns the number of item objects that are currently stored in the EOvector.
     @param      vector           Pointer to the EOvector object. 
