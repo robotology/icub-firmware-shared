@@ -48,7 +48,7 @@ extern "C" {
 // - external dependencies --------------------------------------------------------------------------------------------
 
 #include "EoCommon.h"
-
+#include "EOvector.h"
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ extern "C" {
                 object so that the user cannot see its private fields and he/she is forced to manipulate the
                 object only with the proper public functions. 
  **/  
-typedef struct EOconstvector_hid EOconstvector;
+typedef struct EOvector_hid EOconstvector;
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -74,24 +74,14 @@ typedef struct EOconstvector_hid EOconstvector;
 
 
  
-/** @fn         extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data) 
-    @brief      Creates a new EOconstvector object. it uses externally passed const data
-    @param      item_size       The size in bytes of the item object managed by the EOconstvector.
-    @param      size            The number of item objects stored by the EOconstvector.
-    @return     Pointer to the required EOconstvector object. The pointer is guaranteed to be always valid and will 
-                never be NULL, because failure is managed by the memory pool.
+/** @fn         extern EOconstvector * eo_constvector_Load(EOvector *vector)
+    @brief      it loads a EOconstvector object with data coming from a EOvector
+    @param      vector       the EOvector
+    @return     The pointer to the required object.
  **/
-extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data);
 
+extern EOconstvector * eo_constvector_Load(EOvector *vector);
 
-extern EOconstvector * eo_constvector_Load(EOconstvector *p, eOsizeitem_t item_size, eOsizecntnr_t size, const void *data);
-
-
-/** @fn         extern void eo_constvector_Delete(EOconstvector *p)
-    @brief      deletes the ram used for the constvector.
-    @param      p           the EOconstvector object. 
- **/
-extern void eo_constvector_Delete(EOconstvector *p);
 
 
 /** @fn         extern eOsizecntnr_t eo_constvector_Size(EOconstvector *p)
@@ -100,6 +90,14 @@ extern void eo_constvector_Delete(EOconstvector *p);
     @return     Number of item objects.
  **/
 extern eOsizecntnr_t eo_constvector_Size(const EOconstvector *p);
+
+
+/** @fn         extern eOsizecntnr_t eo_constvector_ItemSize(const EOconstvector *p)
+    @brief      Gets the size of items inside the object 
+    @param      p               The pointer to the object.
+    @return     The size.
+ **/
+extern eOsizecntnr_t eo_constvector_ItemSize(const EOconstvector *p);
 
 
 /** @fn         extern const void* eo_constvector_At(EOconstvector *p, eOsizecntnr_t pos)

@@ -26,6 +26,7 @@
 #include "EOtheMemoryPool.h"
 #include "EOtheErrorManager.h"
 
+#include "EOvector.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -79,109 +80,31 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-extern EOconstvector * eo_constvector_New(eOsizeitem_t item_size, eOsizecntnr_t size, const void *data)
-{
-    EOconstvector *retptr = NULL;
-    
-    if(NULL == data)
-    {
-        item_size = 0;
-        size = 0;
-    }
-    else
-    {
-        if((0 == size) || (0 == item_size))
-        {
-            return(NULL);
-        }        
-    }
- 
-    // i get the memory for the object. no need to check versus NULL because the memory pool already does it
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOconstvector), 1);
 
-    retptr->item_size           = item_size;
-    retptr->size                = size;
-    retptr->item_array_data     = data;     
-    
-    return(retptr);   
-}
 
-extern EOconstvector * eo_constvector_Load(EOconstvector *p, eOsizeitem_t item_size, eOsizecntnr_t size, const void *data)
+
+extern EOconstvector * eo_constvector_Load(EOvector *vector)
 {
-    if(NULL == p)
-    {
-        return(NULL);
-    }
-    
-    if(NULL == data)
-    {
-        item_size = 0;
-        size = 0;
-    }
-    else
-    {
-        if((0 == size) || (0 == item_size))
-        {
-            return(NULL);
-        }        
-    }
-    
-    p->item_size            = item_size;
-    p->size                 = size;
-    p->item_array_data      = data;   
-    
-    return(p);
+    return((EOconstvector*)vector);
 }
 
 
-extern void eo_constvector_Delete(EOconstvector *p)
-{
-    if(NULL == p)
-    {
-        return;
-    }
-    if(NULL == p->item_array_data)
-    {
-        return;
-    }
-    
-    memset(p, 0, sizeof(EOconstvector));   
-    eo_mempool_Delete(eo_mempool_GetHandle(), p);
-    return;
-}
 
 extern eOsizecntnr_t eo_constvector_Size(const EOconstvector *p) 
 {
-    if(NULL == p) 
-    {   // invalid p
-        return(0);    
-    }
-    
-    return(p->size);        
+    return(eo_vector_Size((EOvector*)p));        
+}
+
+
+extern eOsizecntnr_t eo_constvector_ItemSize(const EOconstvector *p) 
+{
+    return(eo_vector_ItemSize((EOvector*)p));        
 }
 
 
 extern const void * eo_constvector_At(const EOconstvector *p, eOsizecntnr_t pos) 
 {
-    // here we require uint8_t to access item_array_data because we work with bytes.
-    uint8_t *start = NULL;
-    
-    if(NULL == p) 
-    {
-        return(NULL);    
-    }
-    
-    if(pos >= p->size) 
-    {    // p does not have any element in pos
-        return(NULL);     
-    }
-    
-   
-    start = (uint8_t*) (p->item_array_data);
-    // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
-    start = &start[(uint32_t)pos * p->item_size];
-    
-    return((const void*) start);         
+    return(eo_vector_At((EOvector*)p, pos));
 }
 
 

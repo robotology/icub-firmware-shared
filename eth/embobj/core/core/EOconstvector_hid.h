@@ -36,8 +36,10 @@ extern "C" {
 #include "EoCommon.h"
 
 // - declaration of extern public interface ---------------------------------------------------------------------------
- 
+#include "EOvector_hid.h" 
+    
 #include "EOconstvector.h"
+
 
 
 // - #define used with hidden struct ----------------------------------------------------------------------------------
@@ -52,13 +54,18 @@ extern "C" {
                 used also by its derived objects.
  **/  
  
-struct EOconstvector_hid 
-{
-    eOsizecntnr_t               size;                                                            
-    eOsizeitem_t                item_size;                
-    const void*                 item_array_data;        
-};
+//struct EOconstvector_hid 
+//{
+//    eOsizecntnr_t               capacity;   
+//    eOsizecntnr_t               size;                                                   
+//    eOsizeitem_t                item_size;                  
+//    uint16_t                    dummy;              
+//    const void                  *stored_items;       
+//    const void                  *unusedfunctions;    
+//};
 
+
+//#define EOvector_hid  EOconstvector_hid;
 
 // - declaration of extern hidden functions ---------------------------------------------------------------------------
 // empty-section
