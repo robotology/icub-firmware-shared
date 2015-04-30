@@ -128,12 +128,18 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_vector_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     retptr->item_size           = item_size;
-    retptr->sizeofstoreditem    = item_size;
+    retptr->dummy               = 0;
     retptr->capacity            = capacity;
-    retptr->item_init_fn        = item_init;
-    retptr->item_init_par       = init_par;
-    retptr->item_copy_fn        = item_copy;
-    retptr->item_clear_fn       = item_clear;
+    retptr->functions           = NULL;
+    if((NULL != item_init) || (NULL != item_copy) || (NULL != item_clear))
+    {
+        retptr->functions = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOcontainer_functions_t), 1);
+        retptr->functions->item_init_fn        = item_init;
+        retptr->functions->item_init_par       = init_par;
+        retptr->functions->item_copy_fn        = item_copy;
+        retptr->functions->item_clear_fn       = item_clear;
+    }
+
     
     
     if(eo_vectorcapacity_dynamic == retptr->capacity)
@@ -158,13 +164,10 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
         else if (item_size <= 4)
         {
             align = eo_mempool_align_32bit;
-            retptr->sizeofstoreditem = 4;
         }
         else
         {   // use 8-bytes alignment for everything else
             align = eo_mempool_align_64bit;
-            retptr->sizeofstoreditem = (item_size+7)/8;
-            retptr->sizeofstoreditem *= 8;
         }
 
         // here is the memory from the correct memory pool (or the heap)
@@ -203,6 +206,16 @@ extern eOsizecntnr_t eo_vector_Capacity(EOvector * vector)
     return(vector->capacity);    
 }
 
+extern eOsizecntnr_t eo_vector_ItemSize(EOvector * vector)
+{
+    if(NULL == vector) 
+    {
+        return(0);    
+    }
+    
+    return(vector->item_size);     
+}
+
 
 extern void eo_vector_PushBack(EOvector * vector, void *p) 
 {
@@ -229,9 +242,9 @@ extern void eo_vector_PushBack(EOvector * vector, void *p)
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
     item = &start[(uint32_t)vector->size * vector->item_size]; 
     
-    if(NULL != vector->item_copy_fn) 
+    if((NULL != vector->functions) && (NULL != vector->functions->item_copy_fn)) 
     {
-        vector->item_copy_fn(item, p);
+        vector->functions->item_copy_fn(item, p);
     }
     else
     {
@@ -286,9 +299,9 @@ extern void eo_vector_PopBack(EOvector * vector)
     start = (uint8_t*) (vector->stored_items);
     item = &start[(uint32_t)(vector->size - 1) * vector->item_size];            
     
-    if(NULL != vector->item_clear_fn) 
+    if((NULL != vector->functions) && (NULL != vector->functions->item_clear_fn))
     {
-        vector->item_clear_fn(item);
+        vector->functions->item_clear_fn(item);
     } 
     else 
     { 
@@ -340,9 +353,9 @@ extern void eo_vector_PushFront(EOvector * vector, void *p)
     
     // now we have the first position available and we can copy p into it.
     
-    if(NULL != vector->item_copy_fn) 
+    if((NULL != vector->functions) && (NULL != vector->functions->item_copy_fn))
     {
-        vector->item_copy_fn(item, p);
+        vector->functions->item_copy_fn(item, p);
     }
     else
     {
@@ -398,9 +411,9 @@ extern void eo_vector_PopFront(EOvector * vector)
     item = &start[0]; 
     second = &start[(uint32_t)(1) * vector->item_size];    
     
-    if(NULL != vector->item_clear_fn) 
+    if((NULL != vector->functions) && (NULL != vector->functions->item_clear_fn))
     {
-        vector->item_clear_fn(item);
+        vector->functions->item_clear_fn(item);
     } 
     else 
     { 
@@ -462,9 +475,9 @@ extern void eo_vector_Clear(EOvector * vector)
     {   // i use i as index because the items in a vector are always stored from pos 0 to size-1
         // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
         item = &start[(uint32_t)i * vector->item_size];
-        if(NULL != vector->item_clear_fn)
+        if((NULL != vector->functions) && (NULL != vector->functions->item_clear_fn))
         {
-            vector->item_clear_fn(item);
+            vector->functions->item_clear_fn(item);
         }
         else
         {
@@ -541,9 +554,9 @@ extern void eo_vector_Assign(EOvector * vector, eOsizecntnr_t pos, void *items, 
     
     for(i=0; i<nitems; i++)
     {
-        if(NULL != vector->item_copy_fn) 
+        if((NULL != vector->functions) && (NULL != vector->functions->item_copy_fn))
         {
-            vector->item_copy_fn(item, p);
+            vector->functions->item_copy_fn(item, p);
         }
         else
         {
@@ -597,9 +610,9 @@ extern void eo_vector_AssignOne(EOvector * vector, eOsizecntnr_t pos, void *p)
     // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
     item = &start[(uint32_t)pos * vector->item_size]; 
     
-    if(NULL != vector->item_copy_fn) 
+    if((NULL != vector->functions) && (NULL != vector->functions->item_copy_fn))
     {
-        vector->item_copy_fn(item, p);
+        vector->functions->item_copy_fn(item, p);
     }
     else
     {
@@ -675,9 +688,9 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
         {
             // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
             item = &start[(uint32_t)i * vector->item_size];
-            if(NULL != vector->item_init_fn) 
+            if((NULL != vector->functions) && (NULL != vector->functions->item_init_fn))
             {
-                vector->item_init_fn(item, vector->item_init_par);
+                vector->functions->item_init_fn(item, vector->functions->item_init_par);
             }
             else
             {
@@ -694,9 +707,9 @@ extern void eo_vector_Resize(EOvector * vector, eOsizecntnr_t size)
         {
             // cast to uint32_t to tell the reader that index of array start[] can be bigger than max eOsizecntnr_t
             item = &start[(uint32_t)i * vector->item_size];
-            if(NULL != vector->item_clear_fn) 
+            if((NULL != vector->functions) && (NULL != vector->functions->item_clear_fn))
             {
-                vector->item_clear_fn(item);
+                vector->functions->item_clear_fn(item);
             }
             else
             {
@@ -737,17 +750,6 @@ extern eObool_t eo_vector_Empty(EOvector * vector)
 }
 
 
-static eOresult_t s_eo_vector_default_matching_rule(EOvector * vector, void *item, void *param)
-{
-    if(0 == memcmp(item, param, vector->item_size))
-    {
-        return(eores_OK);
-    }
-    else
-    {
-        return(eores_NOK_generic);
-    }
-}
 
 extern eObool_t eo_vector_Find(EOvector * vector, eOresult_t (matching_rule)(void *item, void *param), void *param, eOsizecntnr_t *position)
 {
@@ -823,6 +825,12 @@ extern void eo_vector_Delete(EOvector * vector)
     // destroy dataarray
     eo_mempool_Delete(eo_mempool_GetHandle(), vector->stored_items);
     
+    // destroy optional functions
+    if(NULL != vector->functions)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(), vector->functions);
+    }
+    
     // reset all things inside vector
     memset(vector, 0, sizeof(EOvector));
     
@@ -839,7 +847,18 @@ extern void eo_vector_Delete(EOvector * vector)
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of static functions 
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+static eOresult_t s_eo_vector_default_matching_rule(EOvector * vector, void *item, void *param)
+{
+    if(0 == memcmp(item, param, vector->item_size))
+    {
+        return(eores_OK);
+    }
+    else
+    {
+        return(eores_NOK_generic);
+    }
+}
 
 
 
