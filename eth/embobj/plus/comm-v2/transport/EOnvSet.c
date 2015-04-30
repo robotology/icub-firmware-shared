@@ -60,9 +60,12 @@
 
 static const EOconstvector s_eonvset_constvectofEPcfgBasic = 
 {
-    EO_INIT(.size)                  sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t),
-    EO_INIT(.item_size)             sizeof(eOprot_EPcfg_t),
-    EO_INIT(.item_array_data)       &eoprot_mn_basicEPcfg
+    .capacity       = sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t),
+    .size           = sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t), 
+    .item_size      = sizeof(eOprot_EPcfg_t),
+    .dummy          = 0,  
+    .stored_items   = (void*) &eoprot_mn_basicEPcfg,
+    .functions      = NULL     
 };
 
 const eOnvset_BRDcfg_t eonvset_BRDcfgBasic =
@@ -99,7 +102,7 @@ uint16_t s_eonvset_EP2INDEX(EOnvSet* p, uint8_t ep08);
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char s_eobj_ownname[] = "EOnvSet";
+//static const char s_eobj_ownname[] = "EOnvSet";
 
 
 // --------------------------------------------------------------------------------------------------------------------
