@@ -31,9 +31,7 @@ extern "C" {
 **/
 
 /** @defgroup eo_constarray Object EOconstarray
-    The EOconstarray object is a container which is work-in-progress. It could be used as a slim vector
-    in which the content of memory is exposed outsize via a number of data strcuctures such as eOarrayofbytes_t
-    or eOarrayofhalves_t or eOarrayofwords_t
+    The EOconstarray object is a container which is used as a read only EOarray.
      
     @{        
  **/
@@ -42,7 +40,7 @@ extern "C" {
 // - external dependencies --------------------------------------------------------------------------------------------
 
 #include "EoCommon.h"
-
+#include "EOarray.h"
 
 // - public #define  --------------------------------------------------------------------------------------------------
 // empty-section
@@ -51,15 +49,10 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-/** @typedef    typedef struct EOconstarray_hid EOconstarray
-    @brief      EOconstarray is an opaque struct. It is used to implement data abstraction for the  
-                object so that the user cannot see its private fields and he/she is forced to manipulate the
-                object only with the proper public functions. 
+/** @typedef    typedef EOarray_of EOconstarray
+    @brief      It has the same memory mapping of a EOarray... 
  **/  
-typedef struct EOconstarray_hid EOconstarray;
-
-
-
+typedef EOarray_of EOconstarray;
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -69,37 +62,37 @@ typedef struct EOconstarray_hid EOconstarray;
 // - declaration of extern public functions ---------------------------------------------------------------------------
  
  
-/** @fn         xtern EOconstarray* eo_constarray_New(const void *data)
-    @brief      it does not creates a constaarray object, it rather gets a buffer and casts it as a EOconstarray
+/** @fn         extern EOconstarray* eo_constarray_Load(EOarray *array)
+    @brief      it loads a EOconstarray object with data coming from a EOarray
+    @param      array       the EOarray
     @return     The pointer to the required object.
  **/
-extern EOconstarray* eo_constarray_New(const void *data);
+extern EOconstarray* eo_constarray_Load(EOarray *array);
 
 
-/** @fn         extern eOsizecntnr_t eo_constarray_Size(EOconstarray *p)
+/** @fn         extern uint8_t eo_constarray_Size(EOconstarray *p)
     @brief      Gets the number of items inside the object 
     @param      p               The pointer to the object.
     @return     The size.
  **/
-extern eOsizecntnr_t eo_constarray_Size(EOconstarray *p);
+extern uint8_t eo_constarray_Size(EOconstarray *p);
 
 
-/** @fn         extern eOsizecntnr_t eo_constarray_SizeOfItem(EOconstarray *p)
+/** @fn         extern uint8_t eo_constarray_ItemSize(EOconstarray *p)
     @brief      Gets the size of items inside the object 
     @param      p               The pointer to the object.
     @return     The size.
  **/
-extern eOsizecntnr_t eo_constarray_SizeOfItem(EOconstarray *p);
+extern uint8_t eo_constarray_ItemSize(EOconstarray *p);
 
 
-/** @fn         extern const void * eo_constarray_At(EOconstarray *p, eOsizecntnr_t pos)
+/** @fn         extern const void * eo_constarray_At(EOconstarray *p, uint8_t pos)
     @brief      Gets a pointer to the item in position @e pos inside the object 
     @param      p               The pointer to the object.
-    @param      pos             The position of teh iterm
-    @param      size            pointer to the size in bytes occupied by the returned pointer.
+    @param      pos             The position of teh item
     @return     The pointer, or NULL upon failure.
  **/
-extern const void * eo_constarray_At(EOconstarray *p, eOsizecntnr_t pos);
+extern const void * eo_constarray_At(EOconstarray *p, uint8_t pos);
 
 
 

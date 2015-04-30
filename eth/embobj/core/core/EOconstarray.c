@@ -77,40 +77,41 @@
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-extern EOconstarray* eo_constarray_New(const void *data)
+extern EOconstarray* eo_constarray_Load(EOarray *array)
 {
-    return((EOconstarray*)data);
-    // doesnt create it. just brings from a static const variable
+    return((EOconstarray*)array);
 }
 
-extern eOsizecntnr_t eo_constarray_Size(EOconstarray *p)
+extern uint8_t eo_constarray_Size(EOconstarray *p)
 {
     if(NULL == p)
     {
         return(0);
-    }
-    
-    return(p->size);
+    }    
+    return(p->head.size);
 }
 
-extern eOsizecntnr_t eo_constarray_SizeOfItem(EOconstarray *p)
+//extern uint8_t eo_constarray_Capacity(EOconstarray *p)
+//{
+//    if(NULL == p)
+//    {
+//        return(0);
+//    }    
+//    return(p->head.capacity);
+//}
+
+extern uint8_t eo_constarray_ItemSize(EOconstarray *p)
 {
     if(NULL == p)
     {
         return(0);
-    }
-    
-    return(p->sizeofitem);
+    }    
+    return(p->head.itemsize);
 }
 
-extern const void * eo_constarray_At(EOconstarray *p, eOsizecntnr_t pos)
-{
-    if((NULL == p) || (pos >= p->size))
-    {
-        return(NULL);
-    }
-    
-    return(&p->data[pos*p->sizeofitem]);
+extern const void * eo_constarray_At(EOconstarray *p, uint8_t pos)
+{   
+    return(eo_array_At(p, pos));
 }
 
 
