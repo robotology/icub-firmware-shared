@@ -109,7 +109,7 @@ const eomcconfig_codeconfig_t eomcconfig_codeconfig_MC4CAN[] =
 const eomcconfig_codeconfig_t eomcconfig_codeconfig_MC4PLUS[] =
 {
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_unspecified},
-    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental, EO_INIT(.jomos[0].actuator.local.type)  1, EO_INIT(.jomos[0].actuator.local.index) 2, EO_INIT(.jomos[0].encoder.etype)  0, EO_INIT(.jomos[0].encoder.index)  0},
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental, EO_INIT(.jomos[0].actuator.local.type)  1, EO_INIT(.jomos[0].actuator.local.index) 2, EO_INIT(.jomos[0].encoder.etype)  2, EO_INIT(.jomos[0].encoder.index)  2},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b0},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b1},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b7},
@@ -142,13 +142,6 @@ const eomcconfig_valuestring_t * const eomcconfig_valuestrings[] =
     (const eomcconfig_valuestring_t *)&eomcconfig_valuestring_MC4PLUS,
 };
  
-//const eomcconfig_codeconfig_t eomcconfig_codeconfig_2FOC[] =
-//{   // very important: fill table with order of eOerror_value_SYS_t
-//    //                 in case of holes, use {0, NULL}
-//    {eOmcconfig_value_2FOC_unspecified, /*how to fill this fields? */},  
-//};  EO_VERIFYsizeof(eomcconfig_codeconfig_2FOC, eOmcconfig_value_2FOC_numberof*sizeof(const eomcconfig_codeconfig_t)); 
-
-
 
 // - end of: section for configuration 
 
@@ -235,13 +228,17 @@ extern const eOmcconfig_jomo_cfg_t* eOmcconfig_code2config(eOmcconfig_code_t cod
 
 extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_type_t type)
 {
+    if((type > eOmcconfig_type_numberof) || (str == NULL))
+    {
+        return(eOmcconfig_value_dummy);
+    }
     //search here the right string for the specified config
     uint8_t i = 0;
     for (;i < eOmcconfig_value_MC4PLUS_numberof; i++)
     {
-        if (strcmp(eomcconfig_valuestrings[type-1]->string, str) == 0)
+        if (strcmp(eomcconfig_valuestrings[type-1][i].string, str) == 0)
         {
-            return eomcconfig_valuestrings[type-1]->value;
+            return eomcconfig_valuestrings[type-1][i].value;
         }
     }
     

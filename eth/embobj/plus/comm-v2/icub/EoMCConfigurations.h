@@ -89,7 +89,7 @@ enum { eOmcconfig_type_numberof = 3 };
 
 
 /** @typedef    typedef uint32_t eOmcconfig_value_t
-    @brief      generic value for use as a function parameter. For usage, you must prefer the enumerative type relevant to the type.         
+    @brief      generic value for use as a function parameter. For usage, you must prefer the enumerative type relevant to the configuration.         
  **/
 typedef uint16_t eOmcconfig_value_t;
 
@@ -154,10 +154,10 @@ typedef enum
 /* actuators mapping */
 typedef struct
 {   // mapped as eOcanmap_entitylocation_t
-    uint8_t     port    : 1;        // 0 is can1, 1 is can2. not used if onboard is 1.
-    uint8_t     addr    : 4;        // if onboard is 1, then it is the index used by hal, otherwise the can address
+    uint8_t     port        : 1;        // 0 is can1, 1 is can2. not used if onboard is 1.
+    uint8_t     addr        : 4;        // if onboard is 1, then it is the index used by hal, otherwise the can address
     uint8_t     insideindex : 2;    // in case of can it is the inside index (0 or 1) of where the motor/joint is. otherwise it is 2
-    uint8_t     onboard : 1;        // if 1 is onboard pwm otherwise is on can
+    uint8_t     onboard     : 1;        // if 1 is onboard pwm otherwise is on can
 } eOmcconfig_pwm_mapping_t;
 
 typedef struct
@@ -171,10 +171,10 @@ typedef struct
 
 typedef struct
 {   // mapped as eOcanmap_entitylocation_t
-    uint8_t     port    : 1;        // 0 is can1, 1 is can2. not used if onboard is 1.
-    uint8_t     addr    : 4;        // if onboard is 1, then it is the index used by hal, otherwise the can address
+    uint8_t     port        : 1;        // 0 is can1, 1 is can2. not used if onboard is 1.
+    uint8_t     addr        : 4;        // if onboard is 1, then it is the index used by hal, otherwise the can address
     uint8_t     insideindex : 2;    // in case of can it is the inside index (0 or 1) of where the motor/joint is. otherwise it is 2
-    uint8_t     type    : 1;        // if 1 is onboard  otherwise is on can
+    uint8_t     type        : 1;        // if 1 is onboard  otherwise is on can
 } eOmcconfig_act_oncan_mapping_t;
 
 typedef struct
@@ -225,7 +225,7 @@ typedef struct
     uint8_t                 jomosnumber; // so far we have number of motors = number of joints 
     uint16_t                ffu;
     eOmcconfig_jomo_cfg_t   jomos[eomcconfig_jomo_maxnumberof];
-} eOmcconfig_cfg_t;         //EO_VERIFYsizeof(eOmcconfig_cfg_t, 60);
+} eOmcconfig_cfg_t;         //EO_VERIFYsizeof(eOmcconfig_cfg_t, 60); ??
 
 /* ------------------------ */
 
@@ -239,8 +239,8 @@ extern const eOmcconfig_value_t eOmcconfig_value_dummy;   // = eOmcconfig_VALUE_
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
 
-/** @fn         extern eOmcconfig_code_t eOmcconfig_configuration_get(eOmcconfig_type_t type, eOmcconfig_value_t config_value)
-    @brief      it retrieves the configuration given a type and a value.
+/** @fn         extern eOmcconfig_code_t eOmcconfig_configuration_get(eOmcconfig_type_t type, eOmcconfig_value_t config_val)
+    @brief      it retrieves the complete code given a type and a value.
     @param      type            the type
     @param      config_value    the value. Use relevant values for the enum of the specific type:e.g. eOmcconfig_value_MC4PLUS_t, 
                                 et cetera.
@@ -250,8 +250,8 @@ extern eOmcconfig_code_t eOmcconfig_code_get(eOmcconfig_type_t type, eOmcconfig_
 
 
 /** @fn         extern eOmcconfig_type_t eOmcconfig_code2type(eOmcconfig_code_t code)
-    @brief      it retrieves the type given an error code.
-    @param      code            the error code obtained from a message or from function eOmcconfig_code_get(). 
+    @brief      it retrieves the type given a code.
+    @param      code            the code obtained from a message or from function eOmcconfig_code_get(). 
 
     @return     the valid type or eOmcconfig_type_dummy in case of unsupported code.
  **/
@@ -259,29 +259,31 @@ extern eOmcconfig_type_t eOmcconfig_code2type(eOmcconfig_code_t code);
 
 
 /** @fn         extern eOmcconfig_value_t eOmcconfig_code2value(eOmcconfig_code_t code)
-    @brief      it retrieves the configuration value given an error code.
+    @brief      it retrieves the configuration value given a code.
     @param      code            the configuration code obtained from a message or from function eOmcconfig_code_get(). 
 
-    @return     the valid value or eOmcconfig_value_dummy in case of unsupported code.
+    @return     the valid configuration value or eOmcconfig_value_dummy in case of unsupported code.
  **/
 extern eOmcconfig_value_t eOmcconfig_code2value(eOmcconfig_code_t code); 
 
 
+/** @fn         extern eOmcconfig_jomo_cfg_t* eOmcconfig_code2config(eOmcconfig_code_t code)
+    @brief      it retrieves the configuration reference given an error code.
+    @param      code            the configuration code obtained from a message or from function eOmcconfig_code_get(). 
 
+    @return     the valid pointer or NULL in case of unsupported code.
+ **/
 extern const eOmcconfig_jomo_cfg_t* eOmcconfig_code2config(eOmcconfig_code_t code);
 
-extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_type_t type);
 
-/** @fn         extern const char* eOmcconfig_code2string(eOmcconfig_code_t code)
-    @brief      it returns a string which describes the configuration in argument. 
-                if the argument maps to an existing configuration, then the associated 
-                string is returned. Otherwise, it is returned a string with prefix "eOmcconfig_INTERNALERROR__"
-                which describes why a valid string could not be found.                
-    @param      code            the configuration code obtained from a message or from function eOmcconfig_code_get()
-    @return     a zero-terminated string associated to the error code or an error string with prefix "eOmcconfig_INTERNALERROR__".
+/** @fn         extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_type_t type)
+    @brief      it retrieves the configuration value given a string and a type.
+    @param      str            the string representing the configuration (being parsed in the XML files from RobotInterface)
+    @param      type           the configuration type
+
+    @return     the valid value or eOmcconfig_value_dummy in case of unsupported code.
  **/
-extern const char* eOmcconfig_code2string(eOmcconfig_code_t code);
-
+extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_type_t type);
 
 
 /** @}            
