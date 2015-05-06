@@ -83,7 +83,7 @@
 extern EOnvsetBRDbuilder* eo_nvsetbrdbuilder_New(eOnvBRD_t board)
 {
     EOnvsetBRDbuilder *p = NULL;  
-    uint8_t i = 0;
+//    uint8_t i = 0;
 
 
     // i get the memory for the object
@@ -94,7 +94,7 @@ extern EOnvsetBRDbuilder* eo_nvsetbrdbuilder_New(eOnvBRD_t board)
     p->brdcfg = eo_mempool_New(eo_mempool_GetHandle(), 1*sizeof(eOnvset_BRDcfg_t));
     
     p->brdcfg->boardnum = board;
-    p->brdcfg->epcfg_constvect = eo_constvector_New(0, 0, NULL);
+    p->brdcfg->epcfg_constvect = eo_constvector_Load(p->epcfg_vector);
     
     
     return(p);
@@ -114,7 +114,6 @@ extern void eo_nvsetbrdbuilder_Delete(EOnvsetBRDbuilder* p)
     }
     
        
-    eo_constvector_Delete(p->brdcfg->epcfg_constvect); 
     p->brdcfg->epcfg_constvect = NULL;
     
     
@@ -147,7 +146,7 @@ extern eOresult_t eo_nvsetbrdbuilder_EP_Load(EOnvsetBRDbuilder* p, eOprot_EPcfg_
     v = p->epcfg_vector;
     eo_vector_PushBack(v, epcfg); 
     // and make sure that the constvector is udapted
-    eo_constvector_Load(p->brdcfg->epcfg_constvect, sizeof(eOprot_EPcfg_t), eo_vector_Size(v), eo_vector_storage_Get(v)); 
+    eo_constvector_Load(p->brdcfg->epcfg_constvect); 
         
     return(eores_OK);
 }
@@ -164,8 +163,8 @@ extern eOresult_t eo_nvsetbrdbuilder_EPs_Clear(EOnvsetBRDbuilder* p)
     // ok. now i put the item inside p->brdcfg->epcfg_constvect
     v = p->epcfg_vector;
     eo_vector_Clear(v); 
-    // and make sure that teh constvector is updated
-    eo_constvector_Load(p->brdcfg->epcfg_constvect, 0, 0, NULL);
+    // and make sure that the constvector is updated
+    eo_constvector_Load(v);
         
     return(eores_OK);        
 }
@@ -173,7 +172,7 @@ extern eOresult_t eo_nvsetbrdbuilder_EPs_Clear(EOnvsetBRDbuilder* p)
 
 extern eOnvset_BRDcfg_t* eo_nvsetbrdbuilder_BRDcfg_Get(EOnvsetBRDbuilder* p)
 {
-    eOresult_t res = eores_NOK_generic;
+//    eOresult_t res = eores_NOK_generic;
  	if(NULL == p) 
 	{
 		return(NULL); 
