@@ -40,8 +40,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern hidden interface 
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
 
+#include "EoMCConfigurations_hid.h"
 
 // --------------------------------------------------------------------------------------------------------------------
 // - #define with internal scope
@@ -76,6 +76,11 @@ typedef struct
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
+static EoMCConfigurations s_eo_mcconf = 
+{
+    .active_code            = 0,
+    .initted                = eobool_false
+};
 
 static const uint16_t s_eomcconfig_maxvalue_in_type[] =
 {
@@ -150,6 +155,18 @@ const eomcconfig_valuestring_t * const eomcconfig_valuestrings[] =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
+extern EoMCConfigurations* eOmcconfig_Init(void)
+{
+    if(eobool_true == s_eo_mcconf.initted)
+    {
+        return(&s_eo_mcconf);
+    }
+
+    s_eo_mcconf.active_code = eOmcconfig_code_dummy;
+    s_eo_mcconf.initted = eobool_true;
+    
+     return(&s_eo_mcconf);
+}
 extern eOmcconfig_code_t eOmcconfig_code_get(eOmcconfig_type_t type, eOmcconfig_value_t val)
 {
     eOmcconfig_code_t cc = 0;
@@ -244,6 +261,46 @@ extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_t
     
     // string not found
     return eOmcconfig_value_dummy;
+}
+
+
+extern EoMCConfigurations* eOmcconfig_GetHandle(void)
+{
+    if (s_eo_mcconf.initted == eobool_false)
+    {
+        return NULL;
+    }
+    
+    return &s_eo_mcconf;
+}
+extern void eOmcconfig_Set_Active_Code(EoMCConfigurations* mc_handle, eOmcconfig_code_t code)
+{
+    //before setting check...
+    //1 - if the code is valid
+    //2 - something else?
+    if ((mc_handle == NULL) || (mc_handle->initted == eobool_false))
+       return;
+
+    if (eOmcconfig_code2type(code) ==  eOmcconfig_type_dummy)
+       return;
+    
+    if (eOmcconfig_code2value(code) ==  eOmcconfig_value_dummy)
+       return;
+    
+    if (eOmcconfig_code2config(code) != NULL)
+       mc_handle->active_code = code;
+       return;
+}
+
+
+extern eOmcconfig_code_t Get_Active_Code(EoMCConfigurations* mc_handle)
+{
+    if ((mc_handle == NULL) || (mc_handle->initted == eobool_false))
+    {
+        return eOmcconfig_code_dummy;
+    }
+    
+    return mc_handle->active_code;
 }
 //deprecated
 /*
