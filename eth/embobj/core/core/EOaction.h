@@ -15,7 +15,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details
 */
-
+// -
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EOACTION_H_
 #define _EOACTION_H_

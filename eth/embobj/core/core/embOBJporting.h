@@ -15,11 +15,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details
 */
-
+// ----
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EMBODYPORTING_H_
 #define _EMBODYPORTING_H_
-
+//-
 #ifdef __cplusplus
 extern "C" {
 #endif
