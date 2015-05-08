@@ -59,13 +59,6 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-/* @typedef    typedef struct EoMCConfigurations_hid EoMCConfigurations
-    @brief      EoMCConfigurations is an opaque struct. It is used to implement data abstraction for the 
-                object so that the user cannot see its private fields and he/she is forced to manipulate the
-                object only with the proper public functions. 
- **/  
-typedef struct EoMCConfigurations_hid EoMCConfigurations;
-
 /** @typedef    typedef uint32_t eOmcconfig_code_t
     @brief      generic type used to specify an error code. it is formed of 16 bits, of which the mbb is the type, 
                 and the others are a configuration inside that type. We represent the bits of the type with type eOmcconfig_type_t,
@@ -245,8 +238,6 @@ extern const eOmcconfig_value_t eOmcconfig_value_dummy;   // = eOmcconfig_VALUE_
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-extern EoMCConfigurations* eOmcconfig_Init(void);
-
 /** @fn         extern eOmcconfig_code_t eOmcconfig_configuration_get(eOmcconfig_type_t type, eOmcconfig_value_t config_val)
     @brief      it retrieves the complete code given a type and a value.
     @param      type            the type
@@ -293,13 +284,9 @@ extern const eOmcconfig_jomo_cfg_t* eOmcconfig_code2config(eOmcconfig_code_t cod
  **/
 extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_type_t type);
 
-extern EoMCConfigurations* eOmcconfig_GetHandle(void);
+extern void eOmcconfig_Set_Active_Code(eOmcconfig_code_t code);
 
-extern void eOmcconfig_Set_Active_Code(EoMCConfigurations* mc_handle,eOmcconfig_code_t code);
-
-extern eOmcconfig_code_t Get_Active_Code(EoMCConfigurations* mc_handle);
-
-
+extern eOmcconfig_code_t eOmcconfig_Get_Active_Code(void);
 
 
 /** @}            
