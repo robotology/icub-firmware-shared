@@ -117,6 +117,11 @@ const eomcconfig_codeconfig_t eomcconfig_codeconfig_MC4PLUS[] =
 {
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_unspecified},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental, EO_INIT(.jomos[0].actuator.local.type)  1, EO_INIT(.jomos[0].actuator.local.index) 2, EO_INIT(.jomos[0].encoder.etype)  2, EO_INIT(.jomos[0].encoder.index)  2},
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental_aea1joint, EO_INIT(.jomos[0].actuator.local.type)  1, EO_INIT(.jomos[0].actuator.local.index) 2, EO_INIT(.jomos[0].encoder.etype)  0, EO_INIT(.jomos[0].encoder.index)  0},
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental_inc2joint, 
+        EO_INIT(.jomos[0].actuator.local.type)  1, EO_INIT(.jomos[0].actuator.local.index) 2, EO_INIT(.jomos[0].encoder.etype)  2, EO_INIT(.jomos[0].encoder.index)  2,
+        EO_INIT(.jomos[1].actuator.local.type)  1, EO_INIT(.jomos[1].actuator.local.index) 3, EO_INIT(.jomos[1].encoder.etype)  2, EO_INIT(.jomos[1].encoder.index)  3
+    },
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b0},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b1},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b7},
@@ -127,10 +132,12 @@ const eomcconfig_valuestring_t eomcconfig_valuestring_MC4PLUS[] =
 {
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_unspecified,  EO_INIT(.string) "Unspecified configuration"},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental, EO_INIT(.string) "MC4Plus_experimental_jig"},
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental_aea1joint, EO_INIT(.string) "MC4Plus_experimental_jig_aea1joint"},
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_experimental_inc2joint, EO_INIT(.string) "MC4Plus_experimental_jig_inc2joint"},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b0,           EO_INIT(.string) "MC4plus_b0"},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b1,           EO_INIT(.string) "MC4plus_b1"},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b7,           EO_INIT(.string) "MC4plus_b7"},
-    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b9,           EO_INIT(.string) "MC4plus_b9"},
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b9,           EO_INIT(.string) "MC4plus_b9"}
 };
 
 
@@ -139,7 +146,7 @@ const eomcconfig_codeconfig_t * const eomcconfig_codeconfigs[] =
 {   
     (const eomcconfig_codeconfig_t *)&eomcconfig_codeconfig_2FOC,   
     (const eomcconfig_codeconfig_t *)&eomcconfig_codeconfig_MC4CAN,        
-    (const eomcconfig_codeconfig_t *)&eomcconfig_codeconfig_MC4PLUS,
+    (const eomcconfig_codeconfig_t *)&eomcconfig_codeconfig_MC4PLUS
 };  EO_VERIFYsizeof(eomcconfig_codeconfigs, eOmcconfig_type_numberof*sizeof(const eomcconfig_codeconfig_t *));  
 
 const eomcconfig_valuestring_t * const eomcconfig_valuestrings[] =

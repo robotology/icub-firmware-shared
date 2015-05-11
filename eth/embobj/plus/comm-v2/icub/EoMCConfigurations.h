@@ -132,15 +132,17 @@ typedef enum
 {
     eOmcconfig_value_MC4PLUS_unspecified	= 0,
     eOmcconfig_value_MC4PLUS_experimental   = 1,
+    eOmcconfig_value_MC4PLUS_experimental_aea1joint = 2,
+    eOmcconfig_value_MC4PLUS_experimental_inc2joint = 3,
     //only v3 head boards inserted at the moment (change the name later on...)
-    eOmcconfig_value_MC4PLUS_b0	            = 2,
-    eOmcconfig_value_MC4PLUS_b1	            = 3, 
-    eOmcconfig_value_MC4PLUS_b7	            = 4,
-    eOmcconfig_value_MC4PLUS_b9	            = 5,
+    eOmcconfig_value_MC4PLUS_b0	            = 4,
+    eOmcconfig_value_MC4PLUS_b1	            = 5, 
+    eOmcconfig_value_MC4PLUS_b7	            = 6,
+    eOmcconfig_value_MC4PLUS_b9	            = 7
 	
 } eOmcconfig_value_MC4PLUS_t;
 
-enum { eOmcconfig_value_MC4PLUS_numberof = 6 };
+enum { eOmcconfig_value_MC4PLUS_numberof = 8 };
 /*
 typedef enum
 {
