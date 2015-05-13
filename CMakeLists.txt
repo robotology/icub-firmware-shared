@@ -4,7 +4,7 @@
 
 
 cmake_minimum_required(VERSION 2.8.7)
-project(icub_firmware_shared)
+project(icub_firmware_shared NONE)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -15,7 +15,7 @@ set(icub_firmware_shared_VERSION ${icub_firmware_shared_MAJOR_VERSION}.${icub_fi
 
 
 include(CMakePackageConfigHelpers)
-include(GNUInstallDirs)
+#include(GNUInstallDirs)
 include(FeatureSummary)
 
 
@@ -50,8 +50,8 @@ write_basic_package_version_file(${CMAKE_BINARY_DIR}/icub_firmware_shared-config
                                  VERSION ${icub_firmware_shared_VERSION}
                                  COMPATIBILITY ExactVersion)
 
-install(FILES ${CMAKE_BINARY_DIR}/icub_firmware_shared-config-version.cmake
-        DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION})
+#install(FILES ${CMAKE_BINARY_DIR}/icub_firmware_shared-config-version.cmake
+#        DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION})
 
 
 # icub_firmware_shared-config.cmake (build tree)
@@ -65,18 +65,18 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/icub_firmware_shared-c
                               PATH_VARS ${path_vars})
 
 # icub_firmware_shared-config.cmake (installed)
-foreach(target ${targets})
-    get_property(icub_firmware_shared_${target}_INCLUDE_DIR GLOBAL PROPERTY icub_firmware_shared_${target}_INSTALL_INCLUDE_DIR)
-    get_filename_component(icub_firmware_shared_${target}_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${icub_firmware_shared_${target}_INCLUDE_DIR}" ABSOLUTE)
-endforeach()
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/icub_firmware_shared-config.cmake.in
-                              ${CMAKE_BINARY_DIR}/icub_firmware_shared-config.cmake.install
-                              INSTALL_DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION}
-                              PATH_VARS ${path_vars})
-
-install(FILES ${CMAKE_BINARY_DIR}/icub_firmware_shared-config.cmake.install
-        DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION}
-        RENAME icub_firmware_shared-config.cmake)
+#foreach(target ${targets})
+#    get_property(icub_firmware_shared_${target}_INCLUDE_DIR GLOBAL PROPERTY icub_firmware_shared_${target}_INSTALL_INCLUDE_DIR)
+#    get_filename_component(icub_firmware_shared_${target}_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${icub_firmware_shared_${target}_INCLUDE_DIR}" ABSOLUTE)
+#endforeach()
+#configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/icub_firmware_shared-config.cmake.in
+#                              ${CMAKE_BINARY_DIR}/icub_firmware_shared-config.cmake.install
+#                              INSTALL_DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION}
+#                              PATH_VARS ${path_vars})
+#
+#install(FILES ${CMAKE_BINARY_DIR}/icub_firmware_shared-config.cmake.install
+#        DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION}
+#        RENAME icub_firmware_shared-config.cmake)
 
 
 # # icub_firmware_shared-targets.cmake (build tree)
@@ -91,4 +91,8 @@ install(FILES ${CMAKE_BINARY_DIR}/icub_firmware_shared-config.cmake.install
 #         DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION}
 #         FILE icub_firmware_shared-targets.cmake)
 
-include(AddUninstallTarget)
+#include(AddUninstallTarget)
+
+set_property (CACHE CMAKE_INSTALL_PREFIX PROPERTY TYPE INTERNAL)
+set_property (CACHE WITH_CANPROTOCOLLIB  PROPERTY TYPE INTERNAL)
+set_property (CACHE WITH_EMBOBJ          PROPERTY TYPE INTERNAL)
