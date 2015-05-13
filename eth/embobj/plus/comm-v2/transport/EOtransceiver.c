@@ -367,10 +367,9 @@ extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *n
         return(eores_NOK_nullpointer);
     }
     
-    // refresh regulars ...    
-    eo_transmitter_regular_rops_Refresh(p->transmitter);
     
     // finally retrieve the packet from the transmitter. it will be formed by replies, regulars, occasionals.
+    // the regulars are refreshed inside this function, if required
     res = eo_transmitter_outpacket_Prepare(p->transmitter, numberofrops);
     
     // we also need to tick the proxy to remove timed-out replies enqueued by EOreceiver and not yet

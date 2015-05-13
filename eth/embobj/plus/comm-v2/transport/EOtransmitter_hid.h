@@ -110,6 +110,10 @@ struct EOtransmitter_hid
     int32_t                     lasterror_info0;
     int32_t                     lasterror_info1;
     int32_t                     lasterror_info2;
+    uint64_t                    txdecimationprogressive;
+    uint8_t                     txdecimationreplies;
+    uint8_t                     txdecimationregulars;
+    uint8_t                     txdecimationoccasionals;
 }; 
 
 

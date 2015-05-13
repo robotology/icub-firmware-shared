@@ -143,6 +143,7 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
 extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outpkt);
 
 
+extern eOresult_t eo_transmitter_TXdecimation_Set(EOtransmitter *p, uint8_t repliesTXdecimation, uint8_t regularsTXdecimation, uint8_t occasionalsTXdecimation);
 
 // the rops in regular_rops stay forever unless unloaded one by one or all cleared. at each eo_transmitter_outpacket_Prepare() they are placed 
 // inside the packet. they however need an explicit refresh of their values. 

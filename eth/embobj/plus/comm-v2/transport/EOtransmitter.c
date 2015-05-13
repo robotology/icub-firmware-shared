@@ -212,6 +212,11 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->lasterror_info1 = 0;
     retptr->lasterror_info2 = 0;
     
+    retptr->txdecimationprogressive = 0;
+    retptr->txdecimationreplies = 1;
+    retptr->txdecimationoccasionals = 1;
+    retptr->txdecimationregulars = 1;
+    
     return(retptr);
 }
 
@@ -748,7 +753,7 @@ extern eOresult_t eo_transmitter_regular_rops_Refresh(EOtransmitter *p)
 
     if(NULL == p->listofregropinfo)
     {
-        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+        // in such a case there is not space for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
         return(eores_OK);
     }
     
@@ -817,21 +822,33 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
     eo_ropframe_Clear(p->ropframereadytotx);
     
     // add to it the ropframe of regulars. keep it afterwards. dont clear it !!!
-    eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
-    eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars, &remainingbytes);
-    eov_mutex_Release(p->mtx_regulars);
+    if(0 == (p->txdecimationprogressive % p->txdecimationregulars))
+    {
+        // refresh regulars ...    
+        eo_transmitter_regular_rops_Refresh(p);
+        // then copy regulars into the ropframe ready to be transmitted
+        eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+        eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars, &remainingbytes);
+        eov_mutex_Release(p->mtx_regulars);
+    }
 
     // add the ropframe of occasionals ... and then clear it
-    eov_mutex_Take(p->mtx_occasionals, eok_reltimeINFINITE);
-    eo_ropframe_Append(p->ropframereadytotx, p->ropframeoccasionals, &remainingbytes);
-    eo_ropframe_Clear(p->ropframeoccasionals);
-    eov_mutex_Release(p->mtx_occasionals);
+    if(0 == (p->txdecimationprogressive % p->txdecimationoccasionals))
+    {
+        eov_mutex_Take(p->mtx_occasionals, eok_reltimeINFINITE);
+        eo_ropframe_Append(p->ropframereadytotx, p->ropframeoccasionals, &remainingbytes);
+        eo_ropframe_Clear(p->ropframeoccasionals);
+        eov_mutex_Release(p->mtx_occasionals);
+    }
 
     // add the ropframe of replies ... and then clear it
-    eov_mutex_Take(p->mtx_replies, eok_reltimeINFINITE);
-    eo_ropframe_Append(p->ropframereadytotx, p->ropframereplies, &remainingbytes);
-    eo_ropframe_Clear(p->ropframereplies);
-    eov_mutex_Release(p->mtx_replies);
+    if(0 == (p->txdecimationprogressive % p->txdecimationreplies))
+    {
+        eov_mutex_Take(p->mtx_replies, eok_reltimeINFINITE);
+        eo_ropframe_Append(p->ropframereadytotx, p->ropframereplies, &remainingbytes);
+        eo_ropframe_Clear(p->ropframereplies);
+        eov_mutex_Release(p->mtx_replies);
+    }
 
 
 
@@ -841,7 +858,39 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
         *numberofrops = eo_ropframe_ROP_NumberOf(p->ropframereadytotx);   
     }
     
+    // finally we must increment the txdecimationprogressive
+    p->txdecimationprogressive ++;
+    
     return(eores_OK); 
+}
+
+
+extern eOresult_t eo_transmitter_TXdecimation_Set(EOtransmitter *p, uint8_t repliesTXdecimation, uint8_t regularsTXdecimation, uint8_t occasionalsTXdecimation)
+{
+    if(NULL == p) 
+    {
+        return(eores_NOK_nullpointer);
+    }
+    
+    if(0 == repliesTXdecimation)
+    {
+        repliesTXdecimation = 1;
+    }
+    if(0 == regularsTXdecimation)
+    {
+        regularsTXdecimation = 1;
+    }
+    if(0 == occasionalsTXdecimation)
+    {
+        occasionalsTXdecimation = 1;
+    }
+    
+    p->txdecimationreplies      = repliesTXdecimation;
+    p->txdecimationregulars     = regularsTXdecimation;
+    p->txdecimationoccasionals  = occasionalsTXdecimation;
+    
+    
+    return(eores_NOK_nullpointer);       
 }
 
 extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outpkt)
