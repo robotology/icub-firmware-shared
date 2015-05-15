@@ -140,7 +140,7 @@ extern eOresult_t eo_transceiver_NumberofOutROPs(EOtransceiver *p, uint16_t *num
     @param      numberofrops     the number of rops contained in the out packet
     @return     eores_OK or eores_NOK_nullpointer
  **/
-extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *numberofrops);
+extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *numberofrops, eOtransmitter_ropsnumber_t *ropsnum);
 
 
 /** @fn         extern eOresult_t eo_transceiver_outpacket_Get(EOtransceiver *p, EOpacket **pkt)

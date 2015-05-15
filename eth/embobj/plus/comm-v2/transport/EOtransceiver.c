@@ -358,7 +358,7 @@ extern eOresult_t eo_transceiver_NumberofOutROPs(EOtransceiver *p, uint16_t *num
     return(eo_transmitter_NumberofOutROPs(p->transmitter, numberofreplies, numberofoccasionals, numberofregulars));
 }
 
-extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *numberofrops)
+extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *numberofrops, eOtransmitter_ropsnumber_t *ropsnum)
 {  
     eOresult_t res = eores_NOK_generic;
     
@@ -370,7 +370,7 @@ extern eOresult_t eo_transceiver_outpacket_Prepare(EOtransceiver *p, uint16_t *n
     
     // finally retrieve the packet from the transmitter. it will be formed by replies, regulars, occasionals.
     // the regulars are refreshed inside this function, if required
-    res = eo_transmitter_outpacket_Prepare(p->transmitter, numberofrops);
+    res = eo_transmitter_outpacket_Prepare(p->transmitter, numberofrops, ropsnum);
     
     // we also need to tick the proxy to remove timed-out replies enqueued by EOreceiver and not yet
     // inserted in EOtransmitter with eo_transceiver_ReplyROP_Load() called by eo_proxy_ReplyROP_Load()

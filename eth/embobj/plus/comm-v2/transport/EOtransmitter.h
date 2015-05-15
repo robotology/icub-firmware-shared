@@ -95,7 +95,12 @@ typedef struct
     EOagent*                        agent;    
 } eOtransmitter_cfg_t;
 
-
+typedef struct
+{
+    uint8_t     numberofoccasionals; 
+    uint8_t     numberofregulars;
+    uint8_t     numberofreplies;    
+} eOtransmitter_ropsnumber_t;
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
@@ -130,7 +135,7 @@ extern eOresult_t eo_transmitter_NumberofOutROPs(EOtransmitter *p, uint16_t *num
     @param      numberofrops    contains number of rops in out packet
     @return     eores_OK or eores_NOK_nullpointer
  **/
-extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops);
+extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops, eOtransmitter_ropsnumber_t *ropsnum);
 
 
 /** @fn         extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outpkt)

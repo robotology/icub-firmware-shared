@@ -809,13 +809,20 @@ extern eOresult_t eo_transmitter_NumberofOutROPs(EOtransmitter *p, uint16_t *num
 
     
 
-extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops)
+extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops, eOtransmitter_ropsnumber_t *ropsnum)
 {
     uint16_t remainingbytes;
 
     if(NULL == p) 
     {
         return(eores_NOK_nullpointer);
+    }
+    
+    if(NULL != ropsnum)
+    {
+        ropsnum->numberofregulars = 0;
+        ropsnum->numberofoccasionals = 0;
+        ropsnum->numberofreplies = 0;       
     }
     
     // clear the content of the ropframe to transmit which uses the same storage of the packet ...
@@ -828,6 +835,10 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
         eo_transmitter_regular_rops_Refresh(p);
         // then copy regulars into the ropframe ready to be transmitted
         eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+        if(NULL != ropsnum)
+        {
+            ropsnum->numberofregulars = eo_ropframe_ROP_NumberOf(p->ropframeregulars);
+        }
         eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars, &remainingbytes);
         eov_mutex_Release(p->mtx_regulars);
     }
@@ -836,6 +847,10 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
     if(0 == (p->txdecimationprogressive % p->txdecimationoccasionals))
     {
         eov_mutex_Take(p->mtx_occasionals, eok_reltimeINFINITE);
+        if(NULL != ropsnum)
+        {
+            ropsnum->numberofoccasionals = eo_ropframe_ROP_NumberOf(p->ropframeoccasionals);
+        }
         eo_ropframe_Append(p->ropframereadytotx, p->ropframeoccasionals, &remainingbytes);
         eo_ropframe_Clear(p->ropframeoccasionals);
         eov_mutex_Release(p->mtx_occasionals);
@@ -845,6 +860,10 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
     if(0 == (p->txdecimationprogressive % p->txdecimationreplies))
     {
         eov_mutex_Take(p->mtx_replies, eok_reltimeINFINITE);
+        if(NULL != ropsnum)
+        {
+            ropsnum->numberofreplies = eo_ropframe_ROP_NumberOf(p->ropframereplies);
+        }        
         eo_ropframe_Append(p->ropframereadytotx, p->ropframereplies, &remainingbytes);
         eo_ropframe_Clear(p->ropframereplies);
         eov_mutex_Release(p->mtx_replies);
