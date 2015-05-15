@@ -212,6 +212,17 @@ extern uint8_t eo_array_Size(EOarray *p)
     return(p->head.size);
 }
 
+
+extern uint8_t eo_array_Available(EOarray *p)
+{
+    if(NULL == p)
+    {
+        return(0);
+    }
+
+    return(p->head.capacity - p->head.size);
+}
+
 extern uint16_t eo_array_UsedBytes(EOarray *p)
 {
     if(NULL == p)
