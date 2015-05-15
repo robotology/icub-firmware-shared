@@ -433,7 +433,7 @@ typedef enum
      eOcanport2    = 1           /**< CAN2        */
 } eOcanport_t;    
   
-
+enum {eOcanports_number = 2};
 
 
 /** @define     eOvirtual
