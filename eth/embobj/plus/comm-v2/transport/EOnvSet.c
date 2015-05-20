@@ -60,12 +60,12 @@
 
 static const EOconstvector s_eonvset_constvectofEPcfgBasic = 
 {
-    .capacity       = sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t),
-    .size           = sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t), 
-    .item_size      = sizeof(eOprot_EPcfg_t),
-    .dummy          = 0,  
-    .stored_items   = (void*) &eoprot_mn_basicEPcfg,
-    .functions      = NULL     
+    EO_INIT(.capacity)        sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t),
+    EO_INIT(.size)            sizeof(eoprot_mn_basicEPcfg)/sizeof(eOprot_EPcfg_t), 
+    EO_INIT(.item_size)       sizeof(eOprot_EPcfg_t),
+    EO_INIT(.dummy)           0,  
+    EO_INIT(.stored_items)    (void*) &eoprot_mn_basicEPcfg,
+    EO_INIT(.functions)       NULL     
 };
 
 const eOnvset_BRDcfg_t eonvset_BRDcfgBasic =
