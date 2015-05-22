@@ -143,7 +143,8 @@ extern eOproxy_params_t * eo_proxy_Params_Get(EOproxy *p, eOnvID32_t id32);
     @param      p           the object.
     @param      id32        the id of the variable.
     @param      signature   the signature of the rop. if EOK_uint32dummy the signature is not used for teh search 
-    @param      data        the data to be inserted inside the reply rop 
+    @param      data        the data to be inserted inside the reply rop. if not NULL data is copied into nv(id32).
+                            if NULL, then the reply rop uses what in nv(id32). 
     @return     eores_NOK_nullpointer if any argument is NULL, eores_NOK_generic if the netvar canot be proxied,
                 or eores_OK on success.    
  **/

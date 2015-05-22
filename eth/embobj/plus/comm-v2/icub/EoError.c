@@ -147,7 +147,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_boards_missing, "SYS: the can discovery service detected that some boards are missing. Check with canLoader. In par64 MS 32 bits there is the bit mask of the searched, in LS 32 bits the mask of the found ones."},    
     {eoerror_value_SYS_canservices_boards_searched, "SYS: the can discovery service searched the following boards on the specified CAN bus. In par64 there are the searched addresses represented as nibbles."},    
     {eoerror_value_SYS_canservices_boards_found, "SYS: the can discovery service found the following boards on the specified CAN bus. In par64 there are the found addresses represented as nibbles."},
-    {eoerror_value_SYS_transceiver_rxseqnumber_restarted, "SYS: the board has detected a restart of the remote transceiver because the rx ropframe sequence number is 1. In par64 there is the expected number."}
+    {eoerror_value_SYS_transceiver_rxseqnumber_restarted, "SYS: the board has detected a restart of the remote transceiver because the rx ropframe sequence number is 1. In par64 there is the expected number."},
+    {eoerror_value_SYS_canservices_board_detected, "SYS: the can discovery service found the board on the specified CAN bus / adr. In par64 there is the eObrd_typeandversions_t."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
