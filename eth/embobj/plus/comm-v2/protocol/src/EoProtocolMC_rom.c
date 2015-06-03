@@ -746,7 +746,7 @@ static const char * const s_eoprot_mc_strings_tags_motor[] =
     "eoprot_tag_mc_motor_config",
     "eoprot_tag_mc_motor_config_maxcurrentofmotor",
     "eoprot_tag_mc_motor_config_gearboxratio", 
-	"eoprot_tag_mc_motor_config_rotorencoder", 
+    "eoprot_tag_mc_motor_config_rotorencoder", 
     "eoprot_tag_mc_motor_status",
     "eoprot_tag_mc_motor_status_basic"
 };  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)); 
