@@ -201,10 +201,11 @@ typedef enum
     eoerror_value_MC_axis_torque_sens               = 8,
     eoerror_value_MC_aea_abs_enc_invalid            = 9,
     eoerror_value_MC_aea_abs_enc_timeout            = 10,
-    eoerror_value_MC_aea_abs_enc_spikes             = 11
+    eoerror_value_MC_aea_abs_enc_spikes             = 11,
+    eoerror_value_MC_generic_error                  = 12
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 12 };
+enum { eoerror_value_MC_numberof = 13 };
 
 
 
