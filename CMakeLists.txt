@@ -3,14 +3,14 @@
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
 
 
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 2.8.9)
 project(icub_firmware_shared NONE)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 set(icub_firmware_shared_MAJOR_VERSION 0)
-set(icub_firmware_shared_MINOR_VERSION 0)
-set(icub_firmware_shared_PATCH_VERSION 7)
+set(icub_firmware_shared_MINOR_VERSION 1)
+set(icub_firmware_shared_PATCH_VERSION 0)
 set(icub_firmware_shared_VERSION ${icub_firmware_shared_MAJOR_VERSION}.${icub_firmware_shared_MINOR_VERSION}.${icub_firmware_shared_PATCH_VERSION})
 
 
