@@ -52,6 +52,7 @@ extern "C" {
 #define EOMCCONFIG_TYPE_DUMMY  	EOK_uint08dummy
 #define EOMCCONFIG_VALUE_DUMMY  EOK_uint08dummy
 #define EOMCCONFIG_CODE_DUMMY   EOK_uint16dummy
+#define EOMCCONFIG_BOARD_DUMMY  EOK_uint08dummy
 
 // this macro-function should be used for constant initialisation, for all other cases use: eomcconfig_code_get() function
 #define EOMCCONFIGCODE(type, val)   ((val) & EOMCCONFIG_VALUE_MASK) | (((type) << EOMCCONFIG_TYPE_SHIFT) & EOMCCONFIG_TYPE_MASK)
@@ -289,6 +290,10 @@ extern eOmcconfig_value_t eOmcconfig_string2value(const char * str, eOmcconfig_t
 extern void eOmcconfig_Set_Active_Code(eOmcconfig_code_t code);
 
 extern eOmcconfig_code_t eOmcconfig_Get_Active_Code(void);
+
+extern const eOmcconfig_jomo_cfg_t* eOmcconfig_board2config(uint8_t board_num, eOmcconfig_type_t type);
+
+extern const uint8_t eOmcconfig_board2jomosnumber(uint8_t board_num);
 
 
 /** @}            
