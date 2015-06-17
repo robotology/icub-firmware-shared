@@ -111,6 +111,7 @@ static const uint16_t s_eomcconfig_maxvalue_in_type[] =
 
 const eOmcconfig_code_t eOmcconfig_code_dummy = EOMCCONFIG_CODE_DUMMY;
 const eOmcconfig_value_t eOmcconfig_value_dummy = EOMCCONFIG_VALUE_DUMMY;
+const eOmcconfig_code_t eOmcconfig_board_dummy = EOMCCONFIG_BOARD_DUMMY;
 
 const eOmcconfig_jomo_cfg_t dummy_jomo = {0};
 // - begin of: section for configuration 
@@ -334,10 +335,12 @@ extern const eOmcconfig_jomo_cfg_t* eOmcconfig_board2config(uint8_t board_num, e
         if(eomcconfig_boardcode_MC4PLUS[i].board_num == board_num)
         {
             eOmcconfig_code_t cfg_code = eOmcconfig_code_get(type,eomcconfig_boardcode_MC4PLUS[i].value);
-            return eOmcconfig_code2config(cfg_code);
+            if (cfg_code != eOmcconfig_code_dummy)
+                return eOmcconfig_code2config(cfg_code);
         }
     }
-       
+    
+    return NULL;  
 }
 
 extern const uint8_t eOmcconfig_board2jomosnumber(uint8_t board_num)
@@ -349,7 +352,7 @@ extern const uint8_t eOmcconfig_board2jomosnumber(uint8_t board_num)
             return eomcconfig_boardjomos_MC4PLUS[i].joints;
         }
     }
-    return EOMCCONFIG_BOARD_DUMMY; 
+    return eOmcconfig_board_dummy; 
 }
 //deprecated
 /*
