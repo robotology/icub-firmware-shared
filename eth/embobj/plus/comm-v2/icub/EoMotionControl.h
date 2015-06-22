@@ -238,7 +238,8 @@ typedef enum
     eomc_calibration_type1_abs_sens_analog          = 1,    // cannot change
     eomc_calibration_type2_hard_stops_diff          = 2,    // cannot change
     eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change
-    eomc_calibration_type4_abs_and_incremental      = 4     // cannot change
+    eomc_calibration_type4_abs_and_incremental      = 4,    // cannot change
+    eomc_calibration_type5_hard_stops_mc4plus       = 5     // cannot change
 } eOmc_calibration_type_t;
 
 
@@ -350,6 +351,15 @@ typedef struct
 } eOmc_calibrator_params_type4_abs_and_incremental_t;
 
 
+/** @typedef    typedef struct eOmc_calibrator_params_type5_hard_stops_mc4plus_t
+    @brief      contains the params in case of eomc_calibration_type5_hard_stops_mc4plus
+ **/
+typedef struct  
+{
+    int16_t                     pwmlimit;
+    eOmeas_velocity_t           velocity;
+    int32_t                     final_pos;
+} eOmc_calibrator_params_type5_hard_stops_mc4plus_t;
 
 
 // -- all the possible data holding structures used in a joint
@@ -446,6 +456,7 @@ typedef struct                  // size is 1+3+4*3 = 16
         eOmc_calibrator_params_type2_hard_stops_diff_t          type2;
         eOmc_calibrator_params_type3_abs_sens_digital_t         type3;
         eOmc_calibrator_params_type4_abs_and_incremental_t      type4;
+        eOmc_calibrator_params_type5_hard_stops_mc4plus_t       type5;
     } params;                                                       /**< the params of the calibrator */   
 } eOmc_calibrator32_t;           //EO_VERIFYsizeof(eOmc_calibrator32_t, 16);
 
