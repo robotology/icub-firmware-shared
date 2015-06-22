@@ -141,7 +141,12 @@ const eomcconfig_codeconfig_t eomcconfig_codeconfig_MC4PLUS[] =
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b0},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b1},
     {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b7},
-    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b9}
+    {EO_INIT(.value) eOmcconfig_value_MC4PLUS_b9,
+        EO_INIT(.jomos[0].actuator.local.type)  1, EO_INIT(.jomos[0].actuator.local.index) 1, EO_INIT(.jomos[0].encoder.etype)  2, EO_INIT(.jomos[0].encoder.index)  1, // j0-> lip-high, motor1, incremental-encoder
+        EO_INIT(.jomos[1].actuator.local.type)  1, EO_INIT(.jomos[1].actuator.local.index) 3, EO_INIT(.jomos[1].encoder.etype)  2, EO_INIT(.jomos[1].encoder.index)  3, // j1-> lip-bottom, motor3, incremental-encoder
+        EO_INIT(.jomos[2].actuator.local.type)  1, EO_INIT(.jomos[2].actuator.local.index) 0, EO_INIT(.jomos[2].encoder.etype)  2, EO_INIT(.jomos[2].encoder.index)  0, // j2-> lip-right, motor0, incremental-encoder
+        EO_INIT(.jomos[3].actuator.local.type)  1, EO_INIT(.jomos[3].actuator.local.index) 2, EO_INIT(.jomos[3].encoder.etype)  2, EO_INIT(.jomos[3].encoder.index)  2  // j3-> lip-left, motor2, incremental-encoder
+        }
 }; EO_VERIFYsizeof(eomcconfig_codeconfig_MC4PLUS, eOmcconfig_value_MC4PLUS_numberof*sizeof(const eomcconfig_codeconfig_t)); 
 
 const eomcconfig_valuestring_t eomcconfig_valuestring_MC4PLUS[] =
