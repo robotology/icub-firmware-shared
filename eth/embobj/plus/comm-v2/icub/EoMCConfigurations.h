@@ -27,7 +27,7 @@ extern "C" {
 
 /** @file       EoMCConfigurations.h
     @brief      This header file contains the definitions of the allowed motion control endpoint configuration.
-				This structure are used to initialize (1) the Motion Control endpoint and the Motion Control service with the
+				This structure are used to initialize (1) the Motion Control endpoint (2) and the Motion Control service with the
 				desired configuration received in a ROP from RobotInterface
     @author     marco.accame@iit.it
     @date       Nov 10 2014
@@ -228,7 +228,8 @@ typedef struct
     uint8_t                 jomosnumber; // so far we have number of motors = number of joints 
     uint16_t                ffu;
     eOmcconfig_jomo_cfg_t   jomos[eomcconfig_jomo_maxnumberof];
-} eOmcconfig_cfg_t;         //EO_VERIFYsizeof(eOmcconfig_cfg_t, 60); ??
+} eOmcconfig_cfg_t;         // EO_VERIFYsizeof(eOmcconfig_cfg_t, 56); why is it complaining?
+
 
 /* ------------------------ */
 
