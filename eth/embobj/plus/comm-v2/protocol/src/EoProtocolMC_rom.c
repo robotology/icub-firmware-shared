@@ -498,10 +498,10 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_gearboxrat
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_rotorencoder =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.rotorencoder),
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.rotorEncoderResolution),
     EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_rotorencoder,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.rotorencoder,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.rotorEncoderResolution,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL

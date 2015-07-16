@@ -646,11 +646,11 @@ typedef uint8_t  eOmc_motorId_t;
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+2+2 = 56
+typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
 {
     eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
     int32_t                     gearboxratio;               /**< the gearbox reduction ration */
-    int32_t                     rotorencoder;               /**< the rotorencoder resolution/conversion factor */
+    int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution factor */
     int32_t                     filler01;                   /**< reserved */
     eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
@@ -659,7 +659,11 @@ typedef struct                  // size is: 40+4+4+4+2+2 = 56
     eObool_t                    hasHallSensor;              /**< true if the motor is equipped with hall effect sensors */
     eObool_t                    hasTempSensor;              /**< true if the motor is equipped with temperature sensors */
     eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
-} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 64);
+    eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
+    uint8_t                     filler02;                   /**< reserved */
+    uint8_t                     filler03;                   /**< reserved */
+    uint8_t                     filler04;                   /**< reserved */
+} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 68);
 
 
 /** @typedef    typedef struct eOmc_motor_status_t
@@ -692,7 +696,7 @@ typedef struct                  // size is 56+20+0 = 76
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 84); 
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 88); 
  
 
 // -- the definition of a controller containing a given number of joints and motors  
