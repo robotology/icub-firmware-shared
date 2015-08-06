@@ -549,12 +549,14 @@ typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80
     eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
     eOenum08_t                  motionmonitormode;          /**< use values from eOmc_motionmonitormode_t. it tells if and how to monitor the motion. the result is placed inside jstatus.jstatusbasic.motionmonitorstatus */
     uint8_t                     filler01[1];      
-    eOutil_emulfloat32_t        encoderconversionfactor;
-    eOutil_emulfloat32_t        encoderconversionoffset;
+    eOutil_emulfloat32_t        DEPRECATED_encoderconversionfactor;
+    eOutil_emulfloat32_t        DEPRECATED_encoderconversionoffset;
+    int32_t                     jntEncoderResolution;
     eOmc_motor_params_t         motor_params;
     eOmc_torqueControlFilterType_t tcfiltertype;
-    uint8_t                     filler03[3];
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 168);
+    uint8_t                     jntEncoderType;
+    uint8_t                     filler02[2];
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 172);
 
 
 
@@ -628,7 +630,7 @@ typedef struct                  // size is 116+36+8+32+0 = 192
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 244);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 248);
 
 
 // -- the definition of a motor
@@ -650,7 +652,7 @@ typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
 {
     eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
     int32_t                     gearboxratio;               /**< the gearbox reduction ration */
-    int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution factor */
+    int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution  */
     int32_t                     filler01;                   /**< reserved */
     eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
@@ -660,7 +662,7 @@ typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
     eObool_t                    hasTempSensor;              /**< true if the motor is equipped with temperature sensors */
     eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
     eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
-    uint8_t                     filler02;                   /**< reserved */
+    uint8_t                     rotorEncoderType;           /**< rotor encoder type */
     uint8_t                     filler03;                   /**< reserved */
     uint8_t                     filler04;                   /**< reserved */
 } eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 68);
