@@ -305,6 +305,7 @@ typedef struct
 {
     int16_t                     pwmlimit;
     eOmeas_velocity_t           velocity;
+    int32_t                     calibrationZero;
 } eOmc_calibrator_params_type0_hard_stops_t;
 
 
@@ -315,6 +316,7 @@ typedef struct
 {
     eOmeas_position_t           position;
     eOmeas_velocity_t           velocity;
+    int32_t                     calibrationZero;
 } eOmc_calibrator_params_type1_abs_sens_analog_t;
 
 
@@ -325,6 +327,7 @@ typedef struct
 {
     int16_t                     pwmlimit;
     eOmeas_velocity_t           velocity;
+    int32_t                     calibrationZero;
 } eOmc_calibrator_params_type2_hard_stops_diff_t;
 
 
@@ -336,6 +339,7 @@ typedef struct
     eOmeas_position_t           position;
     eOmeas_velocity_t           velocity;
     int32_t                     offset;
+    int32_t                     calibrationZero;
 } eOmc_calibrator_params_type3_abs_sens_digital_t;
 
 
@@ -347,6 +351,7 @@ typedef struct
     eOmeas_position_t           position;
     eOmeas_velocity_t           velocity;
     uint32_t                    maxencoder;
+    int32_t                     calibrationZero;
 } eOmc_calibrator_params_type4_abs_and_incremental_t;
 
 
@@ -438,9 +443,9 @@ typedef struct                  // size is 1+3+4*3 = 16
 {
     eOenum08_t                  type;                               /**< use eOmc_calibration_type_t */
     uint8_t                     filler03[3];
-    union                           
+    union
     {
-        uint32_t                                                any[3];
+        uint32_t                                                any[4];
         eOmc_calibrator_params_type0_hard_stops_t               type0;
         eOmc_calibrator_params_type1_abs_sens_analog_t          type1;
         eOmc_calibrator_params_type2_hard_stops_diff_t          type2;
@@ -619,7 +624,7 @@ typedef struct                  // size is 116+36+8+32+0 = 192
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 248);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 252);
 
 
 // -- the definition of a motor
