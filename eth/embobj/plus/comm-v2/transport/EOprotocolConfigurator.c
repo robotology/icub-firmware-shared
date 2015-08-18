@@ -75,6 +75,7 @@ const eOprotconfig_cfg_t eo_protconfig_cfg_default =
     EO_INIT(.en_as_entity_strain_numberof)          1,
     EO_INIT(.en_as_entity_mais_numberof)            1,
     EO_INIT(.en_as_entity_extorque_numberof)        1,
+    EO_INIT(.en_as_entity_inertial_numberof)        1,
     
     EO_INIT(.ep_skin_is_present)                    eobool_true,   
     EO_INIT(.en_sk_entity_skin_numberof)            2
@@ -163,6 +164,7 @@ extern EOprotocolConfigurator* eo_protconfig_New(const eOprotconfig_cfg_t* cfg)
         epcfg.numberofentities[0] = p->config.en_as_entity_strain_numberof;
         epcfg.numberofentities[1] = p->config.en_as_entity_mais_numberof;
         epcfg.numberofentities[2] = p->config.en_as_entity_extorque_numberof;
+        epcfg.numberofentities[3] = p->config.en_as_entity_inertial_numberof;
        
         eo_nvsetbrdbuilder_EP_Load(p->nvsetbrdbuilder, &epcfg);            
     }

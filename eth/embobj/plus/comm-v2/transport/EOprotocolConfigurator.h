@@ -79,6 +79,7 @@ typedef struct
     uint8_t         en_as_entity_strain_numberof;
     uint8_t         en_as_entity_mais_numberof;
     uint8_t         en_as_entity_extorque_numberof;
+    uint8_t         en_as_entity_inertial_numberof;
     
     eObool_t        ep_skin_is_present;   
     uint8_t         en_sk_entity_skin_numberof;
@@ -88,7 +89,7 @@ typedef struct
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-// able to accomodate worst case (12 joints/motors, 1 strain, 1 mais, 1 extorques, 1 skin)... even if it uses a lot of ram ...
+// able to accomodate worst case (12 joints/motors, 1 strain, 1 mais, 1 extorques, 1 inertials, 1 skin)... even if it uses a lot of ram ...
 extern const eOprotconfig_cfg_t eo_protconfig_cfg_default; // = { ... }; 
 
 
