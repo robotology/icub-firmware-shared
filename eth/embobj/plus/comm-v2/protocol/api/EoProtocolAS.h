@@ -173,11 +173,47 @@ enum { eoprot_rwms_as_extorque_numberof = 3 };  // it MUST be equal to the numbe
 
 
 
+// - entity inertial
+
+
+/** @typedef    typedef enum eOprot_tag_as_inertial_t
+    @brief      It contains the tags for all variables of the inertial entity.
+                See definition of eOas_inertial_t (and its fields) in file EoAnalogSensors.h for explanation of the variables.
+ **/
+typedef enum
+{
+    eoprot_tag_as_inertial_wholeitem                                = 0,
+    eoprot_tag_as_inertial_config                                   = 1,
+    eoprot_tag_as_inertial_status                                   = 2,
+    eoprot_tag_as_inertial_status_accelerometer                     = 3,
+    eoprot_tag_as_inertial_status_gyroscope                         = 4,
+    eoprot_tag_as_inertial_cmmnds_enable                            = 5
+} eOprot_tag_as_inertial_t;
+
+enum { eoprot_tags_as_inertial_numberof = 6 };  // it MUST be equal to the number of tags. 
+
+
+/** @typedef    typedef enum eOprot_rwm_as_inertial_t
+    @brief      It contains the rw modes for all variables of the inertial entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_as_inertial_t.
+ **/
+typedef enum
+{
+    eoprot_rwm_as_inertial_wholeitem                                = eo_nv_rwmode_RO,
+    eoprot_rwm_as_inertial_config                                   = eo_nv_rwmode_RW,
+    eoprot_rwm_as_inertial_status                                   = eo_nv_rwmode_RO,
+    eoprot_rwm_as_inertial_status_accelerometer                     = eo_nv_rwmode_RO,
+    eoprot_rwm_as_inertial_status_gyroscope                         = eo_nv_rwmode_RO,
+    eoprot_rwm_as_inertial_cmmnds_enable                            = eo_nv_rwmode_RO    
+} eOprot_rwm_as_inertial_t; 
+
+enum { eoprot_rwms_as_inertial_numberof = 6 };  // it MUST be equal to the number of rw modes. 
+
 
 // - structures implementing the endpoints
 
 /** @typedef    typedef struct eOprot_template_as_t;
-    @brief      It is a template for the organisation of strain and mais entities in the analog sensors endpoint.
+    @brief      It is a template for the organisation of strain, mais etc entities in the analog sensors endpoint.
                 The effective number depends on the board.
  **/
 typedef struct                  // 56*1+48*1+8*1 = 112              
@@ -185,6 +221,7 @@ typedef struct                  // 56*1+48*1+8*1 = 112
     eOas_strain_t               strain[1]; 
     eOas_mais_t                 mais[1];
     eOas_extorque_t             extorque[1];
+    eOas_inertial_t             inertial[1];
 } eOprot_template_as_t;         //EO_VERIFYsizeof(eOprot_template_as_t, 112);
   
   
@@ -257,6 +294,27 @@ extern void eoprot_fun_UPDT_as_extorque_config(const EOnv* nv, const eOropdescri
 
 extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd);
+
+// -- inertial
+
+extern void eoprot_fun_INIT_as_inertial_wholeitem(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial_config(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_config(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial_status(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_status(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial_status_accelerometer(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_status_accelerometer(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial_status_gyroscope(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_status_gyroscope(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial_cmmnds_enable(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
+
 
 
 /** @}            

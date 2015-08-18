@@ -17,6 +17,7 @@
 */
 
 // - include guard ----------------------------------------------------------------------------------------------------
+
 #ifndef _EOANALOGSENSORS_H_
 #define _EOANALOGSENSORS_H_
 
@@ -26,15 +27,15 @@ extern "C" {
 
 
 /** @file       EoAnalogSensors.h
-	@brief      This header file gives 
-	@author     marco.accame@iit.it
-	@date       09/06/2011
+    @brief      This header file gives 
+    @author     marco.accame@iit.it
+    @date       09/06/2011
 **/
 
-/** @defgroup eo_cevcwervcrev5555 Configuation of the vrfverver
+/** @defgroup eo_cevcwervcrev5555 Data structure for analog sensors
     Tcecece 
     
-    @{		
+    @{
  **/
 
 
@@ -64,10 +65,11 @@ typedef enum
 {
     eoas_entity_strain                      = 0,
     eoas_entity_mais                        = 1,
-    eoas_entity_extorque                    = 2
+    eoas_entity_extorque                    = 2,
+    eoas_entity_inertial                    = 3
 } eOas_entity_t; 
 
-enum { eoas_entities_numberof = 3 };
+enum { eoas_entities_numberof = 4 };
 
 // -- all the possible enum
 
@@ -265,6 +267,73 @@ typedef struct                      // size is: 4+4+0 = 8
     eOas_extorque_config_t          config;
     eOas_extorque_inputs_t          inputs;    
 } eOas_extorque_t;                  //EO_VERIFYsizeof(eOas_extorque_t, 8);
+
+
+
+// -- the definition of a inertial sensor
+
+
+typedef struct
+{
+    uint16_t    x;          /**< x acceleration */
+    uint16_t    y;          /**< y acceleration */
+    uint16_t    z;          /**< z acceleration */
+    uint16_t    ffu;        /**< for future use, .... maybe it will keep a mask with validity of data */
+} eOas_inertial_accelerometer_t;
+
+
+typedef struct
+{
+    uint16_t    x;          /**< x angular rate */
+    uint16_t    y;          /**< y angular rate */
+    uint16_t    z;          /**< z angular rate */
+    uint16_t    ffu;        /**< for future use, .... maybe it will keep a mask with validity of data */
+} eOas_inertial_gyroscope_t;
+
+typedef enum 
+{ 
+    eoas_inertial_id_hand_palm      = 0,            /**< the palm of the hand has both accelerometer and gyroscope */
+    eoas_inertial_id_foot_palm      = 16,           /**< the palm of the foot has ... */
+} eOas_inertialidentifier_t;
+
+
+typedef struct                      
+{
+    uint8_t                         id;             /**< it contains and identifier which specifies the kind of inertial. use eOas_inertialidentifier_t */
+    uint8_t                         datarate;       /**< it specifies in ms with range [1, 10] the acquisition rate */
+    uint8_t                         filler[2];                          
+} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 4);
+
+
+typedef struct                      
+{
+    eOas_inertial_accelerometer_t   accelerometer;
+    eOas_inertial_gyroscope_t       gyroscope;
+} eOas_inertial_status_t;           EO_VERIFYsizeof(eOas_inertial_status_t, 16);
+
+
+typedef enum 
+{
+    eoas_inertial_enable_none               = 0x00,
+    eoas_inertial_enable_accelerometer      = 0x01,
+    eoas_inertial_enable_gyroscope          = 0x02, 
+    eoas_inertial_enable_accelgyro          = 0x03    
+} eOas_inertial_enableflags_t;
+
+
+typedef struct                  
+{
+    uint8_t                     enable;         /**< use values in eOas_inertial_enableflags_t */ 
+    uint8_t                     filler[3];
+} eOmc_inertial_commands_t;     EO_VERIFYsizeof(eOmc_inertial_commands_t, 4);
+
+
+typedef struct                      // size is: 4+16+4 = 24
+{
+    eOas_inertial_config_t          config;
+    eOas_inertial_status_t          status;
+    eOmc_inertial_commands_t        cmmnds;
+} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 24);
 
 
 
