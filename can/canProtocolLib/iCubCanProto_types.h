@@ -429,6 +429,34 @@ typedef enum
     icubCanProto_as_sigmode_signal             = 0,
     icubCanProto_as_sigmode_dontsignal         = 1
 } icubCanProto_as_sigmode_t;
+
+
+// -- inertial section. in here there are types used to manage the inertial sensors mounted on mtb board.
+
+
+/** @typedef    typedef enum icubCanProto_inertial_sensorflags_t
+    @brief      contains the flags to be used to specify the behaviour of acceleromters / gyroscope in the mtb board.
+                note 1: icubCanProto_inertial_sensorflag_internaldigitalaccelerometer is used if the board is version .D
+                note 2: icubCanProto_inertial_sensorflag_externaldigitalgyroscope and icubCanProto_inertial_sensorflag_externaldigitalaccelerometer are for the palm board only.
+                note 3: the two accelerometers (internal and external) cannot be used at the same time. if for an error both are selected, the internal one is used.
+ **/
+typedef enum
+{
+    icubCanProto_inertial_sensorflag_none                             = 0x00,
+    icubCanProto_inertial_sensorflag_analogaccelerometer              = 0x01,
+    icubCanProto_inertial_sensorflag_internaldigitalaccelerometer     = 0x02,
+    icubCanProto_inertial_sensorflag_externaldigitalgyroscope         = 0x04,
+    icubCanProto_inertial_sensorflag_externaldigitalaccelerometer     = 0x08   
+} icubCanProto_inertial_sensorflags_t;
+
+typedef struct
+{
+    uint8_t                     enabledsensors; /**< the enabled sensor. fill with bitwise or of icubCanProto_inertial_sensorflags_t */ 
+    uint8_t                     period;         /**< the transmission period in ms with range [1, 10] */
+} icubCanProto_inertial_config_t;
+
+
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 

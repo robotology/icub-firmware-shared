@@ -290,10 +290,12 @@ typedef struct
     uint16_t    ffu;        /**< for future use, .... maybe it will keep a mask with validity of data */
 } eOas_inertial_gyroscope_t;
 
+
 typedef enum 
 { 
-    eoas_inertial_id_hand_palm      = 0,            /**< the palm of the hand has both accelerometer and gyroscope */
-    eoas_inertial_id_foot_palm      = 16,           /**< the palm of the foot has ... */
+    eoas_inertial_id_none           = 0,
+    eoas_inertial_id_hand_palm      = 8,            /**< the palm of the hand has both accelerometer and gyroscope */
+    eoas_inertial_id_foot_palm      = 16,           /**< the palm of the foot has both accelerometer and gyroscope */
 } eOas_inertialidentifier_t;
 
 
