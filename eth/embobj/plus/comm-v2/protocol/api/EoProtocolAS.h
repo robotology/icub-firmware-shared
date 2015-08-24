@@ -204,7 +204,7 @@ typedef enum
     eoprot_rwm_as_inertial_status                                   = eo_nv_rwmode_RO,
     eoprot_rwm_as_inertial_status_accelerometer                     = eo_nv_rwmode_RO,
     eoprot_rwm_as_inertial_status_gyroscope                         = eo_nv_rwmode_RO,
-    eoprot_rwm_as_inertial_cmmnds_enable                            = eo_nv_rwmode_RO    
+    eoprot_rwm_as_inertial_cmmnds_enable                            = eo_nv_rwmode_RW    
 } eOprot_rwm_as_inertial_t; 
 
 enum { eoprot_rwms_as_inertial_numberof = 6 };  // it MUST be equal to the number of rw modes. 

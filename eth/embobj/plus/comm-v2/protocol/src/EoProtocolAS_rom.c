@@ -397,7 +397,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status =
 static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status_accelerometer =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_inertial_defaultvalue.status.accelerometer),
-    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status,
+    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status_accelerometer,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_inertial_defaultvalue.status.accelerometer,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
@@ -412,7 +412,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status_acceler
 static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status_gyroscope =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_inertial_defaultvalue.status.gyroscope),
-    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status,
+    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status_gyroscope,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_inertial_defaultvalue.status.gyroscope,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
@@ -428,7 +428,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status_gyrosco
 static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_cmmnds_enable =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_as_rom_inertial_defaultvalue.cmmnds.enable),
-    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status,
+    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_cmmnds_enable,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_as_rom_inertial_defaultvalue.cmmnds.enable,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
