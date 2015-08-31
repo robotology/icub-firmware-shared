@@ -394,35 +394,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status =
 #endif
 };
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status_accelerometer =
-{   
-    EO_INIT(.capacity)  sizeof(eoprot_as_rom_inertial_defaultvalue.status.accelerometer),
-    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status_accelerometer,
-    EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_inertial_defaultvalue.status.accelerometer,
-#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
-    EO_INIT(.init)      NULL,
-    EO_INIT(.update)    NULL
-#else       
-    EO_INIT(.init)      eoprot_fun_INIT_as_inertial_status_accelerometer,
-    EO_INIT(.update)    eoprot_fun_UPDT_as_inertial_status_accelerometer
-#endif
-};
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_status_gyroscope =
-{   
-    EO_INIT(.capacity)  sizeof(eoprot_as_rom_inertial_defaultvalue.status.gyroscope),
-    EO_INIT(.rwmode)    eoprot_rwm_as_inertial_status_gyroscope,
-    EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_inertial_defaultvalue.status.gyroscope,
-#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
-    EO_INIT(.init)      NULL,
-    EO_INIT(.update)    NULL
-#else       
-    EO_INIT(.init)      eoprot_fun_INIT_as_inertial_status_gyroscope,
-    EO_INIT(.update)    eoprot_fun_UPDT_as_inertial_status_gyroscope
-#endif
-};
 
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_inertial_cmmnds_enable =
@@ -486,8 +458,6 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_inertial_descriptors[] =
     &eoprot_as_rom_descriptor_inertial_wholeitem,
     &eoprot_as_rom_descriptor_inertial_config,
     &eoprot_as_rom_descriptor_inertial_status,
-    &eoprot_as_rom_descriptor_inertial_status_accelerometer,
-    &eoprot_as_rom_descriptor_inertial_status_gyroscope,
     &eoprot_as_rom_descriptor_inertial_cmmnds_enable
 };  EO_VERIFYsizeof(s_eoprot_as_rom_inertial_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_inertial_numberof));
 
@@ -571,8 +541,6 @@ static const char * const s_eoprot_as_strings_tags_inertial[] =
     "eoprot_tag_as_inertial_wholeitem",
     "eoprot_tag_as_inertial_config",
     "eoprot_tag_as_inertial_status",
-    "eoprot_tag_as_inertial_status_accelerometer",
-    "eoprot_tag_as_inertial_status_gyroscope",
     "eoprot_tag_as_inertial_cmmnds_enable"
 };  EO_VERIFYsizeof(s_eoprot_as_strings_tags_inertial, eoprot_tags_as_inertial_numberof*sizeof(const char*));
 

@@ -253,19 +253,6 @@ EO_weak extern void eoprot_fun_INIT_as_inertial_status(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_as_inertial_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_status_accelerometer)
-EO_weak extern void eoprot_fun_INIT_as_inertial_status_accelerometer(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_status_accelerometer)
-EO_weak extern void eoprot_fun_UPDT_as_inertial_status_accelerometer(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
-
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_status_gyroscope)
-EO_weak extern void eoprot_fun_INIT_as_inertial_status_gyroscope(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_status_gyroscope)
-EO_weak extern void eoprot_fun_UPDT_as_inertial_status_gyroscope(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_cmmnds_enable)
 EO_weak extern void eoprot_fun_INIT_as_inertial_cmmnds_enable(const EOnv* nv) {}

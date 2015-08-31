@@ -273,70 +273,125 @@ typedef struct                      // size is: 4+4+0 = 8
 // -- the definition of a inertial sensor
 
 
-typedef struct
-{
-    uint16_t    x;          /**< x acceleration */
-    uint16_t    y;          /**< y acceleration */
-    uint16_t    z;          /**< z acceleration */
-    uint16_t    ffu;        /**< for future use, .... maybe it will keep a mask with validity of data */
-} eOas_inertial_accelerometer_t;
-
-
-typedef struct
-{
-    uint16_t    x;          /**< x angular rate */
-    uint16_t    y;          /**< y angular rate */
-    uint16_t    z;          /**< z angular rate */
-    uint16_t    ffu;        /**< for future use, .... maybe it will keep a mask with validity of data */
-} eOas_inertial_gyroscope_t;
-
-
 typedef enum 
-{ 
-    eoas_inertial_id_none           = 0,
-    eoas_inertial_id_hand_palm      = 8,            /**< the palm of the hand has both accelerometer and gyroscope */
-    eoas_inertial_id_foot_palm      = 16,           /**< the palm of the foot has both accelerometer and gyroscope */
-} eOas_inertialidentifier_t;
+{
+    eoas_inertial_type_none          = 0,
+    eoas_inertial_type_accelerometer = 1,
+    eoas_inertial_type_gyroscope     = 2
+} eOas_inertial_type_t;
+
+
+enum { eoas_inertial_pos_offsetleft = 0, eoas_inertial_pos_offsetright = 24, eoas_inertial_pos_offsetcentral = 48 };
+
+/** @typedef    typedef enum eOas_inertial_position_t
+    @brief      contains a unique id for every possible inertial sensor positioned on iCub. So far we can host
+                up to 63 different positions. The actual positions on iCub are documented on http://wiki.icub.org/wiki/Distributed_Inertial_sensing
+                where one must look for the tags 10B12, 10B13 etc.
+ **/
+typedef enum
+{
+    eoas_inertial_pos_none                  = 0,
+    
+    // left arm
+    eoas_inertial_pos_l_hand                = 1+eoas_inertial_pos_offsetleft,       // 2B14
+    eoas_inertial_pos_l_forearm_1           = 2+eoas_inertial_pos_offsetleft,
+    eoas_inertial_pos_l_forearm_2           = 3+eoas_inertial_pos_offsetleft,    
+    eoas_inertial_pos_l_upperarm_1          = 4+eoas_inertial_pos_offsetleft,
+    eoas_inertial_pos_l_upperarm_2          = 5+eoas_inertial_pos_offsetleft,
+    eoas_inertial_pos_l_upperarm_3          = 6+eoas_inertial_pos_offsetleft,
+    eoas_inertial_pos_l_upperarm_4          = 7+eoas_inertial_pos_offsetleft,
+    // left leg
+    eoas_inertial_pos_l_foot_1              = 8+eoas_inertial_pos_offsetleft,       // 10B12
+    eoas_inertial_pos_l_foot_2              = 9+eoas_inertial_pos_offsetleft,       // 10B13
+    eoas_inertial_pos_l_lowerleg_1          = 10+eoas_inertial_pos_offsetleft,      // 10B10
+    eoas_inertial_pos_l_lowerleg_2          = 11+eoas_inertial_pos_offsetleft,      // 10B8
+    eoas_inertial_pos_l_lowerleg_3          = 12+eoas_inertial_pos_offsetleft,      // 10B9
+    eoas_inertial_pos_l_lowerleg_4          = 13+eoas_inertial_pos_offsetleft,      // 10B11
+    eoas_inertial_pos_l_upperleg_front_1    = 14+eoas_inertial_pos_offsetleft,      // 10B1
+    eoas_inertial_pos_l_upperleg_front_2    = 15+eoas_inertial_pos_offsetleft,      // 10B2
+    eoas_inertial_pos_l_upperleg_front_3    = 16+eoas_inertial_pos_offsetleft,      // 10B3
+    eoas_inertial_pos_l_upperleg_front_4    = 17+eoas_inertial_pos_offsetleft,      // 10B4
+    eoas_inertial_pos_l_upperleg_front_5    = 18+eoas_inertial_pos_offsetleft,      // 10B5
+    eoas_inertial_pos_l_upperleg_back_1     = 19+eoas_inertial_pos_offsetleft,      // 10B6 
+    eoas_inertial_pos_l_upperleg_back_2     = 20+eoas_inertial_pos_offsetleft,      // 10B7     
+    
+    // right arm
+    eoas_inertial_pos_r_hand                = 1+eoas_inertial_pos_offsetright,      // 4B14
+    eoas_inertial_pos_r_forearm_1           = 2+eoas_inertial_pos_offsetright,
+    eoas_inertial_pos_r_forearm_2           = 3+eoas_inertial_pos_offsetright,    
+    eoas_inertial_pos_r_upperarm_1          = 4+eoas_inertial_pos_offsetright,
+    eoas_inertial_pos_r_upperarm_2          = 5+eoas_inertial_pos_offsetright,
+    eoas_inertial_pos_r_upperarm_3          = 6+eoas_inertial_pos_offsetright,
+    eoas_inertial_pos_r_upperarm_4          = 7+eoas_inertial_pos_offsetright,
+    // right leg
+    eoas_inertial_pos_r_foot_1              = 8+eoas_inertial_pos_offsetright,      // 11B12
+    eoas_inertial_pos_r_foot_2              = 9+eoas_inertial_pos_offsetright,      // 11B13
+    eoas_inertial_pos_r_lowerleg_1          = 10+eoas_inertial_pos_offsetright,     // 11B10
+    eoas_inertial_pos_r_lowerleg_2          = 11+eoas_inertial_pos_offsetright,     // 11B8
+    eoas_inertial_pos_r_lowerleg_3          = 12+eoas_inertial_pos_offsetright,     // 11B9
+    eoas_inertial_pos_r_lowerleg_4          = 13+eoas_inertial_pos_offsetright,     // 11B11
+    eoas_inertial_pos_r_upperleg_front_1    = 14+eoas_inertial_pos_offsetright,     // 11B1
+    eoas_inertial_pos_r_upperleg_front_2    = 15+eoas_inertial_pos_offsetright,     // 11B2
+    eoas_inertial_pos_r_upperleg_front_3    = 16+eoas_inertial_pos_offsetright,     // 11B3
+    eoas_inertial_pos_r_upperleg_front_4    = 17+eoas_inertial_pos_offsetright,     // 11B5
+    eoas_inertial_pos_r_upperleg_front_5    = 18+eoas_inertial_pos_offsetright,     // 11B4
+    eoas_inertial_pos_r_upperleg_back_1     = 19+eoas_inertial_pos_offsetright,     // 11B6 
+    eoas_inertial_pos_r_upperleg_back_2     = 20+eoas_inertial_pos_offsetright,     // 11B7 
+    
+    // central parts
+    eoas_inertial_pos_chest_1               = 1+eoas_inertial_pos_offsetcentral,    // 9B10
+    eoas_inertial_pos_chest_2               = 2+eoas_inertial_pos_offsetcentral,    // 9B9
+    eoas_inertial_pos_chest_3               = 3+eoas_inertial_pos_offsetcentral,    // 9B0
+    eoas_inertial_pos_chest_4               = 4+eoas_inertial_pos_offsetcentral     // 9B7
+    
+} eOas_inertial_position_t;
+
+
+typedef struct
+{
+    uint64_t    timestamp;      // the time in usec of reception of this data
+    uint8_t     type;           // use eOas_inertial_type_t.
+    uint8_t     position;       // use eOas_inertial_position_t    
+    uint16_t    x;              /**< x value */
+    uint16_t    y;              /**< y value */
+    uint16_t    z;              /**< z value */
+} eOas_inertial_data_t;         EO_VERIFYsizeof(eOas_inertial_data_t, 16);
+
+
+
+
+#define EOAS_ENABLEPOS(pos)                 ((uint64_t)0x1 << (pos))
+#define EOAS_ISPOSENABLED(mask, pos)        (((((uint64_t)(mask)) & ((uint64_t)0x1 << (pos)) )) ? 1 : 0)
+
+typedef struct                      
+{
+    uint64_t                        enabled;        /**< fill with bitwise OR of EOAS_ENABLEPOS(pos), where pos is from eOas_inertial_position_t */ 
+    uint8_t                         datarate;       /**< it specifies the acquisition rate in ms with accepted range [10, 200]. bug: if 250 the mtb emits every 35  */
+    uint8_t                         filler[7];                          
+} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 16);
+
 
 
 typedef struct                      
 {
-    uint8_t                         id;             /**< it contains and identifier which specifies the kind of inertial. use eOas_inertialidentifier_t */
-    uint8_t                         datarate;       /**< it specifies in ms with range [1, 10] the acquisition rate */
-    uint8_t                         filler[2];                          
-} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 4);
-
-
-typedef struct                      
-{
-    eOas_inertial_accelerometer_t   accelerometer;
-    eOas_inertial_gyroscope_t       gyroscope;
+    eOas_inertial_data_t            data;       /**< it is the most recent reading of the inertial sensors which are related to this entity */
 } eOas_inertial_status_t;           EO_VERIFYsizeof(eOas_inertial_status_t, 16);
-
-
-typedef enum 
-{
-    eoas_inertial_enable_none               = 0x00,
-    eoas_inertial_enable_accelerometer      = 0x01,
-    eoas_inertial_enable_gyroscope          = 0x02, 
-    eoas_inertial_enable_accelgyro          = 0x03    
-} eOas_inertial_enableflags_t;
 
 
 typedef struct                  
 {
-    uint8_t                     enable;         /**< use values in eOas_inertial_enableflags_t */ 
-    uint8_t                     filler[3];
-} eOmc_inertial_commands_t;     EO_VERIFYsizeof(eOmc_inertial_commands_t, 4);
+    uint8_t                     enable;         /**< use 0 or 1*/ 
+    uint8_t                     filler[7];
+} eOmc_inertial_commands_t;     EO_VERIFYsizeof(eOmc_inertial_commands_t, 8);
 
 
-typedef struct                      // size is: 4+16+4 = 24
+
+typedef struct                      // size is: 16+16+8 = 24
 {
     eOas_inertial_config_t          config;
     eOas_inertial_status_t          status;
     eOmc_inertial_commands_t        cmmnds;
-} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 24);
-
+} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 40);
 
 
 // - others unused possible entities
