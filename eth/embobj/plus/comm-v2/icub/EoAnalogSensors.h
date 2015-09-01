@@ -281,6 +281,8 @@ typedef enum
 } eOas_inertial_type_t;
 
 
+enum { eoas_inertial_pos_max_numberof = 63 };
+
 enum { eoas_inertial_pos_offsetleft = 0, eoas_inertial_pos_offsetright = 24, eoas_inertial_pos_offsetcentral = 48 };
 
 /** @typedef    typedef enum eOas_inertial_position_t
