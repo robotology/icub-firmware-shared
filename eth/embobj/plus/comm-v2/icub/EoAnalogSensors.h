@@ -288,63 +288,63 @@ enum { eoas_inertial_pos_offsetleft = 0, eoas_inertial_pos_offsetright = 24, eoa
 /** @typedef    typedef enum eOas_inertial_position_t
     @brief      contains a unique id for every possible inertial sensor positioned on iCub. So far we can host
                 up to 63 different positions. The actual positions on iCub are documented on http://wiki.icub.org/wiki/Distributed_Inertial_sensing
-                where one must look for the tags 10B12, 10B13 etc.
+                where one must look for the tags 10B12, 10B13 etc. The mapping on CAN for the ETH robot v3 is written aside. 
  **/
 typedef enum
 {
     eoas_inertial_pos_none                  = 0,
     
     // left arm
-    eoas_inertial_pos_l_hand                = 1+eoas_inertial_pos_offsetleft,       // 2B14
-    eoas_inertial_pos_l_forearm_1           = 2+eoas_inertial_pos_offsetleft,
-    eoas_inertial_pos_l_forearm_2           = 3+eoas_inertial_pos_offsetleft,    
-    eoas_inertial_pos_l_upperarm_1          = 4+eoas_inertial_pos_offsetleft,
-    eoas_inertial_pos_l_upperarm_2          = 5+eoas_inertial_pos_offsetleft,
-    eoas_inertial_pos_l_upperarm_3          = 6+eoas_inertial_pos_offsetleft,
-    eoas_inertial_pos_l_upperarm_4          = 7+eoas_inertial_pos_offsetleft,
+    eoas_inertial_pos_l_hand                = 1+eoas_inertial_pos_offsetleft,       // label 1B7    canloc = (CAN2, 14) 
+    eoas_inertial_pos_l_forearm_1           = 2+eoas_inertial_pos_offsetleft,       // label 1B8    canloc = (CAN2, 12)
+    eoas_inertial_pos_l_forearm_2           = 3+eoas_inertial_pos_offsetleft,       // label 1B9    canloc = (CAN2, 13)
+    eoas_inertial_pos_l_upper_arm_1         = 4+eoas_inertial_pos_offsetleft,       // label 1B10   canloc = (CAN2,  9)
+    eoas_inertial_pos_l_upper_arm_2         = 5+eoas_inertial_pos_offsetleft,       // label 1B11   canloc = (CAN2, 11)
+    eoas_inertial_pos_l_upper_arm_3         = 6+eoas_inertial_pos_offsetleft,       // label 1B12   canloc = (CAN2, 10)
+    eoas_inertial_pos_l_upper_arm_4         = 7+eoas_inertial_pos_offsetleft,       // label 1B13   canloc = (CAN2,  8)
     // left leg
-    eoas_inertial_pos_l_foot_1              = 8+eoas_inertial_pos_offsetleft,       // 10B12
-    eoas_inertial_pos_l_foot_2              = 9+eoas_inertial_pos_offsetleft,       // 10B13
-    eoas_inertial_pos_l_lowerleg_1          = 10+eoas_inertial_pos_offsetleft,      // 10B10
-    eoas_inertial_pos_l_lowerleg_2          = 11+eoas_inertial_pos_offsetleft,      // 10B8
-    eoas_inertial_pos_l_lowerleg_3          = 12+eoas_inertial_pos_offsetleft,      // 10B9
-    eoas_inertial_pos_l_lowerleg_4          = 13+eoas_inertial_pos_offsetleft,      // 10B11
-    eoas_inertial_pos_l_upperleg_front_1    = 14+eoas_inertial_pos_offsetleft,      // 10B1
-    eoas_inertial_pos_l_upperleg_front_2    = 15+eoas_inertial_pos_offsetleft,      // 10B2
-    eoas_inertial_pos_l_upperleg_front_3    = 16+eoas_inertial_pos_offsetleft,      // 10B3
-    eoas_inertial_pos_l_upperleg_front_4    = 17+eoas_inertial_pos_offsetleft,      // 10B4
-    eoas_inertial_pos_l_upperleg_front_5    = 18+eoas_inertial_pos_offsetleft,      // 10B5
-    eoas_inertial_pos_l_upperleg_back_1     = 19+eoas_inertial_pos_offsetleft,      // 10B6 
-    eoas_inertial_pos_l_upperleg_back_2     = 20+eoas_inertial_pos_offsetleft,      // 10B7     
+    eoas_inertial_pos_l_foot_1              = 8+eoas_inertial_pos_offsetleft,       // label 10B12  canloc = (CAN2, 13)
+    eoas_inertial_pos_l_foot_2              = 9+eoas_inertial_pos_offsetleft,       // label 10B13  canloc = (CAN2, 12)
+    eoas_inertial_pos_l_lower_leg_1         = 10+eoas_inertial_pos_offsetleft,      // label 10B8   canloc = (CAN2,  8)
+    eoas_inertial_pos_l_lower_leg_2         = 11+eoas_inertial_pos_offsetleft,      // label 10B9   canloc = (CAN2,  9)  
+    eoas_inertial_pos_l_lower_leg_3         = 12+eoas_inertial_pos_offsetleft,      // label 10B10  canloc = (CAN2, 10)
+    eoas_inertial_pos_l_lower_leg_4         = 13+eoas_inertial_pos_offsetleft,      // label 10B11  canloc = (CAN2, 11)
+    eoas_inertial_pos_l_upper_leg_1         = 14+eoas_inertial_pos_offsetleft,      // label 10B1   canloc = (CAN1,  1)
+    eoas_inertial_pos_l_upper_leg_2         = 15+eoas_inertial_pos_offsetleft,      // label 10B2   canloc = (CAN1,  2)
+    eoas_inertial_pos_l_upper_leg_3         = 16+eoas_inertial_pos_offsetleft,      // label 10B3   canloc = (CAN1,  3)
+    eoas_inertial_pos_l_upper_leg_4         = 17+eoas_inertial_pos_offsetleft,      // label 10B4   canloc = (CAN1,  4)
+    eoas_inertial_pos_l_upper_leg_5         = 18+eoas_inertial_pos_offsetleft,      // label 10B5   canloc = (CAN1,  5)
+    eoas_inertial_pos_l_upper_leg_6         = 19+eoas_inertial_pos_offsetleft,      // label 10B6   canloc = (CAN1,  6)
+    eoas_inertial_pos_l_upper_leg_7         = 20+eoas_inertial_pos_offsetleft,      // label 10B7   canloc = (CAN1,  7)
     
     // right arm
-    eoas_inertial_pos_r_hand                = 1+eoas_inertial_pos_offsetright,      // 4B14
-    eoas_inertial_pos_r_forearm_1           = 2+eoas_inertial_pos_offsetright,
-    eoas_inertial_pos_r_forearm_2           = 3+eoas_inertial_pos_offsetright,    
-    eoas_inertial_pos_r_upperarm_1          = 4+eoas_inertial_pos_offsetright,
-    eoas_inertial_pos_r_upperarm_2          = 5+eoas_inertial_pos_offsetright,
-    eoas_inertial_pos_r_upperarm_3          = 6+eoas_inertial_pos_offsetright,
-    eoas_inertial_pos_r_upperarm_4          = 7+eoas_inertial_pos_offsetright,
+    eoas_inertial_pos_r_hand                = 1+eoas_inertial_pos_offsetright,      // label 2B7    canloc = (CAN2, 14)
+    eoas_inertial_pos_r_forearm_1           = 2+eoas_inertial_pos_offsetright,      // label 2B8    canloc = (CAN2, 12)
+    eoas_inertial_pos_r_forearm_2           = 3+eoas_inertial_pos_offsetright,      // label 2B9    canloc = (CAN2, 13)
+    eoas_inertial_pos_r_upper_arm_1         = 4+eoas_inertial_pos_offsetright,      // label 2B10   canloc = (CAN2,  9)
+    eoas_inertial_pos_r_upper_arm_2         = 5+eoas_inertial_pos_offsetright,      // label 2B11   canloc = (CAN2, 11)
+    eoas_inertial_pos_r_upper_arm_3         = 6+eoas_inertial_pos_offsetright,      // label 2B12   canloc = (CAN2, 10)
+    eoas_inertial_pos_r_upper_arm_4         = 7+eoas_inertial_pos_offsetright,      // label 2B13   canloc = (CAN2,  8)
     // right leg
-    eoas_inertial_pos_r_foot_1              = 8+eoas_inertial_pos_offsetright,      // 11B12
-    eoas_inertial_pos_r_foot_2              = 9+eoas_inertial_pos_offsetright,      // 11B13
-    eoas_inertial_pos_r_lowerleg_1          = 10+eoas_inertial_pos_offsetright,     // 11B10
-    eoas_inertial_pos_r_lowerleg_2          = 11+eoas_inertial_pos_offsetright,     // 11B8
-    eoas_inertial_pos_r_lowerleg_3          = 12+eoas_inertial_pos_offsetright,     // 11B9
-    eoas_inertial_pos_r_lowerleg_4          = 13+eoas_inertial_pos_offsetright,     // 11B11
-    eoas_inertial_pos_r_upperleg_front_1    = 14+eoas_inertial_pos_offsetright,     // 11B1
-    eoas_inertial_pos_r_upperleg_front_2    = 15+eoas_inertial_pos_offsetright,     // 11B2
-    eoas_inertial_pos_r_upperleg_front_3    = 16+eoas_inertial_pos_offsetright,     // 11B3
-    eoas_inertial_pos_r_upperleg_front_4    = 17+eoas_inertial_pos_offsetright,     // 11B5
-    eoas_inertial_pos_r_upperleg_front_5    = 18+eoas_inertial_pos_offsetright,     // 11B4
-    eoas_inertial_pos_r_upperleg_back_1     = 19+eoas_inertial_pos_offsetright,     // 11B6 
-    eoas_inertial_pos_r_upperleg_back_2     = 20+eoas_inertial_pos_offsetright,     // 11B7 
+    eoas_inertial_pos_r_foot_1              = 8+eoas_inertial_pos_offsetright,      // label 11B12  canloc = (CAN2, 13)
+    eoas_inertial_pos_r_foot_2              = 9+eoas_inertial_pos_offsetright,      // label 11B13  canloc = (CAN2, 12)
+    eoas_inertial_pos_r_lower_leg_1         = 10+eoas_inertial_pos_offsetright,     // label 11B8   canloc = (CAN2,  8)
+    eoas_inertial_pos_r_lower_leg_2         = 11+eoas_inertial_pos_offsetright,     // label 11B9   canloc = (CAN2,  9)
+    eoas_inertial_pos_r_lower_leg_3         = 12+eoas_inertial_pos_offsetright,     // label 11B10  canloc = (CAN2, 10)
+    eoas_inertial_pos_r_lower_leg_4         = 13+eoas_inertial_pos_offsetright,     // label 11B11  canloc = (CAN2, 11)
+    eoas_inertial_pos_r_upper_leg_1         = 14+eoas_inertial_pos_offsetright,     // label 11B1   canloc = (CAN1,  1)
+    eoas_inertial_pos_r_upper_leg_2         = 15+eoas_inertial_pos_offsetright,     // label 11B2   canloc = (CAN1,  2)
+    eoas_inertial_pos_r_upper_leg_3         = 16+eoas_inertial_pos_offsetright,     // label 11B3   canloc = (CAN1,  3)
+    eoas_inertial_pos_r_upper_leg_4         = 17+eoas_inertial_pos_offsetright,     // label 11B5   canloc = (CAN1,  5)
+    eoas_inertial_pos_r_upper_leg_5         = 18+eoas_inertial_pos_offsetright,     // label 11B4   canloc = (CAN1,  4)
+    eoas_inertial_pos_r_upper_leg_6         = 19+eoas_inertial_pos_offsetright,     // label 11B6   canloc = (CAN1,  6)
+    eoas_inertial_pos_r_upper_leg_7         = 20+eoas_inertial_pos_offsetright,     // label 11B7   canloc = (CAN1,  7)
     
     // central parts
-    eoas_inertial_pos_chest_1               = 1+eoas_inertial_pos_offsetcentral,    // 9B10
-    eoas_inertial_pos_chest_2               = 2+eoas_inertial_pos_offsetcentral,    // 9B9
-    eoas_inertial_pos_chest_3               = 3+eoas_inertial_pos_offsetcentral,    // 9B0
-    eoas_inertial_pos_chest_4               = 4+eoas_inertial_pos_offsetcentral     // 9B7
+    eoas_inertial_pos_chest_1               = 1+eoas_inertial_pos_offsetcentral,    // 9B7
+    eoas_inertial_pos_chest_2               = 2+eoas_inertial_pos_offsetcentral,    // 9B8
+    eoas_inertial_pos_chest_3               = 3+eoas_inertial_pos_offsetcentral,    // 9B9
+    eoas_inertial_pos_chest_4               = 4+eoas_inertial_pos_offsetcentral     // 9B10
     
 } eOas_inertial_position_t;
 
@@ -354,23 +354,35 @@ typedef struct
     uint64_t    timestamp;      // the time in usec of reception of this data
     uint8_t     type;           // use eOas_inertial_type_t.
     uint8_t     position;       // use eOas_inertial_position_t    
-    uint16_t    x;              /**< x value */
-    uint16_t    y;              /**< y value */
-    uint16_t    z;              /**< z value */
+    int16_t     x;              /**< x value */
+    int16_t     y;              /**< y value */
+    int16_t     z;              /**< z value */
 } eOas_inertial_data_t;         EO_VERIFYsizeof(eOas_inertial_data_t, 16);
 
 
+typedef struct
+{
+    uint8_t                         canmapofsupportedsensors[2][15];  // contains in pos i,j: eoas_inertial_pos_none if no mtb is at that address, else another value of eOas_inertial_position_t
+    uint8_t                         filler[2];
+} eOas_inertial_serviceconfig_t;    EO_VERIFYsizeof(eOas_inertial_serviceconfig_t, 32);
 
 
 #define EOAS_ENABLEPOS(pos)                 ((uint64_t)0x1 << (pos))
 #define EOAS_ISPOSENABLED(mask, pos)        (((((uint64_t)(mask)) & ((uint64_t)0x1 << (pos)) )) ? 1 : 0)
 
-typedef struct                      
+typedef struct
 {
     uint64_t                        enabled;        /**< fill with bitwise OR of EOAS_ENABLEPOS(pos), where pos is from eOas_inertial_position_t */ 
     uint8_t                         datarate;       /**< it specifies the acquisition rate in ms with accepted range [10, 200]. bug: if 250 the mtb emits every 35  */
-    uint8_t                         filler[7];                          
-} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 16);
+    uint8_t                         filler[7];  
+} eOas_inertial_sensorsconfig_t;    EO_VERIFYsizeof(eOas_inertial_sensorsconfig_t, 16);
+
+
+typedef struct                      
+{
+    eOas_inertial_serviceconfig_t   service;
+    eOas_inertial_sensorsconfig_t   sensors;     
+} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 48);
 
 
 
@@ -388,12 +400,12 @@ typedef struct
 
 
 
-typedef struct                      // size is: 16+16+8 = 24
+typedef struct                      // size is: 48+16+8 = 72
 {
     eOas_inertial_config_t          config;
     eOas_inertial_status_t          status;
     eOmc_inertial_commands_t        cmmnds;
-} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 40);
+} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 72);
 
 
 // - others unused possible entities
