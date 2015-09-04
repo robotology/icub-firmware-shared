@@ -239,7 +239,8 @@ typedef enum
     eomc_calibration_type2_hard_stops_diff          = 2,    // cannot change
     eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change
     eomc_calibration_type4_abs_and_incremental      = 4,    // cannot change
-    eomc_calibration_type5_hard_stops_mc4plus       = 5     // cannot change
+    eomc_calibration_type5_hard_stops_mc4plus       = 5,    // cannot change
+    eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
 
