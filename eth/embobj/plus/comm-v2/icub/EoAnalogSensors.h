@@ -344,7 +344,12 @@ typedef enum
     eoas_inertial_pos_chest_1               = 1+eoas_inertial_pos_offsetcentral,    // 9B7
     eoas_inertial_pos_chest_2               = 2+eoas_inertial_pos_offsetcentral,    // 9B8
     eoas_inertial_pos_chest_3               = 3+eoas_inertial_pos_offsetcentral,    // 9B9
-    eoas_inertial_pos_chest_4               = 4+eoas_inertial_pos_offsetcentral     // 9B10
+    eoas_inertial_pos_chest_4               = 4+eoas_inertial_pos_offsetcentral,    // 9B10
+    
+    eOas_inertial_pos_jolly_1               = 60,
+    eOas_inertial_pos_jolly_2               = 61,
+    eOas_inertial_pos_jolly_3               = 62,
+    eOas_inertial_pos_jolly_4               = 63
     
 } eOas_inertial_position_t;
 
@@ -372,17 +377,18 @@ typedef struct
 
 typedef struct
 {
-    uint64_t                        enabled;        /**< fill with bitwise OR of EOAS_ENABLEPOS(pos), where pos is from eOas_inertial_position_t */ 
+    uint64_t                        accelerometers; /**< fill with bitwise OR of EOAS_ENABLEPOS(pos), where pos is from eOas_inertial_position_t */ 
+    uint64_t                        gyroscopes;     /**< fill with bitwise OR of EOAS_ENABLEPOS(pos), where pos is from eOas_inertial_position_t */ 
     uint8_t                         datarate;       /**< it specifies the acquisition rate in ms with accepted range [10, 200]. bug: if 250 the mtb emits every 35  */
     uint8_t                         filler[7];  
-} eOas_inertial_sensorsconfig_t;    EO_VERIFYsizeof(eOas_inertial_sensorsconfig_t, 16);
+} eOas_inertial_sensorsconfig_t;    EO_VERIFYsizeof(eOas_inertial_sensorsconfig_t, 24);
 
 
 typedef struct                      
 {
     eOas_inertial_serviceconfig_t   service;
     eOas_inertial_sensorsconfig_t   sensors;     
-} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 48);
+} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 56);
 
 
 
@@ -400,12 +406,12 @@ typedef struct
 
 
 
-typedef struct                      // size is: 48+16+8 = 72
+typedef struct                      // size is: 56+16+8 = 80
 {
     eOas_inertial_config_t          config;
     eOas_inertial_status_t          status;
     eOmc_inertial_commands_t        cmmnds;
-} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 72);
+} eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 80);
 
 
 // - others unused possible entities
@@ -416,7 +422,7 @@ typedef struct                      // size is: 48+16+8 = 72
  **/
 typedef struct                  // size is: 4+0 = 4
 {
-    uint32_t                    value;            // used with ... see hal_encoder.h for bitfield formatting  
+    uint32_t                    value;  // used with ... see hal_encoder.h for bitfield formatting  
 } eOas_aea_t;                   //EO_VERIFYsizeof(eOas_aea_t, 4);
 
 
