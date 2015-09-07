@@ -74,6 +74,7 @@ typedef enum
     eobrd_cantype_1foc              = 8,
     eobrd_cantype_mais              = 7,
     eobrd_cantype_skin              = 5, 
+    eobrd_cantype_mtb               = 5,    // much better using the real name which is mtb
     eobrd_cantype_none              = 127, 	
     eobrd_cantype_unknown           = 255 // but better 128 ... 
 } eObrd_cantype_t;

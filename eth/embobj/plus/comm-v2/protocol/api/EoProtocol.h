@@ -213,6 +213,7 @@ typedef enum
     eoprot_entity_as_strain                 = eoas_entity_strain,       /**<  */   
     eoprot_entity_as_mais                   = eoas_entity_mais,         /**<  */            
     eoprot_entity_as_extorque               = eoas_entity_extorque,     /**<  */  
+    eoprot_entity_as_inertial               = eoas_entity_inertial,     /**<  */   
     eoprot_entity_sk_skin                   = eosk_entity_skin,         /**<  */
     eoprot_entity_none                      = EOK_uint08dummy
 } eOprot_entity_t;

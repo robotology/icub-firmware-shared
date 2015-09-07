@@ -44,6 +44,7 @@ Definitions of the iCub CAN protocols commands
 #include "iCubCanProto_motorControlMessages.h"
 #include "iCubCanProto_analogSensorMessages.h"
 #include "iCubCanProto_skinMessages.h"
+#include "iCubCanProto_inertialSensorMessages.h"
 #include "iCubCanProto_bootloaderMessages.h"
 
 
