@@ -363,7 +363,6 @@ typedef struct
 typedef struct  
 {
     int32_t                     pwmlimit;
-    eOmeas_velocity_t           velocity;
     int32_t                     final_pos;
     int32_t                     calibrationZero;
 } eOmc_calibrator_params_type5_hard_stops_mc4plus_t;
