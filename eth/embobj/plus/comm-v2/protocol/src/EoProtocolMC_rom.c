@@ -498,10 +498,10 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_gearboxrat
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_rotorencoder =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.rotorencoder),
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.rotorEncoderResolution),
     EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_rotorencoder,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.rotorencoder,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.rotorEncoderResolution,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
@@ -746,7 +746,7 @@ static const char * const s_eoprot_mc_strings_tags_motor[] =
     "eoprot_tag_mc_motor_config",
     "eoprot_tag_mc_motor_config_maxcurrentofmotor",
     "eoprot_tag_mc_motor_config_gearboxratio", 
-	"eoprot_tag_mc_motor_config_rotorencoder", 
+    "eoprot_tag_mc_motor_config_rotorencoder", 
     "eoprot_tag_mc_motor_status",
     "eoprot_tag_mc_motor_status_basic"
 };  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)); 

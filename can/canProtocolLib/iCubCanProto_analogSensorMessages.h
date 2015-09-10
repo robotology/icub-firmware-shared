@@ -45,9 +45,11 @@ extern "C" {
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
+
 /***************************************************************************/
 // command messages of class ICUBCANPROTO_CLASS_POLLING_ANALOGSENSOR 
 /***************************************************************************/
+
 #define ICUBCANPROTO_POL_AS_CMD__NONE              0x0
 #define ICUBCANPROTO_POL_AS_CMD__SET_IIR           0x1  // select IIR filters parameters 
 #define ICUBCANPROTO_POL_AS_CMD__SET_MATRIX_RC     0x3  // Set SG to TF trasformation matrix 
@@ -81,9 +83,14 @@ extern "C" {
 
 #define ICUBCANPROTO_POL_AS_CMD_MAXNUM                 (ICUBCANPROTO_POL_AS_CMD__GET_FW_VERSION + 1)
 
+
 /***************************************************************************/
 // command messages of class ICUBCANPROTO_CLASS_PERIODIC_ANALOGSENSOR 
 /***************************************************************************/
+
+#define ICUBCANPROTO_PER_AS_MSG__DIGITAL_GYROSCOPE                  0x00    // placeholder for possible inertial gyros message status in class 3
+#define ICUBCANPROTO_PER_AS_MSG__DIGITAL_ACCELEROMETER              0x01    // placeholder for possible inertial accel message status in class 3
+
 #define ICUBCANPROTO_PER_AS_MSG__FORCE_VECTOR                       0xA // Transmit Torque values t1 t1 t2 t2 t3 t3
 #define ICUBCANPROTO_PER_AS_MSG__TORQUE_VECTOR                      0xB // Transmit Force  values f1 f1 f2 f2 f3 f3
 #define ICUBCANPROTO_PER_AS_MSG__HES0TO6                            0xC //hall effect sensors from 0  to 6  *8bits

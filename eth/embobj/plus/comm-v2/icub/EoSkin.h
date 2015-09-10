@@ -97,11 +97,13 @@ typedef struct
     uint8_t         data[8];    // the can payload  
 } eOsk_candata_t;   EO_VERIFYsizeof(eOsk_candata_t, 10);
 
-typedef struct              // size is 4+12*10 = 124
+enum {eosk_capacity_arrayof_skincandata = 9 };
+
+typedef struct              // size is 4+12*10 = 124  4+9*10 = 94
 {
     eOarray_head_t          head;
-    uint8_t                 data[12*sizeof(eOsk_candata_t)];      
-} EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 124);
+    uint8_t                 data[eosk_capacity_arrayof_skincandata*sizeof(eOsk_candata_t)];      
+} EOarray_of_skincandata_t; //EO_VERIFYsizeof(EOarray_of_skincandata_t, 124);
 
 //typedef struct              // size is 4+10*16+0 = 164
 //{
@@ -203,19 +205,19 @@ typedef struct
 } eOsk_command_t;               EO_VERIFYsizeof(eOsk_command_t, 16);
 
 
-typedef struct                  // size is: 124+4+0 = 128                     
+typedef struct                  // size is: 124+4+0 = 128  or 94+2 = 96                  
 {
     EOarray_of_skincandata_t    arrayofcandata;
-    uint8_t                     filler04[4];                           
-} eOsk_status_t;                EO_VERIFYsizeof(eOsk_status_t, 128);
+    uint8_t                     filler04[2];                           
+} eOsk_status_t;                //EO_VERIFYsizeof(eOsk_status_t, 96);
 
 
-typedef struct                  // size is: 8+128+16 = 152
+typedef struct                  // size is: 8+128+16 = 152 or 8+96+16=120
 {
     eOsk_config_t               config; 
     eOsk_status_t               status;
     eOsk_command_t              cmmnds;    
-} eOsk_skin_t;                  EO_VERIFYsizeof(eOsk_skin_t, 152);
+} eOsk_skin_t;                  //EO_VERIFYsizeof(eOsk_skin_t, 152);
 
 
 

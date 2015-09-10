@@ -107,7 +107,7 @@ enum { eoprot_rwms_sk_skin_numberof = 5 };  // it MUST be equal to the number of
 typedef struct                  // 152+0 = 152              
 {
     eOsk_skin_t                 skin;
-} eOprot_template_sk_t;         EO_VERIFYsizeof(eOprot_template_sk_t, 152);
+} eOprot_template_sk_t;         //EO_VERIFYsizeof(eOprot_template_sk_t, 152);
 
 
 

@@ -229,6 +229,52 @@ EO_weak extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+
+// -- inertial 
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_wholeitem)
+EO_weak extern void eoprot_fun_INIT_as_inertial_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_wholeitem)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config)
+EO_weak extern void eoprot_fun_INIT_as_inertial_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config_service)
+EO_weak extern void eoprot_fun_INIT_as_inertial_config_service(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config_service)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_config_service(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config_sensors)
+EO_weak extern void eoprot_fun_INIT_as_inertial_config_sensors(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config_sensors)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_config_sensors(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_status)
+EO_weak extern void eoprot_fun_INIT_as_inertial_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_status)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_cmmnds_enable)
+EO_weak extern void eoprot_fun_INIT_as_inertial_cmmnds_enable(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_cmmnds_enable)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
 // --------------------------------------------------------------------------------------------------------------------
