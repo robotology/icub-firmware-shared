@@ -581,6 +581,57 @@ extern eOresult_t eo_common_verifysafebaseobject(eOsafelyderived_t *derived, con
 extern size_t eo_common_msize(void *p);
 
 
+extern eObool_t eo_common_byte_bitcheck(uint8_t byte, uint8_t bit);
+
+extern void eo_common_byte_bitset(uint8_t* byte, uint8_t bit);
+
+extern void eo_common_byte_bitclear(uint8_t* byte, uint8_t bit);
+
+extern void eo_common_byte_bittoggle(uint8_t* byte, uint8_t bit);
+
+extern uint8_t eo_common_byte_bitsetcount(uint8_t byte);
+
+
+
+extern eObool_t eo_common_hlfword_bitcheck(uint16_t hword, uint8_t bit);
+
+extern eObool_t eo_common_hlfword_maskcheck(uint16_t hword, uint16_t mask);
+
+extern void eo_common_hlfword_bitset(uint16_t* hword, uint8_t bit);
+
+extern void eo_common_hlfword_maskset(uint16_t* hword, uint16_t mask);
+
+extern void eo_common_hlfword_bitclear(uint16_t* hword, uint8_t bit);
+
+extern void eo_common_hlfword_maskclear(uint16_t* hword, uint16_t mask);
+
+extern void eo_common_hlfword_bittoggle(uint16_t* hword, uint8_t bit);
+
+extern uint8_t eo_common_hlfword_bitsetcount(uint16_t hword);
+
+
+extern eObool_t eo_common_word_bitcheck(uint32_t word, uint8_t bit);
+
+extern void eo_common_word_bitset(uint32_t* word, uint8_t bit);
+
+extern void eo_common_word_bitclear(uint32_t* word, uint8_t bit);
+
+extern void eo_common_word_bittoggle(uint32_t* word, uint8_t bit);
+
+extern uint8_t eo_common_word_bitsetcount(uint32_t word);
+
+
+extern eObool_t eo_common_dword_bitcheck(uint64_t dword, uint8_t bit);
+
+extern void eo_common_dword_bitset(uint64_t* dword, uint8_t bit);
+
+extern void eo_common_dword_bitclear(uint64_t* dword, uint8_t bit);
+
+extern void eo_common_dword_bittoggle(uint64_t* dword, uint8_t bit);
+
+extern uint8_t eo_common_dword_bitsetcount(uint64_t dword);
+
+
 // - definition of extern public macros ------------------------------------------------------------------------------
 
 #define EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4)      ((eOipv4addr_t)EO_4BtoU32(ip1, ip2, ip3, ip4))

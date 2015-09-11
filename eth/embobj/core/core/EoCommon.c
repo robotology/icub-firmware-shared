@@ -136,50 +136,245 @@ extern size_t eo_common_msize(void *p)
 }
 
 
-//// used to manipulate an array
-//extern eOresult_t eo_common_array_reset(eOarray_t *array)
+
+extern eObool_t eo_common_byte_bitcheck(uint8_t byte, uint8_t bit)
+{
+    if(byte & (1<<bit))
+    {
+        return(eobool_true);
+    }
+    else
+    {
+        return(eobool_false);
+    }  
+}
+
+extern void eo_common_byte_bitset(uint8_t* byte, uint8_t bit)
+{
+    (*byte) |= (1<<bit);    
+}
+
+extern void eo_common_byte_bitclear(uint8_t* byte, uint8_t bit)
+{
+    (*byte) &= (~(1<<bit));    
+}
+
+extern void eo_common_byte_bittoggle(uint8_t* byte, uint8_t bit)
+{
+    (*byte) ^= (1<<bit);    
+}
+
+
+extern eObool_t eo_common_hlfword_bitcheck(uint16_t hword, uint8_t bit)
+{
+    if(hword & (1<<bit))
+    {
+        return(eobool_true);
+    }
+    else
+    {
+        return(eobool_false);
+    }
+}
+
+extern eObool_t eo_common_hlfword_maskcheck(uint16_t hword, uint16_t mask)
+{
+    if(hword & mask)
+    {
+        return(eobool_true);
+    }
+    else
+    {
+        return(eobool_false);
+    }
+}
+
+extern void eo_common_hlfword_bitset(uint16_t* hword, uint8_t bit)
+{
+    (*hword) |= (1<<bit);    
+}
+
+extern void eo_common_hlfword_maskset(uint16_t* hword, uint16_t mask)
+{
+    (*hword) |= (mask);    
+}
+
+extern void eo_common_hlfword_bitclear(uint16_t* hword, uint8_t bit)
+{
+    (*hword) &= (~(1<<bit));    
+}
+
+extern void eo_common_hlfword_maskclear(uint16_t* hword, uint16_t mask)
+{
+    (*hword) &= (~(mask));    
+}
+
+extern void eo_common_hlfword_bittoggle(uint16_t* hword, uint8_t bit)
+{
+    (*hword) ^= (1<<bit);    
+}
+
+
+
+extern eObool_t eo_common_word_bitcheck(uint32_t word, uint8_t bit)
+{
+    if(word & (1<<bit))
+    {
+        return(eobool_true);
+    }
+    else
+    {
+        return(eobool_false);
+    }
+}
+
+
+extern void eo_common_word_bitset(uint32_t* word, uint8_t bit)
+{
+    (*word) |= (1<<bit);    
+}
+
+extern void eo_common_word_bitclear(uint32_t* word, uint8_t bit)
+{
+    (*word) &= (~(1<<bit));    
+}
+
+extern void eo_common_word_bittoggle(uint32_t* word, uint8_t bit)
+{
+    (*word) ^= (1<<bit);    
+}
+
+
+extern eObool_t eo_common_dword_bitcheck(uint64_t dword, uint8_t bit)
+{
+    if(dword & (1<<bit))
+    {
+        return(eobool_true);
+    }
+    else
+    {
+        return(eobool_false);
+    }
+}
+
+
+extern void eo_common_dword_bitset(uint64_t* dword, uint8_t bit)
+{
+    (*dword) |= (1<<bit);    
+}
+
+extern void eo_common_dword_bitclear(uint64_t* dword, uint8_t bit)
+{
+    (*dword) &= (~(1<<bit));    
+}
+
+extern void eo_common_dword_bittoggle(uint64_t* dword, uint8_t bit)
+{
+    (*dword) ^= (1<<bit);    
+}
+
+// see http://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
+static const uint8_t s_eocommon_oneBitsInU8[256] = 
+{
+//  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F (<- n)
+//  =====================================================
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, // 0n
+    
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, // 1n (+1)
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, // 2n (+1)
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, // 3n (+2)    
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, // 4n (+1)
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, // 3n (+2)
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, // 6n (+2)
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, // 7n (+3)
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, // 8n (+1)
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, // 9n (+2)
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, // An (+2)
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, // Bn (+3)
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, // Cn (+2)
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, // Dn (+3)
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, // En (+3)  
+    4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8  // Fn (+4)
+};
+
+extern uint8_t eo_common_byte_bitsetcount(uint8_t byte)
+{
+    return(s_eocommon_oneBitsInU8[byte & 0xff]);
+}
+
+extern uint8_t eo_common_hlfword_bitsetcount(uint16_t hword)
+{
+    return(eo_common_byte_bitsetcount(hword&0xff)+eo_common_byte_bitsetcount((hword>>8)&0xff));
+}
+
+extern uint8_t eo_common_word_bitsetcount(uint32_t word)
+{
+    return(eo_common_hlfword_bitsetcount(word&0xffff) + eo_common_hlfword_bitsetcount((word>>16)&0xffff));
+}
+
+extern uint8_t eo_common_dword_bitsetcount(uint64_t dword)
+{
+    return(eo_common_word_bitsetcount(dword&0xffffffff) + eo_common_word_bitsetcount((dword>>32)&0xffffffff));
+}
+
+
+//extern eObool_t eo_common_test_bitsetcount(void)
 //{
-//    if(NULL == array)
+//    uint32_t i = 0;
+//    
+//    for(i=0; i<777777; i++)
 //    {
-//        return(eores_NOK_nullpointer);
+//        uint8_t count8 = 0;
+//        uint8_t count16 = 0;
+//        uint8_t count32 = 0;
+//        
+//        uint8_t t8 = i & 0xff;
+//        uint16_t t16 = i & 0xffff;
+//        uint32_t t32 = i;
+//        
+//        
+//        uint8_t j=0;
+//        for(j=0; j<8; j++)
+//        {
+//            if(eo_common_byte_bitcheck(t8, j))
+//            {
+//                count8 ++;
+//            }
+//        }
+//        for(j=0; j<16; j++)
+//        {
+//            if(eo_common_hlfword_bitcheck(t16, j))
+//            {
+//                count16 ++;
+//            }
+//        } 
+//        for(j=0; j<32; j++)
+//        {
+//            if(eo_common_word_bitcheck(t32, j))
+//            {
+//                count32 ++;
+//            }
+//        } 
+//        
+//        if(count8 != eo_common_byte_bitsetcount(t8))
+//        {
+//            return(eobool_false);
+//        }
+//        
+//        if(count16 != eo_common_hlfword_bitsetcount(t16))
+//        {
+//            return(eobool_false);
+//        }        
+//        if(count32 != eo_common_word_bitsetcount(t32))
+//        {
+//            return(eobool_false);
+//        }         
 //    }
-//
-//    memset(array->data, 0, array->capacity);
-//    array->size = 0;
-//
-//    return(eores_OK);
+//    
+//    
+//    return(eobool_true);
 //}
-//
-//// used to manipulate an array
-//extern eOresult_t eo_common_array_puskback(eOarray_t *array, const void *data, const uint16_t size)
-//{
-//    if((NULL == array) || (NULL == data))
-//    {
-//        return(eores_NOK_nullpointer);
-//    }
-//
-//    if(array->size + size > array->capacity)
-//    {
-//         return(eores_NOK_generic);
-//    }
-//
-//    memcpy(&array->data[array->size], data, size);
-//    array->size += size;
-//
-//    return(eores_OK);
-//}
-//
-//extern void* eo_common_array_get_sizedata(eOarray_t *array, uint16_t *size)
-//{
-//    if(NULL == array)
-//    {
-//        return(NULL);
-//    }
-//
-//    *size = array->size;
-//
-//    return(&(array->size));
-//}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
