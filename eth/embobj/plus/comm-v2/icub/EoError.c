@@ -79,7 +79,8 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
     eoerror_value_HW_numberof,
     eoerror_value_MC_numberof,
     eoerror_value_SK_numberof,
-    eoerror_value_DEB_numberof
+    eoerror_value_DEB_numberof,
+    eoerror_value_CFG_numberof
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -209,14 +210,23 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
 };  EO_VERIFYsizeof(eoerror_valuestrings_DEB, eoerror_value_DEB_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
-const eoerror_valuestring_t * const eoerror_valuestrings[] =
+const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
+{   // very important: fill table with order of eOerror_value_CFG_t
+    //                 in case of holes, use {0, NULL}
+    {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x00ff. In p64: mask of missing addresses in 0x000000000000ffff"},
+    {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x00ff. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"}
+};  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t)); 
+
+
+const eoerror_valuestring_t * const eoerror_valuestrings[] = 
 {   // very important: fill table with order of eOerror_category_t: pos 0 is eoerror_category_EthBoardSystem etc.
     //                 in case of holes use: NULL,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_SYS,   
     (const eoerror_valuestring_t *)&eoerror_valuestrings_HW,        
     (const eoerror_valuestring_t *)&eoerror_valuestrings_MC,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_SK,
-    (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB,
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_CFG
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
 
 
