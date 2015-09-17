@@ -258,11 +258,13 @@ enum { eoerror_value_DEB_numberof = 11 };
  **/
 typedef enum
 {
-    eoerror_value_CFG_candiscovery_boardsmissing   = 0,
-    eoerror_value_CFG_candiscovery_boardsinvalid   = 1
+    eoerror_value_CFG_candiscovery_boardsmissing        = 0,
+    eoerror_value_CFG_candiscovery_boardsinvalid        = 1,
+    eoerror_value_CFG_candiscovery_ok                   = 2,
+    eoerror_value_CFG_candiscovery_detectedboard        = 3
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 2 };
+enum { eoerror_value_CFG_numberof = 4 };
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
