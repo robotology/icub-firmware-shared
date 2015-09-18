@@ -240,6 +240,8 @@ typedef enum
     eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change
     eomc_calibration_type4_abs_and_incremental      = 4,    // cannot change
     eomc_calibration_type5_hard_stops_mc4plus       = 5,    // cannot change
+    eomc_calibration_type6_mais_mc4plus             = 6,    // cannot change /* NAME still to be defined */
+    eomc_calibration_type5_hall_sensor_mc4plus      = 7,    // cannot change /* NAME still to be defined */
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
@@ -669,9 +671,8 @@ typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
     eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
     eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
     uint8_t                     rotorEncoderType;           /**< rotor encoder type */
-    uint8_t                     filler03;                   /**< reserved */
-    uint8_t                     filler04;                   /**< reserved */
-} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 68);
+    eOmeas_position_limits_t    limitsofrotor;              /**< rotor limits */
+} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 76);
 
 
 /** @typedef    typedef struct eOmc_motor_status_t
@@ -700,11 +701,11 @@ typedef struct                  // size is: 16+4+0 = 16
 
 
 
-typedef struct                  // size is 56+20+0 = 76
+typedef struct                  // size is 76+20+0 = 76
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 88); 
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 96); 
  
 
 // -- the definition of a controller containing a given number of joints and motors  
