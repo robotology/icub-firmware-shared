@@ -240,8 +240,8 @@ typedef enum
     eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change
     eomc_calibration_type4_abs_and_incremental      = 4,    // cannot change
     eomc_calibration_type5_hard_stops_mc4plus       = 5,    // cannot change
-    eomc_calibration_type6_mais_mc4plus             = 6,    // cannot change /* NAME still to be defined */
-    eomc_calibration_type5_hall_sensor_mc4plus      = 7,    // cannot change /* NAME still to be defined */
+    eomc_calibration_type6_mais_mc4plus             = 6,    // cannot change /* final NAME still to be defined */
+    eomc_calibration_type7_hall_sensor_mc4plus      = 7,    // cannot change /* final NAME still to be defined */
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
