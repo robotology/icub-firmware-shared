@@ -68,10 +68,11 @@ typedef enum
 {
     eomn_entity_comm                        = 0,
     eomn_entity_appl                        = 1,
-    eomn_entity_info                        = 2
+    eomn_entity_info                        = 2,
+    eomn_entity_service                     = 3
 } eOmn_entity_t; 
 
-enum { eomn_entities_numberof = 3 };
+enum { eomn_entities_numberof = 4 };
 
 // -- all the possible enum
 
@@ -1029,8 +1030,49 @@ typedef struct
 // - eomn_serv_item_mc_encoder_*
 //   we use itemdes.item.motion.encoder.[amo, aea, inc] to keep the hal port of the encoder to use
 
+typedef enum 
+{
+    eomn_serv_command_deactivate    = 0,        // it deactivates    
+    eomn_serv_command_activate      = 1,        // it activate with the given config, but does not force activation if already active
+    eomn_serv_command_reactivate    = 2         // it deactivates if active and then activates   
+} eOmn_service_command_t;
+
+typedef struct
+{
+    uint8_t                         command;               // use eOmn_service_command_t
+    uint8_t                         filler[3];
+    eOmn_serv_configuration_t       config;  
+} eOmn_service_cmmnds_command_t;    EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 32);
+
+typedef struct
+{
+    eOmn_service_cmmnds_command_t   command;    
+} eOmn_service_cmmnds_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_t, 32);
 
 
+typedef struct
+{
+    eObool_t                        latestcommandisok;
+    uint8_t                         command;                // use eOmn_service_command_t
+    uint8_t                         type;                   // use eOmn_serv_type_t
+    uint8_t                         filler[1];
+    uint8_t                         data[28];               // it may keep some params (e.g., the fullscale of strain).
+} eOmn_service_command_result_t;
+
+typedef struct
+{  
+    eOmn_service_command_result_t   commandresult;
+} eOmn_service_status_t;            EO_VERIFYsizeof(eOmn_service_status_t, 32); 
+
+
+/** @typedef    typedef struct eOmn_info_t;
+    @brief      used to represent the info with config, status
+ **/
+typedef struct                      // size is 8+32 = 40 bytes
+{    
+    eOmn_service_status_t           status;
+    eOmn_service_cmmnds_t           cmmnds;
+} eOmn_service_t;                   EO_VERIFYsizeof(eOmn_service_t, 64);  
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

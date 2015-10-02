@@ -245,6 +245,33 @@ EO_weak extern void eoprot_fun_INIT_mn_info_status_basic(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mn_info_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
+    
+// -- service
+    
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_service_wholeitem)
+EO_weak extern void eoprot_fun_INIT_mn_service_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_service_wholeitem)
+EO_weak extern void eoprot_fun_UPDT_mn_service_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+    
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_service_status_commandresult)
+EO_weak extern void eoprot_fun_INIT_mn_service_status_commandresult(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_service_status_commandresult)
+EO_weak extern void eoprot_fun_UPDT_mn_service_status_commandresult(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif  
+    
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_service_cmmnds_command)
+EO_weak extern void eoprot_fun_INIT_mn_service_cmmnds_command(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_service_cmmnds_command)
+EO_weak extern void eoprot_fun_UPDT_mn_service_cmmnds_command(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif 
+    
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
