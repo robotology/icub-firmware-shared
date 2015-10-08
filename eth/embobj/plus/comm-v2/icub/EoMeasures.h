@@ -48,9 +48,13 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
+#define EOMEAS_1DEG_IDG (182.0444444444444f)
+#define EOMEAS_1IDG_DEG (0.0054931640625f)
 
+#define EOMEAS_DEG2IDG(deg)     ((float)(deg)*EOMEAS_1DEG_IDG)
 
-
+#define EOMEAS_IDG2DEG(idg)     ((float)(idg)*EOMEAS_1IDG_DEG)
+    
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
