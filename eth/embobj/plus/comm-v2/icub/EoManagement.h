@@ -535,7 +535,7 @@ typedef enum
 
 typedef struct
 {
-    eOmn_serv_canboardversion_t         versionofmais;
+    eOmn_serv_canboardversion_t         version;
     eOmn_serv_canlocation_t             canloc;
 } eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 5);
 
@@ -543,7 +543,7 @@ typedef struct
 
 typedef struct
 {
-    eOmn_serv_canboardversion_t         versionofstrain;
+    eOmn_serv_canboardversion_t         version;
     eOmn_serv_canlocation_t             canloc;
 } eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 5);
 
@@ -551,7 +551,7 @@ typedef struct
 
 typedef struct
 { 
-    eOmn_serv_canboardversion_t         versionofmtb;
+    eOmn_serv_canboardversion_t         version;
     uint16_t                            canmap[eOcanports_number]; 
 } eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 8);
 
@@ -569,7 +569,7 @@ typedef union
 #define maxskins 2
 typedef struct
 {
-    eOmn_serv_canboardversion_t         versionofmtb;
+    eOmn_serv_canboardversion_t         version;
     uint8_t                             numofskins;
     uint8_t                             filler[3];    
     uint16_t                            canmapskin[maxskins][2]; 
@@ -647,7 +647,7 @@ typedef struct
 {    
     uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
     uint8_t                                 filler[3];    
-    eOmn_serv_canboardversion_t             versionoffoc;
+    eOmn_serv_canboardversion_t             version;
     eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;           
 } eOmn_serv_config_data_mc_foc_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 24);
 
@@ -660,15 +660,23 @@ typedef struct
     uint8_t         estimMotorAcceleration  : 4;    
 } eOmn_serv_config_data_mc_mc4shifts_t;     EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4shifts_t, 3);
 
+//typedef struct
+//{
+//    eOmn_serv_canboardversion_t             versionofmc4; 
+//    eOmn_serv_canboardversion_t             versionofmais;
+//    eOmn_serv_canlocation_t                 mc4joints[12];    
+//    eOmn_serv_canlocation_t                 maislocation;
+//    eOmn_serv_config_data_mc_mc4shifts_t    shifts;                 
+//} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 24);
+
+
 typedef struct
 {
-    eOmn_serv_canboardversion_t             versionofmc4; 
-    eOmn_serv_canboardversion_t             versionofmais;
+    eOmn_serv_canboardversion_t             mc4version; 
+    eOmn_serv_config_data_mc_mc4shifts_t    mc4shifts; 
     eOmn_serv_canlocation_t                 mc4joints[12];    
-    eOmn_serv_canlocation_t                 maislocation;
-    eOmn_serv_config_data_mc_mc4shifts_t    shifts;                 
+    eOmn_serv_config_data_as_mais_t         mais;                    
 } eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 24);
-
 
 
 typedef struct
@@ -681,7 +689,7 @@ typedef struct
 
 typedef struct
 { 
-    eOmn_serv_canboardversion_t             versionofmais;
+    eOmn_serv_canboardversion_t             maisversion;
     eOmn_serv_canlocation_t                 maislocation;
     uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
     uint8_t                                 filler[2];
@@ -714,7 +722,7 @@ typedef struct
 {
     uint8_t                             type;           // use eOmn_serv_type_t to identify what kind of service it is
     uint8_t                             filler[3];
-    eOmn_serv_config_data_t         data;   
+    eOmn_serv_config_data_t             data;   
 } eOmn_serv_configuration_t;            EO_VERIFYsizeof(eOmn_serv_configuration_t, 28); 
 
 // use eOemscontroller_board_t and variable mccontrollerboardtype
