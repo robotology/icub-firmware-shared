@@ -585,7 +585,7 @@ const char ** const eoprot_mn_strings_tags[] =
     (const char**)&s_eoprot_mn_strings_tags_comm,   
     (const char**)&s_eoprot_mn_strings_tags_appl,
     (const char**)&s_eoprot_mn_strings_tags_info,
-    (const char**)&s_eoprot_mn_strings_tags_info    
+    (const char**)&s_eoprot_mn_strings_tags_service    
 };  EO_VERIFYsizeof(eoprot_mn_strings_tags, eoprot_entities_mn_numberof*sizeof(const char**)); 
 
 
