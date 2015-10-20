@@ -197,7 +197,9 @@ const eoerror_valuestring_t eoerror_valuestrings_SK[] =
     {eoerror_value_SYS_unspecified,             "SK: unspecified code."},
     {eoerror_value_SK_arrayofcandataoverflow,   "SK: cannot put rx can frames into arrayofcandata, thus some skin readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
     {eoerror_value_SK_onoroff,                  "SK: the skin transmission has been switched on or off. In par16 there's the corresponding code (0: OFF, 1: ON)"},
-    {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. In par16 there's the actual state of the EMS board (0: CFG, 1: RUN)"}
+    {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. In par16 there's the actual state of the EMS board (0: CFG, 1: RUN)"},
+    {eoerror_value_SK_obsoletecommand,          "SK: the board has received an obsolete command of type eosk_sigmode_signal_oldway. use eosk_sigmode_signal instead."},
+    {eoerror_value_SK_arrayofinertialdataoverflow, "SK: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SK, eoerror_value_SK_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
@@ -221,11 +223,31 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
 const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 {   // very important: fill table with order of eOerror_value_CFG_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x00ff. In p64: search time [ms] in 0xffff000000000000, mask of missing addresses in 0x000000000000ffff"},
-    {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x00ff. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"},
-    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: target board type in 0xff00,  number of boards in 0x00ff. In p64: search time [ms] in 0xffff000000000000, req prot in 0x00000000ffff0000, req fw in 0x000000000000ffff,"},
-    {eoerror_value_CFG_candiscovery_detectedboard, "CFG: CANdiscovery has detected this board. In p16: board type in 0xff00, board address in 0x000f. In p64: search time [ms] in 0xffff000000000000, prot in 0x00000000ffff0000, fw in 0x000000000000ffff."}
-};  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t)); 
+    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: target board type in 0xff00,  number of boards in 0x000f. In p64: search time [ms] in 0xffff000000000000, req prot in 0x00000000ffff0000, req fw in 0x000000000000ffff,"},
+    {eoerror_value_CFG_candiscovery_detectedboard, "CFG: CANdiscovery has detected this board. In p16: board type in 0xff00, board address in 0x000f. In p64: search time [ms] in 0xffff000000000000, prot in 0x00000000ffff0000, fw in 0x000000000000ffff."},       
+    {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x000f. In p64: search time [ms] in 0xffff000000000000, mask of missing addresses in 0x000000000000ffff"},
+    {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x000f. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"},
+    {eoerror_value_CFG_skin_ok, "CFG: EOtheSKIN can be correctly configured. num of patches in p16, can mapping in p64 upper 32 bits, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_skin_failed_toomanyboards, "CFG: EOtheSKIN cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
+    {eoerror_value_CFG_skin_failed_candiscovery, "CFG: EOtheSKIN cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_strain_ok, "CFG: EOtheSTRAIN can be correctly configured. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_strain_failed_candiscovery, "CFG: EOtheSTRAIN cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_mais_ok, "CFG: EOtheMAIS can be correctly configured. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_mais_failed_candiscovery, "CFG: EOtheMAIS cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_mc_foc_ok, "CFG: EOtheMotionController can correctly configure 2foc-based motion. more info will follow"},
+    {eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc, "CFG: EOtheMotionController cannot be configured. can discovery of 2foc boards fails. see CANdiscovery messages for more details"},
+    {eoerror_value_CFG_mc_foc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoders fails. see other messages for more details"},    
+    {eoerror_value_CFG_mc_mc4_ok, "CFG: EOtheMotionController can correctly configure mc4-based motion. more info will follow"},
+    {eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4, "CFG: EOtheMotionController cannot be configured. can discovery of mc4 boards fails. see CANdiscovery messages for more details"},
+    {eoerror_value_CFG_mc_mc4_failed_mais_verify, "CFG: EOtheMotionController cannot be configured. verification of mais fails. see other messages for more details"},
+    {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured. in p16 the number of joints (lsb) and encoders (msb), in p64 the error status of verification reading"},
+    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured. verification fails. in p16 the number of joints (lsb) and encoders (msb), in p64 the error status of verification reading"},        
+    {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
+    {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
+    {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop. tbd"}
+
+};  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
 
 
 const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =

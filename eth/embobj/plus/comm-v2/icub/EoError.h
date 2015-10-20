@@ -231,10 +231,11 @@ typedef enum
     eoerror_value_SK_unspecified                    = 0,
     eoerror_value_SK_arrayofcandataoverflow         = 1,
     eoerror_value_SK_onoroff                        = 2,
-    eoerror_value_SK_unexpecteddata                 = 3
+    eoerror_value_SK_unexpecteddata                 = 3,
+    eoerror_value_SK_obsoletecommand                = 4
 } eOerror_value_SK_t;
 
-enum { eoerror_value_SK_numberof = 4 };
+enum { eoerror_value_SK_numberof = 5 };
 
 
 
@@ -264,13 +265,44 @@ enum { eoerror_value_DEB_numberof = 11 };
  **/
 typedef enum
 {
-    eoerror_value_CFG_candiscovery_boardsmissing        = 0,
-    eoerror_value_CFG_candiscovery_boardsinvalid        = 1,
-    eoerror_value_CFG_candiscovery_ok                   = 2,
-    eoerror_value_CFG_candiscovery_detectedboard        = 3
+    eoerror_value_CFG_candiscovery_ok                   = 0,
+    eoerror_value_CFG_candiscovery_detectedboard        = 1,
+    eoerror_value_CFG_candiscovery_boardsmissing        = 2,
+    eoerror_value_CFG_candiscovery_boardsinvalid        = 3,
+
+    
+    eoerror_value_CFG_skin_ok                           = 4,
+    eoerror_value_CFG_skin_failed_toomanyboards         = 5,
+    eoerror_value_CFG_skin_failed_candiscovery          = 6,
+    
+    eoerror_value_CFG_strain_ok                         = 7,
+    eoerror_value_CFG_strain_failed_candiscovery        = 8,
+    
+    eoerror_value_CFG_mais_ok                           = 9,
+    eoerror_value_CFG_mais_failed_candiscovery          = 10,
+    
+    eoerror_value_CFG_mc_foc_ok                         = 11,
+    eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc = 12,
+    eoerror_value_CFG_mc_foc_failed_encoders_verify     = 13,
+    
+    
+    eoerror_value_CFG_mc_mc4_ok                         = 14,
+    eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4 = 15,
+    eoerror_value_CFG_mc_mc4_failed_mais_verify         = 16,
+    
+    
+    eoerror_value_CFG_encoders_ok                       = 17,
+    eoerror_value_CFG_encoders_failed_verify            = 18,
+    
+    eoerror_value_CFG_inertial_ok                       = 19,
+    eoerror_value_CFG_inertial_failed_toomanyboards     = 20,
+    eoerror_value_CFG_inertial_failed_candiscovery      = 21,
+    
+    eoerror_value_CFG_comm_cannotloadaregularrop        = 22
+    
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 4 };
+enum { eoerror_value_CFG_numberof = 23 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
