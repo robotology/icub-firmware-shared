@@ -566,19 +566,20 @@ typedef union
 
 
 
-#define maxskins 2
+enum { eomn_serv_skin_maxpatches = 4 };
+
 typedef struct
 {
     eOmn_serv_canboardversion_t         version;
-    uint8_t                             numofskins;
+    uint8_t                             numofpatches;
     uint8_t                             filler[3];    
-    uint16_t                            canmapskin[maxskins][2]; 
-} eOmn_serv_config_data_sk_skin_t;  EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 16);
+    uint16_t                            canmapskin[eomn_serv_skin_maxpatches][2]; 
+} eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24);
 
 typedef union
 {
     eOmn_serv_config_data_sk_skin_t     skin;
-} eOmn_serv_config_data_sk_t;       EO_VERIFYsizeof(eOmn_serv_config_data_sk_t, 16); 
+} eOmn_serv_config_data_sk_t;           EO_VERIFYsizeof(eOmn_serv_config_data_sk_t, 24); 
 
 
 
@@ -681,10 +682,10 @@ typedef struct
 
 typedef struct
 { 
-    uint8_t                             boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
-    uint8_t                             filler[3];
-   eOmn_serv_arrayof_4jomodescriptors_t arrayofjomodescriptors;         
-} eOmn_serv_config_data_mc_mc4plus_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 20);
+    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+    uint8_t                                 filler[3];
+   eOmn_serv_arrayof_4jomodescriptors_t     arrayofjomodescriptors;         
+} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 20);
 
 
 typedef struct
