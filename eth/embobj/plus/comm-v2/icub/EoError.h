@@ -232,10 +232,11 @@ typedef enum
     eoerror_value_SK_arrayofcandataoverflow         = 1,
     eoerror_value_SK_onoroff                        = 2,
     eoerror_value_SK_unexpecteddata                 = 3,
-    eoerror_value_SK_obsoletecommand                = 4
+    eoerror_value_SK_obsoletecommand                = 4,
+    eoerror_value_SK_arrayofinertialdataoverflow    = 5
 } eOerror_value_SK_t;
 
-enum { eoerror_value_SK_numberof = 5 };
+enum { eoerror_value_SK_numberof = 6 };
 
 
 
@@ -294,9 +295,9 @@ typedef enum
     eoerror_value_CFG_encoders_ok                       = 17,
     eoerror_value_CFG_encoders_failed_verify            = 18,
     
-    eoerror_value_CFG_inertial_ok                       = 19,
-    eoerror_value_CFG_inertial_failed_toomanyboards     = 20,
-    eoerror_value_CFG_inertial_failed_candiscovery      = 21,
+    eoerror_value_CFG_inertials_ok                      = 19,
+    eoerror_value_CFG_inertials_failed_toomanyboards    = 20,
+    eoerror_value_CFG_inertials_failed_candiscovery     = 21,
     
     eoerror_value_CFG_comm_cannotloadaregularrop        = 22
     
