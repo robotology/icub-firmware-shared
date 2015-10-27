@@ -414,7 +414,7 @@ extern eOresult_t eoprot_config_proxied_variables(eOprotBRD_t brd, eOprotEndpoin
         return(eores_NOK_generic);
     }
     
-    if((NULL == data) || (NULL == isvarproxied_fn))
+    if(NULL == data)
     {
         return(eores_NOK_generic);
     }
