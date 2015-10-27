@@ -531,8 +531,6 @@ typedef enum
 
 
 
-
-
 typedef struct
 {
     eOmn_serv_canboardversion_t         version;
@@ -573,7 +571,7 @@ typedef struct
     eOmn_serv_canboardversion_t         version;
     uint8_t                             numofpatches;
     uint8_t                             filler[3];    
-    uint16_t                            canmapskin[eomn_serv_skin_maxpatches][2]; 
+    uint16_t                            canmapskin[eomn_serv_skin_maxpatches][eOcanports_number]; 
 } eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24);
 
 typedef union
