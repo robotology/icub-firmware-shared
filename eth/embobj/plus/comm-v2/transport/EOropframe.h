@@ -95,6 +95,8 @@ extern eOresult_t eo_ropframe_Get(EOropframe *p, uint8_t **framedata, uint16_t* 
 
 extern eOresult_t eo_ropframe_Size_Get(EOropframe *p, uint16_t* framesize);
 
+extern uint16_t eo_ropframe_capacity2effectivecapacity(uint16_t capacity);
+
 extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* effectivecapacity);
 
 extern eOresult_t eo_ropframe_Clear(EOropframe *p);
@@ -110,6 +112,9 @@ extern uint16_t eo_ropframe_ROP_NumberOf_quickversion(EOropframe *p);
 
 
 extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unparsedbytes);
+
+
+//extern eObool_t eo_ropframe_ROP_CanAdd(EOropframe *p, const EOrop *rop);
 
 extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t* addedinpos, uint16_t* consumedbytes, uint16_t *remainingbytes);
 

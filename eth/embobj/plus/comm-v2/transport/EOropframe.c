@@ -213,6 +213,15 @@ extern eOresult_t eo_ropframe_Size_Get(EOropframe *p, uint16_t* framesize)
     return(eores_OK);
 }
 
+extern uint16_t eo_ropframe_capacity2effectivecapacity(uint16_t capacity)
+{
+    if(capacity > eo_ropframe_sizeforZEROrops)
+    {
+        return(capacity - eo_ropframe_sizeforZEROrops);
+    }
+    return(0);   
+}
+
 extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* effectivecapacity)
 {
     if((NULL == p) || (NULL == effectivecapacity)) 
@@ -220,15 +229,8 @@ extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* eff
         return(eores_NOK_nullpointer);
     }
 
-    if(p->capacity > eo_ropframe_sizeforZEROrops)
-    {
-        *effectivecapacity = p->capacity - eo_ropframe_sizeforZEROrops;
-    }
-    else
-    {
-        *effectivecapacity = 0;
-    }
-    
+    *effectivecapacity = eo_ropframe_capacity2effectivecapacity(p->capacity);
+
     return(eores_OK);
 }
 
@@ -433,6 +435,40 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
 
     return(res);
 }
+
+//extern eObool_t eo_ropframe_ROP_CanAdd(EOropframe *p, const EOrop *rop)
+//{
+//    uint8_t* ropstream = NULL;
+//    int32_t remaining = 0;
+//    uint16_t streamsize = 0;
+//    uint16_t streamindex = 0;
+//    eOresult_t res = eores_NOK_generic;
+//    
+//    if((NULL == p) || (NULL == p->framedata) || (NULL == rop)) 
+//    {
+//        return(eobool_false);
+//    }
+//     
+//    // verify that the rop is valid
+//    if(eobool_false == eo_rop_IsValid((EOrop*)rop))
+//    {
+//        return(eobool_false);
+//    }
+//    
+//    // verify that we have bytes enough to convert the rop to stream 
+//    
+//    streamsize = eo_rop_GetSize((EOrop*)rop);
+//    // remaining can be also negative. for example when capacity is eo_ropframe_sizeforZEROrops+1 (thus only one byte for rops) and the target rop requires 8 bytes.
+//    // we have eo_ropframe_sizeforZEROrops+1 - eo_ropframe_sizeforZEROrops - 8 = -7 ...
+//    remaining = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
+//    if(remaining < ((int32_t)streamsize))
+//    {   // not enough space in ...
+//        return(eobool_false);
+//    } 
+
+//    return(eobool_true);        
+//}
+
 
 extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t* addedinpos, uint16_t* consumedbytes, uint16_t *remainingbytes)
 {    
