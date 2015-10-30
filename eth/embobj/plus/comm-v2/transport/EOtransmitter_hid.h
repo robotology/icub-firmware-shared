@@ -56,16 +56,24 @@ extern "C" {
 
 // - definition of the hidden struct implementing the object ----------------------------------------------------------
 
+typedef enum
+{
+    eo_transm_regropframe_standard  = 0,
+    eo_transm_regropframe_cycle0of  = 1,
+    eo_transm_regropframe_cycle1of  = 2
+} eo_transm_regropframe_t;
 
-typedef struct      // 32 bytes on arm .... 
+typedef struct      // 40 bytes on arm .... 
 {
     eOropcode_t     ropcode;
-    eObool_t        hasdata2update;       
+    uint8_t         hasdata2update  : 1;    // use eobool_true / eobool_false
+    uint8_t         regropframetype : 7;    // use values from eo_transm_regropframe_t         
     uint16_t        ropstarthere;           // the index where the rop starts inside teh ropframe. if data is available, then it is placed at ropstarthere+8
     uint16_t        ropsize;
     uint16_t        timeoffsetinsiderop;    // if time is not present its value is 0xffff 
     EOnv            thenv;
-} eo_transm_regrop_info_t;  // EO_VERIFYsizeof(eo_transm_regrop_info_t, (8+24));
+    EOropframe*     ropframe;
+} eo_transm_regrop_info_t;   EO_VERIFYsizeof(eo_transm_regrop_info_t, (8+28+4));
 
 
 typedef struct
@@ -84,7 +92,9 @@ struct EOtransmitter_hid
 {
     EOpacket*                   txpacket;
     EOropframe*                 ropframereadytotx;
-    EOropframe*                 ropframeregulars;
+    EOropframe*                 ropframeregulars_standard;
+    EOropframe*                 ropframeregulars_cycle0of;  
+    EOropframe*                 ropframeregulars_cycle1of;  
     EOropframe*                 ropframeoccasionals;    
     EOropframe*                 ropframereplies;
     EOrop*                      roptmp;
@@ -93,7 +103,9 @@ struct EOtransmitter_hid
     EOconfirmationManager*      confmanager;
     eOipv4addr_t                ipv4addr;
     eOipv4port_t                ipv4port;
-    uint8_t*                    bufferropframeregulars;
+    uint8_t*                    bufferropframeregulars_standard;
+    uint8_t*                    bufferropframeregulars_cycle0of;
+    uint8_t*                    bufferropframeregulars_cycle1of;
     uint8_t*                    bufferropframeoccasionals;
     uint8_t*                    bufferropframereplies;
     EOlist*                     listofregropinfo; 
@@ -114,6 +126,12 @@ struct EOtransmitter_hid
     uint8_t                     txdecimationreplies;
     uint8_t                     txdecimationregulars;
     uint8_t                     txdecimationoccasionals;
+    uint16_t                    totalsizeofregulars_standard;
+    uint16_t                    totalsizeofregulars_cycle0of;
+    uint16_t                    totalsizeofregulars_cycle1of;
+    uint16_t                    maxsizeofregulars;
+    uint16_t                    effectivecapacityofregulars;
+    uint64_t                    txregularsprogressive;
 }; 
 
 

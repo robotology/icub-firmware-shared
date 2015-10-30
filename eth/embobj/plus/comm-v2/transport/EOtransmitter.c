@@ -93,6 +93,19 @@ static void s_eo_transmitter_list_shiftdownropinfo(void *item, void *param);
 
 static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc, EOropframe* intoropframe, EOVmutexDerived *mtx);
 
+static EOropframe * s_eo_transmitter_id32_to_typeofregulars(EOtransmitter* p, eOprotID32_t id32, eo_transm_regropframe_t *ropframetype);
+
+static EOropframe * s_eo_transmitter_get_cycled_regropframe(EOtransmitter* p, uint16_t *ropsinside);
+
+
+static uint16_t s_eo_transmitter_get_maxsizeof_regularsropframe(EOtransmitter *p);
+
+static eObool_t s_eo_transmitter_regulars_canadd_rop(EOtransmitter *p, eo_transm_regropframe_t type, uint16_t ropbytes);
+
+static void s_eo_transmitter_regulars_reset_sizes(EOtransmitter *p);
+
+static void s_eo_transmitter_regulars_update_sizes(EOtransmitter *p, eo_transm_regropframe_t type, int16_t ropbytes);
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
@@ -123,6 +136,23 @@ const eOtransmitter_cfg_t eo_transmitter_cfg_default =
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
+
+// marco.accame on 30oct15: see following comment about how many bytes in regulars
+// we can tx at most p->effectivecapacityofregulars = (cfg->sizes.capacityofropframeregulars-28) bytes in regulars inside the ropframe to tx.
+// when we form the regulars they can be:
+// a. the _standard only,         [when for instance we dont have motion control as in boards with skin only]
+// b. the _cycle0of only,         [if we launch only motion control device]
+// c. the _cycle1of only,         [if we launch only motion control for left/right hand].
+// d. the concatenation of _standard and _cycle0of,    [in most cases when motion control device is launched together with another device] 
+// e. the concatenation of _standard and _cycle1of.    [for left/rigth hand motion control plus another device (skin or mais)].
+// thus, how do we verify that we can accept a regular rop? in two ways:
+// 1. we check that their number is lower than cfg->sizes.maxnumberofregularrops (which is the capacity of list listofregropinfo),
+// 2. we must check that the totalsize of bytes used by the regulars in any combination a, .., e is lower than effectivecapacityofregulars = (capacityofropframeregulars-28)
+//    the total max size is thus ... sizeof_standard + max(sizeof_cycle0of, sizeof_cycle1of). and i must keep updated these three sizes.
+// moreover, i may have the rops distributed not evenly in these three containers. how do i partition them? best case is to give p->effectivecapacityofregulars to teh three of them.
+// in this way i can allocate all the space in the udp packet in only one container. for instance, i can create a larger skin status....
+// on the other hand we may waste memory. a good compromise is using 75% for all. see TAG(*1234*)
+
  
 extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
 {
@@ -142,7 +172,9 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     
     retptr->txpacket                = eo_packet_New(cfg->sizes.capacityoftxpacket);
     retptr->ropframereadytotx       = eo_ropframe_New();
-    retptr->ropframeregulars        = eo_ropframe_New();
+    retptr->ropframeregulars_standard  = eo_ropframe_New();
+    retptr->ropframeregulars_cycle0of  = eo_ropframe_New();
+    retptr->ropframeregulars_cycle1of  = eo_ropframe_New();
     retptr->ropframeoccasionals     = eo_ropframe_New();
     retptr->ropframereplies         = eo_ropframe_New();
     retptr->roptmp                  = eo_rop_New(cfg->sizes.capacityofrop);
@@ -151,15 +183,24 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->confmanager             = eo_agent_GetConfirmationManager(cfg->agent);
     retptr->ipv4addr                = cfg->ipv4addr;
     retptr->ipv4port                = cfg->ipv4port;
-    retptr->bufferropframeregulars  = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeregulars, 1));
+    // TAG(*1234*) : begin
+    retptr->bufferropframeregulars_standard = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, 3*cfg->sizes.capacityofropframeregulars/4, 1));
+    retptr->bufferropframeregulars_cycle0of = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, 3*cfg->sizes.capacityofropframeregulars/4, 1));
+    retptr->bufferropframeregulars_cycle1of = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, 3*cfg->sizes.capacityofropframeregulars/4, 1));
+    // TAG(*1234*) : end
     retptr->bufferropframeoccasionals = (0 == cfg->sizes.capacityofropframeoccasionals) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeoccasionals, 1));
     retptr->bufferropframereplies   = (0 == cfg->sizes.capacityofropframereplies) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereplies, 1));
     retptr->listofregropinfo        = (0 == cfg->sizes.maxnumberofregularrops) ? (NULL) : (eo_list_New(sizeof(eo_transm_regrop_info_t), cfg->sizes.maxnumberofregularrops, NULL, 0, NULL, NULL));
     retptr->currenttime             = 0;
     retptr->tx_seqnum               = 0;
 
-    eo_ropframe_Load(retptr->ropframeregulars, retptr->bufferropframeregulars, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars);
-    eo_ropframe_Clear(retptr->ropframeregulars);
+    eo_ropframe_Load(retptr->ropframeregulars_standard, retptr->bufferropframeregulars_standard, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars);
+    eo_ropframe_Clear(retptr->ropframeregulars_standard);
+    eo_ropframe_Load(retptr->ropframeregulars_cycle0of, retptr->bufferropframeregulars_cycle0of, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars/2);
+    eo_ropframe_Clear(retptr->ropframeregulars_cycle0of);    
+    eo_ropframe_Load(retptr->ropframeregulars_cycle1of, retptr->bufferropframeregulars_cycle1of, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars/2);
+    eo_ropframe_Clear(retptr->ropframeregulars_cycle1of);    
+    
     eo_ropframe_Load(retptr->ropframeoccasionals, retptr->bufferropframeoccasionals, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeoccasionals);
     eo_ropframe_Clear(retptr->ropframeoccasionals);
     eo_ropframe_Load(retptr->ropframereplies, retptr->bufferropframereplies, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframereplies);
@@ -216,6 +257,11 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->txdecimationreplies = 1;
     retptr->txdecimationoccasionals = 1;
     retptr->txdecimationregulars = 1;
+
+    s_eo_transmitter_regulars_reset_sizes(retptr);
+    
+    retptr->effectivecapacityofregulars = eo_ropframe_capacity2effectivecapacity(cfg->sizes.capacityofropframeregulars);
+    retptr->txregularsprogressive = 0;
     
     return(retptr);
 }
@@ -254,11 +300,21 @@ extern void eo_transmitter_Delete(EOtransmitter *p)
     {
         eo_list_Delete(p->listofregropinfo);
     }     
-    if(NULL != p->bufferropframeregulars)
+    if(NULL != p->bufferropframeregulars_standard)
     {
-        eo_mempool_Delete(eo_mempool_GetHandle(), p->bufferropframeregulars);
-        p->bufferropframeregulars = NULL;
+        eo_mempool_Delete(eo_mempool_GetHandle(), p->bufferropframeregulars_standard);
+        p->bufferropframeregulars_standard = NULL;
     }
+    if(NULL != p->bufferropframeregulars_cycle0of)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(), p->bufferropframeregulars_cycle0of);
+        p->bufferropframeregulars_cycle0of = NULL;
+    } 
+    if(NULL != p->bufferropframeregulars_cycle1of)
+    {
+        eo_mempool_Delete(eo_mempool_GetHandle(), p->bufferropframeregulars_cycle1of);
+        p->bufferropframeregulars_cycle1of = NULL;
+    }     
     if(NULL != p->bufferropframeoccasionals)
     {
         eo_mempool_Delete(eo_mempool_GetHandle(),  p->bufferropframeoccasionals);
@@ -273,7 +329,9 @@ extern void eo_transmitter_Delete(EOtransmitter *p)
     eo_rop_Delete(p->roptmp);
     
     eo_ropframe_Delete(p->ropframereadytotx);
-    eo_ropframe_Delete(p->ropframeregulars);
+    eo_ropframe_Delete(p->ropframeregulars_standard);
+    eo_ropframe_Delete(p->ropframeregulars_cycle0of);
+    eo_ropframe_Delete(p->ropframeregulars_cycle1of);
     eo_ropframe_Delete(p->ropframeoccasionals);
     eo_ropframe_Delete(p->ropframereplies);
    
@@ -294,6 +352,7 @@ extern EOnvSet* eo_transmitter_GetNVset(EOtransmitter *p)
 
     return(p->nvset);
 }
+
 
 extern eOsizecntnr_t eo_transmitter_regular_rops_Size(EOtransmitter *p)
 {
@@ -318,6 +377,7 @@ extern eOsizecntnr_t eo_transmitter_regular_rops_Size(EOtransmitter *p)
     
     return(size);   
 }
+
 
 extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, eOnvEP8_t ep)
 {
@@ -370,6 +430,7 @@ extern eOsizecntnr_t eo_transmitter_regular_rops_Size_with_ep(EOtransmitter *p, 
     
     return(retvalue);   
 }
+
 
 extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, uint16_t start, EOarray* array)
 {
@@ -431,6 +492,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
     
     return(eores_OK);   
 }
+
 
 extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p, eOnvEP8_t ep, uint16_t start, EOarray* array)
 {
@@ -515,6 +577,8 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     uint16_t ropsize;
     EOnv nv;
     EOnv* tmpnvptr = NULL;
+    eo_transm_regropframe_t regropframe2use_type = eo_transm_regropframe_standard;
+    EOropframe* regropframe2use = NULL;
 
     if((NULL == p) || (NULL == ropdesc)) 
     {
@@ -522,18 +586,16 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     }  
 
     if(NULL == p->listofregropinfo)
-    {
-        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+    {    // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
         return(eores_NOK_generic);
     }
     
     
     eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
 
-    // work on the list ... 
-    
+    // work on the list ...     
     if(eobool_true == eo_list_Full(p->listofregropinfo))
-    {
+    {   // we have reached cfg->maxnumberofregularrops
         eov_mutex_Release(p->mtx_regulars);
         return(eores_NOK_generic);
     }
@@ -544,11 +606,11 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
     ropdescriptor.id32      = ropdesc->id32;
 
     
-    // search for ropcode+ep+id. if found, then ... return OK and dont do anything because it means that the rop is already inside
+    // search for ropcode+ep+id. if found, then ... return a non NULL iterator and dont do anything because it means that the rop is already inside
     if(NULL != eo_list_Find(p->listofregropinfo, s_eo_transmitter_ropmatchingrule_rule, &ropdescriptor))
     {   // it is already inside ...
         eov_mutex_Release(p->mtx_regulars);
-        return(eores_NOK_generic);
+        return(eores_OK);
     }    
     
     // else ... prepare a temporary variable eo_transm_regrop_info_t to be put inside the list.
@@ -617,13 +679,27 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
         eov_mutex_Release(p->mtx_regulars);
         return(res);
     }
+    
+
     // extract the reference to the associated netvar
     tmpnvptr = eo_rop_GetNV(p->roptmp);
     
 
-    // 2. put the rop inside the ropframe
-    res = eo_ropframe_ROP_Add(p->ropframeregulars, p->roptmp, &ropstarthere, &ropsize, &remainingbytes);
-    // if we cannot add the rop we quit
+    // choose the relevant regular ropframe. that depends on the id32 of the ropdescriptor 
+    regropframe2use = s_eo_transmitter_id32_to_typeofregulars(p, ropdescriptor.id32, &regropframe2use_type);
+    
+    // see if we have space for this rop. as we transmit always a standard with one between cycled0of / cycled1of, we need verify
+    // with knowledge of regropframe2use_type and of usedbytes. 
+    if(eobool_false == s_eo_transmitter_regulars_canadd_rop(p, regropframe2use_type, usedbytes))
+    {   // cannot load the rop because we dont have usedbytes anymore
+        eov_mutex_Release(p->mtx_roptmp);
+        eov_mutex_Release(p->mtx_regulars);
+        return(eores_NOK_generic);        
+    }
+           
+    // put the rop inside the relevant regular ropframe         
+    res = eo_ropframe_ROP_Add(regropframe2use, p->roptmp, &ropstarthere, &ropsize, &remainingbytes);
+    // if we cannot add the rop, then we quit ....
     if(eores_OK != res)
     {
         eov_mutex_Release(p->mtx_roptmp);
@@ -631,19 +707,24 @@ extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescri
         return(res);
     }
     
+    // i am sure that ropsize is equal to usedbytes, thus i dont verify with an assert ...
     
     // 3. prepare a regropinfo variable to be put inside the list    
-    
     regropinfo.ropcode                  = ropdescriptor.ropcode;    
     regropinfo.hasdata2update           = eo_rop_datafield_is_present(&(p->roptmp->stream.head)); 
+    regropinfo.regropframetype          = regropframe2use_type;
+    regropinfo.ropframe                 = regropframe2use;
     regropinfo.ropstarthere             = ropstarthere;
     regropinfo.ropsize                  = ropsize;
     regropinfo.timeoffsetinsiderop      = (0 == p->roptmp->stream.head.ctrl.plustime) ? (EOK_uint16dummy) : (ropsize - 8); //if we have time, then it is in teh last 8 bytes
     memcpy(&regropinfo.thenv, tmpnvptr, sizeof(EOnv));
 
 
-    // 4. finally push back regropinfo inside the list.
+    // push back regropinfo inside the list.
     eo_list_PushBack(p->listofregropinfo, &regropinfo);
+    
+    // increment size of the relevant regular ropframe
+    s_eo_transmitter_regulars_update_sizes(p, regropframe2use_type, +regropinfo.ropsize); // with a + we increment
     
     eov_mutex_Release(p->mtx_roptmp);
     eov_mutex_Release(p->mtx_regulars);  
@@ -696,17 +777,21 @@ extern eOresult_t eo_transmitter_regular_rops_Unload(EOtransmitter *p, eOropdesc
     memcpy(&regropinfo, eo_list_At(p->listofregropinfo, li), sizeof(eo_transm_regrop_info_t));
     
     // for each element after li: (name is afterli) retrieve it and modify its content so that ropstarthere is decremented by regropinfo.ropsize ...
+    // but only if ... the element is inside the same regropframe. that is done in function s_eo_transmitter_list_shiftdownropinfo()
     eo_list_ExecuteFromIter(p->listofregropinfo, s_eo_transmitter_list_shiftdownropinfo, &regropinfo, eo_list_Next(p->listofregropinfo, li));
     
     // remove the element indexedby li
     eo_list_Erase(p->listofregropinfo, li);
     
-    // inside the p->ropframeregulars: remove a rop of regropinfo.ropsize whcih starts at regropinfo.ropstartshere. use a _friend method in here defined.
-    //                                  you must: decrement the nrops by 1, decrement the size by regropinfo.ropsize, ... else in header and private variable ...
-    //                                            and finally make a memmove down by regropinfo.ropsize.
+    // inside the p->ropframeregulars: remove a rop of regropinfo.ropsize which starts at regropinfo.ropstartshere. use a _friend method in here defined.
+    //                                 you must: decrement the nrops by 1, decrement the size by regropinfo.ropsize, ... else in header and private variable ...
+    //                                           and finally make a memmove down by regropinfo.ropsize.
     
-    eo_ropframe_ROP_Rem(p->ropframeregulars, regropinfo.ropstarthere, regropinfo.ropsize);
-  
+
+    eo_ropframe_ROP_Rem(regropinfo.ropframe, regropinfo.ropstarthere, regropinfo.ropsize);
+    
+    // decrement the size of relevant ropframe
+    s_eo_transmitter_regulars_update_sizes(p, (eo_transm_regropframe_t)regropinfo.regropframetype, -regropinfo.ropsize); // with a -regropinfo.ropsize we decrement
 
     eov_mutex_Release(p->mtx_regulars);
     
@@ -737,7 +822,11 @@ extern eOresult_t eo_transmitter_regular_rops_Clear(EOtransmitter *p)
     
     eo_list_Clear(p->listofregropinfo);
     
-    eo_ropframe_Clear(p->ropframeregulars);
+    eo_ropframe_Clear(p->ropframeregulars_standard);
+    eo_ropframe_Clear(p->ropframeregulars_cycle0of);
+    eo_ropframe_Clear(p->ropframeregulars_cycle1of);    
+    
+    s_eo_transmitter_regulars_reset_sizes(p);
 
     eov_mutex_Release(p->mtx_regulars);
     
@@ -785,23 +874,49 @@ extern eOresult_t eo_transmitter_NumberofOutROPs(EOtransmitter *p, uint16_t *num
     
     if(NULL != numberofreplies)
     {
-        eov_mutex_Take(p->mtx_replies, eok_reltimeINFINITE);
-        *numberofreplies = eo_ropframe_ROP_NumberOf(p->ropframereplies);
-        eov_mutex_Release(p->mtx_replies);
+        if(0 == (p->txdecimationprogressive % p->txdecimationreplies))
+        {
+            eov_mutex_Take(p->mtx_replies, eok_reltimeINFINITE);
+            *numberofreplies = eo_ropframe_ROP_NumberOf(p->ropframereplies);
+            eov_mutex_Release(p->mtx_replies);
+        }
+        else
+        {
+            *numberofreplies = 0;
+        }
     }   
 
     if(NULL != numberofoccasionals)
     {
-        eov_mutex_Take(p->mtx_occasionals, eok_reltimeINFINITE);
-        *numberofoccasionals = eo_ropframe_ROP_NumberOf(p->ropframeoccasionals);
-        eov_mutex_Release(p->mtx_occasionals);
+        if(0 == (p->txdecimationprogressive % p->txdecimationoccasionals))
+        {
+            eov_mutex_Take(p->mtx_occasionals, eok_reltimeINFINITE);
+            *numberofoccasionals = eo_ropframe_ROP_NumberOf(p->ropframeoccasionals);
+            eov_mutex_Release(p->mtx_occasionals);
+        }
+        else
+        {
+            *numberofoccasionals = 0;
+        }
     }   
 
     if(NULL != numberofregulars)
     {
-        eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
-        *numberofregulars = eo_ropframe_ROP_NumberOf(p->ropframeregulars);
-        eov_mutex_Release(p->mtx_regulars);
+        if(0 == (p->txdecimationprogressive % p->txdecimationregulars))
+        {
+            uint16_t cycledrops = 0;
+            eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+            // we may have one of the cycled or not
+            s_eo_transmitter_get_cycled_regropframe(p, &cycledrops);
+            // but the standard is alwyas added
+            *numberofregulars = eo_ropframe_ROP_NumberOf(p->ropframeregulars_standard) + cycledrops;
+            eov_mutex_Release(p->mtx_regulars);
+        }
+        else
+        {
+            *numberofregulars = 0;
+        }
+        
     }  
 
     return(eores_OK);   
@@ -828,19 +943,101 @@ extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *n
     // clear the content of the ropframe to transmit which uses the same storage of the packet ...
     eo_ropframe_Clear(p->ropframereadytotx);
     
+//    // add to it the ropframe of regulars. keep it afterwards. dont clear it !!!
+//    if(0 == (p->txdecimationprogressive % p->txdecimationregulars))
+//    {
+//        uint16_t nregulars = 0;
+//        uint8_t n0 = 0;
+//        uint8_t n1 = 0;
+//        // refresh regulars ...    
+//        eo_transmitter_regular_rops_Refresh(p);
+//        // then copy regulars into the ropframe ready to be transmitted
+//        eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+//        
+//        // at first teh regulars which are always transmitted
+//        eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars_standard, &remainingbytes);
+//        nregulars += eo_ropframe_ROP_NumberOf(p->ropframeregulars_standard);
+//        
+//        // then we may alternate
+//        n0 = eo_ropframe_ROP_NumberOf(p->ropframeregulars_cycle0of);
+//        n1 = eo_ropframe_ROP_NumberOf(p->ropframeregulars_cycle1of);
+//        if(0 != (n0+n1))
+//        {
+//            if((0 != n0) && (0 != n1))
+//            {   // we alternate.
+//                if(0 == (p->txregularsprogressive % 2))
+//                {   // we send the set0
+//                    eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars_cycle0of, &remainingbytes);    
+//                    nregulars += n0;                     
+//                }
+//                else
+//                {   // we send the set1
+//                    eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars_cycle1of, &remainingbytes);    
+//                    nregulars += n1;                                          
+//                }               
+//            }
+//            else
+//            {   // we send only the non zero               
+//                if(0 != n0)
+//                {
+//                    eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars_cycle0of, &remainingbytes);    
+//                    nregulars += n0;                    
+//                }
+//                if(0 != n1)
+//                {
+//                    eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars_cycle1of, &remainingbytes);    
+//                    nregulars += n1;                    
+//                }
+//            }
+//                
+//        }
+//                
+//        eov_mutex_Release(p->mtx_regulars);
+//        
+//        if(NULL != ropsnum)
+//        {
+//            ropsnum->numberofregulars = nregulars;
+//        }
+//        
+//        p->txregularsprogressive ++;
+//    }
+
+
     // add to it the ropframe of regulars. keep it afterwards. dont clear it !!!
     if(0 == (p->txdecimationprogressive % p->txdecimationregulars))
     {
-        // refresh regulars ...    
+        EOropframe* cycledregulars = NULL;
+        uint16_t nregularscycled = 0;
+        uint16_t nregulars = 0;
+
+        // refresh all regulars ...    
         eo_transmitter_regular_rops_Refresh(p);
+        
         // then copy regulars into the ropframe ready to be transmitted
+        
         eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+        
+        // at first the standard regulars which are always transmitted
+        eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars_standard, &remainingbytes);
+        nregulars += eo_ropframe_ROP_NumberOf(p->ropframeregulars_standard);
+        
+        // then add the cycled one, if there are any
+        cycledregulars = s_eo_transmitter_get_cycled_regropframe(p, &nregularscycled);
+        if(NULL != cycledregulars)
+        {
+            eo_ropframe_Append(p->ropframereadytotx, cycledregulars, &remainingbytes);
+            nregulars += nregularscycled;
+        }
+                
+        eov_mutex_Release(p->mtx_regulars);
+        
         if(NULL != ropsnum)
         {
-            ropsnum->numberofregulars = eo_ropframe_ROP_NumberOf(p->ropframeregulars);
+            ropsnum->numberofregulars = nregulars;
         }
-        eo_ropframe_Append(p->ropframereadytotx, p->ropframeregulars, &remainingbytes);
-        eov_mutex_Release(p->mtx_regulars);
+        
+        // very important: increment the regulars progressive number. it is used to decide which cycling regular to get
+        p->txregularsprogressive ++;
     }
 
     // add the ropframe of occasionals ... and then clear it
@@ -1056,7 +1253,7 @@ static void s_eo_transmitter_list_updaterop_in_ropframe(void *item, void *param)
     uint8_t *dest;
     
     // retrieve the beginning of the ropstream inside the ropframe
-    origofrop = eo_ropframe_hid_get_pointer_offset(p->ropframeregulars, inside->ropstarthere);
+    origofrop = eo_ropframe_hid_get_pointer_offset(inside->ropframe, inside->ropstarthere);
     dest = origofrop + sizeof(eOrophead_t);
 
     // if it has a data field ... copy from the nv to the ropstream
@@ -1069,8 +1266,8 @@ static void s_eo_transmitter_list_updaterop_in_ropframe(void *item, void *param)
         
         // with memcpy the copy from local buffer to dest is not protected, thus data format may be corrupt
         // in case any concurrent task is in the process of writing the local buffer.
-//        memcpy(dest, inside->nvloc, inside->capacity);
-//        // for debug: memset(dest, 0xaa, inside->capacity); 
+        //  memcpy(dest, inside->nvloc, inside->capacity);
+        // for debug: memset(dest, 0xaa, inside->capacity); 
     }
     
     
@@ -1078,7 +1275,6 @@ static void s_eo_transmitter_list_updaterop_in_ropframe(void *item, void *param)
     if(EOK_uint16dummy != inside->timeoffsetinsiderop)
     {
         eOabstime_t *time = (eOabstime_t*) (&origofrop[inside->timeoffsetinsiderop]);
-        //*time = p->currenttime;
         memcpy(time, &p->currenttime, sizeof(eOabstime_t));
     }
     
@@ -1097,8 +1293,12 @@ static void s_eo_transmitter_list_shiftdownropinfo(void *item, void *param)
     eo_transm_regrop_info_t *theone2beremoved = (eo_transm_regrop_info_t*)param;
 
     // for each element after: modify its content so that ropstarthere is decremented by theone2beremoved.ropsize
+    // but only if they have the same regropframetype
 
-    after->ropstarthere -= theone2beremoved->ropsize;
+    if(after->ropframe == theone2beremoved->ropframe)
+    {
+        after->ropstarthere -= theone2beremoved->ropsize;
+    }
 }
 
 
@@ -1218,7 +1418,145 @@ static eOresult_t s_eo_transmitter_rops_Load(EOtransmitter *p, eOropdescriptor_t
     return(res);   
 }
 
+static EOropframe * s_eo_transmitter_id32_to_typeofregulars(EOtransmitter* p, eOprotID32_t id32, eo_transm_regropframe_t *ropframetype)
+{
+    EOropframe* ret = NULL;
+    
+    if(eoprot_endpoint_motioncontrol == eoprot_ID2endpoint(id32))
+    {   // we put in here joints, motors but also the controller  ...
+        
+        if(eoprot_entity_mc_controller == eoprot_ID2entity(id32))
+        {
+            *ropframetype = eo_transm_regropframe_standard;
+            ret = p->ropframeregulars_standard;
+        }
+        else if(eoprot_ID2index(id32) < 6)
+        {
+            *ropframetype = eo_transm_regropframe_cycle0of;    
+            ret = p->ropframeregulars_cycle0of;
+        }
+        else
+        {
+            *ropframetype = eo_transm_regropframe_cycle1of;
+            ret = p->ropframeregulars_cycle1of;
+        }        
+    }
+    else
+    {
+        *ropframetype = eo_transm_regropframe_standard; 
+        ret = p->ropframeregulars_standard;        
+    }
 
+    return(ret);  
+}
+
+static EOropframe * s_eo_transmitter_get_cycled_regropframe(EOtransmitter* p, uint16_t *ropsinside)
+{
+    EOropframe* ret = NULL;
+    uint16_t s0 = eo_ropframe_ROP_NumberOf(p->ropframeregulars_cycle0of);
+    uint16_t s1 = eo_ropframe_ROP_NumberOf(p->ropframeregulars_cycle1of);
+    
+    if(0 == (s0+s1))
+    {   // we dont have any
+        ret = NULL;
+        *ropsinside = 0;
+    }
+    else if(0 == s1)
+    {   // we have only cycle0
+        ret = p->ropframeregulars_cycle0of;
+        *ropsinside = s0;
+    }
+    else if(0 == s0)
+    {   // we have only cycle1
+        ret = p->ropframeregulars_cycle1of;  
+        *ropsinside = s1;        
+    }
+    else
+    {   // we have both. i must alternate
+        if(0 == (p->txregularsprogressive % 2))
+        {   // we chose cycle0
+            ret = p->ropframeregulars_cycle0of;
+            *ropsinside = s0;
+        }
+        else
+        {   // we chose cycle1
+            ret = p->ropframeregulars_cycle1of; 
+            *ropsinside = s1;
+        }        
+    }
+    
+ 
+    return(ret);
+}
+
+static void s_eo_transmitter_regulars_reset_sizes(EOtransmitter *p)
+{
+    p->totalsizeofregulars_standard = 0;
+    p->totalsizeofregulars_cycle0of = 0;
+    p->totalsizeofregulars_cycle1of = 0;
+    p->maxsizeofregulars = 0;    
+}
+
+static uint16_t s_eo_transmitter_get_maxsizeof_regularsropframe(EOtransmitter *p)
+{
+    return( p->totalsizeofregulars_standard + EO_MAX(p->totalsizeofregulars_cycle0of, p->totalsizeofregulars_cycle1of) );   
+}
+
+static eObool_t s_eo_transmitter_regulars_canadd_rop(EOtransmitter *p, eo_transm_regropframe_t type, uint16_t ropbytes)
+{ 
+    uint16_t std = 0;
+    uint16_t cy0 = 0;
+    uint16_t cy1 = 0;
+    
+    std = p->totalsizeofregulars_standard;
+    cy0 = p->totalsizeofregulars_cycle0of;
+    cy1 = p->totalsizeofregulars_cycle1of;
+
+    switch(type)
+    {
+        case eo_transm_regropframe_standard:
+        {
+            std += ropbytes;
+        } break;
+        case eo_transm_regropframe_cycle0of:
+        {
+            cy0 += ropbytes;
+        } break; 
+        case eo_transm_regropframe_cycle1of:
+        {
+            cy1 += ropbytes;
+        } break;           
+    }
+
+    if( (std + EO_MAX(cy0, cy1)) > p->effectivecapacityofregulars)
+    {
+        return(eobool_false);
+    }
+    
+    return(eobool_true);          
+}
+
+
+static void s_eo_transmitter_regulars_update_sizes(EOtransmitter *p, eo_transm_regropframe_t type, int16_t ropbytes)
+{
+    switch(type)
+    {
+        case eo_transm_regropframe_standard:
+        {
+            p->totalsizeofregulars_standard += ropbytes;
+        } break;
+        case eo_transm_regropframe_cycle0of:
+        {
+            p->totalsizeofregulars_cycle0of += ropbytes;
+        } break; 
+        case eo_transm_regropframe_cycle1of:
+        {
+            p->totalsizeofregulars_cycle1of += ropbytes;
+        } break;           
+    }
+    
+    p->maxsizeofregulars = s_eo_transmitter_get_maxsizeof_regularsropframe(p);
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)
