@@ -91,7 +91,7 @@ extern "C" {
 #define EOK_VER_REL                         (0x0000)
 
 #define EO_MIN(a, b)                       (((a)<(b))?(a):(b))
-#define EO_MAX(a, b)                       (((a)>(b))?(a):(b)
+#define EO_MAX(a, b)                       (((a)>(b))?(a):(b))
 
 
 // issues a compiler error if the sizeof the struct is not what in second argument
