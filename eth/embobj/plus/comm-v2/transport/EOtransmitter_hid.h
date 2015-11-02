@@ -63,7 +63,7 @@ typedef enum
     eo_transm_regropframe_cycle1of  = 2
 } eo_transm_regropframe_t;
 
-typedef struct      // 40 bytes on arm .... 
+typedef struct      // 40 bytes on arm .... but not 40 on a 64-bit architecture because of the pointer
 {
     eOropcode_t     ropcode;
     uint8_t         hasdata2update  : 1;    // use eobool_true / eobool_false
@@ -73,7 +73,7 @@ typedef struct      // 40 bytes on arm ....
     uint16_t        timeoffsetinsiderop;    // if time is not present its value is 0xffff 
     EOnv            thenv;
     EOropframe*     ropframe;
-} eo_transm_regrop_info_t;   EO_VERIFYsizeof(eo_transm_regrop_info_t, (8+28+4));
+} eo_transm_regrop_info_t;   //EO_VERIFYsizeof(eo_transm_regrop_info_t, (8+28+4));
 
 
 typedef struct
