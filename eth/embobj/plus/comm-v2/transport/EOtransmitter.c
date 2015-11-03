@@ -157,6 +157,7 @@ const eOtransmitter_cfg_t eo_transmitter_cfg_default =
 extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
 {
     EOtransmitter *retptr = NULL;   
+    uint16_t capacityofregularsubframes = 0;
 
     if(NULL == cfg)
     {    
@@ -184,9 +185,13 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->ipv4addr                = cfg->ipv4addr;
     retptr->ipv4port                = cfg->ipv4port;
     // TAG(*1234*) : begin
-    retptr->bufferropframeregulars_standard = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, 3*cfg->sizes.capacityofropframeregulars/4, 1));
-    retptr->bufferropframeregulars_cycle0of = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, 3*cfg->sizes.capacityofropframeregulars/4, 1));
-    retptr->bufferropframeregulars_cycle1of = (0 == cfg->sizes.capacityofropframeregulars) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, 3*cfg->sizes.capacityofropframeregulars/4, 1));
+    // i split capacityofropframeregulars into equal parts for the three buffers. however, we have eo_ropframe_sizeforZEROrops which is minimum number.
+//    capacityofregularsubframes = 3*cfg->sizes.capacityofropframeregulars/4;
+//    capacityofregularsubframes = (capacityofregularsubframes < eo_ropframe_sizeforZEROrops) ? (eo_ropframe_sizeforZEROrops) : (capacityofregularsubframes);
+    capacityofregularsubframes = eo_ropframe_capacity2effectivecapacity(3*cfg->sizes.capacityofropframeregulars/4) + eo_ropframe_sizeforZEROrops;
+    retptr->bufferropframeregulars_standard = (0 == capacityofregularsubframes) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, capacityofregularsubframes, 1));
+    retptr->bufferropframeregulars_cycle0of = (0 == capacityofregularsubframes) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, capacityofregularsubframes, 1));
+    retptr->bufferropframeregulars_cycle1of = (0 == capacityofregularsubframes) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, capacityofregularsubframes, 1));
     // TAG(*1234*) : end
     retptr->bufferropframeoccasionals = (0 == cfg->sizes.capacityofropframeoccasionals) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframeoccasionals, 1));
     retptr->bufferropframereplies   = (0 == cfg->sizes.capacityofropframereplies) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereplies, 1));
@@ -194,11 +199,11 @@ extern EOtransmitter* eo_transmitter_New(const eOtransmitter_cfg_t *cfg)
     retptr->currenttime             = 0;
     retptr->tx_seqnum               = 0;
 
-    eo_ropframe_Load(retptr->ropframeregulars_standard, retptr->bufferropframeregulars_standard, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars);
+    eo_ropframe_Load(retptr->ropframeregulars_standard, retptr->bufferropframeregulars_standard, eo_ropframe_sizeforZEROrops, capacityofregularsubframes);
     eo_ropframe_Clear(retptr->ropframeregulars_standard);
-    eo_ropframe_Load(retptr->ropframeregulars_cycle0of, retptr->bufferropframeregulars_cycle0of, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars/2);
+    eo_ropframe_Load(retptr->ropframeregulars_cycle0of, retptr->bufferropframeregulars_cycle0of, eo_ropframe_sizeforZEROrops, capacityofregularsubframes);
     eo_ropframe_Clear(retptr->ropframeregulars_cycle0of);    
-    eo_ropframe_Load(retptr->ropframeregulars_cycle1of, retptr->bufferropframeregulars_cycle1of, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeregulars/2);
+    eo_ropframe_Load(retptr->ropframeregulars_cycle1of, retptr->bufferropframeregulars_cycle1of, eo_ropframe_sizeforZEROrops, capacityofregularsubframes);
     eo_ropframe_Clear(retptr->ropframeregulars_cycle1of);    
     
     eo_ropframe_Load(retptr->ropframeoccasionals, retptr->bufferropframeoccasionals, eo_ropframe_sizeforZEROrops, cfg->sizes.capacityofropframeoccasionals);
