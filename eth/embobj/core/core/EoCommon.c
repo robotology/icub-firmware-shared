@@ -129,10 +129,16 @@ extern eOresult_t eo_common_verifysafebaseobject(eOsafelyderived_t *derived, con
 
 
 extern size_t eo_common_msize(void *p)
-{   // not sure it is portable on 64 bit architectures.
+{   // the heap on arm keil compiler stores the size of the allcated ram in previous location of the returned pointer.
+    // however, that may not work with otehr compilers and different architecture. on pc104 valgrind says that we read an invalid location
+    // and thus ... i prefer removing this feature for gcc compiler.
+#if defined(EO_READ_PREV_WORD_OF_MALLOC_FOR_SIZEOF_ALLOCATION)    
     size_t* xx = (size_t*)p;
     xx --;
-    return(*xx);    
+    return(*xx);  
+#else
+    return(0);
+#endif    
 }
 
 

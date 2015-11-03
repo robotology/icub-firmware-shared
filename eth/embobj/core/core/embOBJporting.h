@@ -62,6 +62,7 @@ extern "C" {
     #define EO_weak         __weak
     #define float32_t       float
     #define EO_TAILOR_CODE_FOR_ARM    
+    #define EO_READ_PREV_WORD_OF_MALLOC_FOR_SIZEOF_ALLOCATION
 #elif defined(_MSC_VER)
     // msc does not support c99, thus inline must be redefined as __inline
     #define EO_extern_inline       extern __inline
