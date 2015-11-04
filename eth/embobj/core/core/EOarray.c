@@ -223,6 +223,18 @@ extern uint8_t eo_array_Available(EOarray *p)
     return(p->head.capacity - p->head.size);
 }
 
+
+extern eObool_t eo_array_Full(EOarray *p)
+{
+    if(NULL == p) 
+    {   // invalid array
+        return(eobool_true);    
+    }
+    
+    return((p->head.size == p->head.capacity) ? (eobool_true) : (eobool_false));   
+}
+
+
 extern uint16_t eo_array_UsedBytes(EOarray *p)
 {
     if(NULL == p)
@@ -262,7 +274,7 @@ extern eOresult_t eo_array_PushBack(EOarray *p, const void *item)
 extern void * eo_array_At(EOarray *p, uint8_t pos)
 {
 
-    if((NULL == p) || (pos >= p->head.capacity))
+    if((NULL == p) || (pos >= p->head.size))
     {
         return(NULL);
     }

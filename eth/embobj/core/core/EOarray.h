@@ -153,6 +153,14 @@ extern uint8_t eo_array_Size(EOarray *p);
 extern uint8_t eo_array_Available(EOarray *p);
 
 
+/** @fn         extern eObool_t eo_array_Full(EOarray *p)
+    @brief      tells if the array is full
+    @param      p               The pointer to the array object.
+    @return     eobool_true or eobool_false
+ **/ 
+extern eObool_t eo_array_Full(EOarray *p);
+
+
 /** @fn         extern uint16_t eo_array_UsedBytes(EOarray *p)
     @brief      tells how much of the memory pointer by p is used (header + size*itemsize).
     @param      p               The pointer to the array object.
