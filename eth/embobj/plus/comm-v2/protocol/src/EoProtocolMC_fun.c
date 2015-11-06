@@ -163,13 +163,6 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_config_impedance(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mc_joint_config_impedance(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_motionmonitormode)
-EO_weak extern void eoprot_fun_INIT_mc_joint_config_motionmonitormode(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_motionmonitormode)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_config_motionmonitormode(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
-
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_motor_params)
 EO_weak extern void eoprot_fun_INIT_mc_joint_config_motor_params(const EOnv* nv) {}
 #endif
@@ -198,6 +191,7 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_status_basic(const EOnv* nv) {}
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_basic)
 EO_weak extern void eoprot_fun_UPDT_mc_joint_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
+    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_ofpid)
 EO_weak extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv) {}
@@ -211,6 +205,14 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_status_interactionmodestatus(const 
 #endif
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_interactionmodestatus)
 EO_weak extern void eoprot_fun_UPDT_mc_joint_status_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_ismotiondone)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_ismotiondone(const EOnv* nv) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_ismotiondone)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_inputs)
