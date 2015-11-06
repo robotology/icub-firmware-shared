@@ -288,6 +288,21 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_ofpid =
 #endif
 };
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_controlmodestatus =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.controlmodestatus),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_controlmodestatus,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.controlmodestatus,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_controlmodestatus,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_controlmodestatus
+#endif
+};
+
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_interactionmodestatus =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.interactionmodestatus),
@@ -638,6 +653,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_status,
     &eoprot_mc_rom_descriptor_joint_status_basic,
     &eoprot_mc_rom_descriptor_joint_status_ofpid,
+    &eoprot_mc_rom_descriptor_joint_status_controlmodestatus,
     &eoprot_mc_rom_descriptor_joint_status_interactionmodestatus,
     &eoprot_mc_rom_descriptor_joint_status_ismotiondone,
     &eoprot_mc_rom_descriptor_joint_inputs,
@@ -729,6 +745,7 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_status",
     "eoprot_tag_mc_joint_status_basic",
     "eoprot_tag_mc_joint_status_ofpid",
+    "eoprot_tag_mc_joint_status_controlmodestatus",
     "eoprot_tag_mc_joint_status_interactionmodestatus",
     "eoprot_tag_mc_joint_status_ismotiondone",
     "eoprot_tag_mc_joint_inputs",
