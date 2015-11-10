@@ -159,7 +159,8 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
 {   // very important: fill table with order of eOerror_value_HW_t
     //                 in case of holes, use {0, NULL}
     {eoerror_value_HW_first,                "HW: first error message of category hw"},       
-    {eoerror_value_HW_second,               "HW: second error message of category hw"}
+    {eoerror_value_HW_second,               "HW: second error message of category hw"},
+    {eoerror_value_HW_strain_saturation,    "HW: strain values saturation"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)); 
 
 

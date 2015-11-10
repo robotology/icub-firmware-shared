@@ -177,11 +177,12 @@ enum { eoerror_value_SYS_numberof = 54 };
  **/
 typedef enum
 {
-    eoerror_value_HW_first            = 0,
-    eoerror_value_HW_second           = 1
+    eoerror_value_HW_first             = 0,
+    eoerror_value_HW_second            = 1,
+    eoerror_value_HW_strain_saturation = 2
 } eOerror_value_HW_t;
 
-enum { eoerror_value_HW_numberof = 2 };
+enum { eoerror_value_HW_numberof = 3 };
 
 
 
