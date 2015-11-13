@@ -637,8 +637,8 @@ typedef struct
 typedef struct
 {
     int32_t                     refpos;         /**< the */
-    int32_t                     reftrq;         /**< the */
-    int32_t                     error;          /**< the error */ 
+    int32_t                     dummyref2;         /**< the */
+    int32_t                     errpos;          /**< the error */ 
     int32_t                     dummyerr2;
     int32_t                     output;         /**< the output */    
 } eOmc2_status_ofpid_pos_t;     EO_VERIFYsizeof(eOmc2_status_ofpid_pos_t, 20);
@@ -647,8 +647,8 @@ typedef struct
 {
     int32_t                     refpos;         /**< the */
     int32_t                     reftrq;         /**< the */
-    int32_t                     error;          /**< the error */ 
-    int32_t                     errorBIS;
+    int32_t                     errpos;          /**< the error */ 
+    int32_t                     errtrq;
     int32_t                     output;         /**< the output */  
 } eOmc2_status_ofpid_trq_t;     EO_VERIFYsizeof(eOmc2_status_ofpid_trq_t, 20);
 
@@ -663,10 +663,10 @@ typedef union                  // size is: 4+4+4+0 = 16
 } eOmc2_joint_status_ofpid_t;       EO_VERIFYsizeof(eOmc2_joint_status_ofpid_t, 20);
 
 
-typedef struct                  // size is 2+6 = 8
+typedef struct                  // size is 2+2 = 4
 {
     eOmeas_torque_t             externallymeasuredtorque;   /**< the torque at the joint when externally measured or estimated */
-    uint8_t                     filler04[2];
+    uint8_t                     filler[2];
 } eOmc2_joint_inputs_t;         EO_VERIFYsizeof(eOmc2_joint_inputs_t, 4);
 
 
