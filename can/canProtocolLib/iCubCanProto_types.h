@@ -457,6 +457,41 @@ typedef struct
 
 
 
+/** @typedef    typedef enum icubCanProto_strain_saturationInfo_t
+    @brief      specifies if a strain channel is saturated and the direction of saturation.
+ **/
+typedef enum
+{
+    saturationNONE  = 0,
+    saturationLOW   = 1,
+    saturationHIGH  = 2
+} icubCanProto_strain_saturationInfo_t;
+
+/** @typedef    typedef struct icubCanProto_strain_forceSaturationInfo_t
+    @brief      contains info saturation of channels 1, 2 and 3.
+ **/
+typedef struct
+{
+    uint8_t thereIsSaturationInAtLeastOneChannel    : 2;    // is either 0 or 1
+    uint8_t saturationInChannel_0                   : 2;    // use values from icubCanProto_strain_saturationInfo_t
+    uint8_t saturationInChannel_1                   : 2;    // use values from icubCanProto_strain_saturationInfo_t
+    uint8_t saturationInChannel_2                   : 2;    // use values from icubCanProto_strain_saturationInfo_t   
+} icubCanProto_strain_forceSaturationInfo_t;
+
+
+/** @typedef    typedef struct icubCanProto_strain_torqueSaturationInfo_t
+    @brief      contains info saturation of channels 3, 4 and 5.
+ **/
+typedef struct
+{
+    uint8_t thereIsSaturationInAtLeastOneChannel    : 2;    // is either 0 or 1
+    uint8_t saturationInChannel_3                   : 2;    // use values from icubCanProto_strain_saturationInfo_t
+    uint8_t saturationInChannel_4                   : 2;    // use values from icubCanProto_strain_saturationInfo_t
+    uint8_t saturationInChannel_5                   : 2;    // use values from icubCanProto_strain_saturationInfo_t   
+} icubCanProto_strain_torqueSaturationInfo_t;;
+
+
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 
