@@ -160,7 +160,7 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
     //                 in case of holes, use {0, NULL}
     {eoerror_value_HW_first,                "HW: first error message of category hw"},       
     {eoerror_value_HW_second,               "HW: second error message of category hw"},
-    {eoerror_value_HW_strain_saturation,    "HW: strain values saturation"}
+    {eoerror_value_HW_strain_saturation,    "HW: strain values saturation. In p16 there is the channel involved, in p64 there are the saturation counts for the last sec of both types (lower: LS32bits, upper MS32bits"},
 };  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
