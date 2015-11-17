@@ -150,24 +150,26 @@ typedef enum
     eoerror_value_SYS_ctrloop_rxphasemin      	            = 36,
 	eoerror_value_SYS_ctrloop_dophasemin      	            = 37,
 	eoerror_value_SYS_ctrloop_txphasemin      	            = 38,
-    eoerror_value_SYS_proxy_forward_fails                   = 39,
-    eoerror_value_SYS_proxy_forward_callback_fails          = 40,
-    eoerror_value_SYS_proxy_reply_fails                     = 41,
-    eoerror_value_SYS_proxy_ropdes_notfound                 = 42,
-    eoerror_value_SYS_canservices_canprint                  = 43,
-    eoerror_value_SYS_canservices_rxmaisbug                 = 44,
-    eoerror_value_SYS_canservices_rxfromwrongboard          = 45,
-    eoerror_value_SYS_transceiver_rxseqnumber_error         = 46,
-    eoerror_value_SYS_canservices_boards_missing            = 47,
-    eoerror_value_SYS_canservices_boards_searched           = 48,
-    eoerror_value_SYS_canservices_boards_found              = 49,
-    eoerror_value_SYS_transceiver_rxseqnumber_restarted     = 50,
-    eoerror_value_SYS_canservices_board_detected            = 51,
-    eoerror_value_SYS_canservices_board_wrongprotversion    = 52,
-    eoerror_value_SYS_canservices_board_notfound            = 53
+    eoerror_value_SYS_proxy_forward_ok                      = 39,
+    eoerror_value_SYS_proxy_forward_fails                   = 40,
+    eoerror_value_SYS_proxy_forward_callback_fails          = 41,
+    eoerror_value_SYS_proxy_reply_ok                        = 42,
+    eoerror_value_SYS_proxy_reply_fails                     = 43,
+    eoerror_value_SYS_proxy_ropdes_notfound                 = 44,
+    eoerror_value_SYS_canservices_canprint                  = 45,
+    eoerror_value_SYS_canservices_rxmaisbug                 = 46,
+    eoerror_value_SYS_canservices_rxfromwrongboard          = 47,
+    eoerror_value_SYS_transceiver_rxseqnumber_error         = 48,
+    eoerror_value_SYS_canservices_boards_missing            = 49,
+    eoerror_value_SYS_canservices_boards_searched           = 50,
+    eoerror_value_SYS_canservices_boards_found              = 51,
+    eoerror_value_SYS_transceiver_rxseqnumber_restarted     = 52,
+    eoerror_value_SYS_canservices_board_detected            = 53,
+    eoerror_value_SYS_canservices_board_wrongprotversion    = 54,
+    eoerror_value_SYS_canservices_board_notfound            = 55
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 54 };
+enum { eoerror_value_SYS_numberof = 56 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
