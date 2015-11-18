@@ -675,8 +675,9 @@ typedef struct                  // size is:  16+20+4 = 40
 } eOmc_joint_status_t;          EO_VERIFYsizeof(eOmc_joint_status_t, 40); 
 
 
-
-
+/** @typedef    typedef struct eOmc_joint_commands_t
+    @brief      contains the possible commands set to a joint
+ **/
 typedef struct                  // size is 20+12+1+1+1+1+0 = 36
 {
     eOmc_calibrator_t           calibration;                /**< the calibrator to use */
@@ -688,14 +689,18 @@ typedef struct                  // size is 20+12+1+1+1+1+0 = 36
 } eOmc_joint_commands_t;        EO_VERIFYsizeof(eOmc_joint_commands_t, 36);
 
 
-
+/** @typedef    typedef struct eOmc_joint_t
+    @brief      contains the whole joint
+ **/
 typedef struct                  // size is 168+40+2+36+0 = 248
-{   // the new joint
+{   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
 } eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 248);
+
+
 
 // -- the definition of a motor
 
@@ -712,12 +717,11 @@ typedef uint8_t  eOmc_motorId_t;
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
+typedef struct                  // size is: 40+4+4+4+2+2+ 1+1+1+1+1+1 +2 + 8= 72
 {
     eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
     int32_t                     gearboxratio;               /**< the gearbox reduction ration */
     int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution  */
-    int32_t                     filler01;                   /**< reserved */
     eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
     uint16_t                    rotorIndexOffset;           /**< index offset for the rotor encoder*/
@@ -727,8 +731,9 @@ typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
     eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
     eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
     uint8_t                     rotorEncoderType;           /**< rotor encoder type */
+    uint8_t                     filler02[2];
     eOmeas_position_limits_t    limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 76);
+} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 72);
 
 
 
@@ -750,13 +755,18 @@ typedef struct                  // size is: 4+4+4+2+2+2+2 = 20
 /** @typedef    typedef struct eOmc_motor_status_t
     @brief      eOmc_motor_status_t contains the status of a motor
  **/
-typedef struct                  // size is: 16+4+0 = 16
+typedef struct                  // size is: 20+4+0 = 24
 {   
-    eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */                      
-} eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 20);
+    eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */   
+    uint8_t                     filler[4];    
+} eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 24);
 
 
-typedef struct                  // size is 76+20+0 = 76
+
+/** @typedef    typedef struct eOmc_motor_t
+    @brief      contains the whole motor
+ **/
+typedef struct                  // size is 76+24+0 = 96
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
