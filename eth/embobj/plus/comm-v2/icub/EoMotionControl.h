@@ -564,7 +564,7 @@ typedef struct                  // size is: 40+40+40+8+12 +4+4+12+2 +1+1+4 = 168
 
 
 
-/** @typedef    typedef struct eOmc2_status_ofpid_generic_t
+/** @typedef    typedef struct eOmc_status_ofpid_generic_t
     @brief      contains the status of a generic PID 
  **/
 typedef struct
@@ -574,10 +574,10 @@ typedef struct
     int32_t                     error1;             /**< the */
     int32_t                     error2;             /**< the */
     int32_t                     output;             /**< the output */  
-} eOmc2_status_ofpid_generic_t; EO_VERIFYsizeof(eOmc2_status_ofpid_generic_t, 20);
+} eOmc_status_ofpid_generic_t; EO_VERIFYsizeof(eOmc_status_ofpid_generic_t, 20);
 
 
-/** @typedef    typedef struct eOmc2_status_ofpid_olo_t
+/** @typedef    typedef struct eOmc_status_ofpid_olo_t
     @brief      contains the status of a openloop PID 
  **/
 typedef struct
@@ -587,9 +587,9 @@ typedef struct
     int32_t                     dummyerr1;
     int32_t                     dummyerr2;
     int32_t                     output;         /**< the output */  
-} eOmc2_status_ofpid_olo_t;     EO_VERIFYsizeof(eOmc2_status_ofpid_olo_t, 20);
+} eOmc_status_ofpid_olo_t;     EO_VERIFYsizeof(eOmc_status_ofpid_olo_t, 20);
 
-/** @typedef    typedef struct eOmc2_status_ofpid_pos_t
+/** @typedef    typedef struct eOmc_status_ofpid_pos_t
     @brief      contains the status of a position PID 
  **/
 typedef struct
@@ -599,10 +599,10 @@ typedef struct
     int32_t                     errpos;          /**< the error */ 
     int32_t                     dummyerr2;
     int32_t                     output;         /**< the output */    
-} eOmc2_status_ofpid_pos_t;     EO_VERIFYsizeof(eOmc2_status_ofpid_pos_t, 20);
+} eOmc_status_ofpid_pos_t;     EO_VERIFYsizeof(eOmc_status_ofpid_pos_t, 20);
 
 
-/** @typedef    typedef struct eOmc2_status_ofpid_trq_t
+/** @typedef    typedef struct eOmc_status_ofpid_trq_t
     @brief      contains the status of a torque PID 
  **/
 typedef struct
@@ -612,20 +612,20 @@ typedef struct
     int32_t                     errpos;          /**< the error */ 
     int32_t                     errtrq;
     int32_t                     output;         /**< the output */  
-} eOmc2_status_ofpid_trq_t;     EO_VERIFYsizeof(eOmc2_status_ofpid_trq_t, 20);
+} eOmc_status_ofpid_trq_t;     EO_VERIFYsizeof(eOmc_status_ofpid_trq_t, 20);
 
 
 /** @typedef    typedef uinion eOmc_joint_status_ofpid_t
     @brief      eOmc_joint_status_ofpid_t contains the status of a PID.
  **/
 typedef union                  // size is: 4+4+4+0 = 16
-{   // was eOmc2_joint_status_ofpid_t
-    eOmc2_status_ofpid_generic_t    generic;
-    eOmc2_status_ofpid_olo_t        openloop;
-    eOmc2_status_ofpid_pos_t        stiffpos;
-    eOmc2_status_ofpid_pos_t        complpos;
-    eOmc2_status_ofpid_trq_t        torque;
-} eOmc_joint_status_ofpid_t;       EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 20);
+{   
+    eOmc_status_ofpid_generic_t     generic;
+    eOmc_status_ofpid_olo_t         openloop;
+    eOmc_status_ofpid_pos_t         stiffpos;
+    eOmc_status_ofpid_pos_t         complpos;
+    eOmc_status_ofpid_trq_t         torque;
+} eOmc_joint_status_ofpid_t;        EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 20);
 
 
 /** @typedef    typedef struct eOmc_joint_inputs_t
