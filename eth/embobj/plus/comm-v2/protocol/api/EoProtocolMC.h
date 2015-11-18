@@ -81,9 +81,9 @@ typedef enum
     eoprot_tag_mc_joint_status                                      =  9,
     eoprot_tag_mc_joint_status_basic                                = 10,
     eoprot_tag_mc_joint_status_ofpid                                = 11,
-    eoprot_tag_mc_joint_status_controlmodestatus                    = 12,
-    eoprot_tag_mc_joint_status_interactionmodestatus                = 13,
-    eoprot_tag_mc_joint_status_ismotiondone                         = 14,
+    eoprot_tag_mc_joint_status_modes_controlmodestatus              = 12,
+    eoprot_tag_mc_joint_status_modes_interactionmodestatus          = 13,
+    eoprot_tag_mc_joint_status_modes_ismotiondone                   = 14,
     eoprot_tag_mc_joint_inputs                                      = 15,
     eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 16,
     eoprot_tag_mc_joint_cmmnds_calibration                          = 17,
@@ -115,9 +115,9 @@ typedef enum
     eoprot_rwm_mc_joint_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_basic                                = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_ofpid                                = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_controlmodestatus                    = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_interactionmodestatus                = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_ismotiondone                         = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_modes_controlmodestatus              = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_modes_interactionmodestatus          = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_modes_ismotiondone                   = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_inputs                                      = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_inputs_externallymeasuredtorque             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_calibration                          = eo_nv_rwmode_RW,
@@ -277,14 +277,14 @@ extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_status_ofpid(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
-extern void eoprot_fun_INIT_mc_joint_status_controlmodestatus(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_controlmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_modes_controlmodestatus(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_modes_controlmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_status_interactionmodestatus(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_modes_interactionmodestatus(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_modes_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_status_ismotiondone(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_modes_ismotiondone(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_modes_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd);
 
    
 
