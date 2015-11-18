@@ -1041,10 +1041,10 @@ extern eObool_t eoprot_variable_is_proxied(eOprotBRD_t brd, eOprotID32_t id)
     eOprotEndpoint_t ep = eoprot_ID2endpoint(id);
     uint8_t epi = 0;
     
-    if(eoprot_board_localboard == brd)
-    {
-        return(eobool_false);
-    }
+//    if(eoprot_board_localboard == brd)
+//    {
+//        return(eobool_false);
+//    }
 
     if(NULL == data)
     {
