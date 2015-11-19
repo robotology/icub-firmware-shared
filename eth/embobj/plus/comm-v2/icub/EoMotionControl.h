@@ -572,7 +572,7 @@ typedef struct
     int32_t                     torquereference;    /**< the reference of the torque pid */
     int32_t                     error;              /**< the error of the pid */ 
     int32_t                     output;             /**< the output of the pid */ 
-    int32_t                     filler;
+    int32_t                     filler;             /**< not used */
 } eOmc_status_ofpid_legacy_t;  EO_VERIFYsizeof(eOmc_status_ofpid_legacy_t, 20);
 
 
@@ -581,50 +581,64 @@ typedef struct
  **/
 typedef struct
 {
-    int32_t                     reference1;     /**< the */
-    int32_t                     reference2;     /**< the */
-    int32_t                     error1;         /**< the */
-    int32_t                     error2;         /**< the */
+    int32_t                     reference1;     /**< the first reference */
+    int32_t                     reference2;     /**< the second reference */
+    int32_t                     error1;         /**< the first error */
+    int32_t                     error2;         /**< the second error */
     int32_t                     output;         /**< the output */  
 } eOmc_status_ofpid_generic_t;  EO_VERIFYsizeof(eOmc_status_ofpid_generic_t, 20);
 
 
-/** @typedef    typedef struct eOmc_status_ofpid_olo_t
+/** @typedef    typedef struct eOmc_status_ofpid_openloop_t
     @brief      contains the status of an openloop PID 
  **/
 typedef struct
 {
-    int32_t                     refolo;         /**< the */
-    int32_t                     dummyref2;
-    int32_t                     dummyerr1;
-    int32_t                     dummyerr2;
+    int32_t                     refolo;         /**< the open loop reference */
+    int32_t                     dummyref2;      /**< not used */
+    int32_t                     dummyerr1;      /**< not used */
+    int32_t                     dummyerr2;      /**< not used */
     int32_t                     output;         /**< the output */  
-} eOmc_status_ofpid_olo_t;      EO_VERIFYsizeof(eOmc_status_ofpid_olo_t, 20);
+} eOmc_status_ofpid_openloop_t; EO_VERIFYsizeof(eOmc_status_ofpid_openloop_t, 20);
 
-/** @typedef    typedef struct eOmc_status_ofpid_pos_t
-    @brief      contains the status of a position PID 
+
+/** @typedef    typedef struct eOmc_status_ofpid_stiffpos_t
+    @brief      contains the status of a position PID with stiff mode
  **/
 typedef struct
 {
-    int32_t                     refpos;         /**< the */
-    int32_t                     dummyref2;      /**< the */
-    int32_t                     errpos;         /**< the error */ 
-    int32_t                     dummyerr2;
+    int32_t                     refpos;         /**< the position reference */
+    int32_t                     dummyref2;      /**< not used */
+    int32_t                     errpos;         /**< the position error */ 
+    int32_t                     dummyerr2;      /**< not used */
     int32_t                     output;         /**< the output */    
-} eOmc_status_ofpid_pos_t;      EO_VERIFYsizeof(eOmc_status_ofpid_pos_t, 20);
+} eOmc_status_ofpid_stiffpos_t; EO_VERIFYsizeof(eOmc_status_ofpid_stiffpos_t, 20);
 
 
-/** @typedef    typedef struct eOmc_status_ofpid_trq_t
+/** @typedef    typedef struct eOmc_status_ofpid_complpos_t
+    @brief      contains the status of a position PID with compliant mode
+ **/
+typedef struct
+{
+    int32_t                     refpos;         /**< the position reference */
+    int32_t                     reftrq;         /**< the torque reference */
+    int32_t                     errpos;         /**< the position error */ 
+    int32_t                     errtrq;         /**< the torque error */
+    int32_t                     output;         /**< the output */    
+} eOmc_status_ofpid_complpos_t; EO_VERIFYsizeof(eOmc_status_ofpid_complpos_t, 20);
+
+
+/** @typedef    typedef struct eOmc_status_ofpid_torque_t
     @brief      contains the status of a torque PID 
  **/
 typedef struct
 {
-    int32_t                     refpos;         /**< the */
-    int32_t                     reftrq;         /**< the */
-    int32_t                     errpos;         /**< the error */ 
-    int32_t                     errtrq;
+    int32_t                     dummyref1;      /**< not used */
+    int32_t                     reftrq;         /**< the torque reference */
+    int32_t                     dummyerr1;      /**< not used */
+    int32_t                     errtrq;         /**< the torque error */
     int32_t                     output;         /**< the output */  
-} eOmc_status_ofpid_trq_t;      EO_VERIFYsizeof(eOmc_status_ofpid_trq_t, 20);
+} eOmc_status_ofpid_torque_t;   EO_VERIFYsizeof(eOmc_status_ofpid_torque_t, 20);
 
 
 /** @typedef    typedef uinion eOmc_joint_status_ofpid_t
@@ -633,11 +647,11 @@ typedef struct
 typedef union                  // size is: 4+4+4+0 = 16
 {   
     eOmc_status_ofpid_legacy_t      legacy;
-//    eOmc_status_ofpid_generic_t     generic;
-//    eOmc_status_ofpid_olo_t         openloop;
-//    eOmc_status_ofpid_pos_t         stiffpos;
-//    eOmc_status_ofpid_pos_t         complpos;
-//    eOmc_status_ofpid_trq_t         torque;
+    eOmc_status_ofpid_generic_t     generic;
+    eOmc_status_ofpid_openloop_t    openloop;
+    eOmc_status_ofpid_stiffpos_t    stiffpos;
+    eOmc_status_ofpid_complpos_t    complpos;
+    eOmc_status_ofpid_torque_t      torque;
 } eOmc_joint_status_ofpid_t;        EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 20);
 
 
