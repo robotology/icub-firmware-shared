@@ -563,22 +563,34 @@ typedef struct                  // size is: 40+40+40+8+12 +4+4+12+2 +1+1+4 = 168
 } eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 168);
 
 
+/** @typedef    typedef struct eOmc_status_ofpid_legacy_t
+    @brief      contains the status of a generic PID as until 19 nov 2015
+ **/
+typedef struct
+{
+    int32_t                     positionreference;  /**< the reference of the position pid */
+    int32_t                     torquereference;    /**< the reference of the torque pid */
+    int32_t                     error;              /**< the error of the pid */ 
+    int32_t                     output;             /**< the output of the pid */ 
+    int32_t                     filler;
+} eOmc_status_ofpid_legacy_t;  EO_VERIFYsizeof(eOmc_status_ofpid_legacy_t, 20);
+
 
 /** @typedef    typedef struct eOmc_status_ofpid_generic_t
     @brief      contains the status of a generic PID 
  **/
 typedef struct
 {
-    int32_t                     reference1;         /**< the */
-    int32_t                     reference2;         /**< the */
-    int32_t                     error1;             /**< the */
-    int32_t                     error2;             /**< the */
-    int32_t                     output;             /**< the output */  
-} eOmc_status_ofpid_generic_t; EO_VERIFYsizeof(eOmc_status_ofpid_generic_t, 20);
+    int32_t                     reference1;     /**< the */
+    int32_t                     reference2;     /**< the */
+    int32_t                     error1;         /**< the */
+    int32_t                     error2;         /**< the */
+    int32_t                     output;         /**< the output */  
+} eOmc_status_ofpid_generic_t;  EO_VERIFYsizeof(eOmc_status_ofpid_generic_t, 20);
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_olo_t
-    @brief      contains the status of a openloop PID 
+    @brief      contains the status of an openloop PID 
  **/
 typedef struct
 {
@@ -587,7 +599,7 @@ typedef struct
     int32_t                     dummyerr1;
     int32_t                     dummyerr2;
     int32_t                     output;         /**< the output */  
-} eOmc_status_ofpid_olo_t;     EO_VERIFYsizeof(eOmc_status_ofpid_olo_t, 20);
+} eOmc_status_ofpid_olo_t;      EO_VERIFYsizeof(eOmc_status_ofpid_olo_t, 20);
 
 /** @typedef    typedef struct eOmc_status_ofpid_pos_t
     @brief      contains the status of a position PID 
@@ -595,11 +607,11 @@ typedef struct
 typedef struct
 {
     int32_t                     refpos;         /**< the */
-    int32_t                     dummyref2;         /**< the */
-    int32_t                     errpos;          /**< the error */ 
+    int32_t                     dummyref2;      /**< the */
+    int32_t                     errpos;         /**< the error */ 
     int32_t                     dummyerr2;
     int32_t                     output;         /**< the output */    
-} eOmc_status_ofpid_pos_t;     EO_VERIFYsizeof(eOmc_status_ofpid_pos_t, 20);
+} eOmc_status_ofpid_pos_t;      EO_VERIFYsizeof(eOmc_status_ofpid_pos_t, 20);
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_trq_t
@@ -609,10 +621,10 @@ typedef struct
 {
     int32_t                     refpos;         /**< the */
     int32_t                     reftrq;         /**< the */
-    int32_t                     errpos;          /**< the error */ 
+    int32_t                     errpos;         /**< the error */ 
     int32_t                     errtrq;
     int32_t                     output;         /**< the output */  
-} eOmc_status_ofpid_trq_t;     EO_VERIFYsizeof(eOmc_status_ofpid_trq_t, 20);
+} eOmc_status_ofpid_trq_t;      EO_VERIFYsizeof(eOmc_status_ofpid_trq_t, 20);
 
 
 /** @typedef    typedef uinion eOmc_joint_status_ofpid_t
@@ -620,11 +632,12 @@ typedef struct
  **/
 typedef union                  // size is: 4+4+4+0 = 16
 {   
-    eOmc_status_ofpid_generic_t     generic;
-    eOmc_status_ofpid_olo_t         openloop;
-    eOmc_status_ofpid_pos_t         stiffpos;
-    eOmc_status_ofpid_pos_t         complpos;
-    eOmc_status_ofpid_trq_t         torque;
+    eOmc_status_ofpid_legacy_t      legacy;
+//    eOmc_status_ofpid_generic_t     generic;
+//    eOmc_status_ofpid_olo_t         openloop;
+//    eOmc_status_ofpid_pos_t         stiffpos;
+//    eOmc_status_ofpid_pos_t         complpos;
+//    eOmc_status_ofpid_trq_t         torque;
 } eOmc_joint_status_ofpid_t;        EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 20);
 
 
