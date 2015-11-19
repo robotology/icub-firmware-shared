@@ -134,12 +134,18 @@ typedef uint32_t            eOmeas_damping_t;
 
 
 /** @typedef    typedef int16_t             eOmeas_temperature_t
-    @brief      eOmeas_temperature_t contains the tempeature values.
+    @brief      eOmeas_temperature_t contains the temperature values.
                 the measurement unit is 0.1 C (range is thus +/- 3200 C, well below the 0 kelvin ....).
  **/
 typedef int16_t             eOmeas_temperature_t;
 
 
+
+/** @typedef    typedef int16_t             eOmeas_pwm_t
+    @brief      eOmeas_pwm_t contains the pwm values.
+                the measurement unit is ....... mV/degree
+ **/
+typedef int16_t             eOmeas_pwm_t;
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

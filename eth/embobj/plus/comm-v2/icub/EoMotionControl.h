@@ -118,7 +118,7 @@ typedef enum
     eomc_controlmode_cmd_impedance_pos              = eomc_ctrlmval_impedance_pos, //to be removed
     eomc_controlmode_cmd_impedance_vel              = eomc_ctrlmval_impedance_vel, //to be removed
     eomc_controlmode_cmd_current                    = eomc_ctrlmval_current,
-    eomc_controlmode_cmd_openloop                   = eomc_ctrlmval_openloop,
+    eomc_controlmode_cmd_openloop                   = eomc_ctrlmval_openloop, 
     eomc_controlmode_cmd_switch_everything_off      = eomc_ctrlmval_everything_off,    //to be removed   /**< it imposes a zero current on the motor and also turns the pwm off */    
     eomc_controlmode_cmd_mixed                      = eomc_ctrlmval_mixed,
     eomc_controlmode_cmd_direct                     = eomc_ctrlmval_direct, 
@@ -158,50 +158,41 @@ typedef enum
 
 
 
-enum
-{
-    eomc_imodeval_stiff                  = 0x00,
-    eomc_imodeval_compliant              = 0x01,
-    eomc_imodeval_unknownError           = -1
-};
-
-
-
 
 /** @typedef    typedef enum eOmc_interactionmode_t
     @brief      contains all the possible interaction modes
  **/
 typedef enum
 {
-    eOmc_interactionmode_stiff                  = eomc_imodeval_stiff,
-    eOmc_interactionmode_compliant              = eomc_imodeval_compliant
+    eOmc_interactionmode_stiff                  = 0,
+    eOmc_interactionmode_compliant              = 1
 } eOmc_interactionmode_t;
 
 
-/** @typedef    typedef enum eOmc_motionmonitormode_t
-    @brief      contains all the possible modes for motion monitoring.
-                It is used to configure the reporting of the motion in relation to reaching a given setpoint,
-                as the message motiondone over CAN.    
- **/
-typedef enum
-{
-    eomc_motionmonitormode_dontmonitor      = 0,            /**< the motion is not monitored */
-    eomc_motionmonitormode_untilreached     = 1,            /**< the motion is monitored only until the setpoint is reached (even if the setpoint is changed before being reached) */
-    eomc_motionmonitormode_forever          = 2             /**< the motion is monitored vs any current of future setpoint until the mode is explicitly changed */
-} eOmc_motionmonitormode_t;
+///** @typedef    typedef enum eOmc_motionmonitormode_t
+//    @brief      contains all the possible modes for motion monitoring.
+//                It is used to configure the reporting of the motion in relation to reaching a given setpoint,
+//                as the message motiondone over CAN.    
+// **/
+//typedef enum
+//{
+//    eomc_motionmonitormode_dontmonitor      = 0,            /**< the motion is not monitored */
+//    eomc_motionmonitormode_untilreached     = 1,            /**< the motion is monitored only until the setpoint is reached (even if the setpoint is changed before being reached) */
+//    eomc_motionmonitormode_forever          = 2             /**< the motion is monitored vs any current of future setpoint until the mode is explicitly changed */
+//} eOmc_motionmonitormode_t;
 
 
-/** @typedef    typedef enum eOmc_motionmonitorstatus_t
-    @brief      contains the possible status for motion monitoring.
-                It is used to reporting inside the status of teh joint about the reaching of a given setpoint,
-                as the message motiondone over CAN.    
- **/
-typedef enum
-{
-    eomc_motionmonitorstatus_notmonitored           = EOK_int08dummy,       /**< the motion is not monitored vs a desired setpoint */
-    eomc_motionmonitorstatus_setpointnotreachedyet  = 0,                    /**< the motion is monitored but the desired setpoint is not reached yet */
-    eomc_motionmonitorstatus_setpointisreached      = 1                     /**< the motion is monitored and the desired setpoint is reached */
-} eOmc_motionmonitorstatus_t;
+///** @typedef    typedef enum eOmc_motionmonitorstatus_t
+//    @brief      contains the possible status for motion monitoring.
+//                It is used to reporting inside the status of teh joint about the reaching of a given setpoint,
+//                as the message motiondone over CAN.    
+// **/
+//typedef enum
+//{
+//    eomc_motionmonitorstatus_notmonitored           = EOK_int08dummy,       /**< the motion is not monitored vs a desired setpoint */
+//    eomc_motionmonitorstatus_setpointnotreachedyet  = 0,                    /**< the motion is monitored but the desired setpoint is not reached yet */
+//    eomc_motionmonitorstatus_setpointisreached      = 1                     /**< the motion is monitored and the desired setpoint is reached */
+//} eOmc_motionmonitorstatus_t;
 
 
 
@@ -210,8 +201,8 @@ typedef enum
  **/
 typedef enum
 {
-    eomc_controlstatus_idle                     = 0x00,
-    eomc_controlstatus_running                  = 0x01
+    eomc_controlstatus_idle                     = 0,
+    eomc_controlstatus_running                  = 1
 } eOmc_controlstatus_t;
 
 
@@ -425,7 +416,7 @@ typedef struct                  // size is 4+4+2+2+0 = 12
     eOmeas_damping_t            damping;                            /**< the Kd parameter */
     eOmeas_torque_t             offset;                             /**< the Ko parameter */
     uint8_t                     filler02[2];                        
-} eOmc_impedance_t;             //EO_VERIFYsizeof(eOmc_impedance_t, 12);
+} eOmc_impedance_t;             EO_VERIFYsizeof(eOmc_impedance_t, 12);
 
 
 
@@ -555,79 +546,165 @@ typedef enum
 /** @typedef    typedef struct eOmc_joint_config_t
     @brief      eOmc_joint_config_t contains the values required to configure a joint
  **/
-typedef struct                  // size is: 24+24+24+8+12+2+1+1+4+4+4 = 104/80 
+typedef struct                  // size is: 40+40+40+8+12 +4+4+12+2 +1+1+4 = 168
 {
     eOmc_PID_t                  pidposition;                /**< the pid for position control */
     eOmc_PID_t                  pidvelocity;                /**< the pid for velocity control */
     eOmc_PID_t                  pidtorque;                  /**< the pid for torque control */
     eOmeas_position_limits_t    limitsofjoint;              /**< the minimum and maximum position of the joint */
     eOmc_impedance_t            impedance;                  /**< the impedance to use in control of the relevant kind */                 
-    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
-    eOenum08_t                  motionmonitormode;          /**< use values from eOmc_motionmonitormode_t. it tells if and how to monitor the motion. 
-                                                                 the result is placed inside jstatus.jstatusbasic.motionmonitorstatus */
-    uint8_t                     filler01[1];      
     eOmeas_velocity_t           maxvelocityofjoint;         /**< the maximum velocity in the joint */
     int32_t                     jntEncoderResolution;
     eOmc_motor_params_t         motor_params;
+    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
     uint8_t                     tcfiltertype;               /**< use values from eOmc_torqueControlFilterType_t */
     uint8_t                     jntEncoderType;             /**< use values from eOmc_EncoderType_t */
-    uint8_t                     filler02[2];
+    uint8_t                     filler04[4];
 } eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 168);
 
+
+/** @typedef    typedef struct eOmc_status_ofpid_legacy_t
+    @brief      contains the status of a generic PID as until 19 nov 2015
+ **/
+typedef struct
+{
+    int32_t                     positionreference;  /**< the reference of the position pid */
+    int32_t                     torquereference;    /**< the reference of the torque pid */
+    int32_t                     error;              /**< the error of the pid */ 
+    int32_t                     output;             /**< the output of the pid */ 
+    int32_t                     filler;             /**< not used */
+} eOmc_status_ofpid_legacy_t;  EO_VERIFYsizeof(eOmc_status_ofpid_legacy_t, 20);
+
+
+/** @typedef    typedef struct eOmc_status_ofpid_generic_t
+    @brief      contains the status of a generic PID 
+ **/
+typedef struct
+{
+    int32_t                     reference1;     /**< the first reference */
+    int32_t                     reference2;     /**< the second reference */
+    int32_t                     error1;         /**< the first error */
+    int32_t                     error2;         /**< the second error */
+    int32_t                     output;         /**< the output */  
+} eOmc_status_ofpid_generic_t;  EO_VERIFYsizeof(eOmc_status_ofpid_generic_t, 20);
+
+
+/** @typedef    typedef struct eOmc_status_ofpid_openloop_t
+    @brief      contains the status of an openloop PID 
+ **/
+typedef struct
+{
+    int32_t                     refolo;         /**< the open loop reference */
+    int32_t                     dummyref2;      /**< not used */
+    int32_t                     dummyerr1;      /**< not used */
+    int32_t                     dummyerr2;      /**< not used */
+    int32_t                     output;         /**< the output */  
+} eOmc_status_ofpid_openloop_t; EO_VERIFYsizeof(eOmc_status_ofpid_openloop_t, 20);
+
+
+/** @typedef    typedef struct eOmc_status_ofpid_stiffpos_t
+    @brief      contains the status of a position PID with stiff mode
+ **/
+typedef struct
+{
+    int32_t                     refpos;         /**< the position reference */
+    int32_t                     dummyref2;      /**< not used */
+    int32_t                     errpos;         /**< the position error */ 
+    int32_t                     dummyerr2;      /**< not used */
+    int32_t                     output;         /**< the output */    
+} eOmc_status_ofpid_stiffpos_t; EO_VERIFYsizeof(eOmc_status_ofpid_stiffpos_t, 20);
+
+
+/** @typedef    typedef struct eOmc_status_ofpid_complpos_t
+    @brief      contains the status of a position PID with compliant mode
+ **/
+typedef struct
+{
+    int32_t                     refpos;         /**< the position reference */
+    int32_t                     reftrq;         /**< the torque reference */
+    int32_t                     errpos;         /**< the position error */ 
+    int32_t                     errtrq;         /**< the torque error */
+    int32_t                     output;         /**< the output */    
+} eOmc_status_ofpid_complpos_t; EO_VERIFYsizeof(eOmc_status_ofpid_complpos_t, 20);
+
+
+/** @typedef    typedef struct eOmc_status_ofpid_torque_t
+    @brief      contains the status of a torque PID 
+ **/
+typedef struct
+{
+    int32_t                     dummyref1;      /**< not used */
+    int32_t                     reftrq;         /**< the torque reference */
+    int32_t                     dummyerr1;      /**< not used */
+    int32_t                     errtrq;         /**< the torque error */
+    int32_t                     output;         /**< the output */  
+} eOmc_status_ofpid_torque_t;   EO_VERIFYsizeof(eOmc_status_ofpid_torque_t, 20);
+
+
+/** @typedef    typedef uinion eOmc_joint_status_ofpid_t
+    @brief      eOmc_joint_status_ofpid_t contains the status of a PID.
+ **/
+typedef union                  // size is: 4+4+4+0 = 16
+{   
+    eOmc_status_ofpid_legacy_t      legacy;
+    eOmc_status_ofpid_generic_t     generic;
+    eOmc_status_ofpid_openloop_t    openloop;
+    eOmc_status_ofpid_stiffpos_t    stiffpos;
+    eOmc_status_ofpid_complpos_t    complpos;
+    eOmc_status_ofpid_torque_t      torque;
+} eOmc_joint_status_ofpid_t;        EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 20);
+
+
+/** @typedef    typedef struct eOmc_joint_inputs_t
+    @brief      contains the inputs used for a joint 
+ **/
+typedef struct                  // size is 2+2 = 4
+{   
+    eOmeas_torque_t             externallymeasuredtorque;   /**< the torque at the joint when externally measured or estimated */
+    uint8_t                     filler[2];
+} eOmc_joint_inputs_t;          EO_VERIFYsizeof(eOmc_joint_inputs_t, 4);
 
 
 
 /** @typedef    typedef struct eOmc_joint_status_basic_t
     @brief      eOmc_joint_status_basic_t contains the basic status of the joint
  **/
-typedef struct                  // size is: 4+4+4+2+1+1+0 = 16
-{
+typedef struct                  // size is: 4+4+4+2+2+0 = 16
+{   
     eOmeas_position_t           jnt_position;               /**< the position of the joint */           
     eOmeas_velocity_t           jnt_velocity;               /**< the velocity of the joint */          
     eOmeas_acceleration_t       jnt_acceleration;           /**< the acceleration of the joint */       
     eOmeas_torque_t             jnt_torque;                 /**< the torque of the joint when locally measured */
-    eOenum08_t                  motionmonitorstatus;        /**< use eOmc_motionmonitorstatus_t. it is eomc_motionmonitorstatus_notmonitored unless the monitor is activated in jconfig.motionmonitormode */  
-    eOenum08_t                  controlmodestatus;          /**< use eOmc_controlmode_t. */
-} eOmc_joint_status_basic_t;    //EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
+    uint8_t                     filler[2];
+} eOmc_joint_status_basic_t;    EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
 
 
-
-/** @typedef    typedef struct eOmc_joint_status_ofpid_t
-    @brief      eOmc_joint_status_ofpid_t contains the status of a PID. The variables reference, error, and output are defined as
-                signed integers of 32 bits, but the must contain the relevant measurement units (eOmeas_position_t, eOmeas_velocity_t,
-                eOmeas_torque_t, or eOmeas_current_t).
+/** @typedef    typedef struct eOmc_joint_status_modes_t
+    @brief      eOmc_joint_status_modes_t contains the status modes of a joint
  **/
-typedef struct                  // size is: 4+4+4+0 = 16
+typedef struct
 {
-    int32_t                     positionreference;      /**< the reference of the position pid */
-    int32_t                     torquereference;        /**< the reference of the torque pid */
-    int32_t                     error;                  /**< the error of the pid */ 
-    int32_t                     output;                 /**< the output of the pid */ 
-} eOmc_joint_status_ofpid_t;    //EO_VERIFYsizeof(eOmc_joint_status_ofpid_t, 16);
-
+    eOenum08_t                  controlmodestatus;          /**< use eOmc_controlmode_t. */
+    eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
+    eObool_t                    ismotiondone;               /**< simply eobool_true or eobool_false */                      
+    uint8_t                     filler[1];    
+} eOmc_joint_status_modes_t;
 
 
 /** @typedef    typedef struct eOmc_joint_status_t
-    @brief      eOmc_joint_status_t contains the status of a joint. 
+    @brief      eOmc_joint_status_t contains the status of a joint
  **/
-typedef struct                  // size is:  16+16+1+3 = 36
+typedef struct                  // size is:  16+20+4 = 40
 {
     eOmc_joint_status_basic_t   basic;                      /**< the basic status */
-    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status   */ 
-    eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
-    uint8_t                     chamaleon03[3];             /**< these bytes are available for the application for debug purposes */
-} eOmc_joint_status_t;          EO_VERIFYsizeof(eOmc_joint_status_t, 36);
+    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status */ 
+    eOmc_joint_status_modes_t   modes;                      /**< the status modes */
+} eOmc_joint_status_t;          EO_VERIFYsizeof(eOmc_joint_status_t, 40); 
 
 
-
-typedef struct                  // size is 2+6 = 8
-{
-    eOmeas_torque_t             externallymeasuredtorque;   /**< the torque at the joint when externally measured or estimated */
-    uint8_t                     filler06[6];
-} eOmc_joint_inputs_t;          EO_VERIFYsizeof(eOmc_joint_inputs_t, 8);
-
-
-
+/** @typedef    typedef struct eOmc_joint_commands_t
+    @brief      contains the possible commands set to a joint
+ **/
 typedef struct                  // size is 20+12+1+1+1+1+0 = 36
 {
     eOmc_calibrator_t           calibration;                /**< the calibrator to use */
@@ -635,18 +712,21 @@ typedef struct                  // size is 20+12+1+1+1+1+0 = 36
     eObool_t                    stoptrajectory;             /**< it is an order to stop the current trajectory on the joint */
     eOenum08_t                  controlmode;                /**< use values from eOmc_controlmode_command_t */
     eOenum08_t                  interactionmode;            /**< use values from eOmc_interactionmode_t */
-    uint8_t                     filler01;
+    uint8_t                     filler[1];
 } eOmc_joint_commands_t;        EO_VERIFYsizeof(eOmc_joint_commands_t, 36);
 
 
-
-typedef struct                  // size is 168+36+8+36+0 = 248
-{
+/** @typedef    typedef struct eOmc_joint_t
+    @brief      contains the whole joint
+ **/
+typedef struct                  // size is 168+40+2+36+0 = 248
+{   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
 } eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 248);
+
 
 
 // -- the definition of a motor
@@ -664,12 +744,11 @@ typedef uint8_t  eOmc_motorId_t;
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
+typedef struct                  // size is: 40+4+4+4+2+2+ 1+1+1+1+1+1 +2 + 8= 72
 {
     eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
     int32_t                     gearboxratio;               /**< the gearbox reduction ration */
     int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution  */
-    int32_t                     filler01;                   /**< reserved */
     eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
     uint16_t                    rotorIndexOffset;           /**< index offset for the rotor encoder*/
@@ -679,37 +758,42 @@ typedef struct                  // size is: 40+4+4+4+4+2+2+1+1+1+1+1 = 56
     eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
     eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
     uint8_t                     rotorEncoderType;           /**< rotor encoder type */
+    uint8_t                     filler02[2];
     eOmeas_position_limits_t    limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 76);
+} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 72);
 
 
-/** @typedef    typedef struct eOmc_motor_status_t
-    @brief      eOmc_motor_status_t contains the status of a motor
-    @warning    This struct must be of fixed size and multiple of 4.
+
+/** @typedef    typedef struct eOmc_motor_status_basic_t
+    @brief      eOmc_motor_status_basic_t contains the basic status of a motor
  **/
-typedef struct                  // size is: 4+4+4+2+2+0 = 16
-{
+typedef struct                  // size is: 4+4+4+2+2+2+2 = 20
+{   
     eOmeas_position_t           mot_position;                   /**< the position of the motor */         
     eOmeas_velocity_t           mot_velocity;                   /**< the velocity of the motor */
     eOmeas_acceleration_t       mot_acceleration;               /**< the acceleration of the motor */ 
     eOmeas_current_t            mot_current;                    /**< the current of the motor */  
     eOmeas_temperature_t        mot_temperature;                /**< the temperature of the motor */
-} eOmc_motor_status_basic_t;    //EO_VERIFYsizeof(eOmc_motor_status_basic_t, 16);
+    eOmeas_pwm_t                mot_pwm;                        /**< the pwm of the motor */
+    uint16_t                    filler;
+} eOmc_motor_status_basic_t;   EO_VERIFYsizeof(eOmc_motor_status_basic_t, 20);
 
 
 /** @typedef    typedef struct eOmc_motor_status_t
     @brief      eOmc_motor_status_t contains the status of a motor
-    @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 16+4+0 = 16
-{
-    eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */
-    uint8_t                     filler04[4];            
-} eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 20);
+typedef struct                  // size is: 20+4+0 = 24
+{   
+    eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */   
+    uint8_t                     filler[4];    
+} eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 24);
 
 
 
-typedef struct                  // size is 76+20+0 = 76
+/** @typedef    typedef struct eOmc_motor_t
+    @brief      contains the whole motor
+ **/
+typedef struct                  // size is 76+24+0 = 96
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
