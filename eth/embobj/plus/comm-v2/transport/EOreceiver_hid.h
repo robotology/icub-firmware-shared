@@ -78,7 +78,10 @@ struct EOreceiver_hid
     eOipv4port_t                ipv4port;
     uint8_t*                    bufferropframereply;
     uint64_t                    rx_seqnum;
-    eOvoid_fp_uint32_uint64_uint64_t on_error_seqnumber;
+    eOabstime_t                 tx_ageofframe;
+    eOreceiver_seqnum_error_t   error_seqnumber;
+    eOreceiver_void_fp_obj_t    on_error_seqnumber;    
+    eOreceiver_void_fp_obj_t    on_error_invalidframe;
 #if defined(USE_DEBUG_EORECEIVER)      
     EOreceiverDEBUG_t           debug;
 #endif    

@@ -101,7 +101,8 @@ const eOhosttransceiver_cfg_t eo_hosttransceiver_cfg_default =
     EO_INIT(.confmancfg)                NULL,
     EO_INIT(.extfn)                         
     {
-        EO_INIT(.onerrorseqnumber)      NULL
+        EO_INIT(.onerrorseqnumber)      NULL,
+        EO_INIT(.onerrorinvalidframe)   NULL
     }    
 };
 

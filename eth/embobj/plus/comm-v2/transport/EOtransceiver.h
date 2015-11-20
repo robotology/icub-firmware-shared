@@ -87,7 +87,8 @@ typedef struct
 
 typedef struct
 {
-    eOvoid_fp_uint32_uint64_uint64_t    onerrorseqnumber;    
+    eOreceiver_void_fp_obj_t    onerrorseqnumber;
+    eOreceiver_void_fp_obj_t    onerrorinvalidframe;    
 } eOtransceiver_extfn_t;
 
 typedef struct

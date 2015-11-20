@@ -73,9 +73,22 @@ typedef struct
     uint16_t                capacityofropreply;    
 } eOreceiver_sizes_t;
 
+
 typedef struct
 {
-    eOvoid_fp_uint32_uint64_uint64_t    onerrorseqnumber;  // remote ip address, received seq number, expected seq number   
+    eOipv4addr_t    remipv4addr;
+    uint64_t        rec_seqnum;
+    uint64_t        exp_seqnum;
+    uint64_t        timeoftxofcurrent;
+    uint64_t        timeoftxofprevious;       
+} eOreceiver_seqnum_error_t;
+
+typedef void (*eOreceiver_void_fp_obj_t) (EOreceiver *);
+
+typedef struct
+{
+    eOreceiver_void_fp_obj_t    onerrorseqnumber;       // argument is: EOreceiver*  
+    eOreceiver_void_fp_obj_t    onerrorinvalidframe;    // argument is: EOreceiver*
 } eOreceiver_extfn_t;
 
 typedef struct
@@ -135,7 +148,7 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
  **/
 extern eOresult_t eo_receiver_GetReply(EOreceiver *p, EOropframe **ropframereply);
 
-//extern eOresult_t eo_receiver_set_fn_on_seqnumber_error(EOreceiver *p, eOvoid_fp_uint32_uint64_uint64_t onerrorseqnumber);
+extern const eOreceiver_seqnum_error_t * eo_receiver_GetSequenceNumberError(EOreceiver *p);
 
 
 
