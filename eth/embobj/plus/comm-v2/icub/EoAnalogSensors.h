@@ -258,15 +258,14 @@ typedef struct
 typedef struct                      
 {
     eOmeas_torque_t                 torquevalue;
-    uint8_t                         filler02[2];
-} eOas_extorque_inputs_t;           //EO_VERIFYsizeof(eOas_extorque_inputs_t, 4);
+} eOas_extorque_inputs_t;           EO_VERIFYsizeof(eOas_extorque_inputs_t, 4);
 
 
 typedef struct                      // size is: 4+4+0 = 8
 {
     eOas_extorque_config_t          config;
     eOas_extorque_inputs_t          inputs;    
-} eOas_extorque_t;                  //EO_VERIFYsizeof(eOas_extorque_t, 8);
+} eOas_extorque_t;                  EO_VERIFYsizeof(eOas_extorque_t, 8);
 
 
 
@@ -416,25 +415,25 @@ typedef struct                      // size is: 56+16+8 = 80
 
 // - others unused possible entities
 
-/** @typedef    typedef struct eOas_aea_t
-    @brief      eOas_aea_t contains measurements of the absolute encoder which so far is managed only by the ems 
-    @warning    This struct must be of fixed and size and multiple of 4.
- **/
-typedef struct                  // size is: 4+0 = 4
-{
-    uint32_t                    value;  // used with ... see hal_encoder.h for bitfield formatting  
-} eOas_aea_t;                   //EO_VERIFYsizeof(eOas_aea_t, 4);
+///** @typedef    typedef struct eOas_aea_t
+//    @brief      eOas_aea_t contains measurements of the absolute encoder which so far is managed only by the ems 
+//    @warning    This struct must be of fixed and size and multiple of 4.
+// **/
+//typedef struct                  // size is: 4+0 = 4
+//{
+//    uint32_t                    value;  // used with ... see hal_encoder.h for bitfield formatting  
+//} eOas_aea_t;                   //EO_VERIFYsizeof(eOas_aea_t, 4);
 
 
-/** @typedef    typedef struct eOas_forcetorque_t
-    @brief      eOas_forcetorque_t contains measurements of force on xyz and of torque on 3 components 
- **/
-typedef struct                  // size is: 4+2*3+2*3+0 = 16 
-{
-    uint32_t                    identifier;         /**< the identifier of the origin of measure: so far only strain */ 
-    eOmeas_force_t              force[3];           /**< the force split in x, y, and z components */
-    eOmeas_torque_t             torque[3];          /**< the torque split in three components*/
-} eOas_forcetorque_t;           //EO_VERIFYsizeof(eOas_forcetorque_t, 16);
+///** @typedef    typedef struct eOas_forcetorque_t
+//    @brief      eOas_forcetorque_t contains measurements of force on xyz and of torque on 3 components 
+// **/
+//typedef struct                  // size is: 4+2*3+2*3+0 = 16 
+//{
+//    uint32_t                    identifier;         /**< the identifier of the origin of measure: so far only strain */ 
+//    eOmeas_force_t              force[3];           /**< the force split in x, y, and z components */
+//    eOmeas_torque_t             torque[3];          /**< the torque split in three components*/
+//} eOas_forcetorque_t;           //EO_VERIFYsizeof(eOas_forcetorque_t, 16);
 
 
 

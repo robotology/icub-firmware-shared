@@ -105,7 +105,7 @@ typedef int32_t             eOmeas_acceleration_t;
 typedef int32_t             eOmeas_force_t;
 
 
-/** @typedef    typedef int16_t             eOmeas_torque_t
+/** @typedef    typedef int32_t             eOmeas_torque_t
     @brief      eOmeas_torque_t contains the torque values.
                 the measurement unit is mN m (milli Newton metre).
  **/
