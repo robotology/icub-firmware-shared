@@ -170,19 +170,22 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
 const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_MC_motor_external_fault,  "MC: 2FOC exernal fault"},
-    {eoerror_value_MC_motor_overcurrent,     "MC: 2FOC overcurrent"},
-    {eoerror_value_MC_motor_i2t_limit,       "MC: 2FOC i2t limit exceeded"},
-    {eoerror_value_MC_motor_hallsensors,     "MC: 2FOC hall sensors fault"},
-    {eoerror_value_MC_motor_qencoder,        "MC: 2FOC quadrature encoder fault"},
-    {eoerror_value_MC_motor_can_invalid_prot,"MC: 2FOC CAN invalid protocol"},
-    {eoerror_value_MC_motor_can_generic,     "MC: 2FOC CAN generic error"},
-    {eoerror_value_MC_motor_can_no_answer,   "MC: 2FOC CAN no answer"},
-    {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout"},
-    {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data"},
-    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout"},
-    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes"},
-    {eoerror_value_MC_generic_error,         "MC: generic motor error (see 64 bit mask parameter)"}
+    {eoerror_value_MC_motor_external_fault,  "MC: 2FOC exernal fault button pressed."},
+    {eoerror_value_MC_motor_overcurrent,     "MC: 2FOC overcurrent. The motor has been turned off to prevent it from being damaged by an impulsive spike of current."},
+    {eoerror_value_MC_motor_i2t_limit,       "MC: 2FOC i2t limit exceeded. The motor has been turned off to prevent it from being damaged by overheatig due to a continuous absorbsion of high current."},
+    {eoerror_value_MC_motor_hallsensors,     "MC: 2FOC hall sensors fault. Invalid sequence in motor Hall effect sensors, please check motor hall cable connections."},
+    {eoerror_value_MC_motor_can_invalid_prot,"MC: 2FOC CAN invalid protocol. The EMS and 2FOC firmware versions are incompatible, please update."},
+    {eoerror_value_MC_motor_can_generic,     "MC: 2FOC CAN generic error. Errors happened in the CAN bus between the EMS and the 2FOC board."},
+    {eoerror_value_MC_motor_can_no_answer,   "MC: 2FOC CAN no answer. The communication between the EMS and the 2FOC board has been lost for more than 50 ms."},
+    {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout. The joint is in a compliant interaction mode or torque control mode, and data from torque sensor have been unavailable for more than 100 ms."},
+    {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data. Hardware problem in the magnetic position sensor of the joint caused invalid position readings."},
+    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout. No answer from the magnetic position sensor of the joint (cable broken?)."},
+    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes. There is impulsive noise in the measures of the magnetic position sensor of the joint."},
+    {eoerror_value_MC_motor_qencoder_dirty,  "MC: 2FOC quadrature encoder dirty. The number of thicks in a complete revolution of the motor was lower than expected, the optical disks need to be cleaned."},
+    {eoerror_value_MC_motor_qencoder_index,  "MC: 2FOC quadrature encoder index broken. The reference special thick was not detected during a complete revolution of the motor, please check motor encoder cables."},
+    {eoerror_value_MC_motor_qencoder_phase,  "MC: 2FOC quadrature encoder phase broken. The motor encoder is not counting even if the motor is moving, please check motor encoder cables."},
+    {eoerror_value_MC_motor_wrong_state,     "MC: 2FOC wrong state. The 2FOC motor controller is in a control state different from required by the EMS. In par64 0xF0 is the mask of requested state, 0x0F is the mask of actual state."},  
+    {eoerror_value_MC_generic_error,         "MC: generic motor error (see 64 bit mask parameter)."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
