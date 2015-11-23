@@ -488,7 +488,7 @@ typedef struct
     uint8_t saturationInChannel_3                   : 2;    // use values from icubCanProto_strain_saturationInfo_t
     uint8_t saturationInChannel_4                   : 2;    // use values from icubCanProto_strain_saturationInfo_t
     uint8_t saturationInChannel_5                   : 2;    // use values from icubCanProto_strain_saturationInfo_t   
-} icubCanProto_strain_torqueSaturationInfo_t;;
+} icubCanProto_strain_torqueSaturationInfo_t;
 
 
 
