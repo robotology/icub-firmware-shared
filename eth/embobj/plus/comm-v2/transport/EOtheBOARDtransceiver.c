@@ -99,7 +99,8 @@ const eOboardtransceiver_cfg_t eo_boardtransceiver_cfg_default =
     EO_INIT(.proxycfg)                  NULL,
     EO_INIT(.extfn)                         
     {
-        EO_INIT(.onerrorseqnumber)      NULL
+        EO_INIT(.onerrorseqnumber)      NULL,
+        EO_INIT(.onerrorinvalidframe)   NULL
     }
 };
 

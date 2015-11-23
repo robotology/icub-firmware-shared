@@ -67,7 +67,9 @@
 // - declaration of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
-static void s_eo_receiver_on_error_seqnumber(EOreceiver* p, eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum);
+static void s_eo_receiver_on_error_invalidframe(EOreceiver* p);
+
+static void s_eo_receiver_on_error_seqnumber(EOreceiver* p);
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -87,7 +89,8 @@ const eOreceiver_cfg_t eo_receiver_cfg_default =
     EO_INIT(.agent)                         NULL,
     EO_INIT(.extfn)                         
     {
-        EO_INIT(.onerrorseqnumber)          NULL
+        EO_INIT(.onerrorseqnumber)          NULL,
+        EO_INIT(.onerrorinvalidframe)       NULL
     } 
 };
 
@@ -119,7 +122,11 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
     retptr->ipv4port            = 0;
     retptr->bufferropframereply = (0 == cfg->sizes.capacityofropframereply) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereply, 1));
     retptr->rx_seqnum           = eok_uint64dummy;
+    retptr->tx_ageofframe       = eok_uint64dummy;
+    memset(&retptr->error_seqnumber, 0, sizeof(retptr->error_seqnumber));       // even if it is already zero.
+    memset(&retptr->error_invalidframe, 0, sizeof(retptr->error_invalidframe)); // even if it is already zero. 
     retptr->on_error_seqnumber  = cfg->extfn.onerrorseqnumber;
+    retptr->on_error_invalidframe = cfg->extfn.onerrorinvalidframe;
     // now we need to allocate the buffer for the ropframereply
 
 #if defined(USE_DEBUG_EORECEIVER)    
@@ -172,6 +179,7 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
     eOipv4addr_t remipv4addr;
     eOipv4port_t remipv4port;
     uint64_t rec_seqnum;
+    uint64_t rec_ageoframe;
     uint16_t numofprocessedrops = 0;
 
     
@@ -207,7 +215,11 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
         {   // DEBUG
             p->debug.rxinvalidropframes ++;
         }
-#endif       
+#endif  
+        p->error_invalidframe.remipv4addr = remipv4addr;
+        p->error_invalidframe.ropframe = p->ropframeinput;
+        s_eo_receiver_on_error_invalidframe(p);
+        
         if(NULL != thereisareply)
         {
             *thereisareply = eobool_false;
@@ -219,25 +231,34 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
     // check sequence number
     
     rec_seqnum = eo_ropframe_seqnum_Get(p->ropframeinput);
+    rec_ageoframe = eo_ropframe_age_Get(p->ropframeinput);
     
     if(p->rx_seqnum == eok_uint64dummy)
     {
         //this is the first received ropframe or ... the sender uses dummy seqnum
         p->rx_seqnum = rec_seqnum;
+        p->tx_ageofframe = rec_ageoframe;
     }
     else
     {
         if(rec_seqnum != (p->rx_seqnum+1))
         {
 #if defined(USE_DEBUG_EORECEIVER)             
-            {   // DEBUG
+            {
                 p->debug.errorsinsequencenumber ++;
             }
-#endif       
-            s_eo_receiver_on_error_seqnumber(p, remipv4addr, rec_seqnum, p->rx_seqnum+1);
-            //eo_receiver_callback_incaseoferror_in_sequencenumberReceived(remipv4addr, rec_seqnum, p->rx_seqnum+1);
+#endif  
+            // must set values
+            p->error_seqnumber.remipv4addr = remipv4addr;
+            p->error_seqnumber.rec_seqnum = rec_seqnum;
+            p->error_seqnumber.exp_seqnum =  p->rx_seqnum+1;
+            p->error_seqnumber.timeoftxofcurrent = rec_ageoframe;
+            p->error_seqnumber.timeoftxofprevious = p->tx_ageofframe;
+            
+            s_eo_receiver_on_error_seqnumber(p);
         }
         p->rx_seqnum = rec_seqnum;
+        p->tx_ageofframe = rec_ageoframe;
     }
     
 
@@ -308,11 +329,20 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
 }
 
 
-static void s_eo_receiver_on_error_seqnumber(EOreceiver* p, eOipv4addr_t remipv4addr, uint64_t rec_seqnum, uint64_t exp_seqnum)
+static void s_eo_receiver_on_error_invalidframe(EOreceiver* p)
+{
+    if(NULL != p->on_error_invalidframe)
+    {
+        p->on_error_invalidframe(p);
+    }        
+}
+
+
+static void s_eo_receiver_on_error_seqnumber(EOreceiver* p)
 {
     if(NULL != p->on_error_seqnumber)
     {
-        p->on_error_seqnumber(remipv4addr, rec_seqnum, exp_seqnum);
+        p->on_error_seqnumber(p);
     } 
 }
 
@@ -334,6 +364,26 @@ extern eOresult_t eo_receiver_GetReply(EOreceiver *p, EOropframe **ropframereply
     
     return(eores_OK);
 }  
+
+extern const eOreceiver_seqnum_error_t * eo_receiver_GetSequenceNumberError(EOreceiver *p)
+{
+    if(NULL == p) 
+    {
+        return(NULL);
+    }  
+
+    return(&p->error_seqnumber);   
+}
+
+extern const eOreceiver_invalidframe_error_t * eo_receiver_GetInvalidFrameError(EOreceiver *p)
+{
+    if(NULL == p) 
+    {
+        return(NULL);
+    }  
+
+    return(&p->error_invalidframe);        
+}
 
 
 // extern eOresult_t eo_receiver_set_fn_on_seqnumber_error(EOreceiver *p, eOvoid_fp_uint32_uint64_uint64_t onerrorseqnumber)

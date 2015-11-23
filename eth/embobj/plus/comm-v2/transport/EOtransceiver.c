@@ -98,8 +98,10 @@ const eOtransceiver_cfg_t eo_transceiver_cfg_default =
     EO_INIT(.protection)                    eo_trans_protection_none,
     EO_INIT(.extfn)                         
     {
-        EO_INIT(.onerrorseqnumber)          NULL
+        EO_INIT(.onerrorseqnumber)          NULL,
+        EO_INIT(.onerrorinvalidframe)       NULL
     }
+    
 };
 
 
@@ -182,6 +184,7 @@ extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg)
     rec_cfg.sizes.capacityofropreply        = cfg->sizes.capacityofrop;
     rec_cfg.agent                           = retptr->agent;
     rec_cfg.extfn.onerrorseqnumber          = cfg->extfn.onerrorseqnumber;
+    rec_cfg.extfn.onerrorinvalidframe       = cfg->extfn.onerrorinvalidframe;
 
     retptr->receiver = eo_receiver_New(&rec_cfg);
 
