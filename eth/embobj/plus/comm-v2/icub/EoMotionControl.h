@@ -414,8 +414,7 @@ typedef struct                  // size is 4+4+2+2+0 = 12
 {
     eOmeas_stiffness_t          stiffness;                          /**< the Ks parameter */
     eOmeas_damping_t            damping;                            /**< the Kd parameter */
-    eOmeas_torque_t             offset;                             /**< the Ko parameter */
-    uint8_t                     filler02[2];                        
+    eOmeas_torque_t             offset;                             /**< the Ko parameter */                     
 } eOmc_impedance_t;             EO_VERIFYsizeof(eOmc_impedance_t, 12);
 
 
@@ -658,10 +657,9 @@ typedef union                  // size is: 4+4+4+0 = 16
 /** @typedef    typedef struct eOmc_joint_inputs_t
     @brief      contains the inputs used for a joint 
  **/
-typedef struct                  // size is 2+2 = 4
+typedef struct                  // size is 4 = 4
 {   
     eOmeas_torque_t             externallymeasuredtorque;   /**< the torque at the joint when externally measured or estimated */
-    uint8_t                     filler[2];
 } eOmc_joint_inputs_t;          EO_VERIFYsizeof(eOmc_joint_inputs_t, 4);
 
 
@@ -675,7 +673,6 @@ typedef struct                  // size is: 4+4+4+2+2+0 = 16
     eOmeas_velocity_t           jnt_velocity;               /**< the velocity of the joint */          
     eOmeas_acceleration_t       jnt_acceleration;           /**< the acceleration of the joint */       
     eOmeas_torque_t             jnt_torque;                 /**< the torque of the joint when locally measured */
-    uint8_t                     filler[2];
 } eOmc_joint_status_basic_t;    EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
 
 

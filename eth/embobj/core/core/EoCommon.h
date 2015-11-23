@@ -90,8 +90,11 @@ extern "C" {
 #define EOK_VER_MIN                         (0x00)
 #define EOK_VER_REL                         (0x0000)
 
-#define EO_MIN(a, b)                       (((a)<(b))?(a):(b))
-#define EO_MAX(a, b)                       (((a)>(b))?(a):(b))
+#define EO_MIN(a, b)                        (((a)<(b))?(a):(b))
+#define EO_MAX(a, b)                        (((a)>(b))?(a):(b))
+
+#define EO_CLIP_INT32(i32)                  ( ((i32)>INT32_MAX) ? (INT32_MAX) : ( ((i32)<(-INT32_MAX)) ? (-INT32_MAX) : (i32) )  )
+#define EO_CLIP_INT16(i16)                  ( ((i16)>INT16_MAX) ? (INT16_MAX) : ( ((i16)<(-INT16_MAX)) ? (-INT16_MAX) : (i16) )  )
 
 
 // issues a compiler error if the sizeof the struct is not what in second argument
