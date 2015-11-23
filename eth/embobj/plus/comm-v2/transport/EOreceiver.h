@@ -83,6 +83,12 @@ typedef struct
     uint64_t        timeoftxofprevious;       
 } eOreceiver_seqnum_error_t;
 
+typedef struct
+{
+    eOipv4addr_t    remipv4addr;
+    EOropframe      *ropframe;
+} eOreceiver_invalidframe_error_t;
+
 typedef void (*eOreceiver_void_fp_obj_t) (EOreceiver *);
 
 typedef struct
@@ -150,7 +156,7 @@ extern eOresult_t eo_receiver_GetReply(EOreceiver *p, EOropframe **ropframereply
 
 extern const eOreceiver_seqnum_error_t * eo_receiver_GetSequenceNumberError(EOreceiver *p);
 
-
+extern const eOreceiver_invalidframe_error_t * eo_receiver_GetInvalidFrameError(EOreceiver *p);
 
 
 /** @}            

@@ -80,6 +80,7 @@ struct EOreceiver_hid
     uint64_t                    rx_seqnum;
     eOabstime_t                 tx_ageofframe;
     eOreceiver_seqnum_error_t   error_seqnumber;
+    eOreceiver_invalidframe_error_t error_invalidframe;
     eOreceiver_void_fp_obj_t    on_error_seqnumber;    
     eOreceiver_void_fp_obj_t    on_error_invalidframe;
 #if defined(USE_DEBUG_EORECEIVER)      

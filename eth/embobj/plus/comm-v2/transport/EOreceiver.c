@@ -123,7 +123,8 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
     retptr->bufferropframereply = (0 == cfg->sizes.capacityofropframereply) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereply, 1));
     retptr->rx_seqnum           = eok_uint64dummy;
     retptr->tx_ageofframe       = eok_uint64dummy;
-    memset(&retptr->error_seqnumber, 0, sizeof(retptr->error_seqnumber)); // even if it is already zero.
+    memset(&retptr->error_seqnumber, 0, sizeof(retptr->error_seqnumber));       // even if it is already zero.
+    memset(&retptr->error_invalidframe, 0, sizeof(retptr->error_invalidframe)); // even if it is already zero. 
     retptr->on_error_seqnumber  = cfg->extfn.onerrorseqnumber;
     retptr->on_error_invalidframe = cfg->extfn.onerrorinvalidframe;
     // now we need to allocate the buffer for the ropframereply
@@ -215,6 +216,8 @@ extern eOresult_t eo_receiver_Process(EOreceiver *p, EOpacket *packet, uint16_t 
             p->debug.rxinvalidropframes ++;
         }
 #endif  
+        p->error_invalidframe.remipv4addr = remipv4addr;
+        p->error_invalidframe.ropframe = p->ropframeinput;
         s_eo_receiver_on_error_invalidframe(p);
         
         if(NULL != thereisareply)
@@ -370,6 +373,16 @@ extern const eOreceiver_seqnum_error_t * eo_receiver_GetSequenceNumberError(EOre
     }  
 
     return(&p->error_seqnumber);   
+}
+
+extern const eOreceiver_invalidframe_error_t * eo_receiver_GetInvalidFrameError(EOreceiver *p)
+{
+    if(NULL == p) 
+    {
+        return(NULL);
+    }  
+
+    return(&p->error_invalidframe);        
 }
 
 
