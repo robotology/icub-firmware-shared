@@ -153,7 +153,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_transceiver_rxseqnumber_restarted, "SYS: the board has detected a restart of the remote transceiver because the rx ropframe sequence number is 1. In par64 there is the expected number."},
     {eoerror_value_SYS_canservices_board_detected, "SYS: the can discovery service found the board on the specified CAN bus / adr. In par64 there is the eObrd_typeandversions_t."},
     {eoerror_value_SYS_canservices_board_wrongprotversion, "SYS: the board on the specified CAN bus / adr has incompatible fw protocol version. In par16 there is required prot, in par64 there is detected eObrd_typeandversions_t."},
-    {eoerror_value_SYS_canservices_board_notfound, "SYS: the board on the specified CAN bus / adr was not found during the discovery phase. In par16 there is the board type"}
+    {eoerror_value_SYS_canservices_board_notfound, "SYS: the board on the specified CAN bus / adr was not found during the discovery phase. In par16 there is the board type"},
+    {eoerror_value_SYS_transceiver_rxinvalidframe_error, "SYS: the board has detected an invalid ropframe in reception."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
