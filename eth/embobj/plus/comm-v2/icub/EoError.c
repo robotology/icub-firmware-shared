@@ -180,7 +180,7 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout. The joint is in a compliant interaction mode or torque control mode, and data from torque sensor have been unavailable for more than 100 ms."},
     {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data. Hardware problem in the magnetic position sensor of the joint caused invalid position readings."},
     {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout. No answer from the magnetic position sensor of the joint (cable broken?)."},
-    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes. There is impulsive noise in the measures of the magnetic position sensor of the joint. In p64 there's the count for the last sec, in address there's the joint number"},
+    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes. There is impulsive noise in the measures of the magnetic position sensor of the joint. In p64 there's the count for the last sec, in p16 there's the joint number"},
     {eoerror_value_MC_motor_qencoder_dirty,  "MC: 2FOC quadrature encoder dirty. The number of thicks in a complete revolution of the motor was lower than expected, the optical disks need to be cleaned."},
     {eoerror_value_MC_motor_qencoder_index,  "MC: 2FOC quadrature encoder index broken. The reference special thick was not detected during a complete revolution of the motor, please check motor encoder cables."},
     {eoerror_value_MC_motor_qencoder_phase,  "MC: 2FOC quadrature encoder phase broken. The motor encoder is not counting even if the motor is moving, please check motor encoder cables."},
