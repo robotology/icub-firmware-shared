@@ -220,9 +220,9 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
 const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 {   // very important: fill table with order of eOerror_value_CFG_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x000f. In p64: search time [ms] in 0xffff000000000000, mask of missing addresses in 0x000000000000ffff"},
-    {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x000f. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"},
-    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: target board type in 0xff00,  number of boards in 0x000f. In p64: search time [ms] in 0xffff000000000000, req prot in 0x00000000ffff0000, req fw in 0x000000000000ffff,"},
+    {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x00ff. In p64: search time [ms] in 0xffff000000000000, mask of missing addresses in 0x000000000000ffff"},
+    {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x00ff. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"},
+    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: target board type in 0xff00,  number of boards in 0x00ff. In p64: search time [ms] in 0xffff000000000000, req prot in 0x00000000ffff0000, req fw in 0x000000000000ffff,"},
     {eoerror_value_CFG_candiscovery_detectedboard, "CFG: CANdiscovery has detected this board. In p16: board type in 0xff00, board address in 0x000f. In p64: search time [ms] in 0xffff000000000000, prot in 0x00000000ffff0000, fw in 0x000000000000ffff."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t)); 
 
