@@ -112,7 +112,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_runninginfatalerrorstate,"SYS: the board is running in fatal error state. check previous errors to verify the reason"},
     {eoerror_value_SYS_ctrloop_execoverflowRX,  "SYS: the RX phase of the control loop has last more than wanted. In par16: RX execution time [usec]. In par64: latest previous execution times of TX, RX, DO, TX [usec]"},  
     {eoerror_value_SYS_ctrloop_execoverflowDO,  "SYS: the DO phase of the control loop has last more than wanted. In par16: DO execution time [usec]. In par64: latest previous execution times of RX, DO, TX, RX [usec]"},    
-    {eoerror_value_SYS_ctrloop_execoverflowTX,  "SYS: the TX phase of the control loop has last more than wanted. In par16: TX execution time [usec]. In par64: latest previous execution times of DO, TX, RX, DO [usec]"},  
+    {eoerror_value_SYS_ctrloop_execoverflowTX,  "SYS: the TX phase of the control loop has last more than wanted. In par16: TX execution time [usec]. In par64: num of tx can2 and can1 frames and latest previous execution times of TX, RX, DO [usec]"},  
     {eoerror_value_SYS_udptxfailure,            "SYS: a UDP packet could not be transmitted"},  
     {eoerror_value_SYS_ropparsingerror,         "SYS: there was a parsing error of a received ROP. In par16 there is the parsing error type expressed in eOparserResult_t"},  
     {eoerror_value_SYS_halerror,                "SYS: the HAL triggered an error. In par16 there is the relevant hal code"},  
@@ -234,7 +234,7 @@ const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
     {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3)"},        
     {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3)"},
     {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3). Number of errors in par64"},
-};  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
 const eoerror_valuestring_t * const eoerror_valuestrings[] = 
