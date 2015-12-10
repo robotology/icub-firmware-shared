@@ -184,25 +184,25 @@ typedef struct                      // size is: 4+4+2+2+0 = 12
 typedef struct                      // size is: 4+0 = 4
 {
     uint8_t                         tobedefined[4];            // used with ... see hal_encoder.h for bitfield formatting  
-} eObrd_aea_status_t;               EO_VERIFYsizeof(eObrd_aea_status_t, 4);
+} eObrd_aea_status_t;               //EO_VERIFYsizeof(eObrd_aea_status_t, 4);
 
 
 typedef struct                          // size is: 8+0 = 8
 {
     uint8_t                         tobedefined[4];             
-} eObrd_mais_status_t;              EO_VERIFYsizeof(eObrd_mais_status_t, 4);
+} eObrd_mais_status_t;              //EO_VERIFYsizeof(eObrd_mais_status_t, 4);
 
 
 typedef struct                      // size is: 4+0 = 4
 {
     uint8_t                         tobedefined[4];    
-} eObrd_strain_status_t;            EO_VERIFYsizeof(eObrd_strain_status_t, 4);
+} eObrd_strain_status_t;            //EO_VERIFYsizeof(eObrd_strain_status_t, 4);
 
 
 typedef struct                      // size is: 4+0 = 4
 {
     uint8_t                         tobedefined[4];    
-} eObrd_ems_status_t;               EO_VERIFYsizeof(eObrd_strain_status_t, 4);
+} eObrd_ems_status_t;               //EO_VERIFYsizeof(eObrd_ems_status_t, 4);
 
 
 

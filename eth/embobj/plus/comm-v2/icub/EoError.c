@@ -80,7 +80,8 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
     eoerror_value_MC_numberof,
     eoerror_value_SK_numberof,
     eoerror_value_DEB_numberof,
-    eoerror_value_CFG_numberof
+    eoerror_value_CFG_numberof,
+    eoerror_value_ETHMON_numberof
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -227,6 +228,15 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
+const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
+{   // very important: fill table with order of eOerror_value_ETHMON_t
+    //                 in case of holes, use {0, NULL}
+    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3)"},        
+    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3)"},
+    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3). Number of errors in par64"},
+};  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)); 
+
+
 const eoerror_valuestring_t * const eoerror_valuestrings[] = 
 {   // very important: fill table with order of eOerror_category_t: pos 0 is eoerror_category_EthBoardSystem etc.
     //                 in case of holes use: NULL,
@@ -235,7 +245,8 @@ const eoerror_valuestring_t * const eoerror_valuestrings[] =
     (const eoerror_valuestring_t *)&eoerror_valuestrings_MC,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_SK,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB,
-    (const eoerror_valuestring_t *)&eoerror_valuestrings_CFG
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_CFG,
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_ETHMON
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
 
 
