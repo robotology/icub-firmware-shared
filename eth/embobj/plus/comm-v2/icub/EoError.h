@@ -213,8 +213,8 @@ typedef enum
     eoerror_value_MC_motor_qencoder_index           = 12,
     eoerror_value_MC_motor_qencoder_phase           = 13,
     
-    eoerror_value_MC_motor_wrong_state              = 15,
-    eoerror_value_MC_generic_error                  = 14
+    eoerror_value_MC_generic_error                  = 14,
+    eoerror_value_MC_motor_wrong_state              = 15
 } eOerror_value_MC_t;
 
 enum { eoerror_value_MC_numberof = 16 };
