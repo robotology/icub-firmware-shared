@@ -280,10 +280,11 @@ typedef enum
 {
     eoerror_value_ETHMON_link_goes_up                   = 0,
     eoerror_value_ETHMON_link_goes_down                 = 1,
-    eoerror_value_ETHMON_error_rxcrc                    = 2
+    eoerror_value_ETHMON_error_rxcrc                    = 2,
+    eoerror_value_ETHMON_txseqnumbermissing             = 3
 } eOerror_value_ETHMON_t;
 
-enum { eoerror_value_ETHMON_numberof = 3 };
+enum { eoerror_value_ETHMON_numberof = 4 };
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
