@@ -231,8 +231,8 @@ typedef enum
     eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change
     eomc_calibration_type4_abs_and_incremental      = 4,    // cannot change
     eomc_calibration_type5_hard_stops_mc4plus       = 5,    // cannot change
-    eomc_calibration_type6_mais_mc4plus             = 6,    // cannot change /* final NAME still to be defined */
-    eomc_calibration_type7_hall_sensor_mc4plus      = 7,    // cannot change /* final NAME still to be defined */
+    eomc_calibration_type6_mais                     = 6,    // cannot change 
+    eomc_calibration_type7_hall_sensor              = 7,    // cannot change 
     eomc_calibration_type8_adc_and_incr_mc4plus     = 8,    // cannot change
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
@@ -362,6 +362,36 @@ typedef struct
 } eOmc_calibrator_params_type5_hard_stops_mc4plus_t;
 
 
+
+/** @typedef    typedef struct eOmc_calibrator_params_type6_mais_t
+    @brief      contains the params in case of 
+ **/
+typedef struct  
+{
+    eOmeas_position_t           position;
+    eOmeas_velocity_t           velocity;
+    eOmeas_position_t           vmin;   // voltage min: conversion from adc inside mais into position
+    eOmeas_position_t           vmax;
+    eOmeas_position_t           calibrationZero;
+    eOmeas_current_t            current;
+} eOmc_calibrator_params_type6_mais_t;
+
+
+
+/** @typedef    typedef struct eOmc_calibrator_params_type7_hall_sensor_t
+    @brief      contains the params in case of 
+ **/
+typedef struct  
+{
+    eOmeas_position_t           position;
+    eOmeas_velocity_t           velocity;
+    eOmeas_position_t           vmin;   // voltage min: conversion from adc inside mais into position
+    eOmeas_position_t           vmax;
+    eOmeas_position_t           calibrationZero;
+} eOmc_calibrator_params_type7_hall_sensor_t;
+
+
+
 /** @typedef    typedef struct eomc_calibration_type8_adc_and_incr_mc4plus_t
     @brief      contains the params in case of eomc_calibration_type8_adc_and_incr_mc4plus
  **/
@@ -371,6 +401,7 @@ typedef struct
     int32_t                     final_pos;
     int32_t                     calibrationZero;
 } eomc_calibration_type8_adc_and_incr_mc4plus_t;
+
 
 
 // -- all the possible data holding structures used in a joint
@@ -460,16 +491,18 @@ typedef struct                  // size is 1+3+4*4 = 20
     uint8_t                     filler03[3];
     union
     {
-        uint32_t                                                any[4];
+        uint32_t                                                any[6];
         eOmc_calibrator_params_type0_hard_stops_t               type0;
         eOmc_calibrator_params_type1_abs_sens_analog_t          type1;
         eOmc_calibrator_params_type2_hard_stops_diff_t          type2;
         eOmc_calibrator_params_type3_abs_sens_digital_t         type3;
         eOmc_calibrator_params_type4_abs_and_incremental_t      type4;
         eOmc_calibrator_params_type5_hard_stops_mc4plus_t       type5;
+        eOmc_calibrator_params_type6_mais_t                     type6;
+        eOmc_calibrator_params_type7_hall_sensor_t              type7;
         eomc_calibration_type8_adc_and_incr_mc4plus_t           type8;
     } params;                                                       /**< the params of the calibrator */   
-} eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 20);
+} eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 28);
 
 typedef eOmc_calibrator32_t eOmc_calibrator_t;
 
@@ -715,7 +748,7 @@ typedef struct                  // size is:  16+20+4 = 40
 /** @typedef    typedef struct eOmc_joint_commands_t
     @brief      contains the possible commands set to a joint
  **/
-typedef struct                  // size is 20+12+1+1+1+1+0 = 36
+typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 {
     eOmc_calibrator_t           calibration;                /**< the calibrator to use */
     eOmc_setpoint_t             setpoint;                   /**< the setpoint of the joint */
@@ -723,19 +756,19 @@ typedef struct                  // size is 20+12+1+1+1+1+0 = 36
     eOenum08_t                  controlmode;                /**< use values from eOmc_controlmode_command_t */
     eOenum08_t                  interactionmode;            /**< use values from eOmc_interactionmode_t */
     uint8_t                     filler[1];
-} eOmc_joint_commands_t;        EO_VERIFYsizeof(eOmc_joint_commands_t, 36);
+} eOmc_joint_commands_t;        EO_VERIFYsizeof(eOmc_joint_commands_t, 44);
 
 
 /** @typedef    typedef struct eOmc_joint_t
     @brief      contains the whole joint
  **/
-typedef struct                  // size is 168+40+2+36+0 = 248
+typedef struct                  // size is 168+40+4+44+0 = 256
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 248);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 256);
 
 
 
