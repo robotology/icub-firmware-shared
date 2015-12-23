@@ -231,10 +231,10 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
 {   // very important: fill table with order of eOerror_value_ETHMON_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3)"},        
-    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3)"},
-    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3). Number of errors in par64"},
-    {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expectde sequence number in par64 and number of detected in par16"}
+    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal)"},        
+    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal)"},
+    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Number of errors in par64"},
+    {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
