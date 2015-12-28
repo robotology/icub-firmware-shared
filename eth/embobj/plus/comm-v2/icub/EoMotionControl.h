@@ -169,32 +169,6 @@ typedef enum
 } eOmc_interactionmode_t;
 
 
-///** @typedef    typedef enum eOmc_motionmonitormode_t
-//    @brief      contains all the possible modes for motion monitoring.
-//                It is used to configure the reporting of the motion in relation to reaching a given setpoint,
-//                as the message motiondone over CAN.    
-// **/
-//typedef enum
-//{
-//    eomc_motionmonitormode_dontmonitor      = 0,            /**< the motion is not monitored */
-//    eomc_motionmonitormode_untilreached     = 1,            /**< the motion is monitored only until the setpoint is reached (even if the setpoint is changed before being reached) */
-//    eomc_motionmonitormode_forever          = 2             /**< the motion is monitored vs any current of future setpoint until the mode is explicitly changed */
-//} eOmc_motionmonitormode_t;
-
-
-///** @typedef    typedef enum eOmc_motionmonitorstatus_t
-//    @brief      contains the possible status for motion monitoring.
-//                It is used to reporting inside the status of teh joint about the reaching of a given setpoint,
-//                as the message motiondone over CAN.    
-// **/
-//typedef enum
-//{
-//    eomc_motionmonitorstatus_notmonitored           = EOK_int08dummy,       /**< the motion is not monitored vs a desired setpoint */
-//    eomc_motionmonitorstatus_setpointnotreachedyet  = 0,                    /**< the motion is monitored but the desired setpoint is not reached yet */
-//    eomc_motionmonitorstatus_setpointisreached      = 1                     /**< the motion is monitored and the desired setpoint is reached */
-//} eOmc_motionmonitorstatus_t;
-
-
 
 /** @typedef    typedef enum eOmc_controlstatus_t
     @brief      contains the possible status for a motor control.
@@ -512,6 +486,44 @@ typedef eOmc_calibrator32_t eOmc_calibrator_t;
     If used calibrator is a different one, please modify converter object. */
 EO_VERIFYproposition(isusedcalibrator32, (sizeof(eOmc_calibrator_t) == sizeof(eOmc_calibrator32_t)));
 
+typedef struct 
+{ 
+    eOmeas_position_t       value; 
+    eOmeas_velocity_t       withvelocity; 
+} eOmc_setpoint_position_t;
+
+typedef struct 
+{ 
+    eOmeas_position_t       value; 
+} eOmc_setpoint_positionraw_t;
+
+typedef struct 
+{ 
+    eOmeas_velocity_t       value; 
+    eOmeas_acceleration_t   withacceleration; 
+} eOmc_setpoint_velocity_t;
+
+
+typedef struct 
+{ 
+    eOmeas_torque_t         value;
+} eOmc_setpoint_torque_t;
+
+typedef struct 
+{ 
+    eOmeas_current_t        value;
+} eOmc_setpoint_current_t;
+
+typedef union
+{
+    uint8_t                     sizeofunionis08[8];     
+    eOmc_setpoint_position_t    position;
+    eOmc_setpoint_positionraw_t positionraw;
+    eOmc_setpoint_velocity_t    velocity;
+    eOmc_setpoint_torque_t      torque;
+    eOmc_setpoint_current_t     current;    
+} eOmc_setpoint_data_t;
+        
 
 /** @typedef    typedef struct eOmc_setpoint_t
     @brief      eOmc_setpoint_t contains the setpoint to be sent to a pid
@@ -520,29 +532,8 @@ typedef struct              // size is 1+3+8+0 = 12
 {
     eOenum08_t              type;                   /**< use eOmc_setpoint_type_t */
     uint8_t                 filler03[3];
-    union
-    {
-        uint8_t             sizeofunionis08[8];     
-        struct 
-        { 
-            eOmeas_position_t       value; 
-            eOmeas_velocity_t       withvelocity; 
-        } position;
-        struct 
-        { 
-            eOmeas_velocity_t       value; 
-            eOmeas_acceleration_t   withacceleration; 
-        } velocity;
-        struct 
-        { 
-            eOmeas_torque_t        value; 
-        } torque;
-        struct
-        { 
-            eOmeas_current_t       value; 
-        } current;
-    } to;                       /**< the union containing the value field and optional param */
-} eOmc_setpoint_t;              EO_VERIFYsizeof(eOmc_setpoint_t, 12);
+    eOmc_setpoint_data_t    to;
+} eOmc_setpoint_t;          EO_VERIFYsizeof(eOmc_setpoint_t, 12);
 
 typedef struct
 {
@@ -721,6 +712,17 @@ typedef struct                  // size is: 4+4+4+2+2+0 = 16
     eOmeas_torque_t             jnt_torque;                 /**< the torque of the joint when locally measured */
 } eOmc_joint_status_basic_t;    EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
 
+/** @typedef    typedef struct eOmc_joint_status2_measures_t
+    @brief      eOmc_joint_status2_measures_t contains the measures of a joint
+ **/
+typedef struct                  // size is: 4+4+4+2+2+0 = 16
+{   
+    eOmeas_position_t           meas_position;               /**< the position of the joint */           
+    eOmeas_velocity_t           meas_velocity;               /**< the velocity of the joint */          
+    eOmeas_acceleration_t       meas_acceleration;           /**< the acceleration of the joint */       
+    eOmeas_torque_t             meas_torque;                 /**< the torque of the joint when locally measured */
+} eOmc_joint_status2_measures_t; EO_VERIFYsizeof(eOmc_joint_status2_measures_t, 16);
+
 
 /** @typedef    typedef struct eOmc_joint_status_modes_t
     @brief      eOmc_joint_status_modes_t contains the status modes of a joint
@@ -732,6 +734,40 @@ typedef struct
     eObool_t                    ismotiondone;               /**< simply eobool_true or eobool_false */                      
     uint8_t                     filler[1];    
 } eOmc_joint_status_modes_t;
+
+
+/** @typedef    typedef struct eOmc_joint_status_core_t
+    @brief      eOmc_joint2_status_core_t contains the core status of a joint
+ **/
+typedef struct                  // size is:  16+20+4 = 40
+{
+    eOmc_joint_status2_measures_t    measures;                   /**< the measured position etc */
+    eOmc_joint_status_ofpid_t       ofpid;                      /**< the pid status */ 
+    eOmc_joint_status_modes_t       modes;                      /**< the status modes */
+} eOmc_joint_status2_core_t;         EO_VERIFYsizeof(eOmc_joint_status2_core_t, 40); 
+
+
+/** @typedef    typedef struct eOmc_joint_status_target_t
+    @brief      eOmc_joint_status2_target_t contains the targets of a joint
+ **/
+typedef struct
+{
+    eOmeas_position_t           trgt_position;              /**< the target position of the joint */           
+    eOmeas_velocity_t           trgt_velocity;              /**< the target velocity of the joint */          
+    eOmeas_acceleration_t       trgt_acceleration;          /**< the target acceleration of the joint */       
+    eOmeas_torque_t             trgt_torque;                /**< the target torque of the joint */
+    int32_t                     trgt_openloop;              /**< the target openloop of the joint */
+} eOmc_joint_status2_target_t;   EO_VERIFYsizeof(eOmc_joint_status2_target_t, 20); 
+
+
+/** @typedef    typedef struct eOmc_joint_status2_t
+    @brief      eOmc_joint_status2_t contains the status of a joint
+ **/
+typedef struct                  // size is:  16+20+4 = 40
+{
+    eOmc_joint_status2_core_t    core;
+    eOmc_joint_status2_target_t  target;
+} eOmc_joint_status2_t;         EO_VERIFYsizeof(eOmc_joint_status2_t, 60); 
 
 
 /** @typedef    typedef struct eOmc_joint_status_t
