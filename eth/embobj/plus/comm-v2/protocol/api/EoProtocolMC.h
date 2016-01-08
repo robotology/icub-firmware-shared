@@ -145,11 +145,12 @@ typedef enum
     eoprot_tag_mc_motor_config_gearboxratio                         = 3,
     eoprot_tag_mc_motor_config_rotorencoder                         = 4,
     eoprot_tag_mc_motor_config_pwmlimit                             = 5,
-    eoprot_tag_mc_motor_status                                      = 6,
-    eoprot_tag_mc_motor_status_basic                                = 7
+    eoprot_tag_mc_motor_config_temperaturelimit                     = 6,
+    eoprot_tag_mc_motor_status                                      = 7,
+    eoprot_tag_mc_motor_status_basic                                = 8
 } eOprot_tag_mc_motor_t;
 
-enum { eoprot_tags_mc_motor_numberof = 8 };   // it MUST be equal to the number of tags 
+enum { eoprot_tags_mc_motor_numberof = 9 };   // it MUST be equal to the number of tags 
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_motor_t
@@ -165,11 +166,12 @@ typedef enum
     eoprot_rwm_mc_motor_config_gearboxratio                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_rotorencoder                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_pwmlimit                             = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_temperaturelimit                     = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_status_basic                                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_motor_t;  
 
-enum { eoprot_rwms_mc_motor_numberof = 8 };   // it MUST be equal to the number of rw modes
+enum { eoprot_rwms_mc_motor_numberof = 9 };   // it MUST be equal to the number of rw modes
 
 
 
@@ -330,6 +332,9 @@ extern void eoprot_fun_UPDT_mc_motor_config_rotorencoder(const EOnv* nv, const e
 
 extern void eoprot_fun_INIT_mc_motor_config_pwmlimit(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_pwmlimit(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_temperaturelimit(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_temperaturelimit(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_status(const EOnv* nv, const eOropdescriptor_t* rd);
