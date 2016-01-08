@@ -844,7 +844,7 @@ typedef struct                  // size is: 40+4+4+4+2+2+ 1+1+1+1+1+1 +2 + 8= 72
     eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
     eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
     uint8_t                     rotorEncoderType;           /**< rotor encoder type */
-    uint8_t                     filler02[2];
+    eOmeas_pwm_t                pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_position_limits_t    limitsofrotor;              /**< rotor limits */
 } eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 72);
 

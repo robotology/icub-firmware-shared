@@ -308,6 +308,13 @@ EO_weak extern void eoprot_fun_INIT_mc_motor_config_rotorencoder(const EOnv* nv)
 EO_weak extern void eoprot_fun_UPDT_mc_motor_config_rotorencoder(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_pwmlimit)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_pwmlimit(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_pwmlimit)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_pwmlimit(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status)
 EO_weak extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv) {}
 #endif
