@@ -141,7 +141,7 @@ typedef enum
 {
     eoprot_tag_mc_motor_wholeitem                                   = 0,
     eoprot_tag_mc_motor_config                                      = 1,
-    eoprot_tag_mc_motor_config_maxcurrentofmotor                    = 2,
+    eoprot_tag_mc_motor_config_currentlimits                        = 2,
     eoprot_tag_mc_motor_config_gearboxratio                         = 3,
     eoprot_tag_mc_motor_config_rotorencoder                         = 4,
     eoprot_tag_mc_motor_config_pwmlimit                             = 5,
@@ -161,7 +161,7 @@ typedef enum
 {
     eoprot_rwm_mc_motor_wholeitem                                   = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_config                                      = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_motor_config_maxcurrentofmotor                    = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_currentlimits                        = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_gearboxratio                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_rotorencoder                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_pwmlimit                             = eo_nv_rwmode_RW,
@@ -319,14 +319,17 @@ extern void eoprot_fun_UPDT_mc_motor_wholeitem(const EOnv* nv, const eOropdescri
 extern void eoprot_fun_INIT_mc_motor_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_gearboxratio(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_gearboxratio(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_rotorencoder(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_rotorencoder(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_pwmlimit(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_pwmlimit(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_status(const EOnv* nv, const eOropdescriptor_t* rd);

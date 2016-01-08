@@ -481,18 +481,18 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config =
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_maxcurrentofmotor =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_currentlimits =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.maxcurrentofmotor),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_maxcurrentofmotor,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.currentLimits),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_currentlimits,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.maxcurrentofmotor,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.currentLimits,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor
+    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_currentlimits,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_currentlimits
 #endif
 };
 
@@ -685,7 +685,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_motor_descriptors[] =
 {   // here are eoprot_tags_mc_motor_numberof descriptors for the motor entity
     &eoprot_mc_rom_descriptor_motor_wholeitem,
     &eoprot_mc_rom_descriptor_motor_config,
-    &eoprot_mc_rom_descriptor_motor_config_maxcurrentofmotor,
+    &eoprot_mc_rom_descriptor_motor_config_currentlimits,
     &eoprot_mc_rom_descriptor_motor_config_gearboxratio,
     &eoprot_mc_rom_descriptor_motor_config_rotorencoder,
     &eoprot_mc_rom_descriptor_motor_config_pwmlimit,

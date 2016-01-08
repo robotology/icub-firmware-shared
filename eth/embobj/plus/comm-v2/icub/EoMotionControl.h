@@ -824,29 +824,34 @@ typedef struct                  // size is 168+40+4+44+0 = 256
  **/
 typedef uint8_t  eOmc_motorId_t;
 
-
+typedef struct
+{
+    eOmeas_current_t    nominalCurrent;
+    eOmeas_current_t    peakCurrent;
+    eOmeas_current_t    overloadCurrent;
+} eOmc_current_limits_params_t;
 
 /** @typedef    typedef struct eOmc_motor_config_t
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+2+2+ 1+1+1+1+1+1 +2 + 8= 72
+typedef struct                  // size is: 40+4+4+4+6+2+ 1+1+1+1+1+1 +2 + 8= 76
 {
-    eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
-    int32_t                     gearboxratio;               /**< the gearbox reduction ration */
-    int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution  */
-    eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
-    eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
-    uint16_t                    rotorIndexOffset;           /**< index offset for the rotor encoder*/
-    uint8_t                     motorPoles;                 /**< number of poles of the motor */
-    eObool_t                    hasHallSensor;              /**< true if the motor is equipped with hall effect sensors */
-    eObool_t                    hasTempSensor;              /**< true if the motor is equipped with temperature sensors */
-    eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
-    eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
-    uint8_t                     rotorEncoderType;           /**< rotor encoder type */
-    eOmeas_pwm_t                pwmLimit;                   /**< the pwm limit of the motor */
-    eOmeas_position_limits_t    limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 72);
+    eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
+    int32_t                         gearboxratio;               /**< the gearbox reduction ration */
+    int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
+    eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
+    eOmc_current_limits_params_t    currentLimits;              /**< the maximum current in the motor */
+    uint16_t                        rotorIndexOffset;           /**< index offset for the rotor encoder*/
+    uint8_t                         motorPoles;                 /**< number of poles of the motor */
+    eObool_t                        hasHallSensor;              /**< true if the motor is equipped with hall effect sensors */
+    eObool_t                        hasTempSensor;              /**< true if the motor is equipped with temperature sensors */
+    eObool_t                        hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
+    eObool_t                        hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
+    uint8_t                         rotorEncoderType;           /**< rotor encoder type */
+    eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
+    eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 76);
 
 
 
@@ -883,7 +888,7 @@ typedef struct                  // size is 76+24+0 = 96
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 96); 
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 100); 
  
 
 // -- the definition of a controller containing a given number of joints and motors  
