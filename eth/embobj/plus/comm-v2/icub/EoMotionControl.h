@@ -189,7 +189,8 @@ typedef enum
     eomc_setpoint_velocity                      = 1,
     eomc_setpoint_torque                        = 2,
     eomc_setpoint_current                       = 3,
-    eomc_setpoint_positionraw                   = 4
+    eomc_setpoint_positionraw                   = 4,
+    eomc_setpoint_openloop                      = 5
 } eOmc_setpoint_type_t;
 
 
@@ -514,6 +515,11 @@ typedef struct
     eOmeas_current_t        value;
 } eOmc_setpoint_current_t;
 
+typedef struct 
+{ 
+    eOmeas_pwm_t           value;
+} eOmc_setpoint_openloop_t;
+
 typedef union
 {
     uint8_t                     sizeofunionis08[8];     
@@ -521,7 +527,8 @@ typedef union
     eOmc_setpoint_positionraw_t positionraw;
     eOmc_setpoint_velocity_t    velocity;
     eOmc_setpoint_torque_t      torque;
-    eOmc_setpoint_current_t     current;    
+    eOmc_setpoint_current_t     current;
+    eOmc_setpoint_openloop_t    openloop;
 } eOmc_setpoint_data_t;
         
 
@@ -801,10 +808,10 @@ typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 typedef struct                  // size is 168+40+4+44+0 = 256
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
-    eOmc_joint_status_t         status;                     /**< the status of the joint */
+    eOmc_joint_status2_t        status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 256);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 276);
 
 
 

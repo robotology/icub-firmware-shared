@@ -257,79 +257,79 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status =
 }; 
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_basic =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_core =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.basic),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_basic,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.core),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_core,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.basic,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.core,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_basic,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_basic
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_core,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_core
 #endif
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_ofpid =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_target =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.ofpid),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_ofpid,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.target),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_target,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.ofpid,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.target,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_ofpid,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_ofpid
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_target,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_target
 #endif
 };
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_modes_controlmodestatus =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_core_modes_controlmodestatus =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.modes.controlmodestatus),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_modes_controlmodestatus,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.core.modes.controlmodestatus),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_core_modes_controlmodestatus,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.modes.controlmodestatus,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.core.modes.controlmodestatus,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_modes_controlmodestatus,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_modes_controlmodestatus
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_core_modes_controlmodestatus,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_core_modes_controlmodestatus
 #endif
 };
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_modes_interactionmodestatus =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_core_modes_interactionmodestatus =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.modes.interactionmodestatus),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_modes_interactionmodestatus,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.core.modes.interactionmodestatus),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_core_modes_interactionmodestatus,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.modes.interactionmodestatus,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.core.modes.interactionmodestatus,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_modes_interactionmodestatus,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_modes_interactionmodestatus
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_core_modes_interactionmodestatus,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_core_modes_interactionmodestatus
 #endif
 };
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_modes_ismotiondone =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_core_modes_ismotiondone =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.modes.ismotiondone),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_modes_ismotiondone,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.core.modes.ismotiondone),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_core_modes_ismotiondone,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.modes.ismotiondone,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.core.modes.ismotiondone,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_modes_ismotiondone,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_modes_ismotiondone
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_core_modes_ismotiondone,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_core_modes_ismotiondone
 #endif
 };
 
@@ -651,11 +651,11 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_config_motor_params,
     &eoprot_mc_rom_descriptor_joint_config_tcfiltertype,
     &eoprot_mc_rom_descriptor_joint_status,
-    &eoprot_mc_rom_descriptor_joint_status_basic,
-    &eoprot_mc_rom_descriptor_joint_status_ofpid,
-    &eoprot_mc_rom_descriptor_joint_status_modes_controlmodestatus,
-    &eoprot_mc_rom_descriptor_joint_status_modes_interactionmodestatus,
-    &eoprot_mc_rom_descriptor_joint_status_modes_ismotiondone,
+    &eoprot_mc_rom_descriptor_joint_status_core,
+    &eoprot_mc_rom_descriptor_joint_status_target,
+    &eoprot_mc_rom_descriptor_joint_status_core_modes_controlmodestatus,
+    &eoprot_mc_rom_descriptor_joint_status_core_modes_interactionmodestatus,
+    &eoprot_mc_rom_descriptor_joint_status_core_modes_ismotiondone,
     &eoprot_mc_rom_descriptor_joint_inputs,
     &eoprot_mc_rom_descriptor_joint_inputs_externallymeasuredtorque,
     &eoprot_mc_rom_descriptor_joint_cmmnds_calibration,
@@ -743,11 +743,11 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_config_motor_params",
     "eoprot_tag_mc_joint_config_tcfiltertype",
     "eoprot_tag_mc_joint_status",
-    "eoprot_tag_mc_joint_status_basic",
-    "eoprot_tag_mc_joint_status_ofpid",
-    "eoprot_tag_mc_joint_status_modes_controlmodestatus",
-    "eoprot_tag_mc_joint_status_modes_interactionmodestatus",
-    "eoprot_tag_mc_joint_status_modes_ismotiondone",
+    "eoprot_tag_mc_joint_status_core",
+    "eoprot_tag_mc_joint_status_target",
+    "eoprot_tag_mc_joint_status_core_modes_controlmodestatus",
+    "eoprot_tag_mc_joint_status_core_modes_interactionmodestatus",
+    "eoprot_tag_mc_joint_status_core_modes_ismotiondone",
     "eoprot_tag_mc_joint_inputs",
     "eoprot_tag_mc_joint_inputs_externallymeasuredtorque",
     "eoprot_tag_mc_joint_cmmnds_calibration",
