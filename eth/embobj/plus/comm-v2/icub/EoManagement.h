@@ -68,10 +68,11 @@ typedef enum
 {
     eomn_entity_comm                        = 0,
     eomn_entity_appl                        = 1,
-    eomn_entity_info                        = 2
+    eomn_entity_info                        = 2,
+    eomn_entity_service                     = 3
 } eOmn_entity_t; 
 
-enum { eomn_entities_numberof = 3 };
+enum { eomn_entities_numberof = 4 };
 
 // -- all the possible enum
 
@@ -443,6 +444,345 @@ typedef struct                      // size is 8+32 = 40 bytes
     eOmn_info_status_t              status;
 } eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 80);  
 
+
+
+// -- the definition of service entity
+
+
+typedef enum
+{
+    eomn_serv_caninsideindex_first      = 0,
+    eomn_serv_caninsideindex_second     = 1,
+    eomn_serv_caninsideindex_none       = 2
+} eOmn_serv_caninsideindex_t;
+
+
+typedef struct
+{
+    uint8_t port : 1;               /**< use eOcanport_t */
+    uint8_t addr : 4;               /**< use 0->14 */ 
+    uint8_t insideindex : 2;        /**< use eOmn_serv_caninsideindex_t*/
+    uint8_t dummy : 1;              /**< unused ... but it could specify board or entity */
+} eOmn_serv_canlocation_t;
+
+
+typedef struct
+{
+    eOmn_version_t      firmware;
+    eOmn_version_t      protocol; 
+} eOmn_serv_canboardversion_t;  
+
+typedef struct
+{
+    eOmn_serv_canlocation_t     canloc;
+} eOmn_serv_mc_actuator_foc_t;
+
+typedef struct
+{
+    eOmn_serv_canlocation_t     canloc;
+} eOmn_serv_mc_actuator_mc4_t;
+
+typedef struct
+{
+    uint8_t                     port;   // use eOmn_serv_mc_port_t
+} eOmn_serv_mc_actuator_pwm_t;
+
+typedef union
+{
+    eOmn_serv_mc_actuator_foc_t foc;
+    eOmn_serv_mc_actuator_mc4_t mc4;
+    eOmn_serv_mc_actuator_pwm_t pwm;
+}  eOmn_serv_mc_actuator_t;    // 1B
+
+
+
+
+typedef enum
+{
+    eomn_serv_item_none                     = 0,
+    eomn_serv_item_mc_actuator_foc          = 1,
+    eomn_serv_item_mc_actuator_mc4          = 2,
+    eomn_serv_item_mc_actuator_pwm          = 3,
+    eomn_serv_item_mc_sensor_encoder_aea    = 4,
+    eomn_serv_item_mc_sensor_encoder_amo    = 5,
+    eomn_serv_item_mc_sensor_encoder_inc    = 6,
+    eomn_serv_item_mc_sensor_hall           = 7,
+    eomn_serv_item_as_mais                  = 8,
+    eomn_serv_item_as_strain                = 9,
+    eomn_serv_item_skin                     = 10,
+    eomn_serv_item_as_inertial              = 11,
+    eomn_serv_item_canloc                   = 15
+} eOmn_serv_item_type_t;
+
+
+
+typedef enum 
+{
+    eomn_serv_NONE              = 0,
+    eomn_serv_MC_foc            = 1,
+    eomn_serv_MC_mc4            = 2,
+    eomn_serv_MC_mc4plus        = 3,    // as in the head
+    eomn_serv_MC_mc4plusmais    = 4,    // as in the arm, where we need also a mais
+    eomn_serv_AS_mais           = 5,
+    eomn_serv_AS_strain         = 6,
+    eomn_serv_AS_inertial       = 7,
+    eomn_serv_SK_skin           = 8
+} eOmn_serv_type_t;
+
+
+
+typedef struct
+{
+    eOmn_serv_canboardversion_t         version;
+    eOmn_serv_canlocation_t             canloc;
+} eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 5);
+
+
+
+typedef struct
+{
+    eOmn_serv_canboardversion_t         version;
+    eOmn_serv_canlocation_t             canloc;
+} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 5);
+
+
+
+typedef struct
+{ 
+    eOmn_serv_canboardversion_t         version;
+    uint16_t                            canmap[eOcanports_number]; 
+} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 8);
+
+
+
+typedef union
+{
+    eOmn_serv_config_data_as_mais_t     mais;
+    eOmn_serv_config_data_as_strain_t   strain;
+    eOmn_serv_config_data_as_inertial_t inertial;   
+} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 8);
+
+
+
+enum { eomn_serv_skin_maxpatches = 4 };
+
+typedef struct
+{
+    eOmn_serv_canboardversion_t         version;
+    uint8_t                             numofpatches;
+    uint8_t                             filler[3];    
+    uint16_t                            canmapskin[eomn_serv_skin_maxpatches][eOcanports_number]; 
+} eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24);
+
+typedef union
+{
+    eOmn_serv_config_data_sk_skin_t     skin;
+} eOmn_serv_config_data_sk_t;           EO_VERIFYsizeof(eOmn_serv_config_data_sk_t, 24); 
+
+
+
+typedef enum
+{
+    eomn_serv_mc_sensor_none                = eomn_serv_item_none,
+    eomn_serv_mc_sensor_encoder_aea         = eomn_serv_item_mc_sensor_encoder_aea,
+    eomn_serv_mc_sensor_encoder_amo         = eomn_serv_item_mc_sensor_encoder_amo,
+    eomn_serv_mc_sensor_encoder_inc         = eomn_serv_item_mc_sensor_encoder_inc,
+    eomn_serv_mc_sensor_hall                = eomn_serv_item_mc_sensor_hall
+} eOmn_serv_mc_sensor_type_t;
+
+typedef enum
+{
+    eomn_serv_mc_port_none                  = 7,    // max value in 3 bits.
+    eomn_serv_mc_port_ems_spiP6             = 0,    // keep it as hal_encoder1. it is in spistream1
+    eomn_serv_mc_port_ems_spiP7             = 3,    // keep it as hal_encoder4. it is in spistream2
+    eomn_serv_mc_port_ems_spiP8             = 1,    // keep it as hal_encoder2. it is in spistream1
+    eomn_serv_mc_port_ems_spiP9             = 4,    // keep it as hal_encoder5. it is in spistream2
+    eomn_serv_mc_port_ems_spiP10            = 2,    // keep it as hal_encoder3. it is in spistream1
+    eomn_serv_mc_port_ems_spiP11            = 5,    // keep it as hal_encoder6. it is in spistream2
+    eomn_serv_mc_port_mc4plus_spiP10        = 0,    // keep it as hal_encoder1. it is in spistream1
+    eomn_serv_mc_port_mc4plus_spiP11        = 1,    // keep it as hal_encoder2. it is in spistream2
+    eomn_serv_mc_port_mc4plus_pwmP2         = 1,    // its is hal_motor2
+    eomn_serv_mc_port_mc4plus_pwmP3         = 0,    // its is hal_motor1
+    eomn_serv_mc_port_mc4plus_pwmP4         = 2,    // its is hal_motor3
+    eomn_serv_mc_port_mc4plus_pwmP5         = 3,    // its is hal_motor4
+    eomn_serv_mc_port_mc4plus_qencP2        = 1,    // its is hal_quad_enc2
+    eomn_serv_mc_port_mc4plus_qencP3        = 0,    // its is hal_quad_enc1
+    eomn_serv_mc_port_mc4plus_qencP4        = 2,    // its is hal_quad_enc3
+    eomn_serv_mc_port_mc4plus_qencP5        = 3     // its is hal_quad_enc4    
+} eOmn_serv_mc_port_t;
+
+typedef enum
+{
+    
+    eomn_serv_mc_sensor_pos_atjoint         = 0,
+    eomn_serv_mc_sensor_pos_atmotor         = 1,
+    eomn_serv_mc_sensor_pos_none            = 2
+} eOmn_serv_mc_sensor_position_t;
+
+typedef struct
+{
+    uint8_t     type : 3;       // use eOmn_serv_mc_sensor_type_t
+    uint8_t     port : 3;       // use eOmn_serv_mc_port_t 
+    uint8_t     pos  : 2;       // use eOmn_serv_mc_sensor_position_t
+} eOmn_serv_mc_sensor_t;
+
+typedef struct
+{
+    eOmn_serv_mc_actuator_t     actuator;
+    eOmn_serv_mc_sensor_t       sensor;
+    eOmn_serv_mc_sensor_t       extrasensor;
+} eOmn_serv_jomo_descriptor_t;  EO_VERIFYsizeof(eOmn_serv_jomo_descriptor_t, 3);
+
+
+typedef struct
+{
+    eOarray_head_t                      head;
+    eOmn_serv_jomo_descriptor_t         data[4];
+} eOmn_serv_arrayof_4jomodescriptors_t; EO_VERIFYsizeof(eOmn_serv_arrayof_4jomodescriptors_t, 16);
+
+
+
+typedef struct
+{    
+    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+    uint8_t                                 filler[3];    
+    eOmn_serv_canboardversion_t             version;
+    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;           
+} eOmn_serv_config_data_mc_foc_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 24);
+
+typedef struct
+{
+    uint8_t         velocity;
+    uint8_t         estimJointVelocity      : 4;
+    uint8_t         estimJointAcceleration  : 4;
+    uint8_t         estimMotorVelocity      : 4;
+    uint8_t         estimMotorAcceleration  : 4;    
+} eOmn_serv_config_data_mc_mc4shifts_t;     EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4shifts_t, 3);
+
+//typedef struct
+//{
+//    eOmn_serv_canboardversion_t             versionofmc4; 
+//    eOmn_serv_canboardversion_t             versionofmais;
+//    eOmn_serv_canlocation_t                 mc4joints[12];    
+//    eOmn_serv_canlocation_t                 maislocation;
+//    eOmn_serv_config_data_mc_mc4shifts_t    shifts;                 
+//} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 24);
+
+
+typedef struct
+{
+    eOmn_serv_canboardversion_t             mc4version; 
+    eOmn_serv_config_data_mc_mc4shifts_t    mc4shifts; 
+    eOmn_serv_canlocation_t                 mc4joints[12];    
+    eOmn_serv_config_data_as_mais_t         mais;                    
+} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 24);
+
+
+typedef struct
+{ 
+    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+    uint8_t                                 filler[3];
+   eOmn_serv_arrayof_4jomodescriptors_t     arrayofjomodescriptors;         
+} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 20);
+
+
+typedef struct
+{ 
+    eOmn_serv_canboardversion_t             maisversion;
+    eOmn_serv_canlocation_t                 maislocation;
+    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+    uint8_t                                 filler[2];
+    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;         
+} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 24);
+
+
+
+typedef union
+{
+    eOmn_serv_config_data_mc_foc_t          foc_based;
+    eOmn_serv_config_data_mc_mc4_t          mc4_based;
+    eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
+    eOmn_serv_config_data_mc_mc4plusmais_t  mc4plusmais_based;
+} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 24); 
+
+
+typedef union
+{
+    eOmn_serv_config_data_as_t          as;
+    eOmn_serv_config_data_mc_t          mc;
+    eOmn_serv_config_data_sk_t          sk;   
+} eOmn_serv_config_data_t;              EO_VERIFYsizeof(eOmn_serv_config_data_t, 24); 
+
+// ok, devo ridurre la size of eOmn_serv_config_data_as_t
+
+
+
+typedef struct
+{
+    uint8_t                             type;           // use eOmn_serv_type_t to identify what kind of service it is
+    uint8_t                             filler[3];
+    eOmn_serv_config_data_t             data;   
+} eOmn_serv_configuration_t;            EO_VERIFYsizeof(eOmn_serv_configuration_t, 28); 
+
+// use eOemscontroller_board_t and variable mccontrollerboardtype
+
+// according to itemdes.type we treat item as follow:
+// - eomn_serv_item_as_mais, eomn_serv_item_as_strain, eomn_serv_item_as_inertial:
+//   we use itemdes.item.analog.[mais, strain, inertial].canloc to keep the can address of the entity.
+//
+// - eomn_serv_item_skin
+//    we use itemdes.item.skin.canloc to keep the can address of the entity. 
+//
+// - eomn_serv_item_mc_actuator_foc, eomn_serv_item_mc_actuator_mc4,
+//   we use itemdes.item.motion.actuator.[foc, mc4].canloc to keep the can address of 2foc or mc4 keeping the the joint / motor entity.
+// - eomn_serv_item_mc_actuator_pwm
+//   we use itemdes.item.motion.actuator.pwm.port to keep the hal port pwm for use in mc4plus boards associated to the joint/motor.
+// - eomn_serv_item_mc_encoder_*
+//   we use itemdes.item.motion.encoder.[amo, aea, inc] to keep the hal port of the encoder to use
+
+typedef enum 
+{
+    eomn_serv_command_deactivate    = 0,        // it deactivates    
+    eomn_serv_command_activate      = 1,        // it activate with the given config, but does not force activation if already active
+    eomn_serv_command_reactivate    = 2         // it deactivates if active and then activates   
+} eOmn_service_command_t;
+
+typedef struct
+{
+    uint8_t                         command;               // use eOmn_service_command_t
+    uint8_t                         filler[3];
+    eOmn_serv_configuration_t       config;  
+} eOmn_service_cmmnds_command_t;    EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 32);
+
+typedef struct
+{
+    eOmn_service_cmmnds_command_t   command;    
+} eOmn_service_cmmnds_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_t, 32);
+
+
+typedef struct
+{
+    eObool_t                        latestcommandisok;
+    uint8_t                         command;                // use eOmn_service_command_t
+    uint8_t                         type;                   // use eOmn_serv_type_t
+    uint8_t                         filler[1];
+    uint8_t                         data[28];               // it may keep some params (e.g., the fullscale of strain).
+} eOmn_service_command_result_t;
+
+typedef struct
+{  
+    eOmn_service_command_result_t   commandresult;
+} eOmn_service_status_t;            EO_VERIFYsizeof(eOmn_service_status_t, 32); 
+
+
+/** @typedef    typedef struct eOmn_info_t;
+    @brief      used to represent the info with config, status
+ **/
+typedef struct                      // size is 8+32 = 40 bytes
+{    
+    eOmn_service_status_t           status;
+    eOmn_service_cmmnds_t           cmmnds;
+} eOmn_service_t;                   EO_VERIFYsizeof(eOmn_service_t, 64);  
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

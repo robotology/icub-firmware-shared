@@ -72,6 +72,7 @@ typedef enum
     eobrd_cantype_mc4               = 3,
     eobrd_cantype_strain            = 6,
     eobrd_cantype_1foc              = 8,
+    eobrd_cantype_foc               = 8,    // prefer using foc than 1foc
     eobrd_cantype_mais              = 7,
     eobrd_cantype_skin              = 5, 
     eobrd_cantype_mtb               = 5,    // much better using the real name which is mtb

@@ -58,7 +58,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 7 };
+enum { eoprot_version_mn_major = 2, eoprot_version_mn_minor = 8 };
 
 
 enum { eoprot_entities_mn_numberof = eomn_entities_numberof };
@@ -174,19 +174,41 @@ typedef enum
 enum { eoprot_rwms_mn_info_numberof = 5 };  // it MUST be equal to the number of rw modes. 
 
 
+// - entity service
+
+
+/** @typedef    typedef enum eOprot_tag_mn_service_t
+    @brief      It contains the tags for all variables of the service entity.
+                See definition of eOmn_service_t (and its fields) in file EoManagement.h for explanation of the variables.
+ **/
+typedef enum
+{
+    eoprot_tag_mn_service_wholeitem                                     = 0, 
+    eoprot_tag_mn_service_status_commandresult                          = 1, 
+    eoprot_tag_mn_service_cmmnds_command                                = 2
+} eOprot_tag_mn_service_t;
+
+enum { eoprot_tags_mn_service_numberof = 3 };  // it MUST be equal to the number of tags. 
+
+
+/** @typedef    typedef enum eOprot_rwm_mn_service_t
+    @brief      It contains the rw modes for all variables of the comm entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_mn_service_t.
+ **/
+typedef enum
+{
+    eoprot_rwm_mn_service_wholeitem                                     = eo_nv_rwmode_RO,
+    eoprot_rwm_mn_service_status_commandresult                          = eo_nv_rwmode_RO,
+    eoprot_rwm_mn_service_cmmnds_command                                = eo_nv_rwmode_RW 
+} eOprot_rwm_mn_service_t; 
+
+enum { eoprot_rwms_mn_service_numberof = 3 };  // it MUST be equal to the number of rw modes. 
+
+
 // - memory organization in the endpoint
   
   
-/** @typedef    typedef struct eOprot_template_mn_t;
-    @brief      It is a template for the organisation of comm and appl entities in the management endpoint.
-                The effective number may depend on the board.
- **/
-typedef struct                  // 120+40+80+0 = 240              
-{
-    eOmn_comm_t                 communication; 
-    eOmn_appl_t                 application;
-    eOmn_info_t                 info;
-} eOprot_template_mn_t;         //EO_VERIFYsizeof(eOprot_template_mn_t, 240);  
+// omissis
 
   
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -266,6 +288,20 @@ extern void eoprot_fun_UPDT_mn_info_status(const EOnv* nv, const eOropdescriptor
 
 extern void eoprot_fun_INIT_mn_info_status_basic(const EOnv* nv);
 extern void eoprot_fun_UPDT_mn_info_status_basic(const EOnv* nv, const eOropdescriptor_t* rd);
+
+
+
+// - service
+
+extern void eoprot_fun_INIT_mn_service_wholeitem(const EOnv* nv);
+extern void eoprot_fun_UPDT_mn_service_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mn_service_status_commandresult(const EOnv* nv);
+extern void eoprot_fun_UPDT_mn_service_status_commandresult(const EOnv* nv, const eOropdescriptor_t* rd);
+
+ 
+extern void eoprot_fun_INIT_mn_service_cmmnds_command(const EOnv* nv);
+extern void eoprot_fun_UPDT_mn_service_cmmnds_command(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
 /** @}            
