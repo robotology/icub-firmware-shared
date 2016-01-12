@@ -920,7 +920,7 @@ typedef struct                  // size is 4+4+64+0 = 72
 } eOmc_controller_config_t;     //EO_VERIFYsizeof(eOmc_controller_config_t, 72); 
 
 
-typedef struct                  // size is 1+1+1+1+2+2+0 = 8
+typedef struct                  // size is 1+1+1+1+2+2+ 2+6 = 16
 {
     eOenum08_t                  stateofcontroller;          /**< it holds a value from enum eOmc_stateofcontroller_t */               
     uint8_t                     numofjoints;                /**< the number of joints */   
@@ -928,7 +928,9 @@ typedef struct                  // size is 1+1+1+1+2+2+0 = 8
     eObool_t                    alljomoinitted;             /**< it is eobool_true only when every joint and motor is initted */    
     eO16flags_t                 flagsinittedjoints;         /**< bit position 0 (1, 2, ..) keeps 1 if the joint 0 (1, 2, ..) is fully initted. */
     eO16flags_t                 flagsinittedmotors;         /**< bit position 0 (1, 2, ..) keeps 1 if the motor 0 (1, 2, ..) is fully initted. */ 
-} eOmc_controller_status_t;     //EO_VERIFYsizeof(eOmc_controller_status_t, 8); 
+    eOmeas_voltage_t            supplyVoltage;              /**< supply voltage to the controller (board) */
+    uint8_t                     filler06[6];                
+} eOmc_controller_status_t;     //EO_VERIFYsizeof(eOmc_controller_status_t, 16); 
 
 
 // typedef struct                  // size is 1+7+0 = 8
@@ -938,11 +940,11 @@ typedef struct                  // size is 1+1+1+1+2+2+0 = 8
 // } eOmc_controller_commands_t;   //EO_VERIFYsizeof(eOmc_controller_commands_t, 8); 
 
 
-typedef struct                  // size is 72+8+0 = 80
+typedef struct                  // size is 72+16+0 = 88
 {
     eOmc_controller_config_t    config;                     /**< controller configuration */
     eOmc_controller_status_t    status;                     /**< controller status  */
-} eOmc_controller_t;            //EO_VERIFYsizeof(eOmc_controller_t, 80); 
+} eOmc_controller_t;            //EO_VERIFYsizeof(eOmc_controller_t, 88); 
 
 
 
