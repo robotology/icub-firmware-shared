@@ -708,19 +708,8 @@ typedef struct                  // size is 4 = 4
 
 
 
-/** @typedef    typedef struct eOmc_joint_status_basic_t
-    @brief      eOmc_joint_status_basic_t contains the basic status of the joint
- **/
-typedef struct                  // size is: 4+4+4+2+2+0 = 16
-{   
-    eOmeas_position_t           jnt_position;               /**< the position of the joint */           
-    eOmeas_velocity_t           jnt_velocity;               /**< the velocity of the joint */          
-    eOmeas_acceleration_t       jnt_acceleration;           /**< the acceleration of the joint */       
-    eOmeas_torque_t             jnt_torque;                 /**< the torque of the joint when locally measured */
-} eOmc_joint_status_basic_t;    EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
-
-/** @typedef    typedef struct eOmc_joint_status2_measures_t
-    @brief      eOmc_joint_status2_measures_t contains the measures of a joint
+/** @typedef    typedef struct eOmc_joint_status_measures_t
+    @brief      eOmc_joint_status_measures_t contains the measures of a joint
  **/
 typedef struct                  // size is: 4+4+4+2+2+0 = 16
 {   
@@ -728,7 +717,7 @@ typedef struct                  // size is: 4+4+4+2+2+0 = 16
     eOmeas_velocity_t           meas_velocity;               /**< the velocity of the joint */          
     eOmeas_acceleration_t       meas_acceleration;           /**< the acceleration of the joint */       
     eOmeas_torque_t             meas_torque;                 /**< the torque of the joint when locally measured */
-} eOmc_joint_status2_measures_t; EO_VERIFYsizeof(eOmc_joint_status2_measures_t, 16);
+} eOmc_joint_status_measures_t; EO_VERIFYsizeof(eOmc_joint_status_measures_t, 16);
 
 
 /** @typedef    typedef struct eOmc_joint_status_modes_t
@@ -748,14 +737,14 @@ typedef struct
  **/
 typedef struct                  // size is:  16+20+4 = 40
 {
-    eOmc_joint_status2_measures_t    measures;                   /**< the measured position etc */
+    eOmc_joint_status_measures_t    measures;                   /**< the measured position etc */
     eOmc_joint_status_ofpid_t       ofpid;                      /**< the pid status */ 
     eOmc_joint_status_modes_t       modes;                      /**< the status modes */
-} eOmc_joint_status2_core_t;         EO_VERIFYsizeof(eOmc_joint_status2_core_t, 40); 
+} eOmc_joint_status_core_t;         EO_VERIFYsizeof(eOmc_joint_status_core_t, 40); 
 
 
 /** @typedef    typedef struct eOmc_joint_status_target_t
-    @brief      eOmc_joint_status2_target_t contains the targets of a joint
+    @brief      eOmc_joint_status_target_t contains the targets of a joint
  **/
 typedef struct
 {
@@ -764,17 +753,7 @@ typedef struct
     eOmeas_acceleration_t       trgt_acceleration;          /**< the target acceleration of the joint */       
     eOmeas_torque_t             trgt_torque;                /**< the target torque of the joint */
     int32_t                     trgt_openloop;              /**< the target openloop of the joint */
-} eOmc_joint_status2_target_t;   EO_VERIFYsizeof(eOmc_joint_status2_target_t, 20); 
-
-
-/** @typedef    typedef struct eOmc_joint_status2_t
-    @brief      eOmc_joint_status2_t contains the status of a joint
- **/
-typedef struct                  // size is:  16+20+4 = 40
-{
-    eOmc_joint_status2_core_t    core;
-    eOmc_joint_status2_target_t  target;
-} eOmc_joint_status2_t;         EO_VERIFYsizeof(eOmc_joint_status2_t, 60); 
+} eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 20); 
 
 
 /** @typedef    typedef struct eOmc_joint_status_t
@@ -782,10 +761,10 @@ typedef struct                  // size is:  16+20+4 = 40
  **/
 typedef struct                  // size is:  16+20+4 = 40
 {
-    eOmc_joint_status_basic_t   basic;                      /**< the basic status */
-    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status */ 
-    eOmc_joint_status_modes_t   modes;                      /**< the status modes */
-} eOmc_joint_status_t;          EO_VERIFYsizeof(eOmc_joint_status_t, 40); 
+    eOmc_joint_status_core_t    core;
+    eOmc_joint_status_target_t  target;
+} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 60); 
+
 
 
 /** @typedef    typedef struct eOmc_joint_commands_t
@@ -808,7 +787,7 @@ typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 typedef struct                  // size is 168+40+4+44+0 = 256
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
-    eOmc_joint_status2_t        status;                     /**< the status of the joint */
+    eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
 } eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 276);
