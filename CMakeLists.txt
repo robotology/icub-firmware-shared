@@ -48,7 +48,7 @@ endforeach()
 # icub_firmware_shared-config-version.cmake (build tree and installed) (use AnyNewerVersion or ExactVersion or SameMajorVersion)
 write_basic_package_version_file(${CMAKE_BINARY_DIR}/icub_firmware_shared-config-version.cmake
                                  VERSION ${icub_firmware_shared_VERSION}
-                                 COMPATIBILITY ExactVersion)
+                                 COMPATIBILITY SameMajorVersion)
 
 #install(FILES ${CMAKE_BINARY_DIR}/icub_firmware_shared-config-version.cmake
 #        DESTINATION ${icub_firmware_shared_CMAKE_DESTINATION})
