@@ -294,6 +294,25 @@ typedef struct
     int16_t                           maxencoder;
 } icubCanProto_calibrator_params_type4_abs_and_incremental_t;
 
+/** @typedef    typedef struct icubCanProto_calibrator_params_type6_mais_t
+    @brief      contains the params in case of icubCanProto_calibration_type6_mais_t
+ **/
+typedef struct  
+{
+    icubCanProto_position4calib_t     position;
+    icubCanProto_velocity_t           velocity;
+    int16_t                           reserved;
+} icubCanProto_calibrator_params_type6_mais_t;
+
+/** @typedef    typedef struct icubCanProto_calibrator_params_type7_hall_sensor_t
+    @brief      contains the params in case of icubCanProto_calibrator_params_type7_hall_sensor_t
+ **/
+typedef struct  
+{
+    icubCanProto_position4calib_t     position;
+    icubCanProto_velocity_t           velocity;
+    int16_t                           reserved;
+} icubCanProto_calibrator_params_type7_hall_sensor_t;
 
 
 /** @typedef    typedef enum icubCanProto_calibration_type_t
@@ -307,7 +326,9 @@ typedef enum
     icubCanProto_calibration_type1_abs_sens_analog          = 1,
     icubCanProto_calibration_type2_hard_stops_diff          = 2,
     icubCanProto_calibration_type3_abs_sens_digital         = 3,
-    icubCanProto_calibration_type4_abs_and_incremental      = 4
+    icubCanProto_calibration_type4_abs_and_incremental      = 4,
+    icubCanProto_calibration_type6_mais                     = 6,
+    icubCanProto_calibration_type7_hall_sensor              = 7
 } icubCanProto_calibration_type_t;
 
 
@@ -326,6 +347,8 @@ typedef struct
         icubCanProto_calibrator_params_type2_hard_stops_diff_t          type2;
         icubCanProto_calibrator_params_type3_abs_sens_digital_t         type3;
         icubCanProto_calibrator_params_type4_abs_and_incremental_t      type4;
+        icubCanProto_calibrator_params_type6_mais_t                     type6;
+        icubCanProto_calibrator_params_type7_hall_sensor_t              type7;
     } params;                                                       /**< the params of the calibrator */   
 } icubCanProto_calibrator_t;
 
