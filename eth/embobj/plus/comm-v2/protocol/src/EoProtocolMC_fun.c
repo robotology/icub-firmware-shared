@@ -330,11 +330,11 @@ EO_weak extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mc_motor_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status_core)
-EO_weak extern void eoprot_fun_INIT_mc_motor_status_core(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status_basic)
+EO_weak extern void eoprot_fun_INIT_mc_motor_status_basic(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_status_core)
-EO_weak extern void eoprot_fun_UPDT_mc_motor_status_core(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_status_basic)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
 // -- controller
