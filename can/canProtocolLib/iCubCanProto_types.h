@@ -185,6 +185,13 @@ typedef int16_t            icubCanProto_damping_t;
 typedef int16_t             icubCanProto_current_t;
 
 
+/** @typedef    typedef int16_t icubCanProto_pwm_t
+    @brief      icubCanProto_pwm_t contains the pwm values.
+ **/
+typedef int16_t             icubCanProto_pwm_t;
+
+
+
 /** @typedef    typedef enum icubCanProto_setpoint_type_t
     @brief      contains the possible types of setpoints.
                 this is compatible with icubCanProto_setpoint_type_t.
@@ -234,6 +241,16 @@ typedef struct
     icubCanProto_current_t       value; 
 } icubCanProto_setpoint_current_t; 
 
+
+
+
+/** @typedef    typedef struct icubCanProto_setpoint_current_t
+    @brief      icubCanProto_setpoint_current_t contains the current setpoint to be sent can board by can bus
+ **/
+typedef struct
+{
+    icubCanProto_pwm_t       value; 
+} icubCanProto_setpoint_openloop_t; 
 
 /** @typedef    typedef int16_t    icubCanProto_position4calib_t
     @brief      contains position on 16 bits. this type is use only to send position in calibration command.
