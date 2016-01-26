@@ -291,19 +291,22 @@ typedef enum
     eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4 = 15,
     eoerror_value_CFG_mc_mc4_failed_mais_verify         = 16,
     
+    eoerror_value_CFG_mc_mc4plus_ok                     = 17,
+    eoerror_value_CFG_mc_mc4plus_failed_encoders_verify = 18,    
     
-    eoerror_value_CFG_encoders_ok                       = 17,
-    eoerror_value_CFG_encoders_failed_verify            = 18,
     
-    eoerror_value_CFG_inertials_ok                      = 19,
-    eoerror_value_CFG_inertials_failed_toomanyboards    = 20,
-    eoerror_value_CFG_inertials_failed_candiscovery     = 21,
+    eoerror_value_CFG_encoders_ok                       = 19,
+    eoerror_value_CFG_encoders_failed_verify            = 20,
     
-    eoerror_value_CFG_comm_cannotloadaregularrop        = 22
+    eoerror_value_CFG_inertials_ok                      = 21,
+    eoerror_value_CFG_inertials_failed_toomanyboards    = 22,
+    eoerror_value_CFG_inertials_failed_candiscovery     = 23,
+    
+    eoerror_value_CFG_comm_cannotloadaregularrop        = 24
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 23 };
+enum { eoerror_value_CFG_numberof = 25 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

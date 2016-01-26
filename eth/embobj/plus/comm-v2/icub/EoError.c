@@ -240,6 +240,8 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_mc4_ok, "CFG: EOtheMotionController can correctly configure mc4-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4, "CFG: EOtheMotionController cannot be configured. can discovery of mc4 boards fails. see CANdiscovery messages for more details"},
     {eoerror_value_CFG_mc_mc4_failed_mais_verify, "CFG: EOtheMotionController cannot be configured. verification of mais fails. see other messages for more details"},
+    {eoerror_value_CFG_mc_mc4plus_ok, "CFG: EOtheMotionController can correctly configure mc4plus-based motion. more info will follow"},
+    {eoerror_value_CFG_mc_mc4plus_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails. see other messages for more details"},
     {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured. in p16 the number of joints (lsb) and encoders (msb), in p64 the error status of verification reading"},
     {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured. verification fails. in p16 the number of joints (lsb) and encoders (msb), in p64 the error status of verification reading"},        
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
