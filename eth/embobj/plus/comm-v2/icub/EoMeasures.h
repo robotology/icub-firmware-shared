@@ -114,7 +114,7 @@ typedef int32_t             eOmeas_torque_t;
 
 /** @typedef    typedef int16_t             eOmeas_current_t
     @brief      eOmeas_current_t contains the current values.
-    the measurement unit is the icub milli Ampere imA = 25000 mA / 32K = 0.762939453125 mA
+    the measurement unit is milli Ampere
  **/
 typedef int16_t             eOmeas_current_t;
 
@@ -147,6 +147,14 @@ typedef int16_t             eOmeas_temperature_t;
  **/
 typedef int16_t             eOmeas_pwm_t;
     
+    
+    
+/** @typedef    typedef int16_t             eOmeas_voltage_t
+    @brief      eOmeas_voltage_t contains the voltage values.
+                the measurement unit is 0.01 V.
+ **/
+typedef int16_t             eOmeas_voltage_t;
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 

@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 14 };
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 15 };
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -79,11 +79,11 @@ typedef enum
     eoprot_tag_mc_joint_config_motor_params                         =  7,
     eoprot_tag_mc_joint_config_tcfiltertype                         =  8,
     eoprot_tag_mc_joint_status                                      =  9,
-    eoprot_tag_mc_joint_status_basic                                = 10,
-    eoprot_tag_mc_joint_status_ofpid                                = 11,
-    eoprot_tag_mc_joint_status_modes_controlmodestatus              = 12,
-    eoprot_tag_mc_joint_status_modes_interactionmodestatus          = 13,
-    eoprot_tag_mc_joint_status_modes_ismotiondone                   = 14,
+    eoprot_tag_mc_joint_status_core                                 = 10,
+    eoprot_tag_mc_joint_status_target                               = 11,
+    eoprot_tag_mc_joint_status_core_modes_controlmodestatus         = 12,
+    eoprot_tag_mc_joint_status_core_modes_interactionmodestatus     = 13,
+    eoprot_tag_mc_joint_status_core_modes_ismotiondone              = 14,
     eoprot_tag_mc_joint_inputs                                      = 15,
     eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 16,
     eoprot_tag_mc_joint_cmmnds_calibration                          = 17,
@@ -113,11 +113,11 @@ typedef enum
     eoprot_rwm_mc_joint_config_motor_params                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_tcfiltertype                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_status                                      = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_basic                                = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_ofpid                                = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_modes_controlmodestatus              = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_modes_interactionmodestatus          = eo_nv_rwmode_RO,
-    eoprot_rwm_mc_joint_status_modes_ismotiondone                   = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_core                                 = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_target                               = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_core_modes_controlmodestatus         = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_core_modes_interactionmodestatus     = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_core_modes_ismotiondone              = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_inputs                                      = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_inputs_externallymeasuredtorque             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_calibration                          = eo_nv_rwmode_RW,
@@ -141,14 +141,16 @@ typedef enum
 {
     eoprot_tag_mc_motor_wholeitem                                   = 0,
     eoprot_tag_mc_motor_config                                      = 1,
-    eoprot_tag_mc_motor_config_maxcurrentofmotor                    = 2,
+    eoprot_tag_mc_motor_config_currentlimits                        = 2,
     eoprot_tag_mc_motor_config_gearboxratio                         = 3,
     eoprot_tag_mc_motor_config_rotorencoder                         = 4,
-    eoprot_tag_mc_motor_status                                      = 5,
-    eoprot_tag_mc_motor_status_basic                                = 6
+    eoprot_tag_mc_motor_config_pwmlimit                             = 5,
+    eoprot_tag_mc_motor_config_temperaturelimit                     = 6,
+    eoprot_tag_mc_motor_status                                      = 7,
+    eoprot_tag_mc_motor_status_basic                                = 8
 } eOprot_tag_mc_motor_t;
 
-enum { eoprot_tags_mc_motor_numberof = 7 };   // it MUST be equal to the number of tags 
+enum { eoprot_tags_mc_motor_numberof = 9 };   // it MUST be equal to the number of tags 
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_motor_t
@@ -160,14 +162,16 @@ typedef enum
 {
     eoprot_rwm_mc_motor_wholeitem                                   = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_config                                      = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_motor_config_maxcurrentofmotor                    = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_currentlimits                        = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_gearboxratio                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_rotorencoder                         = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_pwmlimit                             = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_temperaturelimit                     = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_status_basic                                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_motor_t;  
 
-enum { eoprot_rwms_mc_motor_numberof = 7 };   // it MUST be equal to the number of rw modes
+enum { eoprot_rwms_mc_motor_numberof = 9 };   // it MUST be equal to the number of rw modes
 
 
 
@@ -270,21 +274,21 @@ extern void eoprot_fun_UPDT_mc_joint_config_tcfiltertype(const EOnv* nv, const e
 extern void eoprot_fun_INIT_mc_joint_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_status(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_status_basic(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_basic(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_core(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_core(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_ofpid(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_target(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_target(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
-extern void eoprot_fun_INIT_mc_joint_status_modes_controlmodestatus(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_modes_controlmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_core_modes_controlmodestatus(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_core_modes_controlmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_status_modes_interactionmodestatus(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_modes_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_core_modes_interactionmodestatus(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_core_modes_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_status_modes_ismotiondone(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_status_modes_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_status_core_modes_ismotiondone(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_core_modes_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd);
 
    
 
@@ -317,14 +321,20 @@ extern void eoprot_fun_UPDT_mc_motor_wholeitem(const EOnv* nv, const eOropdescri
 extern void eoprot_fun_INIT_mc_motor_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_gearboxratio(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_gearboxratio(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_rotorencoder(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_rotorencoder(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_pwmlimit(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_pwmlimit(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_temperaturelimit(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_temperaturelimit(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_status(const EOnv* nv, const eOropdescriptor_t* rd);

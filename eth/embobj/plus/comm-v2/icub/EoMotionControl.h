@@ -189,7 +189,8 @@ typedef enum
     eomc_setpoint_velocity                      = 1,
     eomc_setpoint_torque                        = 2,
     eomc_setpoint_current                       = 3,
-    eomc_setpoint_positionraw                   = 4
+    eomc_setpoint_positionraw                   = 4,
+    eomc_setpoint_openloop                      = 5
 } eOmc_setpoint_type_t;
 
 
@@ -514,6 +515,11 @@ typedef struct
     eOmeas_current_t        value;
 } eOmc_setpoint_current_t;
 
+typedef struct 
+{ 
+    eOmeas_pwm_t           value;
+} eOmc_setpoint_openloop_t;
+
 typedef union
 {
     uint8_t                     sizeofunionis08[8];     
@@ -521,7 +527,8 @@ typedef union
     eOmc_setpoint_positionraw_t positionraw;
     eOmc_setpoint_velocity_t    velocity;
     eOmc_setpoint_torque_t      torque;
-    eOmc_setpoint_current_t     current;    
+    eOmc_setpoint_current_t     current;
+    eOmc_setpoint_openloop_t    openloop;
 } eOmc_setpoint_data_t;
         
 
@@ -701,19 +708,8 @@ typedef struct                  // size is 4 = 4
 
 
 
-/** @typedef    typedef struct eOmc_joint_status_basic_t
-    @brief      eOmc_joint_status_basic_t contains the basic status of the joint
- **/
-typedef struct                  // size is: 4+4+4+2+2+0 = 16
-{   
-    eOmeas_position_t           jnt_position;               /**< the position of the joint */           
-    eOmeas_velocity_t           jnt_velocity;               /**< the velocity of the joint */          
-    eOmeas_acceleration_t       jnt_acceleration;           /**< the acceleration of the joint */       
-    eOmeas_torque_t             jnt_torque;                 /**< the torque of the joint when locally measured */
-} eOmc_joint_status_basic_t;    EO_VERIFYsizeof(eOmc_joint_status_basic_t, 16);
-
-/** @typedef    typedef struct eOmc_joint_status2_measures_t
-    @brief      eOmc_joint_status2_measures_t contains the measures of a joint
+/** @typedef    typedef struct eOmc_joint_status_measures_t
+    @brief      eOmc_joint_status_measures_t contains the measures of a joint
  **/
 typedef struct                  // size is: 4+4+4+2+2+0 = 16
 {   
@@ -721,7 +717,7 @@ typedef struct                  // size is: 4+4+4+2+2+0 = 16
     eOmeas_velocity_t           meas_velocity;               /**< the velocity of the joint */          
     eOmeas_acceleration_t       meas_acceleration;           /**< the acceleration of the joint */       
     eOmeas_torque_t             meas_torque;                 /**< the torque of the joint when locally measured */
-} eOmc_joint_status2_measures_t; EO_VERIFYsizeof(eOmc_joint_status2_measures_t, 16);
+} eOmc_joint_status_measures_t; EO_VERIFYsizeof(eOmc_joint_status_measures_t, 16);
 
 
 /** @typedef    typedef struct eOmc_joint_status_modes_t
@@ -741,44 +737,35 @@ typedef struct
  **/
 typedef struct                  // size is:  16+20+4 = 40
 {
-    eOmc_joint_status2_measures_t    measures;                   /**< the measured position etc */
+    eOmc_joint_status_measures_t    measures;                   /**< the measured position etc */
     eOmc_joint_status_ofpid_t       ofpid;                      /**< the pid status */ 
     eOmc_joint_status_modes_t       modes;                      /**< the status modes */
-} eOmc_joint_status2_core_t;         EO_VERIFYsizeof(eOmc_joint_status2_core_t, 40); 
+} eOmc_joint_status_core_t;         EO_VERIFYsizeof(eOmc_joint_status_core_t, 40); 
 
 
 /** @typedef    typedef struct eOmc_joint_status_target_t
-    @brief      eOmc_joint_status2_target_t contains the targets of a joint
+    @brief      eOmc_joint_status_target_t contains the targets of a joint
  **/
-typedef struct
+typedef struct                  // size is:  4+4+4+4+4+4 = 24
 {
     eOmeas_position_t           trgt_position;              /**< the target position of the joint */           
+    eOmeas_position_t           trgt_positionraw;           /**< the target position raw of the joint */           
     eOmeas_velocity_t           trgt_velocity;              /**< the target velocity of the joint */          
     eOmeas_acceleration_t       trgt_acceleration;          /**< the target acceleration of the joint */       
     eOmeas_torque_t             trgt_torque;                /**< the target torque of the joint */
     int32_t                     trgt_openloop;              /**< the target openloop of the joint */
-} eOmc_joint_status2_target_t;   EO_VERIFYsizeof(eOmc_joint_status2_target_t, 20); 
-
-
-/** @typedef    typedef struct eOmc_joint_status2_t
-    @brief      eOmc_joint_status2_t contains the status of a joint
- **/
-typedef struct                  // size is:  16+20+4 = 40
-{
-    eOmc_joint_status2_core_t    core;
-    eOmc_joint_status2_target_t  target;
-} eOmc_joint_status2_t;         EO_VERIFYsizeof(eOmc_joint_status2_t, 60); 
+} eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 24); 
 
 
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint
  **/
-typedef struct                  // size is:  16+20+4 = 40
+typedef struct                  // size is:  16+24+4 = 44
 {
-    eOmc_joint_status_basic_t   basic;                      /**< the basic status */
-    eOmc_joint_status_ofpid_t   ofpid;                      /**< the pid status */ 
-    eOmc_joint_status_modes_t   modes;                      /**< the status modes */
-} eOmc_joint_status_t;          EO_VERIFYsizeof(eOmc_joint_status_t, 40); 
+    eOmc_joint_status_core_t    core;
+    eOmc_joint_status_target_t  target;
+} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 64); 
+
 
 
 /** @typedef    typedef struct eOmc_joint_commands_t
@@ -804,7 +791,7 @@ typedef struct                  // size is 168+40+4+44+0 = 256
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 256);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 280);
 
 
 
@@ -817,29 +804,36 @@ typedef struct                  // size is 168+40+4+44+0 = 256
  **/
 typedef uint8_t  eOmc_motorId_t;
 
-
+typedef struct
+{
+    eOmeas_current_t    nominalCurrent;
+    eOmeas_current_t    peakCurrent;
+    eOmeas_current_t    overloadCurrent;
+} eOmc_current_limits_params_t;
 
 /** @typedef    typedef struct eOmc_motor_config_t
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+2+2+ 1+1+1+1+1+1 +2 + 8= 72
+typedef struct                  // size is: 40+4+4+4+6+2+ 1+1+1+1+1+1 +2 + 8 +2+2= 80
 {
-    eOmc_PID_t                  pidcurrent;                 /**< the pid for current control */
-    int32_t                     gearboxratio;               /**< the gearbox reduction ration */
-    int32_t                     rotorEncoderResolution;     /**< the rotorencoder resolution  */
-    eOmeas_velocity_t           maxvelocityofmotor;         /**< the maximum velocity in the motor */
-    eOmeas_current_t            maxcurrentofmotor;          /**< the maximum current in the motor */
-    uint16_t                    rotorIndexOffset;           /**< index offset for the rotor encoder*/
-    uint8_t                     motorPoles;                 /**< number of poles of the motor */
-    eObool_t                    hasHallSensor;              /**< true if the motor is equipped with hall effect sensors */
-    eObool_t                    hasTempSensor;              /**< true if the motor is equipped with temperature sensors */
-    eObool_t                    hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
-    eObool_t                    hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
-    uint8_t                     rotorEncoderType;           /**< rotor encoder type */
-    uint8_t                     filler02[2];
-    eOmeas_position_limits_t    limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;          EO_VERIFYsizeof(eOmc_motor_config_t, 72);
+    eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
+    int32_t                         gearboxratio;               /**< the gearbox reduction ration */
+    int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
+    eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
+    eOmc_current_limits_params_t    currentLimits;              /**< the maximum current in the motor */
+    uint16_t                        rotorIndexOffset;           /**< index offset for the rotor encoder*/
+    uint8_t                         motorPoles;                 /**< number of poles of the motor */
+    eObool_t                        hasHallSensor;              /**< true if the motor is equipped with hall effect sensors */
+    eObool_t                        hasTempSensor;              /**< true if the motor is equipped with temperature sensors */
+    eObool_t                        hasRotorEncoder;            /**< true if the motor is equipped with rotor encoder */
+    eObool_t                        hasRotorEncoderIndex;       /**< true if the motor is equipped with rotor encoder */
+    uint8_t                         rotorEncoderType;           /**< rotor encoder type */
+    eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
+    eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
+    eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
+    uint8_t                         filler02[2];
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 80);
 
 
 
@@ -872,11 +866,11 @@ typedef struct                  // size is: 20+4+0 = 24
 /** @typedef    typedef struct eOmc_motor_t
     @brief      contains the whole motor
  **/
-typedef struct                  // size is 76+24+0 = 96
+typedef struct                  // size is 80+24+0 = 104
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 96); 
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 104); 
  
 
 // -- the definition of a controller containing a given number of joints and motors  
@@ -906,7 +900,7 @@ typedef struct                  // size is 4+4+64+0 = 72
 } eOmc_controller_config_t;     //EO_VERIFYsizeof(eOmc_controller_config_t, 72); 
 
 
-typedef struct                  // size is 1+1+1+1+2+2+0 = 8
+typedef struct                  // size is 1+1+1+1+2+2+ 2+6 = 16
 {
     eOenum08_t                  stateofcontroller;          /**< it holds a value from enum eOmc_stateofcontroller_t */               
     uint8_t                     numofjoints;                /**< the number of joints */   
@@ -914,7 +908,9 @@ typedef struct                  // size is 1+1+1+1+2+2+0 = 8
     eObool_t                    alljomoinitted;             /**< it is eobool_true only when every joint and motor is initted */    
     eO16flags_t                 flagsinittedjoints;         /**< bit position 0 (1, 2, ..) keeps 1 if the joint 0 (1, 2, ..) is fully initted. */
     eO16flags_t                 flagsinittedmotors;         /**< bit position 0 (1, 2, ..) keeps 1 if the motor 0 (1, 2, ..) is fully initted. */ 
-} eOmc_controller_status_t;     //EO_VERIFYsizeof(eOmc_controller_status_t, 8); 
+    eOmeas_voltage_t            supplyVoltage;              /**< supply voltage to the controller (board) */
+    uint8_t                     filler06[6];                
+} eOmc_controller_status_t;     //EO_VERIFYsizeof(eOmc_controller_status_t, 16); 
 
 
 // typedef struct                  // size is 1+7+0 = 8
@@ -924,11 +920,11 @@ typedef struct                  // size is 1+1+1+1+2+2+0 = 8
 // } eOmc_controller_commands_t;   //EO_VERIFYsizeof(eOmc_controller_commands_t, 8); 
 
 
-typedef struct                  // size is 72+8+0 = 80
+typedef struct                  // size is 72+16+0 = 88
 {
     eOmc_controller_config_t    config;                     /**< controller configuration */
     eOmc_controller_status_t    status;                     /**< controller status  */
-} eOmc_controller_t;            //EO_VERIFYsizeof(eOmc_controller_t, 80); 
+} eOmc_controller_t;            //EO_VERIFYsizeof(eOmc_controller_t, 88); 
 
 
 

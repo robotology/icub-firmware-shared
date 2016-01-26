@@ -184,42 +184,42 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_status(const EOnv* nv)  {}
 EO_weak extern void eoprot_fun_UPDT_mc_joint_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_basic)
-EO_weak extern void eoprot_fun_INIT_mc_joint_status_basic(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_core)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_core(const EOnv* nv) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_basic)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_status_basic(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_core)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_core(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_ofpid)
-EO_weak extern void eoprot_fun_INIT_mc_joint_status_ofpid(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_target)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_target(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_ofpid)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_status_ofpid(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_target)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_target(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_modes_controlmodestatus)
-EO_weak extern void eoprot_fun_INIT_mc_joint_status_modes_controlmodestatus(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_core_modes_controlmodestatus)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_core_modes_controlmodestatus(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_modes_controlmodestatus)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_status_modes_controlmodestatus(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_core_modes_controlmodestatus)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_core_modes_controlmodestatus(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif   
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_modes_interactionmodestatus)
-EO_weak extern void eoprot_fun_INIT_mc_joint_status_modes_interactionmodestatus(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_core_modes_interactionmodestatus)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_core_modes_interactionmodestatus(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_modes_interactionmodestatus)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_status_modes_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_core_modes_interactionmodestatus)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_core_modes_interactionmodestatus(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif    
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_modes_ismotiondone)
-EO_weak extern void eoprot_fun_INIT_mc_joint_status_modes_ismotiondone(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_status_core_modes_ismotiondone)
+EO_weak extern void eoprot_fun_INIT_mc_joint_status_core_modes_ismotiondone(const EOnv* nv) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_modes_ismotiondone)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_status_modes_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_status_core_modes_ismotiondone)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_status_core_modes_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_inputs)
@@ -287,11 +287,11 @@ EO_weak extern void eoprot_fun_INIT_mc_motor_config(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor)
-EO_weak extern void eoprot_fun_INIT_mc_motor_config_maxcurrentofmotor(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_currentlimits)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor)
-EO_weak extern void eoprot_fun_UPDT_mc_motor_config_maxcurrentofmotor(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_currentlimits)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_gearboxratio)
@@ -307,6 +307,21 @@ EO_weak extern void eoprot_fun_INIT_mc_motor_config_rotorencoder(const EOnv* nv)
 #if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_rotorencoder)
 EO_weak extern void eoprot_fun_UPDT_mc_motor_config_rotorencoder(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_pwmlimit)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_pwmlimit(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_pwmlimit)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_pwmlimit(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_temperaturelimit)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_temperaturelimit(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_temperaturelimit)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_temperaturelimit(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_status)
 EO_weak extern void eoprot_fun_INIT_mc_motor_status(const EOnv* nv) {}
