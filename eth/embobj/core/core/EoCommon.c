@@ -381,6 +381,106 @@ extern uint8_t eo_common_dword_bitsetcount(uint64_t dword)
 //    return(eobool_true);
 //}
 
+static eOresult_t s_eo_common_Q17_14_clip(int64_t in, eOq17_14_t *out)
+{
+    // verify positive overflow
+    if(in > EOK_Q17_14_POS_BIGGEST)
+    {
+        *out = EOK_Q17_14_POS_BIGGEST;
+        return(eores_NOK_generic);
+    }
+
+    // verify negative overflow
+    if(in < EOK_Q17_14_NEG_BIGGEST)
+    {
+        *out = EOK_Q17_14_NEG_BIGGEST;
+        return(eores_NOK_generic);
+    }
+    
+    // no overflow
+    *out = (eOq17_14_t)in; 
+    return(eores_OK);        
+}
+
+extern eOq17_14_t eo_common_float_to_Q17_14(float f_num)
+{   // check vs overflow and clip ....
+    eOq17_14_t ret = 0;
+    int64_t rr = ((int64_t)f_num * 16384.0f);    // note: 16384.0 = 2^14
+    s_eo_common_Q17_14_clip(rr, &ret);
+    return(ret);
+}
+
+extern float eo_common_Q17_14_to_float(eOq17_14_t q_num)
+{   // in here we cannot overflow
+    return((float)(q_num / 16384.0f) ); // note: 16384.0 = 2^14
+}
+
+
+// it sums two q17-14 numbers and manages positive and negative overflows. 
+// if the sum overflows, the result is clipped to biggest pos / neg and funtions returns eores_NOK_generic.
+// if the sum is valid return is eores_OK
+extern eOresult_t eo_common_Q17_14_add(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res)
+{
+    int64_t rr = (int64_t)q_num1 + (int64_t)q_num1;
+
+    return(s_eo_common_Q17_14_clip(rr, q_res));
+}
+
+
+extern eOresult_t eo_common_Q17_14_multiply(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res)
+{
+    int64_t rr = ((int64_t)q_num1) * ((int64_t)q_num2);
+
+    rr = (rr + (1<<13))>>14;  // acemor: split the following two to remove a warning on visual studio    
+    
+    return(s_eo_common_Q17_14_clip(rr, q_res));
+}
+
+extern eOresult_t eo_common_Q17_14_divide(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res)
+{  
+    int64_t n1 = q_num1;
+    int64_t n2 = q_num2;
+    int64_t rr = 0;
+    uint8_t neg = 0;
+    
+    if(0 == n2)
+    {
+        return(eores_NOK_generic);
+    }
+    
+    if(n1 < 0)
+    {
+        neg = !neg;
+        n1 = -n1;
+    }
+    
+    if(n2 < 0)
+    {
+        neg = !neg;
+        n2 = -n2;
+    }
+    
+    rr = (n1 << 14) / n2;
+    
+    if(0 != neg)
+    {
+        rr = - rr;
+    }
+    
+    return(s_eo_common_Q17_14_clip(rr, q_res));
+}
+
+
+extern uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame)
+{
+    if(NULL == frame)
+    {
+        return(0);
+    }
+    // it works as long as data is aligned at 8 bytes
+    return(*((uint64_t*)(frame->data)));
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

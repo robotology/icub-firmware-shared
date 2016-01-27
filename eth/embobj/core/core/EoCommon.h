@@ -136,6 +136,29 @@ extern "C" {
 
 #define EOK_abstimeNOW                      (0xffffffffffffffffLL)
 
+// 0.0f
+#define EOK_Q17_14_ZERO                 ((eOq17_14_t)0x00000000)
+// +1.0f
+#define EOK_Q17_14_POS_ONE              ((eOq17_14_t)0x00004000)
+// -1.0f
+#define EOK_Q17_14_NEG_ONE              ((eOq17_14_t)0xFFFFC000)
+
+// +0.00006103515625f = +2^-14
+#define EOK_Q17_14_POS_SMALLEST         ((eOq17_14_t)0x00000001)
+#define EOK_FLOATQ17_14_POS_SMALLEST    (+0.00006103515625f)
+
+// -0.00006103515625f = -2^-14
+#define EOK_Q17_14_NEG_SMALLEST         ((eOq17_14_t)0xffffffff)
+#define EOK_FLOATQ17_14_NEG_SMALLEST    (-0.00006103515625f)
+
+// +131071.99993896484375f = 131072.0f - 0.00006103515625f
+#define EOK_Q17_14_POS_BIGGEST          ((eOq17_14_t)0x7fffffff)
+#define EOK_FLOATQ17_14_POS_BIGGEST     (+131071.99993896484375f)
+
+// -131072.0f
+#define EOK_Q17_14_NEG_BIGGEST          ((eOq17_14_t)0x80000000)
+#define EOK_FLOATQ17_14_NEG_BIGGEST     (-131072.0f)
+
 
 // - declaration of public user-defined types -------------------------------------------------------------------------
 
@@ -635,6 +658,25 @@ extern void eo_common_dword_bittoggle(uint64_t* dword, uint8_t bit);
 extern uint8_t eo_common_dword_bitsetcount(uint64_t dword);
 
 
+// all the Q17_4 functions clip to upper or lower limit.
+
+extern eOq17_14_t eo_common_float_to_Q17_14(float f_num);
+
+extern float eo_common_Q17_14_to_float(eOq17_14_t q_num);
+
+// it sums two q17-14 numbers and manages positive and negative overflows. 
+// if the sum overflows, the result is clipped to biggest pos / neg and funtions returns eores_NOK_generic.
+// if the sum is valid return is eores_OK
+extern eOresult_t eo_common_Q17_14_add(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res);
+
+extern eOresult_t eo_common_Q17_14_multiply(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res);
+
+extern eOresult_t eo_common_Q17_14_divide(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res);
+
+
+extern uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame);
+
+
 // - definition of extern public macros ------------------------------------------------------------------------------
 
 #define EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4)      ((eOipv4addr_t)EO_4BtoU32(ip1, ip2, ip3, ip4))
@@ -643,6 +685,7 @@ extern uint8_t eo_common_dword_bitsetcount(uint64_t dword);
 #define EO_COMMON_IPV4ADDR_LOCALHOST                EO_COMMON_IPV4ADDR(127, 0, 0, 1)
 
 #define EO_COMMON_CHECK_FLAG(var, flagmask)         ((flagmask) == ((var)& (flagmask)))
+
 // - definition of extern public inlined functions --------------------------------------------------------------------
 
 EO_extern_inline eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4)
@@ -660,50 +703,7 @@ EO_extern_inline eObool_t eo_common_event_check(eOevent_t event, eOevent_t mask)
     return( (mask == (event & mask)) ? (eobool_true) : (eobool_false) );
 }
 
-EO_extern_inline eOq17_14_t eo_common_float_to_Q17_14(float f_num)
-{
-    return((eOq17_14_t)(f_num * 16384.0f) ); //note: 16384.0 = 2^14
-}
 
-EO_extern_inline float eo_common_Q17_14_to_float(eOq17_14_t q_num)
-{
-    return((float)(q_num / 16384.0f) ); //note: 16384.0 = 2^14
-}
-
-EO_extern_inline eOresult_t eo_common_Q17_14_mult(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res)
-{
-    int64_t tmp;
-    
-    tmp = ((int64_t)q_num1) * ((int64_t)q_num2);
-
-    if(tmp >= 0x200000000000LL)
-    {
-        return(eores_NOK_generic);
-    }
-
-    tmp = (tmp + (1<<13))>>14;  // acemor: split the following two to remove a warning on visual studio    
-    *q_res = (eOq17_14_t)tmp; 
-
-    return(eores_OK);
-}
-
-EO_extern_inline eOresult_t eo_common_Q17_14_division(eOq17_14_t q_num1, eOq17_14_t q_num2, eOq17_14_t *q_res)
-{
-    
-    *q_res = (((int64_t)q_num1) <<14) / q_num2;
-    return(eores_OK);
-}
-
-
-EO_extern_inline uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame)
-{
-    if(NULL == frame)
-    {
-        return(0);
-    }
-    // it works as long as data is aligned at 8 bytes
-    return(*((uint64_t*)(frame->data)));
-}
 
 /** @}            
     end of group eo_common  
