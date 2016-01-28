@@ -641,14 +641,17 @@ typedef struct
 } eOmn_serv_arrayof_4jomodescriptors_t; EO_VERIFYsizeof(eOmn_serv_arrayof_4jomodescriptors_t, 16);
 
 
+typedef eOq17_14_t eOmn_4x4_coupling_t[4][4];
 
 typedef struct
-{    
+{   // 24 + 64 + 64    
     uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
     uint8_t                                 filler[3];    
     eOmn_serv_canboardversion_t             version;
-    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;           
-} eOmn_serv_config_data_mc_foc_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 24);
+    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;   
+    eOmn_4x4_coupling_t                     couplingjoint2motor;  
+    eOmn_4x4_coupling_t                     couplingjoint2encoder;     
+} eOmn_serv_config_data_mc_foc_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 152);
 
 typedef struct
 {
@@ -679,21 +682,25 @@ typedef struct
 
 
 typedef struct
-{ 
+{   // 20 + 64 + 64
     uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
     uint8_t                                 filler[3];
-   eOmn_serv_arrayof_4jomodescriptors_t     arrayofjomodescriptors;         
-} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 20);
+    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors; 
+    eOmn_4x4_coupling_t                     couplingjoint2motor;  
+    eOmn_4x4_coupling_t                     couplingjoint2encoder;     
+} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 148);
 
 
 typedef struct
-{ 
+{   // 24 + 64 + 64 
     eOmn_serv_canboardversion_t             maisversion;
     eOmn_serv_canlocation_t                 maislocation;
     uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
     uint8_t                                 filler[2];
-    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;         
-} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 24);
+    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;  
+    eOmn_4x4_coupling_t                     couplingjoint2motor;  
+    eOmn_4x4_coupling_t                     couplingjoint2encoder;     
+} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 152);
 
 
 
@@ -703,7 +710,7 @@ typedef union
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
     eOmn_serv_config_data_mc_mc4plusmais_t  mc4plusmais_based;
-} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 24); 
+} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 152); 
 
 
 typedef union
@@ -711,7 +718,7 @@ typedef union
     eOmn_serv_config_data_as_t          as;
     eOmn_serv_config_data_mc_t          mc;
     eOmn_serv_config_data_sk_t          sk;   
-} eOmn_serv_config_data_t;              EO_VERIFYsizeof(eOmn_serv_config_data_t, 24); 
+} eOmn_serv_config_data_t;              EO_VERIFYsizeof(eOmn_serv_config_data_t, 152); 
 
 // ok, devo ridurre la size of eOmn_serv_config_data_as_t
 
@@ -722,7 +729,7 @@ typedef struct
     uint8_t                             type;           // use eOmn_serv_type_t to identify what kind of service it is
     uint8_t                             filler[3];
     eOmn_serv_config_data_t             data;   
-} eOmn_serv_configuration_t;            EO_VERIFYsizeof(eOmn_serv_configuration_t, 28); 
+} eOmn_serv_configuration_t;            EO_VERIFYsizeof(eOmn_serv_configuration_t, 156); 
 
 // use eOemscontroller_board_t and variable mccontrollerboardtype
 
@@ -752,12 +759,12 @@ typedef struct
     uint8_t                         command;               // use eOmn_service_command_t
     uint8_t                         filler[3];
     eOmn_serv_configuration_t       config;  
-} eOmn_service_cmmnds_command_t;    EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 32);
+} eOmn_service_cmmnds_command_t;    EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 160);
 
 typedef struct
 {
     eOmn_service_cmmnds_command_t   command;    
-} eOmn_service_cmmnds_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_t, 32);
+} eOmn_service_cmmnds_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_t, 160);
 
 
 typedef struct
@@ -782,7 +789,7 @@ typedef struct                      // size is 8+32 = 40 bytes
 {    
     eOmn_service_status_t           status;
     eOmn_service_cmmnds_t           cmmnds;
-} eOmn_service_t;                   EO_VERIFYsizeof(eOmn_service_t, 64);  
+} eOmn_service_t;                   EO_VERIFYsizeof(eOmn_service_t, 192);  
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
