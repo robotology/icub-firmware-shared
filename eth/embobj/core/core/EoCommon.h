@@ -139,9 +139,9 @@ extern "C" {
 // 0.0f
 #define EOK_Q17_14_ZERO                 ((eOq17_14_t)0x00000000)
 // +1.0f
-#define EOK_Q17_14_POS_ONE              ((eOq17_14_t)0x00004000)
+#define EOK_Q17_14_ONE                  ((eOq17_14_t)0x00004000)
 // -1.0f
-#define EOK_Q17_14_NEG_ONE              ((eOq17_14_t)0xFFFFC000)
+#define EOK_Q17_14_MINUS_ONE            ((eOq17_14_t)0xFFFFC000)
 
 // +0.00006103515625f = +2^-14
 #define EOK_Q17_14_POS_SMALLEST         ((eOq17_14_t)0x00000001)
@@ -563,7 +563,7 @@ typedef struct
     @brief      Q17_14_t represents a number in fixed point format: 1 bit is used for the sign,
                 17 bits are used for integer part and 14 bits for fractional part.
  **/  
-typedef int32_t                     eOq17_14_t;
+typedef int32_t eOq17_14_t;
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -678,6 +678,8 @@ extern uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame);
 
 
 // - definition of extern public macros ------------------------------------------------------------------------------
+
+#define EO_COMMON_FLOAT_TO_Q17_14(v)                ((eOq17_14_t)(16384.0f*(v))) 
 
 #define EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4)      ((eOipv4addr_t)EO_4BtoU32(ip1, ip2, ip3, ip4))
 #define EO_COMMON_MACADDR(m1, m2, m3, m4, m5, m6)   ((eOmacaddr_t)EO_8BtoU64(m1, m2, m3, m4, m5, m6, 0, 0))
