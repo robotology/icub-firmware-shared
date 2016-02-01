@@ -96,6 +96,9 @@ extern "C" {
 #define ICUBCANPROTO_POL_MC_CMD__SET_DESIRED_TORQUE             44
 #define ICUBCANPROTO_POL_MC_CMD__GET_DESIRED_TORQUE             45
 #define ICUBCANPROTO_POL_MC_CMD__STOP_TRAJECTORY                46
+#define ICUBCANPROTO_POL_MC_CMD__SET_PWM_LIMIT                  47
+#define ICUBCANPROTO_POL_MC_CMD__GET_PWM_LIMIT                  48
+
 #define ICUBCANPROTO_POL_MC_CMD__SET_BOARD_ID                   50
 #define ICUBCANPROTO_POL_MC_CMD__GET_BOARD_ID                   51
 #define ICUBCANPROTO_POL_MC_CMD__SET_TORQUE_SOURCE              52
