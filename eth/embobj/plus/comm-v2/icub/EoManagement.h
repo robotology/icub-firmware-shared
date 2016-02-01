@@ -499,19 +499,20 @@ typedef union
 
 typedef enum
 {
-    eomn_serv_item_none                     = 0,
-    eomn_serv_item_mc_actuator_foc          = 1,
-    eomn_serv_item_mc_actuator_mc4          = 2,
-    eomn_serv_item_mc_actuator_pwm          = 3,
-    eomn_serv_item_mc_sensor_encoder_aea    = 4,
-    eomn_serv_item_mc_sensor_encoder_amo    = 5,
-    eomn_serv_item_mc_sensor_encoder_inc    = 6,
-    eomn_serv_item_mc_sensor_hall           = 7,
-    eomn_serv_item_as_mais                  = 8,
-    eomn_serv_item_as_strain                = 9,
-    eomn_serv_item_skin                     = 10,
-    eomn_serv_item_as_inertial              = 11,
-    eomn_serv_item_canloc                   = 15
+    eomn_serv_item_none                             = 0,
+    eomn_serv_item_mc_actuator_foc                  = 1,
+    eomn_serv_item_mc_actuator_mc4                  = 2,
+    eomn_serv_item_mc_actuator_pwm                  = 3,
+//    eomn_serv_item_mc_sensor_encoder_spichainof2    = 3,    
+//    eomn_serv_item_mc_sensor_encoder_aea            = 4,
+//    eomn_serv_item_mc_sensor_encoder_amo            = 5,
+//    eomn_serv_item_mc_sensor_encoder_inc            = 6,
+//    eomn_serv_item_mc_sensor_hall                   = 7,
+    eomn_serv_item_as_mais                          = 8,
+    eomn_serv_item_as_strain                        = 9,
+    eomn_serv_item_skin                             = 10,
+    eomn_serv_item_as_inertial                      = 11,
+    eomn_serv_item_canloc                           = 15
 } eOmn_serv_item_type_t;
 
 
@@ -582,13 +583,16 @@ typedef union
 
 
 typedef enum
-{
+{   // values must be included in 3 bits ... 0 is none. max value is 7 ... we are almost out of values ...
     eomn_serv_mc_sensor_none                = eomn_serv_item_none,
-    eomn_serv_mc_sensor_encoder_aea         = eomn_serv_item_mc_sensor_encoder_aea,
-    eomn_serv_mc_sensor_encoder_amo         = eomn_serv_item_mc_sensor_encoder_amo,
-    eomn_serv_mc_sensor_encoder_inc         = eomn_serv_item_mc_sensor_encoder_inc,
-    eomn_serv_mc_sensor_hall                = eomn_serv_item_mc_sensor_hall
+    eomn_serv_mc_sensor_encoder_aea         = 1,
+    eomn_serv_mc_sensor_encoder_amo         = 2,
+    eomn_serv_mc_sensor_encoder_inc         = 3,
+    eomn_serv_mc_sensor_encoder_spichainof2 = 4,
+    eomn_serv_mc_sensor_hall                = 5,
+    eomn_serv_mc_sensor_mais                = 6
 } eOmn_serv_mc_sensor_type_t;
+
 
 typedef enum
 {
@@ -611,6 +615,7 @@ typedef enum
     eomn_serv_mc_port_mc4plus_qencP5        = 3     // its is hal_quad_enc4    
 } eOmn_serv_mc_port_t;
 
+
 typedef enum
 {
     
@@ -624,7 +629,7 @@ typedef struct
     uint8_t     type : 3;       // use eOmn_serv_mc_sensor_type_t
     uint8_t     port : 3;       // use eOmn_serv_mc_port_t 
     uint8_t     pos  : 2;       // use eOmn_serv_mc_sensor_position_t
-} eOmn_serv_mc_sensor_t;
+} eOmn_serv_mc_sensor_t;        // 1B
 
 typedef struct
 {
