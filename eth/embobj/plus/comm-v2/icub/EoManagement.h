@@ -589,7 +589,7 @@ typedef enum
     eomn_serv_mc_sensor_encoder_amo         = 2,
     eomn_serv_mc_sensor_encoder_inc         = 3,
     eomn_serv_mc_sensor_encoder_spichainof2 = 4,
-    eomn_serv_mc_sensor_hall                = 5,
+    eomn_serv_mc_sensor_encoder_absanalog   = 5,
     eomn_serv_mc_sensor_mais                = 6
 } eOmn_serv_mc_sensor_type_t;
 
@@ -612,7 +612,15 @@ typedef enum
     eomn_serv_mc_port_mc4plus_qencP2        = 1,    // its is hal_quad_enc2
     eomn_serv_mc_port_mc4plus_qencP3        = 0,    // its is hal_quad_enc1
     eomn_serv_mc_port_mc4plus_qencP4        = 2,    // its is hal_quad_enc3
-    eomn_serv_mc_port_mc4plus_qencP5        = 3     // its is hal_quad_enc4    
+    eomn_serv_mc_port_mc4plus_qencP5        = 3,    // its is hal_quad_enc4   
+
+    eomn_serv_mc_port_mais_thumb_proximal   = 0,
+    eomn_serv_mc_port_mais_thumb_distal     = 1,
+    eomn_serv_mc_port_mais_index_proximal   = 2,
+    eomn_serv_mc_port_mais_index_distal     = 3,
+    eomn_serv_mc_port_mais_medium_proximal  = 4,
+    eomn_serv_mc_port_mais_medium_distal    = 5,
+    eomn_serv_mc_port_mais_littlefingers    = 6 
 } eOmn_serv_mc_port_t;
 
 
