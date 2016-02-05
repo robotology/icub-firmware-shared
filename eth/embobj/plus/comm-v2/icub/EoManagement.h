@@ -705,10 +705,9 @@ typedef struct
 
 
 typedef struct
-{   // 24 + 64 + 64 
-    eOmn_serv_canboardversion_t             maisversion;
-    eOmn_serv_canlocation_t                 maislocation;
+{   // 1+5+3+16 + 64 + 64 
     uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+    eOmn_serv_config_data_as_mais_t         mais;
     uint8_t                                 filler[2];
     eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;  
     eOmn_4x4_coupling_t                     couplingjoint2motor;  
