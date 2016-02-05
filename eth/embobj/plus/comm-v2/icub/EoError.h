@@ -294,7 +294,6 @@ typedef enum
     eoerror_value_CFG_mc_mc4plus_ok                     = 17,
     eoerror_value_CFG_mc_mc4plus_failed_encoders_verify = 18,    
     
-    
     eoerror_value_CFG_encoders_ok                       = 19,
     eoerror_value_CFG_encoders_failed_verify            = 20,
     
@@ -302,11 +301,15 @@ typedef enum
     eoerror_value_CFG_inertials_failed_toomanyboards    = 22,
     eoerror_value_CFG_inertials_failed_candiscovery     = 23,
     
-    eoerror_value_CFG_comm_cannotloadaregularrop        = 24
+    eoerror_value_CFG_comm_cannotloadaregularrop        = 24,
+    
+    eoerror_value_CFG_mc_mc4plusmais_ok                 = 25,
+    eoerror_value_CFG_mc_mc4plusmais_failed_encoders_verify = 26, 
+    eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais = 27        
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 25 };
+enum { eoerror_value_CFG_numberof = 28 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

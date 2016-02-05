@@ -247,8 +247,12 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
     {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
-    {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop. tbd"}
+    {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop. tbd"},
 
+    {eoerror_value_CFG_mc_mc4plusmais_ok, "CFG: EOtheMotionController can correctly configure mc4plusmais-based motion. more info will follow"},
+    {eoerror_value_CFG_mc_mc4plusmais_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc4plusmais. see other messages for more details"},
+    {eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais, "CFG: EOtheMotionController cannot be configured. verification of mais for mc4plusmais fails. see other messages for more details"}
+    
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
 
 
