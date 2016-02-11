@@ -465,12 +465,24 @@ typedef struct
     uint8_t dummy : 1;              /**< unused ... but it could specify board or entity */
 } eOmn_serv_canlocation_t;
 
+typedef struct 
+{
+    uint8_t         major;
+    uint8_t         minor;
+    uint8_t         build;
+} eOmn_canfirmwareversion_t;
+
+typedef struct 
+{
+    uint8_t         major;
+    uint8_t         minor;
+} eOmn_canprotocolversion_t;
 
 typedef struct
 {
-    eOmn_version_t      firmware;
-    eOmn_version_t      protocol; 
-} eOmn_serv_canboardversion_t;  
+    eOmn_canfirmwareversion_t   firmware;
+    eOmn_canprotocolversion_t   protocol; 
+} eOmn_serv_canboardversion_t;  EO_VERIFYsizeof(eOmn_serv_canboardversion_t, 5);  
 
 typedef struct
 {
@@ -484,7 +496,8 @@ typedef struct
 
 typedef struct
 {
-    uint8_t                     port;   // use eOmn_serv_mc_port_t
+    uint8_t                     port : 5;   // use eOmn_serv_mc_port_t
+    uint8_t                     dummy : 3;
 } eOmn_serv_mc_actuator_pwm_t;
 
 typedef union
@@ -533,70 +546,74 @@ typedef enum
 
 
 typedef struct
-{
+{   // 5+1=6
     eOmn_serv_canboardversion_t         version;
     eOmn_serv_canlocation_t             canloc;
-} eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 5);
+} eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 6);
 
 
 
 typedef struct
-{
+{   // 5+1=6
     eOmn_serv_canboardversion_t         version;
     eOmn_serv_canlocation_t             canloc;
-} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 5);
+} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 6);
 
 
 
 typedef struct
-{ 
+{   // 5+1+4=10 
     eOmn_serv_canboardversion_t         version;
+    uint8_t                             filler[1];
     uint16_t                            canmap[eOcanports_number]; 
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 8);
+} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 10);
 
 
 
 typedef union
-{
+{   // max(6, 6, 10)
     eOmn_serv_config_data_as_mais_t     mais;
     eOmn_serv_config_data_as_strain_t   strain;
     eOmn_serv_config_data_as_inertial_t inertial;   
-} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 8);
+} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 10);
 
 
 
 enum { eomn_serv_skin_maxpatches = 4 };
 
 typedef struct
-{
+{   // 5+1+2+2*4*2=24
     eOmn_serv_canboardversion_t         version;
     uint8_t                             numofpatches;
-    uint8_t                             filler[3];    
+    uint8_t                             filler[2];    
     uint16_t                            canmapskin[eomn_serv_skin_maxpatches][eOcanports_number]; 
 } eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24);
 
+
 typedef union
-{
+{   // max(24)
     eOmn_serv_config_data_sk_skin_t     skin;
 } eOmn_serv_config_data_sk_t;           EO_VERIFYsizeof(eOmn_serv_config_data_sk_t, 24); 
 
 
-
 typedef enum
-{   // values must be included in 3 bits ... 0 is none. max value is 7 ... we are almost out of values ...
+{   // values can be from 1 to 255. 0 is none
     eomn_serv_mc_sensor_none                = eomn_serv_item_none,
     eomn_serv_mc_sensor_encoder_aea         = 1,
     eomn_serv_mc_sensor_encoder_amo         = 2,
     eomn_serv_mc_sensor_encoder_inc         = 3,
     eomn_serv_mc_sensor_encoder_spichainof2 = 4,
     eomn_serv_mc_sensor_encoder_absanalog   = 5,
-    eomn_serv_mc_sensor_mais                = 6
+    eomn_serv_mc_sensor_mais                = 6,
+    
+    eomn_serv_mc_sensor_maxvalidvalue       = 255 
 } eOmn_serv_mc_sensor_type_t;
 
+//#warning TODO: split eOmn_serv_mc_port_t into eOmn_serv_mc_sensor_port_t and eOmn_serv_mc_actuator_port_t. uniform 0 as the _none (and use port-1 in hal_) ...
 
 typedef enum
-{
-    eomn_serv_mc_port_none                  = 7,    // max value in 3 bits.
+{   // values from 0 up to .... maxport
+    eomn_serv_mc_port_none                  = 31,   // max value in 5 bits.
     eomn_serv_mc_port_ems_spiP6             = 0,    // keep it as hal_encoder1. it is in spistream1
     eomn_serv_mc_port_ems_spiP7             = 3,    // keep it as hal_encoder4. it is in spistream2
     eomn_serv_mc_port_ems_spiP8             = 1,    // keep it as hal_encoder2. it is in spistream1
@@ -620,16 +637,17 @@ typedef enum
     eomn_serv_mc_port_mais_index_distal     = 3,
     eomn_serv_mc_port_mais_medium_proximal  = 4,
     eomn_serv_mc_port_mais_medium_distal    = 5,
-    eomn_serv_mc_port_mais_littlefingers    = 6 
+    eomn_serv_mc_port_mais_littlefingers    = 6, 
+       
+    eomn_serv_mc_port_maxvalidvalue = 30
 } eOmn_serv_mc_port_t;
 
 
 typedef enum
 {
-    
-    eomn_serv_mc_sensor_pos_atjoint         = 0,
-    eomn_serv_mc_sensor_pos_atmotor         = 1,
-    eomn_serv_mc_sensor_pos_none            = 2
+    eomn_serv_mc_sensor_pos_none            = 0,    
+    eomn_serv_mc_sensor_pos_atjoint         = 1,
+    eomn_serv_mc_sensor_pos_atmotor         = 2
 } eOmn_serv_mc_sensor_position_t;
 
 
@@ -659,11 +677,11 @@ typedef struct
 typedef eOq17_14_t eOmn_4x4_coupling_t[4][4];
 
 typedef struct
-{   // 1+3+4+24+64+64=160   
-    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
-    uint8_t                                 filler[3];    
+{   // 1+5+2+24+64+64=160   
+    uint8_t                                 boardtype4mccontroller; 
     eOmn_serv_canboardversion_t             version;
-    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;   
+    uint8_t                                 filler[2];  
+    eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;    
     eOmn_4x4_coupling_t                     couplingjoint2motor;  
     eOmn_4x4_coupling_t                     couplingjoint2encoder;     
 } eOmn_serv_config_data_mc_foc_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 160);
@@ -679,17 +697,17 @@ typedef struct
 
 
 typedef struct
-{                                           // 4+3+12+5=24
+{   // 5+3+12+6=26
     eOmn_serv_canboardversion_t             mc4version; 
     eOmn_serv_config_data_mc_mc4shifts_t    mc4shifts; 
     eOmn_serv_canlocation_t                 mc4joints[12];    
     eOmn_serv_config_data_as_mais_t         mais;                    
-} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 24);
+} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 26);
 
 
 typedef struct
 {   // 1+3+24+64+64=156
-    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+    uint8_t                                 boardtype4mccontroller; 
     uint8_t                                 filler[3];
     eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors; 
     eOmn_4x4_coupling_t                     couplingjoint2motor;  
@@ -698,10 +716,10 @@ typedef struct
 
 
 typedef struct
-{   // 1+5+2+24+64+64=160
-    uint8_t                                 boardtype4mccontroller; // use eOemscontroller_board_t. that is required because the EOemsController needs to know which board it manages
+{   // 1+6+1+24+64+64=160
+    uint8_t                                 boardtype4mccontroller; 
     eOmn_serv_config_data_as_mais_t         mais;
-    uint8_t                                 filler[2];
+    uint8_t                                 filler[1];
     eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;  
     eOmn_4x4_coupling_t                     couplingjoint2motor;  
     eOmn_4x4_coupling_t                     couplingjoint2encoder;     
@@ -710,7 +728,7 @@ typedef struct
 
 
 typedef union                               
-{   // max(160, 24, 156, 160)
+{   // max(160, 26, 156, 160)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
@@ -718,14 +736,12 @@ typedef union
 } eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 160); 
 
 
-typedef union                               // max(8, 160, 24)
-{
+typedef union                               
+{   // max(8, 160, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
 } eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 160); 
-
-// ok, devo ridurre la size of eOmn_serv_config_data_as_t
 
 
 

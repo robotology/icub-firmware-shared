@@ -83,19 +83,42 @@ typedef enum
 enum { eobrd_cantype_numberof = 5 };
 
 
-typedef struct                  // size is: 1+1+0 = 2
-{
+//typedef struct                  // size is: 1+1+0 = 2
+//{
+//    uint8_t                     major;
+//    uint8_t                     minor;    
+//} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 2);
+
+//typedef struct                  // size is: 1+1+2+2+0 = 6
+//{
+//    eOenum08_t                  boardtype;
+//    uint8_t                     firmwarebuildnumber;
+//    eObrd_version_t             firmwareversion;
+//    eObrd_version_t             protocolversion;   
+//} eObrd_typeandversions_t;      EO_VERIFYsizeof(eObrd_typeandversions_t, 6);
+
+
+typedef struct                  
+{   // size is: 1+1+0 = 2
     uint8_t                     major;
     uint8_t                     minor;    
-} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 2);
+    uint8_t                     build;
+} eObrd_firmwareversion_t;      EO_VERIFYsizeof(eObrd_firmwareversion_t, 3);
 
-typedef struct                  // size is: 1+1+2+2+0 = 6
-{
-    eOenum08_t                  boardtype;
-    uint8_t                     firmwarebuildnumber;
-    eObrd_version_t             firmwareversion;
-    eObrd_version_t             protocolversion;   
-} eObrd_typeandversions_t;      EO_VERIFYsizeof(eObrd_typeandversions_t, 6);
+
+typedef struct                  
+{   // size is: 1+1+0 = 2
+    uint8_t                     major;
+    uint8_t                     minor;    
+} eObrd_protocolversion_t;      EO_VERIFYsizeof(eObrd_protocolversion_t, 2);
+
+
+typedef struct                  
+{   // size is: 1+1+2+2+0 = 6
+    uint8_t                     type;
+    eObrd_firmwareversion_t     firmware;
+    eObrd_protocolversion_t     protocol;   
+} eObrd_info_t;                 EO_VERIFYsizeof(eObrd_info_t, 6);
 
 
 typedef struct
