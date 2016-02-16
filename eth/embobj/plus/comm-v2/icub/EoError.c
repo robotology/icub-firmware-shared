@@ -251,7 +251,15 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 
     {eoerror_value_CFG_mc_mc4plusmais_ok, "CFG: EOtheMotionController can correctly configure mc4plusmais-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4plusmais_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc4plusmais. see other messages for more details"},
-    {eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais, "CFG: EOtheMotionController cannot be configured. verification of mais for mc4plusmais fails. see other messages for more details"}
+    {eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais, "CFG: EOtheMotionController cannot be configured. verification of mais for mc4plusmais fails. see other messages for more details"},
+    
+    {eoerror_value_CFG_services_not_verified_yet, "CFG: EOtheServices has not yet finished verifying the required services. restart robotInterface."},
+    {eoerror_value_CFG_mc_not_verified_yet, "CFG: EOtheMotionController service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_strain_not_verified_yet, "CFG: EOtheSTRAIN service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_mais_not_verified_yet, "CFG: EOtheMAIS service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_skin_not_verified_yet, "CFG: EOtheSKIN service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_inertials_not_verified_yet, "CFG: EOtheInertials service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_encoders_not_verified_yet, "CFG: EOtheEncoderReader service was not verified yet, thus it cannot start."}
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
 

@@ -276,11 +276,14 @@ typedef enum
     eoerror_value_CFG_skin_failed_toomanyboards         = 5,
     eoerror_value_CFG_skin_failed_candiscovery          = 6,
     
+    
     eoerror_value_CFG_strain_ok                         = 7,
     eoerror_value_CFG_strain_failed_candiscovery        = 8,
-    
+
+
     eoerror_value_CFG_mais_ok                           = 9,
     eoerror_value_CFG_mais_failed_candiscovery          = 10,
+    
     
     eoerror_value_CFG_mc_foc_ok                         = 11,
     eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc = 12,
@@ -296,7 +299,8 @@ typedef enum
     
     eoerror_value_CFG_encoders_ok                       = 19,
     eoerror_value_CFG_encoders_failed_verify            = 20,
-    
+
+
     eoerror_value_CFG_inertials_ok                      = 21,
     eoerror_value_CFG_inertials_failed_toomanyboards    = 22,
     eoerror_value_CFG_inertials_failed_candiscovery     = 23,
@@ -305,11 +309,19 @@ typedef enum
     
     eoerror_value_CFG_mc_mc4plusmais_ok                 = 25,
     eoerror_value_CFG_mc_mc4plusmais_failed_encoders_verify = 26, 
-    eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais = 27        
+    eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais = 27,
+
+    eoerror_value_CFG_services_not_verified_yet         = 28,
+    eoerror_value_CFG_mc_not_verified_yet               = 29,
+    eoerror_value_CFG_strain_not_verified_yet           = 30,        
+    eoerror_value_CFG_mais_not_verified_yet             = 31,
+    eoerror_value_CFG_skin_not_verified_yet             = 32,        
+    eoerror_value_CFG_inertials_not_verified_yet        = 33,
+    eoerror_value_CFG_encoders_not_verified_yet         = 34    
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 28 };
+enum { eoerror_value_CFG_numberof = 35 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
