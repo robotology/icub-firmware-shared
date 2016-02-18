@@ -773,6 +773,32 @@ typedef struct
 // - eomn_serv_item_mc_encoder_*
 //   we use itemdes.item.motion.encoder.[amo, aea, inc] to keep the hal port of the encoder to use
 
+
+typedef enum
+{
+    eomn_serv_state_notsupported        = 0,
+    eomn_serv_state_idle                = 1,
+    eomn_serv_state_verifying           = 2,
+    eomn_serv_state_verified            = 3,
+    eomn_serv_state_activated           = 4,
+    eomn_serv_state_failureofverify     = 5, 
+    eomn_serv_state_running             = 6
+} eOmn_serv_state_t;
+
+typedef enum
+{
+    eomn_serv_category_mc               = 0,
+    eomn_serv_category_strain           = 1,
+    eomn_serv_category_mais             = 2,
+    eomn_serv_category_inertials        = 3,
+    eomn_serv_category_skin             = 4,
+    eomn_serv_category_none             = 255
+} eOmn_serv_category_t;
+
+
+enum { eomn_serv_categories_numberof = 5 };
+
+
 typedef enum 
 {
     eomn_serv_command_deactivate    = 0,        // it deactivates    
@@ -803,19 +829,21 @@ typedef struct
 } eOmn_service_command_result_t;            EO_VERIFYsizeof(eOmn_service_command_result_t, 32); 
 
 typedef struct
-{   // 32  
+{   // 8 + 32
+    uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
+    uint8_t                                 filler[3];    
     eOmn_service_command_result_t           commandresult;
-} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 32); 
+} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 40); 
 
 
 /** @typedef    typedef struct eOmn_info_t;
     @brief      used to represent the info with config, status
  **/
 typedef struct                      
-{   // 32+172=204    
+{   // 40+172=212    
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
-} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 204);  
+} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 212);  
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
