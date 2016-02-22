@@ -792,6 +792,7 @@ typedef enum
     eomn_serv_category_mais             = 2,
     eomn_serv_category_inertials        = 3,
     eomn_serv_category_skin             = 4,
+    eomn_serv_category_all              = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
@@ -801,16 +802,21 @@ enum { eomn_serv_categories_numberof = 5 };
 
 typedef enum 
 {
-    eomn_serv_command_deactivate    = 0,        // it deactivates    
-    eomn_serv_command_activate      = 1,        // it activate with the given config, but does not force activation if already active
-    eomn_serv_command_reactivate    = 2         // it deactivates if active and then activates   
-} eOmn_service_command_t;
+    eomn_serv_operation_deactivate      = 0,    // it deactivates the service specified by .category (the status will be idle)
+//    eomn_serv_operation_verify        = 1,    // it verifies the service specified by .category with configuration specified by .configuration        
+//    eomn_serv_operation_activate      = 2,    // it activates the service .category w/ .configuration
+    eomn_serv_operation_verifyactivate  = 3,    // it verifies and activates the service .category w/ .configuration  
+    eomn_serv_operation_start           = 4,    // it starts the service .category (which must be already activated)
+    eomn_serv_operation_stop            = 5,    // it stops the service .category 
+    eomn_serv_operation_none            = 255
+} eOmn_service_operation_t;
 
 typedef struct                                
 {   // 1+3+168=172
-    uint8_t                                 command;               // use eOmn_service_command_t
-    uint8_t                                 filler[3];
-    eOmn_serv_configuration_t               config;  
+    uint8_t                                 operation;              // use eOmn_service_operation_t
+    uint8_t                                 category;               // use eOmn_serv_category_t
+    uint8_t                                 filler[2];
+    eOmn_serv_configuration_t               configuration;  
 } eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 172);
 
 typedef struct
@@ -822,9 +828,9 @@ typedef struct
 typedef struct
 {   // 1+1+1+1+28=32
     eObool_t                                latestcommandisok;
-    uint8_t                                 command;                // use eOmn_service_command_t
+    uint8_t                                 operation;              // use eOmn_service_operation_t
+    uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 type;                   // use eOmn_serv_type_t
-    uint8_t                                 filler[1];
     uint8_t                                 data[28];               // it may keep some params (e.g., the fullscale of strain).
 } eOmn_service_command_result_t;            EO_VERIFYsizeof(eOmn_service_command_result_t, 32); 
 
