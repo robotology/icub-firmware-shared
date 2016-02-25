@@ -290,6 +290,36 @@ extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char
 #endif
 }
 
+
+extern void eo_errman_Trace(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr) 
+{
+#ifndef EODEF_DONT_USE_THE_ERRORMAN
+    EOVtaskDerived *task = NULL;
+    
+    eOerrmanCaller_t caller = {0};
+
+    caller.eobjstr = eobjstr;
+    
+    task = eov_sys_GetRunningTask(eov_sys_GetHandle());   
+    
+    if(NULL == task)
+    {
+        // we are in init task ...
+        caller.taskid = 2;
+    }
+    else
+    {
+        caller.taskid = eov_task_GetID(task);
+    }
+    
+    
+
+    s_eo_errman_OnError(errtype, info, &caller, NULL);
+#else
+    ;
+#endif
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------

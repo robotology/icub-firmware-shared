@@ -277,6 +277,8 @@ extern void eo_errman_Debug(EOtheErrorManager *p, const char *info, const char *
 extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
 
+extern void eo_errman_Trace(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr);
+
 /** @}            
     end of group eo_theerrormanager  
  **/
