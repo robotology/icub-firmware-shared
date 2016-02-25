@@ -85,6 +85,8 @@
 
 //static eOresult_t s_eo_transmitter_listmatching_rule(void *item, void *param);
 
+static eOresult_t s_eo_transmitter_entitymatchingrule_rule(void *item, void *param);
+
 static eOresult_t s_eo_transmitter_ropmatchingrule_rule(void *item, void *param);
 
 static void s_eo_transmitter_list_updaterop_in_ropframe(void *item, void *param);
@@ -804,6 +806,75 @@ extern eOresult_t eo_transmitter_regular_rops_Unload(EOtransmitter *p, eOropdesc
 }
 
 
+extern eOresult_t eo_transmitter_regular_rops_entity_Unload(EOtransmitter *p, eOnvEP8_t ep8, eOnvENT_t ent)
+{
+    eo_transm_regrop_info_t regropinfo;
+    EOlistIter *li = NULL;
+    uint32_t id32 = 0;
+    uint8_t size = 0;
+    uint8_t i = 0;
+
+    if(NULL == p) 
+    {
+        return(eores_NOK_nullpointer);
+    }  
+
+    if(NULL == p->listofregropinfo)
+    {
+        // in such a case there is room for regular rops (for instance because the cfg->maxnumberofregularrops is zero)
+        return(eores_NOK_generic);
+    }
+
+    // work on the list ... 
+    
+    eov_mutex_Take(p->mtx_regulars, eok_reltimeINFINITE);
+    
+    if(eobool_true == eo_list_Empty(p->listofregropinfo))
+    {
+        eov_mutex_Release(p->mtx_regulars);
+        return(eores_NOK_generic);
+    }
+    
+    // need only ropcode, ep and id to search for inside the list listofregropinfo
+    id32 = ((uint32_t)ep8 << 24) | ((uint32_t)ent << 16);
+
+      
+    size = eo_list_Size(p->listofregropinfo);
+    for(i=0; i<size; i++)
+    {
+        // search for ropcode+nvep+nvid. if not found, then ... break.
+        li = eo_list_Find(p->listofregropinfo, s_eo_transmitter_entitymatchingrule_rule, &id32);
+        if(NULL == li)
+        {   // it is not inside ...
+            break;
+        }
+        
+        // copy what is inside the list into a temporary variable
+        memcpy(&regropinfo, eo_list_At(p->listofregropinfo, li), sizeof(eo_transm_regrop_info_t));
+        
+        // for each element after li: (name is afterli) retrieve it and modify its content so that ropstarthere is decremented by regropinfo.ropsize ...
+        // but only if ... the element is inside the same regropframe. that is done in function s_eo_transmitter_list_shiftdownropinfo()
+        eo_list_ExecuteFromIter(p->listofregropinfo, s_eo_transmitter_list_shiftdownropinfo, &regropinfo, eo_list_Next(p->listofregropinfo, li));
+        
+        // remove the element indexedby li
+        eo_list_Erase(p->listofregropinfo, li);
+        
+        // inside the p->ropframeregulars: remove a rop of regropinfo.ropsize which starts at regropinfo.ropstartshere. use a _friend method in here defined.
+        //                                 you must: decrement the nrops by 1, decrement the size by regropinfo.ropsize, ... else in header and private variable ...
+        //                                           and finally make a memmove down by regropinfo.ropsize.
+        
+
+        eo_ropframe_ROP_Rem(regropinfo.ropframe, regropinfo.ropstarthere, regropinfo.ropsize);
+        
+        // decrement the size of relevant ropframe
+        s_eo_transmitter_regulars_update_sizes(p, (eo_transm_regropframe_t)regropinfo.regropframetype, -regropinfo.ropsize); // with a -regropinfo.ropsize we decrement    
+    }
+
+    eov_mutex_Release(p->mtx_regulars);
+    
+    return(eores_OK);   
+}
+
 extern eOresult_t eo_transmitter_regular_rops_Clear(EOtransmitter *p)
 {
     if(NULL == p) 
@@ -1238,7 +1309,25 @@ static eOresult_t s_eo_transmitter_ropmatchingrule_rule(void *item, void *param)
     eo_transm_regrop_info_t *inside = (eo_transm_regrop_info_t*)item;
     eOropdescriptor_t *targetrop = (eOropdescriptor_t*)param;
 
-    if((inside->thenv.id32 == targetrop->id32) && (inside->ropcode == targetrop->ropcode))
+//    if((inside->thenv.id32 == targetrop->id32) && (inside->ropcode == targetrop->ropcode))
+    if(inside->thenv.id32 == targetrop->id32)
+    {
+        return(eores_OK);
+    }
+    else
+    {
+        return(eores_NOK_generic);
+    }
+}
+
+static eOresult_t s_eo_transmitter_entitymatchingrule_rule(void *item, void *param)
+{
+    eo_transm_regrop_info_t *inside = (eo_transm_regrop_info_t*)item;
+    uint32_t *id32 = (uint32_t*)param;
+
+    uint32_t id32_inside_masked = inside->thenv.id32 & 0xffff0000;
+    uint32_t id32_target_masked = *id32 & 0xffff0000; 
+    if(id32_inside_masked == id32_target_masked)
     {
         return(eores_OK);
     }

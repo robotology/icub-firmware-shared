@@ -482,6 +482,22 @@ extern eOresult_t eo_transceiver_RegularROP_Load(EOtransceiver *p, eOropdescript
     return(res);
 }
 
+extern eOresult_t eo_transceiver_RegularROP_Entity_Unload(EOtransceiver *p, eOnvEP8_t ep8, eOnvENT_t ent)
+{
+    eOresult_t res;
+    
+    if(NULL == p)
+    {
+        return(eores_NOK_nullpointer);
+    }
+    
+    res = eo_transmitter_regular_rops_entity_Unload(p->transmitter, ep8, ent);
+    
+    return(res);    
+}
+
+
+
 extern eOresult_t eo_transceiver_RegularROP_Unload(EOtransceiver *p, eOropdescriptor_t *ropdesc)
 {
     eOresult_t res;

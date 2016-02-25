@@ -158,6 +158,7 @@ extern eOresult_t eo_transmitter_regular_rops_arrayid32_Get(EOtransmitter *p, ui
 extern eOresult_t eo_transmitter_regular_rops_arrayid32_ep_Get(EOtransmitter *p, eOnvEP8_t ep, uint16_t start, EOarray* array);
 extern eOresult_t eo_transmitter_regular_rops_Load(EOtransmitter *p, eOropdescriptor_t* ropdesc); 
 extern eOresult_t eo_transmitter_regular_rops_Unload(EOtransmitter *p, eOropdescriptor_t* ropdesc); 
+extern eOresult_t eo_transmitter_regular_rops_entity_Unload(EOtransmitter *p, eOnvEP8_t ep8, eOnvENT_t ent);
 extern eOresult_t eo_transmitter_regular_rops_Clear(EOtransmitter *p); 
 extern eOresult_t eo_transmitter_regular_rops_Refresh(EOtransmitter *p);
 

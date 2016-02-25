@@ -165,6 +165,7 @@ extern eOresult_t eo_transceiver_RegularROP_ArrayID32Get(EOtransceiver *p, uint1
 extern eOresult_t eo_transceiver_RegularROP_ArrayID32GetWithEP(EOtransceiver *p, eOnvEP8_t ep, uint16_t start, EOarray* array);
 extern eOresult_t eo_transceiver_RegularROPs_Clear(EOtransceiver *p);
 extern eOresult_t eo_transceiver_RegularROP_Load(EOtransceiver *p, eOropdescriptor_t *ropdes); 
+extern eOresult_t eo_transceiver_RegularROP_Entity_Unload(EOtransceiver *p, eOnvEP8_t ep8, eOnvENT_t ent);
 extern eOresult_t eo_transceiver_RegularROP_Unload(EOtransceiver *p, eOropdescriptor_t *ropdes); 
 
 
