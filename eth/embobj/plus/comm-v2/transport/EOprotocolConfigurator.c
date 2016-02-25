@@ -65,6 +65,7 @@ const eOprotconfig_cfg_t eo_protconfig_cfg_default =
     EO_INIT(.en_mn_entity_comm_numberof)            1,        
     EO_INIT(.en_mn_entity_appl_numberof)            1,
     EO_INIT(.en_mn_entity_info_numberof)            1,
+    EO_INIT(.en_mn_entity_service_numberof)         1,
     
     EO_INIT(.ep_motioncontrol_is_present)           eobool_true,
     EO_INIT(.en_mc_entity_joint_numberof)           12,

@@ -69,6 +69,7 @@ typedef struct
     uint8_t         en_mn_entity_comm_numberof;
     uint8_t         en_mn_entity_appl_numberof;
     uint8_t         en_mn_entity_info_numberof;
+    uint8_t         en_mn_entity_service_numberof;
     
     eObool_t        ep_motioncontrol_is_present;
     uint8_t         en_mc_entity_joint_numberof;
