@@ -757,6 +757,13 @@ typedef struct
     eOmn_serv_config_data_t                 data;   
 } eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 168); 
 
+enum { eOmn_serv_capacity_arrayof_id32 = 41 };
+typedef struct
+{
+    eOarray_head_t                          head;
+    uint32_t                                data[eOmn_serv_capacity_arrayof_id32];   
+} eOmn_serv_arrayof_id32_t;                 EO_VERIFYsizeof(eOmn_serv_arrayof_id32_t, 168); 
+
 // use eOemscontroller_board_t and variable mccontrollerboardtype
 
 // according to itemdes.type we treat item as follow:
@@ -802,21 +809,31 @@ enum { eomn_serv_categories_numberof = 5 };
 
 typedef enum 
 {
-    eomn_serv_operation_deactivate      = 0,    // it deactivates the service specified by .category (the status will be idle)
-//    eomn_serv_operation_verify        = 1,    // it verifies the service specified by .category with configuration specified by .configuration        
-//    eomn_serv_operation_activate      = 2,    // it activates the service .category w/ .configuration
-    eomn_serv_operation_verifyactivate  = 3,    // it verifies and activates the service .category w/ .configuration  
-    eomn_serv_operation_start           = 4,    // it starts the service .category (which must be already activated)
-    eomn_serv_operation_stop            = 5,    // it stops the service .category 
-    eomn_serv_operation_none            = 255
+    eomn_serv_operation_deactivate          = 0,    // it deactivates the service specified by .category (the status will be idle)
+//    eomn_serv_operation_verify            = 1,    // it verifies the service specified by .category with configuration specified by .configuration        
+//    eomn_serv_operation_activate          = 2,    // it activates the service .category w/ .configuration
+    eomn_serv_operation_verifyactivate      = 3,    // it verifies and activates the service .category w/ .configuration  
+    eomn_serv_operation_start               = 4,    // it starts the service .category (which must be already activated)
+    eomn_serv_operation_stop                = 5,    // it stops the service .category 
+    eomn_serv_operation_regsig_load         = 6,    // it loads the into the service all the regular sig rops specified by the array of id32 in parameter.arrayofid32
+    eomn_serv_operation_regsig_clear        = 7,    // it clear all the regular sig rops in the service.
+    eomn_serv_operation_none                = 255
 } eOmn_service_operation_t;
+
+
+typedef union
+{
+    eOmn_serv_configuration_t   configuration;
+    eOmn_serv_arrayof_id32_t    arrayofid32;
+} eOmn_serv_parameter_t;
+
 
 typedef struct                                
 {   // 1+3+168=172
     uint8_t                                 operation;              // use eOmn_service_operation_t
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
-    eOmn_serv_configuration_t               configuration;  
+    eOmn_serv_parameter_t                   parameter;
 } eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 172);
 
 typedef struct
