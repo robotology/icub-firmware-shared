@@ -489,6 +489,26 @@ extern void eo_common_ipv4addr_to_string(eOipv4addr_t ipv4, char *str)
     }
 }
 
+extern void eo_common_ipv4addr_to_decimal(eOipv4addr_t ipv4, uint8_t *ip1, uint8_t *ip2, uint8_t *ip3, uint8_t *ip4)
+{
+    if(NULL != ip1)
+    {
+        *ip1 = (ipv4)&0xff;
+    }
+    if(NULL != ip2)
+    {
+        *ip2 = (ipv4>>8)&0xff;
+    } 
+    if(NULL != ip3)
+    {
+        *ip3 = (ipv4>>16)&0xff;
+    }   
+    if(NULL != ip4)
+    {
+        *ip4 = (ipv4>>24)&0xff;
+    }       
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
