@@ -481,11 +481,11 @@ extern uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame)
     return(*((uint64_t*)(frame->data)));
 }
 
-extern void eo_common_ipv4addr_to_string(eOipv4addr_t ipv4, char *str)
+extern void eo_common_ipv4addr_to_string(eOipv4addr_t ipv4, char *str, uint8_t size)
 {
     if(NULL != str)
     {
-        snprintf(str, sizeof(str), "%d.%d.%d.%d", (ipv4)&0xff, (ipv4>>8)&0xff, (ipv4>>16)&0xff, (ipv4>>24)&0xff);
+        snprintf(str, size, "%d.%d.%d.%d", (ipv4)&0xff, (ipv4>>8)&0xff, (ipv4>>16)&0xff, (ipv4>>24)&0xff);
     }
 }
 

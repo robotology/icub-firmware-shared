@@ -676,7 +676,7 @@ extern eOresult_t eo_common_Q17_14_divide(eOq17_14_t q_num1, eOq17_14_t q_num2, 
 
 extern uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame);
 
-extern void eo_common_ipv4addr_to_string(eOipv4addr_t ipv4, char *str);
+extern void eo_common_ipv4addr_to_string(eOipv4addr_t ipv4, char *str, uint8_t size);
 
 extern void eo_common_ipv4addr_to_decimal(eOipv4addr_t ipv4, uint8_t *ip1, uint8_t *ip2, uint8_t *ip3, uint8_t *ip4);
 
