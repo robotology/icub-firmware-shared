@@ -106,8 +106,9 @@ typedef enum
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOnvset_BRDcfg_t eonvset_BRDcfgBasic; // it contains numofboard 99, and only management (eoprot_mn_basicEPcfg)
+extern const eOnvset_BRDcfg_t eonvset_BRDcfgBasic;  // it contains numofboard 99, and only management (eoprot_mn_basicEPcfg)
 
+extern const eOnvset_BRDcfg_t eonvset_BRDcfgMax;   // it contains numboard 99, and all endpoints with max capabilities.
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
