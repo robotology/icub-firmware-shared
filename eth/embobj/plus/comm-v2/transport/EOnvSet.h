@@ -108,7 +108,9 @@ typedef enum
 
 extern const eOnvset_BRDcfg_t eonvset_BRDcfgBasic;  // it contains numofboard 99, and only management (eoprot_mn_basicEPcfg)
 
-extern const eOnvset_BRDcfg_t eonvset_BRDcfgMax;   // it contains numboard 99, and all endpoints with max capabilities.
+extern const eOnvset_BRDcfg_t eonvset_BRDcfgStd;    // it contains numboard 99, and all endpoints with max capabilities apart for jomos which are 4.
+
+extern const eOnvset_BRDcfg_t eonvset_BRDcfgMax;   // it contains numboard 99, and all endpoints with max capabilities (12 jomos).
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 

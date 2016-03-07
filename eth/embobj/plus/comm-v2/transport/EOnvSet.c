@@ -92,6 +92,24 @@ const eOnvset_BRDcfg_t eonvset_BRDcfgMax =
     EO_INIT(.epcfg_constvect)       (EOconstvector*)&s_eonvset_constvectofEPcfgMax    
 };
 
+
+static const EOconstvector s_eonvset_constvectofEPcfgStd =
+{
+    EO_INIT(.capacity)        sizeof(eoprot_arrayof_stdEPcfg) / sizeof(eOprot_EPcfg_t),
+    EO_INIT(.size)            sizeof(eoprot_arrayof_stdEPcfg) / sizeof(eOprot_EPcfg_t), 
+    EO_INIT(.item_size)       sizeof(eOprot_EPcfg_t),
+    EO_INIT(.dummy)           0,  
+    EO_INIT(.stored_items)    (void*) eoprot_arrayof_stdEPcfg,
+    EO_INIT(.functions)       NULL          
+};
+
+const eOnvset_BRDcfg_t eonvset_BRDcfgStd =
+{
+    EO_INIT(.boardnum)              99,
+    EO_INIT(.dummy)                 {0, 0, 0},
+    EO_INIT(.epcfg_constvect)       (EOconstvector*)&s_eonvset_constvectofEPcfgStd    
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 // - typedef with internal scope
 // --------------------------------------------------------------------------------------------------------------------

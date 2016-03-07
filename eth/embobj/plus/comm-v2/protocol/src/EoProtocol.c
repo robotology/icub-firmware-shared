@@ -115,6 +115,26 @@ eOprot_board_data_t eoprot_rem_board_data[eoprot_board_remotes_maxnumberof] = { 
 uint8_t eoprot_rem_board_data_size = eoprot_board_remotes_maxnumberof;
 #endif
 
+const eOprot_EPcfg_t eoprot_arrayof_stdEPcfg[eoprot_endpoints_numberof] = 
+{
+    {
+        EO_INIT(.endpoint)          eoprot_endpoint_management,
+        EO_INIT(.numberofentities)  {1, 1, 1, 1, 0, 0, 0}
+    },
+  
+    {
+        EO_INIT(.endpoint)          eoprot_endpoint_motioncontrol,
+        EO_INIT(.numberofentities)  {4, 4, 1, 0, 0, 0, 0}
+    }, 
+    {
+        EO_INIT(.endpoint)          eoprot_endpoint_analogsensors,
+        EO_INIT(.numberofentities)  {1, 1, 1, 1, 0, 0, 0}
+    },
+    {
+        EO_INIT(.endpoint)          eoprot_endpoint_skin,
+        EO_INIT(.numberofentities)  {2, 0, 0, 0, 0, 0, 0}
+    }      
+};
 
 const eOprot_EPcfg_t eoprot_arrayof_maxEPcfg[eoprot_endpoints_numberof] =
 {

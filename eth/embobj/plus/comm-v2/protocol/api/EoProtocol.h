@@ -279,8 +279,9 @@ typedef struct
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-
+extern const eOprot_EPcfg_t eoprot_arrayof_stdEPcfg[eoprot_endpoints_numberof];
 extern const eOprot_EPcfg_t eoprot_arrayof_maxEPcfg[eoprot_endpoints_numberof];
+
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
