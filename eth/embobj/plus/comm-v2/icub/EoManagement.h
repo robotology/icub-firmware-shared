@@ -605,6 +605,8 @@ typedef enum
     eomn_serv_mc_sensor_encoder_spichainof2 = 4,
     eomn_serv_mc_sensor_encoder_absanalog   = 5,
     eomn_serv_mc_sensor_mais                = 6,
+    eomn_serv_mc_sensor_encoder_spichainof3 = 7,
+    eomn_serv_mc_sensor_encoder_onfoc       = 8,
     
     eomn_serv_mc_sensor_maxvalidvalue       = 255 
 } eOmn_serv_mc_sensor_type_t;
@@ -783,13 +785,14 @@ typedef struct
 
 typedef enum
 {
-    eomn_serv_state_notsupported        = 0,
-    eomn_serv_state_idle                = 1,
-    eomn_serv_state_verifying           = 2,
-    eomn_serv_state_verified            = 3,
-    eomn_serv_state_activated           = 4,
-    eomn_serv_state_failureofverify     = 5, 
-    eomn_serv_state_running             = 6
+    eomn_serv_state_notsupported            = 0,
+    eomn_serv_state_idle                    = 1,
+    eomn_serv_state_verifying               = 2,
+    eomn_serv_state_verified                = 3,
+    eomn_serv_state_activated               = 4,
+    eomn_serv_state_failureofverify         = 5, 
+    eomn_serv_state_running                 = 6,
+    eomn_serv_state_system_in_fatalerror    = 7
 } eOmn_serv_state_t;
 
 typedef enum
@@ -850,6 +853,16 @@ typedef struct
     uint8_t                                 type;                   // use eOmn_serv_type_t
     uint8_t                                 data[28];               // it may keep some params (e.g., the fullscale of strain).
 } eOmn_service_command_result_t;            EO_VERIFYsizeof(eOmn_service_command_result_t, 32); 
+
+
+typedef struct
+{
+    uint8_t     applstate;              // use (CFG, RUN, ERR) from eOmn_appl_state_t. it tells if teh applciation is in run mode or not after the stop of the service 
+    uint8_t     totalregulars;          // number of regulars for all services
+    uint8_t     serviceregulars;        // number of regulars for the specified service (if  eomn_serv_category_all, then this number is equel to totalregulars).  
+    uint8_t     dummy;
+} eOmn_service_command_stop_result_data_t;
+
 
 typedef struct
 {   // 8 + 32
