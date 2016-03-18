@@ -102,6 +102,7 @@ static EOtheLEDpulser s_theledpulser =
     .action         = NULL,
     .timer          = {NULL},
     .ticks          = {0},
+    .onmask         = 0,
     .initted        = 0   
 }; 
 
@@ -158,6 +159,7 @@ extern EOtheLEDpulser * eo_ledpulser_Initialise(const eOledpulser_cfg_t *ledpuls
             s_theledpulser.timer[i] = NULL;
         }
     }
+    s_theledpulser.onmask = 0;
     
     // i get the action
     s_theledpulser.action = eo_action_New();
@@ -213,6 +215,22 @@ extern void eo_ledpulser_DeInitialise(EOtheLEDpulser* p)
 }    
 
 
+extern eObool_t eo_ledpulser_IsOn(EOtheLEDpulser* p, eOledpulser_led_t id)
+{
+    if(NULL == p)
+    {
+        return eobool_false;
+    }
+    
+    if(eo_ledpulser_led_none == id)
+    {
+        return eobool_false;
+    }
+    
+    return(eo_common_hlfword_bitcheck(s_theledpulser.onmask, (uint8_t)id));   
+}
+
+
 extern void eo_ledpulser_On(EOtheLEDpulser* p, eOledpulser_led_t id)
 {
     if(NULL == p)
@@ -232,7 +250,8 @@ extern void eo_ledpulser_On(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     s_theledpulser.ticks[id] = 0;
     
-    s_theledpulser.config.led_on((uint8_t)id);      
+    s_theledpulser.config.led_on((uint8_t)id);  
+    eo_common_hlfword_bitset(&s_theledpulser.onmask, (uint8_t)id);    
 }
 
 extern void eo_ledpulser_Off(EOtheLEDpulser* p, eOledpulser_led_t id)
@@ -254,7 +273,8 @@ extern void eo_ledpulser_Off(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     s_theledpulser.ticks[id] = 0;
     
-    s_theledpulser.config.led_off((uint8_t)id);      
+    s_theledpulser.config.led_off((uint8_t)id); 
+    eo_common_hlfword_bitclear(&s_theledpulser.onmask, (uint8_t)id);
 }
 
 extern void eo_ledpulser_Toggle(EOtheLEDpulser* p, eOledpulser_led_t id)
@@ -276,7 +296,8 @@ extern void eo_ledpulser_Toggle(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     s_theledpulser.ticks[id] = 0;
     
-    s_theledpulser.config.led_toggle((uint8_t)id);      
+    s_theledpulser.config.led_toggle((uint8_t)id);  
+    eo_common_hlfword_bittoggle(&s_theledpulser.onmask, (uint8_t)id);    
 }
 
 extern void eo_ledpulser_Start(EOtheLEDpulser* p, eOledpulser_led_t id, eOreltime_t pulseperiod, uint16_t pulsesnumberof)
@@ -306,6 +327,7 @@ extern void eo_ledpulser_Start(EOtheLEDpulser* p, eOledpulser_led_t id, eOreltim
     }
     
     s_theledpulser.config.led_on((uint8_t)id);
+    eo_common_hlfword_bitset(&s_theledpulser.onmask, (uint8_t)id);
     
     eo_action_SetCallback(s_theledpulser.action, s_eo_ledpulser_callback, (void*)id, eov_callbackman_GetTask(eov_callbackman_GetHandle()));
     
@@ -327,7 +349,8 @@ extern void eo_ledpulser_Stop(EOtheLEDpulser* p, eOledpulser_led_t id)
     
     eo_timer_Stop(s_theledpulser.timer[id]);
  
-    s_theledpulser.config.led_off((uint8_t)id);      
+    s_theledpulser.config.led_off((uint8_t)id);  
+    eo_common_hlfword_bitclear(&s_theledpulser.onmask, (uint8_t)id);    
 }
 
 
@@ -363,11 +386,13 @@ static void s_eo_ledpulser_callback(void* p)
     if(0 == pulser->ticks[id])
     {
         s_theledpulser.config.led_off((uint8_t)id);
+        eo_common_hlfword_bitclear(&s_theledpulser.onmask, (uint8_t)id);
         eo_timer_Stop(pulser->timer[id]);
     }
     else
     {
         s_theledpulser.config.led_toggle((uint8_t)id);
+        eo_common_hlfword_bittoggle(&s_theledpulser.onmask, (uint8_t)id);
     }
     
 }
