@@ -328,7 +328,7 @@ typedef struct
 
 
 /** @typedef    typedef struct eOmc_calibrator_params_type5_hard_stops_mc4plus_t
-    @brief      contains the params in case of eomc_calibration_type5_hard_stops_mc4plus
+    @brief      contains the params in case of eomc_calibration_type5_hard_stops
  **/
 typedef struct  
 {
@@ -368,8 +368,8 @@ typedef struct
 
 
 
-/** @typedef    typedef struct eomc_calibration_type8_adc_and_incr_mc4plus_t
-    @brief      contains the params in case of eomc_calibration_type8_adc_and_incr_mc4plus
+/** @typedef    typedef struct eOmc_calibrator_params_type8_tripod_internal_hard_stop_t
+    @brief      contains the params in case of eomc_calibration_type8_tripod_internal_hard_stop
  **/
 typedef struct  
 {
@@ -380,8 +380,8 @@ typedef struct
 
 
 
-/** @typedef    typedef struct eomc_calibration_type8_adc_and_incr_mc4plus_t
-    @brief      contains the params in case of eomc_calibration_type8_adc_and_incr_mc4plus
+/** @typedef    typedef struct eOmc_calibrator_params_type9_tripod_external_hard_stop_t
+    @brief      contains the params in case of eomc_calibration_type9_tripod_external_hard_stop
  **/
 typedef struct  
 {
