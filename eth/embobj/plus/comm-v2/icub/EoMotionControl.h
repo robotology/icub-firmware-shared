@@ -209,7 +209,7 @@ typedef enum
     eomc_calibration_type6_mais                     = 6,    // cannot change 
     eomc_calibration_type7_hall_sensor              = 7,    // cannot change 
     eomc_calibration_type8_tripod_internal_hard_stop= 8,    // cannot change
-    eomc_calibration_type8_tripod_external_hard_stop= 9,    // cannot change
+    eomc_calibration_type9_tripod_external_hard_stop= 9,    // cannot change
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
