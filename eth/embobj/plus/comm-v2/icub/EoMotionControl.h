@@ -374,7 +374,7 @@ typedef struct
 typedef struct  
 {
     int32_t                     pwmlimit;
-    int32_t                     final_pos; //to be removed
+    int32_t                     max_delta;
     int32_t                     calibrationZero;
 } eOmc_calibrator_params_type8_tripod_internal_hard_stop_t;
 
@@ -386,6 +386,7 @@ typedef struct
 typedef struct  
 {
     int32_t                     pwmlimit;
+    int32_t                     max_delta;
     int32_t                     calibrationZero;
 } eOmc_calibrator_params_type9_tripod_external_hard_stop_t;
 
