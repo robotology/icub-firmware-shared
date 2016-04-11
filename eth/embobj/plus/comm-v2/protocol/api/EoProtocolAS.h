@@ -184,8 +184,8 @@ typedef enum
 {
     eoprot_tag_as_inertial_wholeitem                                = 0,
     eoprot_tag_as_inertial_config                                   = 1,
-    eoprot_tag_as_inertial_config_service                           = 2,
-    eoprot_tag_as_inertial_config_sensors                           = 3,
+    eoprot_tag_as_inertial_config_datarate                          = 2,
+    eoprot_tag_as_inertial_config_enabled                           = 3,
     eoprot_tag_as_inertial_status                                   = 4,
     eoprot_tag_as_inertial_cmmnds_enable                            = 5
 } eOprot_tag_as_inertial_t;
@@ -201,8 +201,8 @@ typedef enum
 {
     eoprot_rwm_as_inertial_wholeitem                                = eo_nv_rwmode_RO,
     eoprot_rwm_as_inertial_config                                   = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial_config_service                           = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial_config_sensors                           = eo_nv_rwmode_RW,
+    eoprot_rwm_as_inertial_config_datarate                          = eo_nv_rwmode_RW,
+    eoprot_rwm_as_inertial_config_enabled                           = eo_nv_rwmode_RW,
     eoprot_rwm_as_inertial_status                                   = eo_nv_rwmode_RO,
     eoprot_rwm_as_inertial_cmmnds_enable                            = eo_nv_rwmode_RW    
 } eOprot_rwm_as_inertial_t; 
@@ -303,11 +303,11 @@ extern void eoprot_fun_UPDT_as_inertial_wholeitem(const EOnv* nv, const eOropdes
 extern void eoprot_fun_INIT_as_inertial_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_inertial_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_as_inertial_config_service(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_config_service(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_as_inertial_config_datarate(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_as_inertial_config_sensors(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_config_sensors(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_as_inertial_config_enabled(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial_config_enabled(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
 

@@ -624,12 +624,12 @@ typedef struct
 
 #endif
 
-typedef struct
-{   // 5+1+4+100=10 
-    eOmn_serv_canboardversion_t         version;
-    uint8_t                             filler[1];
-    uint16_t                            canmap[eOcanports_number]; 
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 10);
+//typedef struct
+//{   // 5+1+4+100=10 
+//    eOmn_serv_canboardversion_t         version;
+//    uint8_t                             filler[1];
+//    uint16_t                            canmap[eOcanports_number]; 
+//} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 10);
 
 
 typedef struct
@@ -637,15 +637,14 @@ typedef struct
     eOmn_serv_canboardversion_t         mtbversion;
     uint8_t                             filler[1];
     uint16_t                            canmap[eOcanports_number]; 
-    eOas_inertial2_arrayof_sensors_t    arrayofsensors;
-} eOmn_serv_config_data_as_inertial2_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial2_t, 110);
+    eOas_inertial_arrayof_sensors_t    arrayofsensors;
+} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 110);
 
 typedef union
 {   // max(6, 6, 10, 110)
     eOmn_serv_config_data_as_mais_t     mais;
     eOmn_serv_config_data_as_strain_t   strain;
-    eOmn_serv_config_data_as_inertial_t inertial;
-    eOmn_serv_config_data_as_inertial2_t inertial2;    
+    eOmn_serv_config_data_as_inertial_t inertial;  
 } eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 110);
 
 

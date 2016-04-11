@@ -271,6 +271,7 @@ typedef struct                      // size is: 4+4+0 = 8
 
 // -- the definition of a inertial sensor
 
+#if 0
 
 typedef enum 
 {
@@ -412,7 +413,7 @@ typedef struct                      // size is: 56+16+8 = 80
     eOas_inertial_commands_t        cmmnds;
 } eOas_inertial_t;                  EO_VERIFYsizeof(eOas_inertial_t, 80);
 
-
+#endif
 
 // -- the definition of a inertial2 sensor
 
@@ -431,69 +432,69 @@ typedef struct                      // size is: 56+16+8 = 80
 
 typedef enum 
 {
-    eoas_inertial2_accel_mtb_int             = 0,
-    eoas_inertial2_accel_mtb_ext             = 1,
-    eoas_inertial2_gyros_mtb_ext             = 2,
-    eoas_inertia2l_accel_ems_st_lis3x        = 3,
-    eoas_inertial2_gyros_ems_st_l3g4200d     = 4,
-    eoas_intertial2_unknown                  = 254,
-    eoas_intertial2_none                     = 255    
-} eOas_inertial2_type_t;
+    eoas_inertial_accel_mtb_int             = 0,
+    eoas_inertial_accel_mtb_ext             = 1,
+    eoas_inertial_gyros_mtb_ext             = 2,
+    eoas_inertial_accel_ems_st_lis3x        = 3,
+    eoas_inertial_gyros_ems_st_l3g4200d     = 4,
+    eoas_inertial_unknown                   = 254,
+    eoas_inertial_none                      = 255    
+} eOas_inertial_type_t;
 
 
 typedef enum
 {
-    eoas_inertial2_place_can = 0,    // the sensor is placed on can bus, hence it requires a can address with (port, adr)
-    eoas_inertial2_place_loc = 1     // the sensor is placed on the board. if more than one of the same type we need an identifier / index
-} eOas_inertial2_place_t;
+    eoas_inertial_place_can = 0,    // the sensor is placed on can bus, hence it requires a can address with (port, adr)
+    eoas_inertial_place_loc = 1     // the sensor is placed on the board. if more than one of the same type we need an identifier / index
+} eOas_inertial_place_t;
 
 
 typedef struct
 {
-    uint8_t place : 2;       /**< use eOas_inertial2_place_t */    
+    uint8_t place : 2;       /**< use eOas_inertial_place_t */    
     uint8_t dummy : 6;    
-} eOas_inertial2_on_any_t;
+} eOas_inertial_on_any_t;
 
 
 typedef struct
 {
-    uint8_t place : 2;       /**< use eOas_inertial2_place_t */    
+    uint8_t place : 2;       /**< use eOas_inertial_place_t */    
     uint8_t port  : 1;       /**< use eOcanport_t */
     uint8_t addr  : 4;       /**< use 0->14 */   
     uint8_t ffu   : 1;    
-} eOas_inertial2_on_can_t;
+} eOas_inertial_on_can_t;
 
 
 typedef struct
 {
-    uint8_t place : 2;       /**< use eOas_inertial2_place_t */    
+    uint8_t place : 2;       /**< use eOas_inertial_place_t */    
     uint8_t id    : 6;       /**< not used for now */   
-} eOas_inertial2_on_loc_t;
+} eOas_inertial_on_loc_t;
 
 
 typedef union
 {
-    eOas_inertial2_on_any_t     any;
-    eOas_inertial2_on_can_t     can;
-    eOas_inertial2_on_loc_t     loc;   
-} eOas_inertial2_on_t;
+    eOas_inertial_on_any_t      any;
+    eOas_inertial_on_can_t      can;
+    eOas_inertial_on_loc_t      loc;   
+} eOas_inertial_on_t;
 
 
 // this struct describes a single inertial sensor
 typedef struct
 {
-    eOas_inertial2_on_t         on;
-    uint8_t                     type; // use relevant entry of eOas_inertial2_type_t   
-} eOas_inertial2_descriptor_t;  EO_VERIFYsizeof(eOas_inertial2_descriptor_t, 2);
+    eOas_inertial_on_t          on;
+    uint8_t                     type; // use relevant entry of eOas_inertial_type_t   
+} eOas_inertial_descriptor_t;   EO_VERIFYsizeof(eOas_inertial_descriptor_t, 2);
 
 
 // we use this struct to sned activate-verify command to the board
-enum { eOas_inertials2_maxnumber = 48 };
+enum { eOas_inertials_maxnumber = 48 };
 typedef struct
 {
-    eOarray_head_t              head;
-    eOas_inertial2_descriptor_t data[eOas_inertials2_maxnumber];    
-} eOas_inertial2_arrayof_sensors_t; EO_VERIFYsizeof(eOas_inertial2_arrayof_sensors_t, 100);
+    eOarray_head_t                  head;
+    eOas_inertial_descriptor_t      data[eOas_inertials_maxnumber];    
+} eOas_inertial_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_inertial_arrayof_sensors_t, 100);
 
 
 // this struct describes the data acquired by a single intertial sensor
@@ -504,36 +505,36 @@ typedef struct
     int16_t     x;              /**< x value */
     int16_t     y;              /**< y value */
     int16_t     z;              /**< z value */
-} eOas_inertial2_data_t;         EO_VERIFYsizeof(eOas_inertial2_data_t, 16);
+} eOas_inertial_data_t;         EO_VERIFYsizeof(eOas_inertial_data_t, 16);
 
 
 typedef struct                      
 {
     uint8_t                         datarate;       /**< it specifies the acquisition rate in ms with accepted range [10, 200]. bug: if 250 the mtb emits every 35  */
     uint8_t                         filler[7];   
-    uint64_t                        maskofenabled;  // bitmask of enabled sensors with reference to array-of-sensors
-} eOas_inertial2_config_t;          EO_VERIFYsizeof(eOas_inertial2_config_t, 16);
+    uint64_t                        enabled;        // bitmask of enabled sensors with reference to array-of-sensors
+} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 16);
 
 
 typedef struct                      
 {   
-    eOas_inertial2_data_t           data;   /**< it is the most recent reading of the inertial sensors which are related to this entity */
-} eOas_inertial2_status_t;          EO_VERIFYsizeof(eOas_inertial2_status_t, 16);
+    eOas_inertial_data_t           data;   /**< it is the most recent reading of the inertial sensors which are related to this entity */
+} eOas_inertial_status_t;          EO_VERIFYsizeof(eOas_inertial_status_t, 16);
 
 
 typedef struct                  
 {
     uint8_t                     enable;         /**< use 0 or 1*/ 
     uint8_t                     filler[7];
-} eOas_inertial2_commands_t;    EO_VERIFYsizeof(eOas_inertial2_commands_t, 8);
+} eOas_inertial_commands_t;     EO_VERIFYsizeof(eOas_inertial_commands_t, 8);
 
 
 typedef struct                      // size is: 16+16+8 = 40
 {
-    eOas_inertial2_config_t         config;
-    eOas_inertial2_status_t         status;
-    eOas_inertial2_commands_t       cmmnds;
-} eOas_inertial2_t;                 EO_VERIFYsizeof(eOas_inertial2_t, 40);
+    eOas_inertial_config_t         config;
+    eOas_inertial_status_t         status;
+    eOas_inertial_commands_t       cmmnds;
+} eOas_inertial_t;                 EO_VERIFYsizeof(eOas_inertial_t, 40);
 
 
 // - others unused possible entities

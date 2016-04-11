@@ -246,18 +246,18 @@ EO_weak extern void eoprot_fun_INIT_as_inertial_config(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_as_inertial_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config_service)
-EO_weak extern void eoprot_fun_INIT_as_inertial_config_service(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config_datarate)
+EO_weak extern void eoprot_fun_INIT_as_inertial_config_datarate(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config_service)
-EO_weak extern void eoprot_fun_UPDT_as_inertial_config_service(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config_datarate)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config_sensors)
-EO_weak extern void eoprot_fun_INIT_as_inertial_config_sensors(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_config_enabled)
+EO_weak extern void eoprot_fun_INIT_as_inertial_config_enabled(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config_sensors)
-EO_weak extern void eoprot_fun_UPDT_as_inertial_config_sensors(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_config_enabled)
+EO_weak extern void eoprot_fun_UPDT_as_inertial_config_enabled(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial_status)
