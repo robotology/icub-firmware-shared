@@ -47,6 +47,8 @@ extern "C" {
 #include "EOarray.h"
 #include "EOrop.h"
 
+#include "EoAnalogSensors.h"
+
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -559,23 +561,92 @@ typedef struct
     eOmn_serv_canlocation_t             canloc;
 } eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 6);
 
+#if 0
+typedef enum
+{
+    eomn_as_strain                          = 1,
+    eomn_as_mais                            = 2,
+    eomn_as_inertial_accel_mtb_int          = 3,
+    eomn_as_inertial_accel_mtb_ext          = 4,
+    eomn_as_inertial_gyros_mtb_ext          = 5,
+    eomn_as_inertial_accel_ems_st_lis3x     = 6,
+    eomn_as_inertial_gyros_ems_st_l3g4200d  = 7,
+    eomn_as_unknown                         = 254,
+    eomn_as_none                            = 255
+} eOmn_analogsensor_t;
 
+typedef enum
+{
+    eomn_inertial_mtb  = 0,
+    eomn_inertial_ems  = 1,   
+} eOmn_inertial_place_t;
 
 typedef struct
-{   // 5+1+4=10 
+{
+    uint8_t place : 2;       /**< use eOmn_inertial_type_t */    
+    uint8_t dummy : 6;    
+} eOmn_inertial_on_any_t;
+
+typedef struct
+{
+    uint8_t place : 2;       /**< use eOmn_inertial_type_t */    
+    uint8_t port  : 1;       /**< use eOcanport_t */
+    uint8_t addr  : 4;       /**< use 0->14 */   
+    uint8_t ffu   : 1;    
+} eOmn_inertial_on_mbt_t;
+
+typedef struct
+{
+    uint8_t place : 2;       /**< use eOmn_inertial_type_t */    
+    uint8_t id    : 6;       /**< not used for now */   
+} eOmn_inertial_on_ems_t;
+
+typedef union
+{
+    eOmn_inertial_on_any_t      any;
+    eOmn_inertial_on_mbt_t      mtb;
+    eOmn_inertial_on_ems_t      ems;   
+} eOmn_inertial_on_t;
+
+typedef struct
+{
+    eOmn_inertial_on_t      on;
+    uint8_t                 type; // use relevant entry of eOmn_analogsensor_t   
+} eOmn_inertial_t;          EO_VERIFYsizeof(eOmn_inertial_t, 2);
+
+
+enum { eOmn_serv_capacity_arrayof_inertials = 48 };
+typedef struct
+{
+    eOarray_head_t          head;
+    eOmn_inertial_t         data[eOmn_serv_capacity_arrayof_inertials];    
+} eOmn_arrayof_inertials_t; EO_VERIFYsizeof(eOmn_arrayof_inertials_t, 100);
+
+#endif
+
+typedef struct
+{   // 5+1+4+100=10 
     eOmn_serv_canboardversion_t         version;
     uint8_t                             filler[1];
     uint16_t                            canmap[eOcanports_number]; 
 } eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 10);
 
 
+typedef struct
+{   // 5+1+4+100=10 
+    eOmn_serv_canboardversion_t         mtbversion;
+    uint8_t                             filler[1];
+    uint16_t                            canmap[eOcanports_number]; 
+    eOas_inertial2_arrayof_sensors_t    arrayofsensors;
+} eOmn_serv_config_data_as_inertial2_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial2_t, 110);
 
 typedef union
-{   // max(6, 6, 10)
+{   // max(6, 6, 10, 110)
     eOmn_serv_config_data_as_mais_t     mais;
     eOmn_serv_config_data_as_strain_t   strain;
-    eOmn_serv_config_data_as_inertial_t inertial;   
-} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 10);
+    eOmn_serv_config_data_as_inertial_t inertial;
+    eOmn_serv_config_data_as_inertial2_t inertial2;    
+} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 110);
 
 
 
@@ -744,7 +815,7 @@ typedef union
 
 
 typedef union                               
-{   // max(8, 164, 24)
+{   // max(110, 164, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
