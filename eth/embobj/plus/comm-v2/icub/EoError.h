@@ -92,11 +92,12 @@ typedef enum
     eoerror_category_Debug                  = 4,    /**< errors generated specifically by debug activity */
     eoerror_category_Config                 = 5,    /**< errors generated specifically by application configuration activity */
     eoerror_category_ETHmonitor             = 6,    /**< errors generated specifically by the ETH monitor */
+    eoerror_category_InertialSensor         = 7,
     // add a new category in here. remember to increment eoerror_category_numberof 
     eoerror_category_dummy                   = EOERROR_CATEGORY_DUMMY   /**< used to express a dummy category. dont count it for eoerror_category_numberof */
 } eOerror_category_t;
 
-enum { eoerror_category_numberof = 7 };
+enum { eoerror_category_numberof = 8 };
 
 
 /** @typedef    typedef uint32_t eOerror_value_t
@@ -232,11 +233,10 @@ typedef enum
     eoerror_value_SK_arrayofcandataoverflow         = 1,
     eoerror_value_SK_onoroff                        = 2,
     eoerror_value_SK_unexpecteddata                 = 3,
-    eoerror_value_SK_obsoletecommand                = 4,
-    eoerror_value_SK_arrayofinertialdataoverflow    = 5
+    eoerror_value_SK_obsoletecommand                = 4
 } eOerror_value_SK_t;
 
-enum { eoerror_value_SK_numberof = 6 };
+enum { eoerror_value_SK_numberof = 5 };
 
 
 
@@ -336,6 +336,19 @@ typedef enum
 } eOerror_value_ETHMON_t;
 
 enum { eoerror_value_ETHMON_numberof = 4 };
+
+
+/** @typedef    typedef enum eOerror_value_IS_t
+    @brief      it contains the values of the eoerror_category_InertialSensor category. In case you need a new value: add it
+                in consecutive mode without holes and increment eoerror_value_SK_numberof. In case you need to remove a value, dont
+                remove the number but simply rename it: that will help detecting old boards sending pairs {category, value} not supported yet.  
+ **/
+typedef enum
+{
+    eoerror_value_IS_arrayofinertialdataoverflow    = 0
+} eOerror_value_IS_t;
+
+enum { eoerror_value_IS_numberof = 1 };
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 

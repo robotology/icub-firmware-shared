@@ -81,7 +81,8 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
     eoerror_value_SK_numberof,
     eoerror_value_DEB_numberof,
     eoerror_value_CFG_numberof,
-    eoerror_value_ETHMON_numberof
+    eoerror_value_ETHMON_numberof,
+    eoerror_category_InertialSensor
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -198,8 +199,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SK[] =
     {eoerror_value_SK_arrayofcandataoverflow,   "SK: cannot put rx can frames into arrayofcandata, thus some skin readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
     {eoerror_value_SK_onoroff,                  "SK: the skin transmission has been switched on or off. In par16 there's the corresponding code (0: OFF, 1: ON)"},
     {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. In par16 there's the actual state of the EMS board (0: CFG, 1: RUN)"},
-    {eoerror_value_SK_obsoletecommand,          "SK: the board has received an obsolete command of type eosk_sigmode_signal_oldway. use eosk_sigmode_signal instead."},
-    {eoerror_value_SK_arrayofinertialdataoverflow, "SK: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
+    {eoerror_value_SK_obsoletecommand,          "SK: the board has received an obsolete command of type eosk_sigmode_signal_oldway. use eosk_sigmode_signal instead."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SK, eoerror_value_SK_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
@@ -223,8 +223,8 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
 const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 {   // very important: fill table with order of eOerror_value_CFG_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: target board type in 0xff00,  number of boards in 0x000f. In p64: search time [ms] in 0xffff000000000000, req prot in 0x00000000ffff0000, req fw in 0x000000000000ffff,"},
-    {eoerror_value_CFG_candiscovery_detectedboard, "CFG: CANdiscovery has detected this board. In p16: board type in 0xff00, board address in 0x000f. In p64: search time [ms] in 0xffff000000000000, prot in 0x00000000ffff0000, fw in 0x000000000000ffff."},       
+    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: number of boards in 0x000f. In p64: search time [ms] in 0xffff000000000000, board type in 0x0000ff0000000000, req prot in 0x000000ffff000000, req fw in 0x0000000000ffffff."},
+    {eoerror_value_CFG_candiscovery_detectedboard, "CFG: CANdiscovery has detected this board. In p16: board address in 0x000f. In p64: search time [ms] in 0xffff000000000000, board type in 0x0000ff0000000000, prot in 0x000000ffff000000, fw in 0x0000000000ffffff."},       
     {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x000f. In p64: search time [ms] in 0xffff000000000000, mask of missing addresses in 0x000000000000ffff"},
     {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x000f. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"},
     {eoerror_value_CFG_skin_ok, "CFG: EOtheSKIN can be correctly configured. num of patches in p16, can mapping in p64 upper 32 bits, prot and vers in p64 lower 32 bits"},
@@ -273,6 +273,14 @@ const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
     {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)); 
 
+const eoerror_valuestring_t eoerror_valuestrings_IS[] =
+{   // very important: fill table with order of eOerror_value_IS_t
+    //                 in case of holes, use {0, NULL}
+    {eoerror_value_IS_arrayofinertialdataoverflow, "IS: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
+};  EO_VERIFYsizeof(eoerror_valuestrings_IS, eoerror_value_IS_numberof*sizeof(const eoerror_valuestring_t)); 
+
+
+
 
 const eoerror_valuestring_t * const eoerror_valuestrings[] = 
 {   // very important: fill table with order of eOerror_category_t: pos 0 is eoerror_category_EthBoardSystem etc.
@@ -283,7 +291,8 @@ const eoerror_valuestring_t * const eoerror_valuestrings[] =
     (const eoerror_valuestring_t *)&eoerror_valuestrings_SK,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_CFG,
-    (const eoerror_valuestring_t *)&eoerror_valuestrings_ETHMON
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_ETHMON,
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_IS
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
 
 
