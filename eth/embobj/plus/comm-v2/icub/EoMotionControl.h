@@ -211,6 +211,7 @@ typedef enum
     eomc_calibration_type8_tripod_internal_hard_stop= 8,    // cannot change
     eomc_calibration_type9_tripod_external_hard_stop= 9,    // cannot change
     eomc_calibration_type10_abs_hard_stop           = 10,   // cannot change 
+    eomc_calibration_type11_cer_hands               = 11,   // cannot change 
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
@@ -392,13 +393,25 @@ typedef struct
 } eOmc_calibrator_params_type9_tripod_external_hard_stop_t;
 
 /** @typedef    typedef struct eOmc_calibrator_params_type10_abs_hard_stop_t
-    @brief      contains the params in case of eOmc_calibrator_params_type10_abs_hard_stop
+    @brief      contains the params in case of eOmc_calibration_type10_abs_hard_stop
  **/
 typedef struct  
 {
     int32_t                     pwmlimit;
     int32_t                     calibrationZero;
 } eOmc_calibrator_params_type10_abs_hard_stop_t;
+
+/** @typedef    typedef struct eOmc_calibrator_params_type11_cer_hands_t
+    @brief      contains the params in case of eOmc_calibration_type11_cer_hands
+ **/
+typedef struct  
+{
+    eOmeas_position_t           position;
+    eOmeas_velocity_t           velocity;
+    int32_t                     offset0;
+    int32_t                     offset1;
+    int32_t                     calibrationZero;
+} eOmc_calibrator_params_type11_cer_hands_t;
 
 // -- all the possible data holding structures used in a joint
 
@@ -498,7 +511,8 @@ typedef struct                  // size is 1+3+4*4 = 20
         eOmc_calibrator_params_type7_hall_sensor_t                  type7;
         eOmc_calibrator_params_type8_tripod_internal_hard_stop_t    type8;
         eOmc_calibrator_params_type9_tripod_external_hard_stop_t    type9;
-        eOmc_calibrator_params_type10_abs_hard_stop_t               type10;        
+        eOmc_calibrator_params_type10_abs_hard_stop_t               type10;
+        eOmc_calibrator_params_type11_cer_hands_t                   type11;         
     } params;                                                       /**< the params of the calibrator */   
 } eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 28);
 
