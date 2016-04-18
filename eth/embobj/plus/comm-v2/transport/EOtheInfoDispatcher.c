@@ -276,12 +276,13 @@ extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_proper
 }
 
 
-extern eOresult_t eo_infodispatcher_Send(EOtheInfoDispatcher* p, uint16_t number, uint16_t* numberofsent)
+extern eOresult_t eo_infodispatcher_Send(EOtheInfoDispatcher* p, uint16_t number, uint16_t* numberofsent, uint16_t* numberofremaining)
 {
     eOresult_t res = eores_NOK_generic;
     uint16_t nn = 0;
     uint16_t i = 0;
     eOmn_info_status_t *info = NULL;
+    uint16_t remaining = 0;
     
     if(NULL == p) 
     {
@@ -337,6 +338,13 @@ extern eOresult_t eo_infodispatcher_Send(EOtheInfoDispatcher* p, uint16_t number
         }    
 
         
+    }
+    
+    remaining = eo_vector_Size(s_eo_theinfodispatcher.vectorOfinfostatus);
+    
+    if(NULL != numberofremaining)
+    {
+        *numberofremaining = remaining;        
     }
     
     
