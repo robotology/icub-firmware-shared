@@ -542,7 +542,8 @@ typedef enum
     eomn_serv_AS_mais           = 5,
     eomn_serv_AS_strain         = 6,
     eomn_serv_AS_inertial       = 7,
-    eomn_serv_SK_skin           = 8
+    eomn_serv_SK_skin           = 8,
+    eomn_serv_MC_generic        = 9
 } eOmn_serv_type_t;
 
 
@@ -633,19 +634,18 @@ typedef struct
 
 
 typedef struct
-{   // 5+1+4+100=10 
+{   // 5+3+100=108 
     eOmn_serv_canboardversion_t         mtbversion;
-    uint8_t                             filler[1];
-    uint16_t                            canmap[eOcanports_number]; 
-    eOas_inertial_arrayof_sensors_t    arrayofsensors;
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 110);
+    uint8_t                             filler[3];
+    eOas_inertial_arrayof_sensors_t     arrayofsensors;
+} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108);
 
 typedef union
-{   // max(6, 6, 10, 110)
+{   // max(6, 6, 108)
     eOmn_serv_config_data_as_mais_t     mais;
     eOmn_serv_config_data_as_strain_t   strain;
     eOmn_serv_config_data_as_inertial_t inertial;  
-} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 110);
+} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 108);
 
 
 
@@ -814,7 +814,7 @@ typedef union
 
 
 typedef union                               
-{   // max(110, 164, 24)
+{   // max(108, 164, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
@@ -852,6 +852,12 @@ typedef struct
 // - eomn_serv_item_mc_encoder_*
 //   we use itemdes.item.motion.encoder.[amo, aea, inc] to keep the hal port of the encoder to use
 
+
+// notsupported -> notsupported
+
+// idle         -> (idle, activated)
+// activated    -> (idle, running)
+// running      -> (idle, activated)
 
 typedef enum
 {
