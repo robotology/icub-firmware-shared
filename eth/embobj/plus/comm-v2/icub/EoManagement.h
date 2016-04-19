@@ -541,7 +541,7 @@ typedef enum
     eomn_serv_MC_mc4plusmais    = 4,    // as in the arm, where we need also a mais
     eomn_serv_AS_mais           = 5,
     eomn_serv_AS_strain         = 6,
-    eomn_serv_AS_inertial       = 7,
+    eomn_serv_AS_inertials      = 7,
     eomn_serv_SK_skin           = 8,
     eomn_serv_MC_generic        = 9
 } eOmn_serv_type_t;
