@@ -195,9 +195,18 @@ typedef union
 
 extern uint8_t eoboards_maxsizeofnames(void);
 
-extern const char * eoboards_type2name(uint8_t boardtype);
+
+extern eObool_t eoboards_is_ethboardtype(eObrd_type_t boardtype);
+
+extern eObool_t eoboards_is_canboardtype(eObrd_type_t boardtype);
+
+extern const char * eoboards_type2name(eObrd_type_t boardtype);
 
 extern eObrd_type_t eoboards_name2type(const char * name);
+
+extern eObrd_cantype_t eoboards_name2cantype(const char * name);
+
+extern eObrd_ethtype_t eoboards_name2ethtype(const char * name);
 
 
 

@@ -118,7 +118,7 @@ extern uint8_t eoboards_maxsizeofnames(void)
 }
 
 
-extern const char * eoboards_type2name(uint8_t boardtype)
+extern const char * eoboards_type2name(eObrd_type_t boardtype)
 {
     const char * ret = s_eoboards_other_names[1];
     
@@ -170,6 +170,68 @@ extern eObrd_type_t eoboards_name2type(const char * name)
     }        
     
     return(eobrd_type_unknown);    
+}
+
+
+extern eObool_t eoboards_is_ethboardtype(eObrd_type_t boardtype)
+{
+    if((boardtype >= eobrd_ethtype_ems4) && (boardtype <= eobrd_ethtype_ems4))
+    {
+        return(eobool_true);     
+    }   
+    return(eobool_false);       
+}
+
+
+extern eObool_t eoboards_is_canboardtype(eObrd_type_t boardtype)
+{
+    if(boardtype < eobrd_cantype_numberof)
+    {
+        return(eobool_true);     
+    }   
+    return(eobool_false);   
+}
+
+
+extern eObrd_cantype_t eoboards_name2cantype(const char * name)
+{
+    if(NULL == name)
+    {
+        return(eobrd_cantype_unknown);
+    }
+    
+    uint8_t i = 0;
+    
+    for(i=0; i<eobrd_cantype_numberof; i++)
+    {
+        if(0 == strcmp(name, s_eoboards_can_names[i]))
+        {
+            return((eObrd_cantype_t)(i+0));
+        }
+    }
+    
+    return(eobrd_cantype_unknown);            
+}
+
+
+extern eObrd_ethtype_t eoboards_name2ethtype(const char * name)
+{
+    if(NULL == name)
+    {
+        return(eobrd_ethtype_unknown);
+    }
+    
+    uint8_t i = 0;
+        
+    for(i=0; i<eobrd_ethtype_numberof; i++)
+    {
+        if(0 == strcmp(name, s_eoboards_eth_names[i]))
+        {
+            return((eObrd_ethtype_t)(i+brdFirstEthBoard));
+        }
+    } 
+         
+    return(eobrd_ethtype_unknown);    
 }
 
 
