@@ -114,10 +114,9 @@ extern const char * eomn_servicetype2string(eOmn_serv_type_t service)
     return(ret);
 }
 
-
-extern eOmn_serv_type_t eomn_name2service(const char * name)
+extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
 {    
-    if(NULL == name)
+    if(NULL == string)
     {
         return(eomn_serv_UNKNOWN);
     }
@@ -126,13 +125,13 @@ extern eOmn_serv_type_t eomn_name2service(const char * name)
     
     for(i=0; i<eomn_serv_types_numberof; i++)
     {
-        if(0 == strcmp(name, s_mn_servicetype_strings[i]))
+        if(0 == strcmp(string, s_mn_servicetype_strings[i]))
         {
             return((eOmn_serv_type_t)(i+0));
         }
     }
     
-    if(0 == strcmp(name, s_mn_servicetype_string_none))
+    if(0 == strcmp(string, s_mn_servicetype_string_none))
     {
         return(eomn_serv_NONE);
     }        

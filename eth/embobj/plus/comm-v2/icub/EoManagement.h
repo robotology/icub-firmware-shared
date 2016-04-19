@@ -864,7 +864,7 @@ typedef struct
 
 extern const char * eomn_servicetype2string(eOmn_serv_type_t service);
 
-extern eOmn_serv_type_t eomn_string2servicetype(const char * name);
+extern eOmn_serv_type_t eomn_string2servicetype(const char * string);
 
 
 
