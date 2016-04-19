@@ -51,28 +51,28 @@ extern "C" {
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
-
-
-
+// empty-section
 
 
 // - declaration of public user-defined types -------------------------------------------------------------------------
 
+// use eoas_sensor2string() and eoas_string2sensor() to convert to / from eOas_sensor_t and associated string 
 typedef enum
 {
-    eoas_strain                 = 0,    // associated string is: snsrSTRAIN
-    eoas_mais                   = 1,    // associated string is: snsrMAIS
-    eoas_accel_mtb_int          = 2,    // associated string is: snsrAccelMTBint
-    eoas_accel_mtb_ext          = 3,    // associated string is: snsrAccelMTBext
-    eoas_gyros_mtb_ext          = 4,    // associated string is: snsrGyrosMTBext
-    eoas_accel_st_lis3x         = 5,    // associated string is: snsrAccelSTlis3x
-    eoas_gyros_st_l3g4200d      = 6,    // associated string is: snsrGyrosSTl3g4200d
+    eoas_strain                 = 0,    // associated string is: "eoas_strain"
+    eoas_mais                   = 1,    // etc ... the string is equal to the enum
+    eoas_accel_mtb_int          = 2,   
+    eoas_accel_mtb_ext          = 3,    
+    eoas_gyros_mtb_ext          = 4,    
+    eoas_accel_st_lis3x         = 5,    
+    eoas_gyros_st_l3g4200d      = 6,    
     // add in here eoas_xxxnameetc
-    eoas_unknown                = 254,  // associated string is: snsrUNKNOWN
-    eoas_none                   = 255   // associated string is: snsrNONE
+    eoas_unknown                = 254,  
+    eoas_none                   = 255   
 } eOas_sensor_t;
 
 enum { eoas_sensors_numberof = 7 };
+
 
 /** @typedef    typedef enum eOas_entity_t;
     @brief      It contains all the possible entities in analog sensors.
@@ -445,9 +445,9 @@ typedef struct                      // size is: 16+16+8 = 40
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
 
-extern const char * eoanalogsensors_sensor2name(eOas_sensor_t sensor);
+extern const char * eoas_sensor2string(eOas_sensor_t sensor);
 
-extern eOas_sensor_t eoanalogsensors_name2sensor(const char * name);
+extern eOas_sensor_t eoas_string2sensor(const char * string);
 
 
 

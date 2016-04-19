@@ -68,22 +68,22 @@ enum { eoas_others_numberof = 2 };
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char * s_eoanalogsensors_names[] =
+static const char * s_eoas_sensors_strings[] =
 {
-    "snsrSTRAIN",
-    "snsrMAIS",
-    "snsrAccelMTBint",
-    "snsrAccelMTBext",
-    "snsrGyrosMTBext",   
-    "snsrAccelSTlis3x",    
-    "snsrGyrosSTl3g4200d"
-};  EO_VERIFYsizeof(s_eoanalogsensors_names, eoas_sensors_numberof*sizeof(const char *));    
+    "eoas_strain",
+    "eoas_mais",
+    "eoas_accel_mtb_int",
+    "eoas_accel_mtb_ext",
+    "eoas_gyros_mtb_ext",   
+    "eoas_accel_st_lis3x",    
+    "eoas_gyros_st_l3g4200d"
+};  EO_VERIFYsizeof(s_eoas_sensors_strings, eoas_sensors_numberof*sizeof(const char *));    
 
 
 
-static const char * s_eoanalogsensors_name_unknown = "snsrUNKNOWN";
+static const char * s_eoas_sensors_string_unknown = "eoas_unknown";
 
-static const char * s_eoanalogsensors_name_none = "snsrNONE";
+static const char * s_eoas_sensors_string_none = "eoas_none";
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -98,17 +98,17 @@ static const char * s_eoanalogsensors_name_none = "snsrNONE";
 
 
 
-extern const char * eoanalogsensors_sensor2name(eOas_sensor_t sensor)
+extern const char * eoas_sensor2string(eOas_sensor_t sensor)
 {
-    const char * ret = s_eoanalogsensors_name_unknown;
+    const char * ret = s_eoas_sensors_string_unknown;
     
     if(sensor < eoas_sensors_numberof)
     {
-        return(s_eoanalogsensors_names[sensor]);
+        return(s_eoas_sensors_strings[sensor]);
     }
     else if(eoas_none == sensor)
     {
-        return(s_eoanalogsensors_name_none);
+        return(s_eoas_sensors_string_none);
     }
 
 
@@ -116,9 +116,9 @@ extern const char * eoanalogsensors_sensor2name(eOas_sensor_t sensor)
 }
 
 
-extern eOas_sensor_t eoanalogsensors_name2sensor(const char * name)
+extern eOas_sensor_t eoas_string2sensor(const char * string)
 {    
-    if(NULL == name)
+    if(NULL == string)
     {
         return(eoas_unknown);
     }
@@ -127,13 +127,13 @@ extern eOas_sensor_t eoanalogsensors_name2sensor(const char * name)
     
     for(i=0; i<eoas_sensors_numberof; i++)
     {
-        if(0 == strcmp(name, s_eoanalogsensors_names[i]))
+        if(0 == strcmp(string, s_eoas_sensors_strings[i]))
         {
             return((eOas_sensor_t)(i+0));
         }
     }
     
-    if(0 == strcmp(name, s_eoanalogsensors_name_none))
+    if(0 == strcmp(string, s_eoas_sensors_string_none))
     {
         return(eoas_none);
     }        

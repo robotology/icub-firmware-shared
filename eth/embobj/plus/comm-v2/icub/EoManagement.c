@@ -16,7 +16,7 @@
  * Public License for more details
 */
 
-/* @file       EoBoards.c
+/* @file       EoManagement.c
     @brief      This file keeps ...
     @author     marco.accame@iit.it
     @date       Apr 18 2016
@@ -37,7 +37,7 @@
 // - declaration of extern public interface
 // --------------------------------------------------------------------------------------------------------------------
 
-#include "EoBoards.h"
+#include "EoManagement.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -55,10 +55,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - typedef with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-
-enum { brdFirstEthBoard = eobrd_ethtype_ems4, brdLastEthBoard = eobrd_ethtype_ems4 + eobrd_ethtype_numberof - 1 };
-enum { eobrd_otherstype_numberof = 2 };
-
+// empty-section
 
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of static functions
@@ -70,34 +67,24 @@ enum { eobrd_otherstype_numberof = 2 };
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char * s_eoboards_can_strings[] =
+static const char * s_mn_servicetype_strings[] =
 {
-    "eobrd_dsp",
-    "eobrd_pic",
-    "eobrd_2dc",
-    "eobrd_mc4",
-    "eobrd_bll",   
-    "eobrd_mtb",    
-    "eobrd_strain",
-    "eobrd_mais",
-    "eobrd_foc",
-    "eobrd_6sg",
-    "eobrd_jog"    
-};  EO_VERIFYsizeof(s_eoboards_can_strings, eobrd_cantype_numberof*sizeof(const char *));    
-
-
-static const char * s_eoboards_eth_strings[] =
-{
-    "eobrd_ems4",
-    "eobrd_mc4plus",
-    "eobrd_mc2plus"
-};  EO_VERIFYsizeof(s_eoboards_eth_strings, eobrd_ethtype_numberof*sizeof(const char *));    
+    "eomn_serv_MC_generic",
+    "eomn_serv_MC_foc",
+    "eomn_serv_MC_mc4",
+    "eomn_serv_MC_mc4plus",
+    "eomn_serv_MC_mc4plusmais",   
+    "eomn_serv_AS_mais",    
+    "eomn_serv_AS_strain",
+    "eomn_serv_AS_inertials",
+    "eomn_serv_SK_skin"
+};  EO_VERIFYsizeof(s_mn_servicetype_strings, eomn_serv_types_numberof*sizeof(const char *));    
 
 
 
-static const char * s_eoboards_string_none = "brdNONE";
+static const char * s_mn_servicetype_string_unknown = "eomn_serv_UNKNOWN";
 
-static const char * s_eoboards_string_unknown = "brdUNKNOWN";
+static const char * s_mn_servicetype_string_none = "eomn_serv_NONE";
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -111,165 +98,48 @@ static const char * s_eoboards_string_unknown = "brdUNKNOWN";
 // --------------------------------------------------------------------------------------------------------------------
 
 
-extern eObool_t eoboards_is_can(eObrd_type_t type)
+extern const char * eomn_servicetype2string(eOmn_serv_type_t service)
 {
-    if(type < eobrd_cantype_numberof)
-    {
-        return(eobool_true);     
-    }   
-    return(eobool_false);   
-}
-
-
-extern eObool_t eoboards_is_eth(eObrd_type_t type)
-{
-   if((type >= brdFirstEthBoard) && (type <= brdLastEthBoard))
-    {
-        return(eobool_true);     
-    }   
-    return(eobool_false);       
-}
-
-
-extern eObrd_cantype_t eoboards_type2cantype(eObrd_type_t type)
-{
-    if(eobool_true == eoboards_is_can(type))
-    {
-        return((eObrd_cantype_t)type);
-    }  
-
-    if(eobrd_none == type)
-    {
-        return(eobrd_cantype_none);
-    }
+    const char * ret = s_mn_servicetype_string_unknown;
     
-    return(eobrd_cantype_unknown);
+    if(service < eomn_serv_types_numberof)
+    {
+        return(s_mn_servicetype_strings[service]);
+    }
+    else if(eomn_serv_NONE == service)
+    {
+        return(s_mn_servicetype_string_none);
+    }
+
+    return(ret);
 }
 
 
-extern eObrd_ethtype_t eoboards_type2ethtype(eObrd_type_t type)
-{
-    if(eobool_true == eoboards_is_eth(type))
-    {
-        return((eObrd_ethtype_t)type);
-    }  
-
-    if(eobrd_none == type)
-    {
-        return(eobrd_ethtype_none);
-    }
-    
-    return(eobrd_ethtype_unknown);
-}
-
-
-
-extern const char * eoboards_type2string(eObrd_type_t type)
-{
-//    const char * ret = s_eoboards_string_unknown;
-    
-    if(eobool_true == eoboards_is_can(type))
-    {
-        return(s_eoboards_can_strings[type]);
-    }
-    else if(eobool_true == eoboards_is_eth(type))
-    {
-        return(s_eoboards_eth_strings[type - brdFirstEthBoard]);
-    }
-    else if(eobrd_ethtype_none == type)
-    {
-        return(s_eoboards_string_none);
-    }
-    
-    return(s_eoboards_string_unknown);
-}
-
-
-extern eObrd_type_t eoboards_string2type(const char * name)
+extern eOmn_serv_type_t eomn_name2service(const char * name)
 {    
     if(NULL == name)
     {
-        return(eobrd_unknown);
+        return(eomn_serv_UNKNOWN);
     }
     
     uint8_t i = 0;
     
-    for(i=0; i<eobrd_cantype_numberof; i++)
+    for(i=0; i<eomn_serv_types_numberof; i++)
     {
-        if(0 == strcmp(name, s_eoboards_can_strings[i]))
+        if(0 == strcmp(name, s_mn_servicetype_strings[i]))
         {
-            return((eObrd_type_t)(i+0));
+            return((eOmn_serv_type_t)(i+0));
         }
     }
     
-    for(i=0; i<eobrd_ethtype_numberof; i++)
+    if(0 == strcmp(name, s_mn_servicetype_string_none))
     {
-        if(0 == strcmp(name, s_eoboards_eth_strings[i]))
-        {
-            return((eObrd_type_t)(i+brdFirstEthBoard));
-        }
-    } 
-
-    if(0 == strcmp(name, s_eoboards_string_none))
-    {
-        return(eobrd_none);
+        return(eomn_serv_NONE);
     }        
     
-    return(eobrd_unknown);    
+    return(eomn_serv_UNKNOWN);    
 }
 
-
-
-//extern eObrd_cantype_t eoboards_string2cantype(const char * name)
-//{
-//    if(NULL == name)
-//    {
-//        return(eobrd_cantype_unknown);
-//    }
-//    
-//    uint8_t i = 0;
-//    
-//    for(i=0; i<eobrd_cantype_numberof; i++)
-//    {
-//        if(0 == strcmp(name, s_eoboards_can_strings[i]))
-//        {
-//            return((eObrd_cantype_t)(i+0));
-//        }
-//    }
-
-//    if(0 == strcmp(name, s_eoboards_string_none))
-//    {
-//        return(eobrd_cantype_none);
-//    }   
-//    
-//    return(eobrd_cantype_unknown);            
-//}
-
-
-//extern eObrd_ethtype_t eoboards_string2ethtype(const char * name)
-//{
-//    if(NULL == name)
-//    {
-//        return(eobrd_ethtype_unknown);
-//    }
-//    
-//    uint8_t i = 0;
-//        
-//    for(i=0; i<eobrd_ethtype_numberof; i++)
-//    {
-//        if(0 == strcmp(name, s_eoboards_eth_strings[i]))
-//        {
-//            return((eObrd_ethtype_t)(i+brdFirstEthBoard));
-//        }
-//    } 
-// 
-//    if(0 == strcmp(name, s_eoboards_string_none))
-//    {
-//        return(eobrd_ethtype_none);
-//    }   
-//    
-//    return(eobrd_ethtype_unknown);    
-//}
 
 
 // --------------------------------------------------------------------------------------------------------------------
