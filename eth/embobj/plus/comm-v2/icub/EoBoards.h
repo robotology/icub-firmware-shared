@@ -69,7 +69,7 @@ typedef enum
     eobrd_cantype_6sg               = ICUBCANPROTO_BOARDTYPE__6SG,      // 9, not used
     eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used    
    
-    eobrd_cantype_none              = 127, 	
+    eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
@@ -82,7 +82,7 @@ typedef enum
     eobrd_ethtype_mc4plus           = 33,     
     eobrd_ethtype_mc2plus           = 34,   
    
-    eobrd_ethtype_none              = 127, 	
+    eobrd_ethtype_none              = 254, 	
     eobrd_ethtype_unknown           = 255   
 } eObrd_ethtype_t;
 
@@ -109,7 +109,7 @@ typedef enum
     eobrd_type_6sgcan               = eobrd_cantype_6sg,        // name is brd6SGcan  
     eobrd_type_jog                  = eobrd_cantype_jog,        // name is brdJOG      
     
-    eobrd_type_none                 = 127,                      // name is brdNONE 	
+    eobrd_type_none                 = 254,                      // name is brdNONE 	
     eobrd_type_unknown              = 255                       // name is brdUNKNOWN
 } eObrd_type_t;
 
@@ -193,8 +193,7 @@ typedef union
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
 
-extern uint8_t eoboards_maxsizeofnames(void);
-
+//extern uint8_t eoboards_maxsizeofnames(void);
 
 extern eObool_t eoboards_is_ethboardtype(eObrd_type_t boardtype);
 

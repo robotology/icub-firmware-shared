@@ -16,7 +16,7 @@
  * Public License for more details
 */
 
-/* @file       EoBoards.c
+/* @file       EoAnalogSensors.c
     @brief      This file keeps ...
     @author     marco.accame@iit.it
     @date       Apr 18 2016
@@ -37,7 +37,7 @@
 // - declaration of extern public interface
 // --------------------------------------------------------------------------------------------------------------------
 
-#include "EoBoards.h"
+#include "EoAnalogSensors.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -56,9 +56,7 @@
 // - typedef with internal scope
 // --------------------------------------------------------------------------------------------------------------------
 
-enum { brdFirstEthBoard = eobrd_ethtype_ems4, brdLastEthBoard = eobrd_ethtype_ems4 + eobrd_ethtype_numberof - 1 };
-enum { eobrd_otherstype_numberof = 2 };
-
+enum { eoas_others_numberof = 2 };
 
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of static functions
@@ -70,34 +68,22 @@ enum { eobrd_otherstype_numberof = 2 };
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char * s_eoboards_can_names[] =
+static const char * s_eoanalogsensors_names[] =
 {
-    "brdDSPcan",
-    "brdPICcan",
-    "brd2DCcan",
-    "brdMC4can",
-    "brdBLLcan",   
-    "brdMTB",    
-    "brdSTRAIN",
-    "brdMAIS",
-    "brdFOC",
-    "brd6SGcan",
-    "brdJOG"    
-};  EO_VERIFYsizeof(s_eoboards_can_names, eobrd_cantype_numberof*sizeof(const char *));    
-
-
-static const char * s_eoboards_eth_names[] =
-{
-    "brdEMS4",
-    "brdMC4PLUS",
-    "brdMC2PLUS"
-};  EO_VERIFYsizeof(s_eoboards_eth_names, eobrd_ethtype_numberof*sizeof(const char *));    
+    "snsrSTRAIN",
+    "snsrMAIS",
+    "snsrAccelMTBint",
+    "snsrAccelMTBext",
+    "snsrGyrosMTBext",   
+    "snsrAccelSTlis3x",    
+    "snsrGyrosSTl3g4200d"
+};  EO_VERIFYsizeof(s_eoanalogsensors_names, eoas_sensors_numberof*sizeof(const char *));    
 
 
 
-static const char * s_eoboards_name_none = "brdNONE";
+static const char * s_eoanalogsensors_name_unknown = "snsrUNKNOWN";
 
-static const char * s_eoboards_name_unknown = "brdUNKNOWN";
+static const char * s_eoanalogsensors_name_none = "snsrNONE";
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -111,137 +97,50 @@ static const char * s_eoboards_name_unknown = "brdUNKNOWN";
 // --------------------------------------------------------------------------------------------------------------------
 
 
-//extern uint8_t eoboards_maxsizeofnames(void)
-//{
-//    return(24);
-//}
 
-
-extern const char * eoboards_type2name(eObrd_type_t boardtype)
+extern const char * eoanalogsensors_sensor2name(eOas_sensor_t sensor)
 {
-    const char * ret = s_eoboards_name_unknown;
+    const char * ret = s_eoanalogsensors_name_unknown;
     
-    if(boardtype < eobrd_cantype_numberof)
+    if(sensor < eoas_sensors_numberof)
     {
-        return(s_eoboards_can_names[boardtype]);
+        return(s_eoanalogsensors_names[sensor]);
     }
-    else if(eobrd_ethtype_none == boardtype)
+    else if(eoas_none == sensor)
     {
-        return(s_eoboards_name_none);
+        return(s_eoanalogsensors_name_none);
     }
-    else if((boardtype >= brdFirstEthBoard) && (boardtype <= brdLastEthBoard))
-    {
-        return(s_eoboards_eth_names[boardtype - brdFirstEthBoard]);
-    }
+
 
     return(ret);
 }
 
 
-extern eObrd_type_t eoboards_name2type(const char * name)
+extern eOas_sensor_t eoanalogsensors_name2sensor(const char * name)
 {    
     if(NULL == name)
     {
-        return(eobrd_type_unknown);
+        return(eoas_unknown);
     }
     
     uint8_t i = 0;
     
-    for(i=0; i<eobrd_cantype_numberof; i++)
+    for(i=0; i<eoas_sensors_numberof; i++)
     {
-        if(0 == strcmp(name, s_eoboards_can_names[i]))
+        if(0 == strcmp(name, s_eoanalogsensors_names[i]))
         {
-            return((eObrd_type_t)(i+0));
+            return((eOas_sensor_t)(i+0));
         }
     }
     
-    for(i=0; i<eobrd_ethtype_numberof; i++)
+    if(0 == strcmp(name, s_eoanalogsensors_name_none))
     {
-        if(0 == strcmp(name, s_eoboards_eth_names[i]))
-        {
-            return((eObrd_type_t)(i+brdFirstEthBoard));
-        }
-    } 
-
-    if(0 == strcmp(name, s_eoboards_name_none))
-    {
-        return(eobrd_type_none);
+        return(eoas_none);
     }        
     
-    return(eobrd_type_unknown);    
+    return(eoas_unknown);    
 }
 
-
-extern eObool_t eoboards_is_ethboardtype(eObrd_type_t boardtype)
-{
-    if((boardtype >= eobrd_ethtype_ems4) && (boardtype <= eobrd_ethtype_ems4))
-    {
-        return(eobool_true);     
-    }   
-    return(eobool_false);       
-}
-
-
-extern eObool_t eoboards_is_canboardtype(eObrd_type_t boardtype)
-{
-    if(boardtype < eobrd_cantype_numberof)
-    {
-        return(eobool_true);     
-    }   
-    return(eobool_false);   
-}
-
-
-extern eObrd_cantype_t eoboards_name2cantype(const char * name)
-{
-    if(NULL == name)
-    {
-        return(eobrd_cantype_unknown);
-    }
-    
-    uint8_t i = 0;
-    
-    for(i=0; i<eobrd_cantype_numberof; i++)
-    {
-        if(0 == strcmp(name, s_eoboards_can_names[i]))
-        {
-            return((eObrd_cantype_t)(i+0));
-        }
-    }
-
-    if(0 == strcmp(name, s_eoboards_name_none))
-    {
-        return(eobrd_cantype_none);
-    }   
-    
-    return(eobrd_cantype_unknown);            
-}
-
-
-extern eObrd_ethtype_t eoboards_name2ethtype(const char * name)
-{
-    if(NULL == name)
-    {
-        return(eobrd_ethtype_unknown);
-    }
-    
-    uint8_t i = 0;
-        
-    for(i=0; i<eobrd_ethtype_numberof; i++)
-    {
-        if(0 == strcmp(name, s_eoboards_eth_names[i]))
-        {
-            return((eObrd_ethtype_t)(i+brdFirstEthBoard));
-        }
-    } 
- 
-    if(0 == strcmp(name, s_eoboards_name_none))
-    {
-        return(eobrd_ethtype_none);
-    }   
-    
-    return(eobrd_ethtype_unknown);    
-}
 
 
 // --------------------------------------------------------------------------------------------------------------------
