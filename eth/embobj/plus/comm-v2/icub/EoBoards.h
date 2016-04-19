@@ -42,6 +42,7 @@ extern "C" {
 // - external dependencies --------------------------------------------------------------------------------------------
 
 #include "EoCommon.h"
+#include "iCubCanProto_types.h"    
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -53,21 +54,66 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-// using the same values as in can protocol
+// using the same values as in can protocol (apart from none) 
 typedef enum
-{
-    eobrd_cantype_mc4               = 3,
-    eobrd_cantype_strain            = 6,
-    eobrd_cantype_1foc              = 8,
-    eobrd_cantype_foc               = 8,    // prefer using foc than 1foc
-    eobrd_cantype_mais              = 7,
-    eobrd_cantype_skin              = 5, 
-    eobrd_cantype_mtb               = 5,    // much better using the real name which is mtb
+{   
+    eobrd_cantype_dsp               = ICUBCANPROTO_BOARDTYPE__DSP,      // 0, not used
+    eobrd_cantype_pic               = ICUBCANPROTO_BOARDTYPE__PIC,      // 2, not used
+    eobrd_cantype_2dc               = ICUBCANPROTO_BOARDTYPE__2DC,      // 2, not used
+    eobrd_cantype_mc4               = ICUBCANPROTO_BOARDTYPE__4DC,      // 3
+    eobrd_cantype_bll               = ICUBCANPROTO_BOARDTYPE__BLL,      // 4, not used
+    eobrd_cantype_mtb               = ICUBCANPROTO_BOARDTYPE__SKIN,     // 5 
+    eobrd_cantype_strain            = ICUBCANPROTO_BOARDTYPE__STRAIN,   // 6
+    eobrd_cantype_mais              = ICUBCANPROTO_BOARDTYPE__MAIS,     // 7
+    eobrd_cantype_foc               = ICUBCANPROTO_BOARDTYPE__2FOC,     // 8   
+    eobrd_cantype_6sg               = ICUBCANPROTO_BOARDTYPE__6SG,      // 9, not used
+    eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used    
+   
     eobrd_cantype_none              = 127, 	
-    eobrd_cantype_unknown           = 255 // but better 128 ... 
+    eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 5 };
+enum { eobrd_cantype_numberof = 11 };
+
+
+typedef enum
+{  
+    eobrd_ethtype_ems4              = 32,      
+    eobrd_ethtype_mc4plus           = 33,     
+    eobrd_ethtype_mc2plus           = 34,   
+   
+    eobrd_ethtype_none              = 127, 	
+    eobrd_ethtype_unknown           = 255   
+} eObrd_ethtype_t;
+
+enum { eobrd_ethtype_numberof = 3 };
+
+
+typedef enum
+{
+    eobrd_type_ems4                 = eobrd_ethtype_ems4,       // name is brdEMS4   
+    eobrd_type_mc4plus              = eobrd_ethtype_mc4plus,    // name is brdMC4PLUS     
+    eobrd_type_mc2plus              = eobrd_ethtype_mc2plus,    // name is brdMC2PLUS  
+        
+    eobrd_type_mc4                  = eobrd_cantype_mc4,        // name is brdMC4can
+    eobrd_type_mtb                  = eobrd_cantype_mtb,        // name is brdMTB
+    eobrd_type_strain               = eobrd_cantype_strain,     // name is brdSTRAIN
+    eobrd_type_mais                 = eobrd_cantype_mais,       // name is brdMAIS
+    eobrd_type_foc                  = eobrd_cantype_foc,        // name is brdFOC
+    
+    // not used: ...
+    eobrd_type_dspcan               = eobrd_cantype_dsp,        // name is brdDSPcan
+    eobrd_type_piccan               = eobrd_cantype_pic,        // name is brdPICcan
+    eobrd_type_2dccan               = eobrd_cantype_2dc,        // name is brd2DCcan
+    eobrd_type_bllcan               = eobrd_cantype_bll,        // name is brdBLLcan
+    eobrd_type_6sgcan               = eobrd_cantype_6sg,        // name is brd6SGcan  
+    eobrd_type_jog                  = eobrd_cantype_jog,        // name is brdJOG      
+    
+    eobrd_type_none                 = 127,                      // name is brdNONE 	
+    eobrd_type_unknown              = 255                       // name is brdUNKNOWN
+} eObrd_type_t;
+
+enum { eobrd_type_numberof = 8 };
 
 
 typedef struct                  
@@ -145,8 +191,13 @@ typedef union
 // empty-section
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
 
+
+extern uint8_t eoboards_maxsizeofnames(void);
+
+extern const char * eoboards_type2name(uint8_t boardtype);
+
+extern eObrd_type_t eoboards_name2type(const char * name);
 
 
 
