@@ -60,18 +60,19 @@ extern "C" {
 
 typedef enum
 {
-    eoas_strain                 = 0,
-    eoas_mais                   = 1,
-    eoas_accel_mtb_int          = 2,
-    eoas_accel_mtb_ext          = 3,
-    eoas_gyros_mtb_ext          = 4,
-    eoas_accel_st_lis3x         = 5,
-    eoas_gyros_st_l3g4200d      = 6,
+    eoas_strain                 = 0,    // associated string is: snsrSTRAIN
+    eoas_mais                   = 1,    // associated string is: snsrMAIS
+    eoas_accel_mtb_int          = 2,    // associated string is: snsrAccelMTBint
+    eoas_accel_mtb_ext          = 3,    // associated string is: snsrAccelMTBext
+    eoas_gyros_mtb_ext          = 4,    // associated string is: snsrGyrosMTBext
+    eoas_accel_st_lis3x         = 5,    // associated string is: snsrAccelSTlis3x
+    eoas_gyros_st_l3g4200d      = 6,    // associated string is: snsrGyrosSTl3g4200d
     // add in here eoas_xxxnameetc
-    eoas_unknown                = 254,
-    eoas_none                   = 255
+    eoas_unknown                = 254,  // associated string is: snsrUNKNOWN
+    eoas_none                   = 255   // associated string is: snsrNONE
 } eOas_sensor_t;
 
+enum { eoas_sensors_numberof = 7 };
 
 /** @typedef    typedef enum eOas_entity_t;
     @brief      It contains all the possible entities in analog sensors.
@@ -437,35 +438,16 @@ typedef struct                      // size is: 16+16+8 = 40
 } eOas_inertial_t;                 EO_VERIFYsizeof(eOas_inertial_t, 40);
 
 
-// - others unused possible entities
-
-///** @typedef    typedef struct eOas_aea_t
-//    @brief      eOas_aea_t contains measurements of the absolute encoder which so far is managed only by the ems
-//    @warning    This struct must be of fixed and size and multiple of 4.
-// **/
-//typedef struct                  // size is: 4+0 = 4
-//{
-//    uint32_t                    value;  // used with ... see hal_encoder.h for bitfield formatting
-//} eOas_aea_t;                   //EO_VERIFYsizeof(eOas_aea_t, 4);
-
-
-///** @typedef    typedef struct eOas_forcetorque_t
-//    @brief      eOas_forcetorque_t contains measurements of force on xyz and of torque on 3 components
-// **/
-//typedef struct                  // size is: 4+2*3+2*3+0 = 16
-//{
-//    uint32_t                    identifier;         /**< the identifier of the origin of measure: so far only strain */
-//    eOmeas_force_t              force[3];           /**< the force split in x, y, and z components */
-//    eOmeas_torque_t             torque[3];          /**< the torque split in three components*/
-//} eOas_forcetorque_t;           //EO_VERIFYsizeof(eOas_forcetorque_t, 16);
-
-
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
+
+
+extern const char * eoanalogsensors_sensor2name(eOas_sensor_t sensor);
+
+extern eOas_sensor_t eoanalogsensors_name2sensor(const char * name);
 
 
 
