@@ -284,51 +284,52 @@ typedef enum
 
     eoerror_value_CFG_mais_ok                           = 10,
     eoerror_value_CFG_mais_failed_candiscovery          = 11,
+    eoerror_value_CFG_mais_failed_verify_because_active = 12,
     
     
-    eoerror_value_CFG_mc_foc_ok                         = 12,
-    eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc = 13,
-    eoerror_value_CFG_mc_foc_failed_encoders_verify     = 14,
+    eoerror_value_CFG_mc_foc_ok                         = 13,
+    eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc = 14,
+    eoerror_value_CFG_mc_foc_failed_encoders_verify     = 15,
     
     
-    eoerror_value_CFG_mc_mc4_ok                         = 15,
-    eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4 = 16,
-    eoerror_value_CFG_mc_mc4_failed_mais_verify         = 17,
+    eoerror_value_CFG_mc_mc4_ok                         = 16,
+    eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4 = 17,
+    eoerror_value_CFG_mc_mc4_failed_mais_verify         = 18,
     
-    eoerror_value_CFG_mc_mc4plus_ok                     = 18,
-    eoerror_value_CFG_mc_mc4plus_failed_encoders_verify = 19,    
+    eoerror_value_CFG_mc_mc4plus_ok                     = 19,
+    eoerror_value_CFG_mc_mc4plus_failed_encoders_verify = 20,    
     
-    eoerror_value_CFG_encoders_ok                       = 20,
-    eoerror_value_CFG_encoders_failed_verify            = 21,
+    eoerror_value_CFG_encoders_ok                       = 21,
+    eoerror_value_CFG_encoders_failed_verify            = 22,
 
 
-    eoerror_value_CFG_inertials_ok                      = 22,
-    eoerror_value_CFG_inertials_failed_toomanyboards    = 23,
-    eoerror_value_CFG_inertials_failed_candiscovery     = 24,
+    eoerror_value_CFG_inertials_ok                      = 23,
+    eoerror_value_CFG_inertials_failed_toomanyboards    = 24,
+    eoerror_value_CFG_inertials_failed_candiscovery     = 25,
     
-    eoerror_value_CFG_comm_cannotloadaregularrop        = 25,
+    eoerror_value_CFG_comm_cannotloadaregularrop        = 26,
     
-    eoerror_value_CFG_mc_mc4plusmais_ok                 = 26,
-    eoerror_value_CFG_mc_mc4plusmais_failed_encoders_verify = 27, 
-    eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais = 28,
+    eoerror_value_CFG_mc_mc4plusmais_ok                 = 27,
+    eoerror_value_CFG_mc_mc4plusmais_failed_encoders_verify = 28, 
+    eoerror_value_CFG_mc_mc4plusmais_failed_candiscovery_of_mais = 29,
 
-    eoerror_value_CFG_services_not_verified_yet         = 29,
-    eoerror_value_CFG_mc_not_verified_yet               = 30,
-    eoerror_value_CFG_strain_not_verified_yet           = 31,        
-    eoerror_value_CFG_mais_not_verified_yet             = 32,
-    eoerror_value_CFG_skin_not_verified_yet             = 33,        
-    eoerror_value_CFG_inertials_not_verified_yet        = 34,
-    eoerror_value_CFG_encoders_not_verified_yet         = 35,
+    eoerror_value_CFG_services_not_verified_yet         = 30,
+    eoerror_value_CFG_mc_not_verified_yet               = 31,
+    eoerror_value_CFG_strain_not_verified_yet           = 32,        
+    eoerror_value_CFG_mais_not_verified_yet             = 33,
+    eoerror_value_CFG_skin_not_verified_yet             = 34,        
+    eoerror_value_CFG_inertials_not_verified_yet        = 35,
+    eoerror_value_CFG_encoders_not_verified_yet         = 36,
 
-    eoerror_value_CFG_mc_using_onboard_config           = 36,
-    eoerror_value_CFG_strain_using_onboard_config       = 37,
-    eoerror_value_CFG_mais_using_onboard_config         = 38,
-    eoerror_value_CFG_inertials_using_onboard_config    = 39,
-    eoerror_value_CFG_skin_using_onboard_config         = 40   
+    eoerror_value_CFG_mc_using_onboard_config           = 37,
+    eoerror_value_CFG_strain_using_onboard_config       = 38,
+    eoerror_value_CFG_mais_using_onboard_config         = 39,
+    eoerror_value_CFG_inertials_using_onboard_config    = 40,
+    eoerror_value_CFG_skin_using_onboard_config         = 41   
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 41 };
+enum { eoerror_value_CFG_numberof = 42 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

@@ -235,6 +235,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_strain_failed_candiscovery, "CFG: EOtheSTRAIN cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
     {eoerror_value_CFG_mais_ok, "CFG: EOtheMAIS can be correctly configured. can address in p16, prot and vers in p64 lower 32 bits"},
     {eoerror_value_CFG_mais_failed_candiscovery, "CFG: EOtheMAIS cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_mais_failed_verify_because_active, "CFG: EOtheMAIS cannot be configured. it was already activated with different configuration."}, 
     {eoerror_value_CFG_mc_foc_ok, "CFG: EOtheMotionController can correctly configure 2foc-based motion. more info will follow"},
     {eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc, "CFG: EOtheMotionController cannot be configured. can discovery of 2foc boards fails. see CANdiscovery messages for more details"},
     {eoerror_value_CFG_mc_foc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoders fails. see other messages for more details"},    
