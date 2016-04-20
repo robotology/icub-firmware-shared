@@ -208,7 +208,7 @@ typedef struct
 } eObrd_absolutelocation_t; EO_VERIFYsizeof(eObrd_absolutelocation_t, 8)
 
 
-// it is an extended can location used fo far in .... EOtheCANmapping (actually in here we use eOcanmap_location_t) and in EoManagement (to describe placement of can boards)
+// it is an extended can location used fo far in .... EOtheCANmapping and in EoManagement (to describe placement of can boards)
 
 typedef enum
 {
@@ -218,6 +218,12 @@ typedef enum
 } eObrd_caninsideindex_t;
 
 
+/** @typedef    typedef struct eObrd_canlocation_t
+    @brief      tells the can location of a can board or of an entity (joint or motor or strain etc.) mapped into a can board.
+                the location of the board uses port and addr. the location of an entity of motioncontrol (joint, motor) 
+                uses also insideindex. all other entities dont need insideindex. when insideindex is not used, use value
+                of eobrd_caninsideindex_none for it.
+ **/ 
 typedef struct
 {
     uint8_t port : 1;               /**< use eOcanport_t */
@@ -227,14 +233,16 @@ typedef struct
 } eObrd_canlocation_t;
 
 
-// with this we could remove eOcanmap_board_properties_t from EOtheCANmapping
+/** @typedef    typedef struct eObrd_canproperties_t
+    @brief      tells about properties of a can board or of an entity (joint or motor or strain etc.) mapped into a can board.
+                it contains type of can board, it location, and teh required protocol.
+ **/ 
 typedef struct
 {
     uint8_t                     type;               /**< use eObrd_cantype_t */
     eObrd_canlocation_t         location;           /**< its can location */
-    eObrd_protocolversion_t     requiredprotocol;   /**<  */
+    eObrd_protocolversion_t     requiredprotocol;   /**< its protocol */
 } eObrd_canproperties_t;        EO_VERIFYsizeof(eObrd_canproperties_t, 4); 
-
 
 
     
