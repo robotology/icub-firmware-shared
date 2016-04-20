@@ -152,9 +152,10 @@ typedef struct
 
 typedef enum
 {
-    eobrd_place_can     = 0,    // the place is on can bus, hence it requires a can address with (port, adr)
-    eobrd_place_eth     = 1,    // the place is on the eth board. if more than one of the same type we need an identifier / index
-    eobrd_place_extcan  = 2     // the place is on can bus but we need also an index (as for mc4can board)
+    eobrd_place_none    = 0,    // the place is ... nowhere
+    eobrd_place_can     = 1,    // the place is on can bus, hence it requires a can address with (port, adr)
+    eobrd_place_eth     = 2,    // the place is on the eth board. if more than one of the same type we need an identifier / index
+    eobrd_place_extcan  = 3     // the place is on can bus but we need also an index (as for mc4can board)
 } eObrd_place_t;
 
 
@@ -250,6 +251,10 @@ extern eObool_t eoboards_is_eth(eObrd_type_t type);
 extern eObrd_cantype_t eoboards_type2cantype(eObrd_type_t type);
 
 extern eObrd_ethtype_t eoboards_type2ethtype(eObrd_type_t type);
+
+extern eObrd_type_t eoboards_ethtype2type(eObrd_ethtype_t type);
+
+extern eObrd_type_t eoboards_cantype2type(eObrd_cantype_t type);
 
 extern const char * eoboards_type2string(eObrd_type_t type);
 

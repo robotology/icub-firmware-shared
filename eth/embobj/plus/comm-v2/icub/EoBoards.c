@@ -162,7 +162,15 @@ extern eObrd_ethtype_t eoboards_type2ethtype(eObrd_type_t type)
     return(eobrd_ethtype_unknown);
 }
 
+extern eObrd_type_t eoboards_cantype2type(eObrd_cantype_t type)
+{
+    return((eObrd_type_t)type);
+}
 
+extern eObrd_type_t eoboards_ethtype2type(eObrd_ethtype_t type)
+{
+    return((eObrd_type_t)type);
+}
 
 extern const char * eoboards_type2string(eObrd_type_t type)
 {
