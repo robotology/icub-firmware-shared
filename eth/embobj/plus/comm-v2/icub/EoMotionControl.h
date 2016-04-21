@@ -406,8 +406,9 @@ typedef struct
  **/
 typedef struct  
 {
-    eOmeas_position_t           position;
-    eOmeas_velocity_t           velocity;
+    int32_t                     pwm;
+    int32_t                     delta; 
+    int32_t                     cable_range;    
     int32_t                     offset0;
     int32_t                     offset1;
     int32_t                     calibrationZero;
