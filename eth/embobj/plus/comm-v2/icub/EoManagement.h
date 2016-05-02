@@ -450,50 +450,47 @@ typedef struct                      // size is 8+32 = 40 bytes
 
 // -- the definition of service entity
 
-
+// category is the first division .... then there is the specific type
 typedef enum
 {
-    eomn_serv_caninsideindex_first      = 0,
-    eomn_serv_caninsideindex_second     = 1,
-    eomn_serv_caninsideindex_none       = 2
-} eOmn_serv_caninsideindex_t;
+    eomn_serv_category_mc               = 0,
+    eomn_serv_category_strain           = 1,
+    eomn_serv_category_mais             = 2,
+    eomn_serv_category_inertials        = 3,
+    eomn_serv_category_skin             = 4,
+    eomn_serv_category_all              = 128,
+    eomn_serv_category_unknown          = 254,
+    eomn_serv_category_none             = 255
+} eOmn_serv_category_t;
+
+
+// use eomn_servicetype2string() and eomn_string2servicetype() to convert to / from eOmn_serv_type_t and associated string
+typedef enum 
+{
+    eomn_serv_MC_generic        = 0,        // associated string is: "eomn_serv_MC_generic"
+    eomn_serv_MC_foc            = 1,        // etc ... the string is equal to the enum
+    eomn_serv_MC_mc4            = 2,
+    eomn_serv_MC_mc4plus        = 3,    
+    eomn_serv_MC_mc4plusmais    = 4,    
+    eomn_serv_AS_mais           = 5,
+    eomn_serv_AS_strain         = 6,
+    eomn_serv_AS_inertials      = 7,
+    eomn_serv_SK_skin           = 8,
+    eomn_serv_UNKNOWN           = 254,
+    eomn_serv_NONE              = 255
+} eOmn_serv_type_t;
+
+enum { eomn_serv_types_numberof = 9 };
 
 
 typedef struct
 {
-    uint8_t port : 1;               /**< use eOcanport_t */
-    uint8_t addr : 4;               /**< use 0->14 */ 
-    uint8_t insideindex : 2;        /**< use eOmn_serv_caninsideindex_t*/
-    uint8_t dummy : 1;              /**< unused ... but it could specify board or entity */
-} eOmn_serv_canlocation_t;
-
-typedef struct 
-{
-    uint8_t         major;
-    uint8_t         minor;
-    uint8_t         build;
-} eOmn_canfirmwareversion_t;
-
-typedef struct 
-{
-    uint8_t         major;
-    uint8_t         minor;
-} eOmn_canprotocolversion_t;
-
-typedef struct
-{
-    eOmn_canfirmwareversion_t   firmware;
-    eOmn_canprotocolversion_t   protocol; 
-} eOmn_serv_canboardversion_t;  EO_VERIFYsizeof(eOmn_serv_canboardversion_t, 5);  
-
-typedef struct
-{
-    eOmn_serv_canlocation_t     canloc;
+    eObrd_canlocation_t         canloc;
 } eOmn_serv_mc_actuator_foc_t;
 
 typedef struct
 {
-    eOmn_serv_canlocation_t     canloc;
+    eObrd_canlocation_t         canloc;
 } eOmn_serv_mc_actuator_mc4_t;
 
 typedef struct
@@ -508,8 +505,6 @@ typedef union
     eOmn_serv_mc_actuator_mc4_t mc4;
     eOmn_serv_mc_actuator_pwm_t pwm;
 }  eOmn_serv_mc_actuator_t;    // 1B
-
-
 
 
 typedef enum
@@ -531,122 +526,35 @@ typedef enum
 } eOmn_serv_item_type_t;
 
 
-
-typedef enum 
-{
-    eomn_serv_NONE              = 0,
-    eomn_serv_MC_foc            = 1,
-    eomn_serv_MC_mc4            = 2,
-    eomn_serv_MC_mc4plus        = 3,    // as in the head
-    eomn_serv_MC_mc4plusmais    = 4,    // as in the arm, where we need also a mais
-    eomn_serv_AS_mais           = 5,
-    eomn_serv_AS_strain         = 6,
-    eomn_serv_AS_inertial       = 7,
-    eomn_serv_SK_skin           = 8
-} eOmn_serv_type_t;
-
-
-
 typedef struct
 {   // 5+1=6
-    eOmn_serv_canboardversion_t         version;
-    eOmn_serv_canlocation_t             canloc;
+    eObrd_version_t                     version;
+    eObrd_canlocation_t                 canloc;
 } eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 6);
 
 
 
 typedef struct
 {   // 5+1=6
-    eOmn_serv_canboardversion_t         version;
-    eOmn_serv_canlocation_t             canloc;
+    eObrd_version_t                     version;
+    eObrd_canlocation_t                 canloc;
 } eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 6);
 
-#if 0
-typedef enum
-{
-    eomn_as_strain                          = 1,
-    eomn_as_mais                            = 2,
-    eomn_as_inertial_accel_mtb_int          = 3,
-    eomn_as_inertial_accel_mtb_ext          = 4,
-    eomn_as_inertial_gyros_mtb_ext          = 5,
-    eomn_as_inertial_accel_ems_st_lis3x     = 6,
-    eomn_as_inertial_gyros_ems_st_l3g4200d  = 7,
-    eomn_as_unknown                         = 254,
-    eomn_as_none                            = 255
-} eOmn_analogsensor_t;
-
-typedef enum
-{
-    eomn_inertial_mtb  = 0,
-    eomn_inertial_ems  = 1,   
-} eOmn_inertial_place_t;
 
 typedef struct
-{
-    uint8_t place : 2;       /**< use eOmn_inertial_type_t */    
-    uint8_t dummy : 6;    
-} eOmn_inertial_on_any_t;
+{   // 5+3+100=108 
+    eObrd_version_t                     mtbversion;
+    uint8_t                             filler[3];
+    eOas_inertial_arrayof_sensors_t     arrayofsensors;
+} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108);
 
-typedef struct
-{
-    uint8_t place : 2;       /**< use eOmn_inertial_type_t */    
-    uint8_t port  : 1;       /**< use eOcanport_t */
-    uint8_t addr  : 4;       /**< use 0->14 */   
-    uint8_t ffu   : 1;    
-} eOmn_inertial_on_mbt_t;
-
-typedef struct
-{
-    uint8_t place : 2;       /**< use eOmn_inertial_type_t */    
-    uint8_t id    : 6;       /**< not used for now */   
-} eOmn_inertial_on_ems_t;
 
 typedef union
-{
-    eOmn_inertial_on_any_t      any;
-    eOmn_inertial_on_mbt_t      mtb;
-    eOmn_inertial_on_ems_t      ems;   
-} eOmn_inertial_on_t;
-
-typedef struct
-{
-    eOmn_inertial_on_t      on;
-    uint8_t                 type; // use relevant entry of eOmn_analogsensor_t   
-} eOmn_inertial_t;          EO_VERIFYsizeof(eOmn_inertial_t, 2);
-
-
-enum { eOmn_serv_capacity_arrayof_inertials = 48 };
-typedef struct
-{
-    eOarray_head_t          head;
-    eOmn_inertial_t         data[eOmn_serv_capacity_arrayof_inertials];    
-} eOmn_arrayof_inertials_t; EO_VERIFYsizeof(eOmn_arrayof_inertials_t, 100);
-
-#endif
-
-typedef struct
-{   // 5+1+4+100=10 
-    eOmn_serv_canboardversion_t         version;
-    uint8_t                             filler[1];
-    uint16_t                            canmap[eOcanports_number]; 
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 10);
-
-
-typedef struct
-{   // 5+1+4+100=10 
-    eOmn_serv_canboardversion_t         mtbversion;
-    uint8_t                             filler[1];
-    uint16_t                            canmap[eOcanports_number]; 
-    eOas_inertial2_arrayof_sensors_t    arrayofsensors;
-} eOmn_serv_config_data_as_inertial2_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial2_t, 110);
-
-typedef union
-{   // max(6, 6, 10, 110)
+{   // max(6, 6, 108)
     eOmn_serv_config_data_as_mais_t     mais;
     eOmn_serv_config_data_as_strain_t   strain;
-    eOmn_serv_config_data_as_inertial_t inertial;
-    eOmn_serv_config_data_as_inertial2_t inertial2;    
-} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 110);
+    eOmn_serv_config_data_as_inertial_t inertial;  
+} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 108);
 
 
 
@@ -654,7 +562,7 @@ enum { eomn_serv_skin_maxpatches = 4 };
 
 typedef struct
 {   // 5+1+2+2*4*2=24
-    eOmn_serv_canboardversion_t         version;
+    eObrd_version_t                     version;
     uint8_t                             numofpatches;
     uint8_t                             filler[2];    
     uint16_t                            canmapskin[eomn_serv_skin_maxpatches][eOcanports_number]; 
@@ -760,7 +668,7 @@ typedef struct
 typedef struct
 {   // 1+5+2+24+132=164   
     uint8_t                                 boardtype4mccontroller; 
-    eOmn_serv_canboardversion_t             version;
+    eObrd_version_t                         version;
     uint8_t                                 filler[2];  
     eOmn_serv_arrayof_4jomodescriptors_t    arrayofjomodescriptors;  
     eOmn_4jomo_coupling_t                   jomocoupling;  
@@ -778,9 +686,9 @@ typedef struct
 
 typedef struct
 {   // 5+3+12+6=26
-    eOmn_serv_canboardversion_t             mc4version; 
+    eObrd_version_t                         mc4version; 
     eOmn_serv_config_data_mc_mc4shifts_t    mc4shifts; 
-    eOmn_serv_canlocation_t                 mc4joints[12];    
+    eObrd_canlocation_t                     mc4joints[12];    
     eOmn_serv_config_data_as_mais_t         mais;                    
 } eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 26);
 
@@ -815,7 +723,7 @@ typedef union
 
 
 typedef union                               
-{   // max(110, 164, 24)
+{   // max(108, 164, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
@@ -854,6 +762,12 @@ typedef struct
 //   we use itemdes.item.motion.encoder.[amo, aea, inc] to keep the hal port of the encoder to use
 
 
+// notsupported -> notsupported
+
+// idle         -> (idle, activated)
+// activated    -> (idle, running)
+// running      -> (idle, activated)
+
 typedef enum
 {
     eomn_serv_state_notsupported            = 0,
@@ -866,16 +780,6 @@ typedef enum
     eomn_serv_state_system_in_fatalerror    = 7
 } eOmn_serv_state_t;
 
-typedef enum
-{
-    eomn_serv_category_mc               = 0,
-    eomn_serv_category_strain           = 1,
-    eomn_serv_category_mais             = 2,
-    eomn_serv_category_inertials        = 3,
-    eomn_serv_category_skin             = 4,
-    eomn_serv_category_all              = 254,
-    eomn_serv_category_none             = 255
-} eOmn_serv_category_t;
 
 
 enum { eomn_serv_categories_numberof = 5 };
@@ -892,7 +796,7 @@ typedef enum
     eomn_serv_operation_regsig_load         = 6,    // it loads the into the service all the regular sig rops specified by the array of id32 in parameter.arrayofid32
     eomn_serv_operation_regsig_clear        = 7,    // it clear all the regular sig rops in the service.
     eomn_serv_operation_none                = 255
-} eOmn_service_operation_t;
+} eOmn_serv_operation_t;
 
 
 typedef union
@@ -904,7 +808,7 @@ typedef union
 
 typedef struct                                
 {   // 1+3+168=172
-    uint8_t                                 operation;              // use eOmn_service_operation_t
+    uint8_t                                 operation;              // use eOmn_serv_operation_t
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
     eOmn_serv_parameter_t                   parameter;
@@ -957,7 +861,10 @@ typedef struct
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
+
+extern const char * eomn_servicetype2string(eOmn_serv_type_t service);
+
+extern eOmn_serv_type_t eomn_string2servicetype(const char * string);
 
 
 

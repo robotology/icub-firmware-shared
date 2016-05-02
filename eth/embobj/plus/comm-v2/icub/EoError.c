@@ -124,12 +124,12 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_runner_udptxfailure,     "SYS: the EOMtheEMSrunner could not tx a UDP packet with eom_emssocket_Transmit()."},
     {eoerror_value_SYS_runner_transceivererror, "SYS: the EOMtheEMSrunner could not either parse or form a UDP packet."},
     {eoerror_value_SYS_canservices_rxfifooverflow, "SYS: the HAL could not put a CAN frame in rx fifo. In par16 there is: on msb the rx fifo size, in lsb a code."},
-    {eoerror_value_SYS_canservices_txfifooverflow, "SYS: the EOappCanSP could not add a CAN frame in tx fifo. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data."},
-    {eoerror_value_SYS_canservices_txbusfailure, "SYS: the EOappCanSP could not tx frames on CAN bus. In par16 there is: on msb the size of txfifo, on lsb a code."},
-    {eoerror_value_SYS_canservices_formingfailure, "SYS: the EOappCanSP could not form a can packet. In par16 there is class in msb and cmdid in lsb."},
-    {eoerror_value_SYS_canservices_parsingfailure, "SYS: the EOappCanSP could not parse a rx can frame. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
-    {eoerror_value_SYS_canservices_txfifoputisok, "SYS: the EOappCanSP have just put a can frame in tx fifo. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data."},
-	{eoerror_value_SYS_canservices_genericerror, "SYS: the EOappCanSP has detected a generic error. In par16 there is a code"},
+    {eoerror_value_SYS_canservices_txfifooverflow, "SYS: EOtheCANservice could not add a CAN frame in tx fifo. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data."},
+    {eoerror_value_SYS_canservices_txbusfailure, "SYS: EOtheCANservice could not tx frames on CAN bus. In par16 there is: on msb the size of txfifo, on lsb a code."},
+    {eoerror_value_SYS_canservices_formingfailure, "SYS: EOtheCANservice could not form a can packet. In par16 there is class in msb and cmdid in lsb."},
+    {eoerror_value_SYS_canservices_parsingfailure, "SYS: EOtheCANservice could not parse a rx can frame. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
+    {eoerror_value_SYS_canservices_txfifoputisok, "SYS: EOtheCANservice have just put a can frame in tx fifo. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data."},
+	{eoerror_value_SYS_canservices_genericerror, "SYS: EOtheCANservice has detected a generic error. In par16 there is a code"},
     {eoerror_value_SYS_ctrloop_rxphaseaverage, 	 "SYS: RX phase of the control loop average execution time in usec, monitored for the last 10secs, stored in par16 "},
 	{eoerror_value_SYS_ctrloop_dophaseaverage, 	 "SYS: DO phase of the control loop average execution time in usec, monitored for the last 10secs, stored in par16 "},
 	{eoerror_value_SYS_ctrloop_txphaseaverage, 	 "SYS: TX phase of the control loop average execution time in usec, monitored for the last 10secs, stored in par16 "},
@@ -146,8 +146,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_proxy_reply_fails,        "SYS: the proxy fails to forward a request. in par64 there are the [sign|id32], in par16 [capacity|size] of proxy list. if par16 is 0, then the rop could not be tx."},
     {eoerror_value_SYS_proxy_ropdes_notfound,   "SYS: the proxy fails to find an internally stored rop. maybe forward request was expired. in par64 there are the [0|id32]"},
     {eoerror_value_SYS_canservices_canprint,    "SYS: CAN print message received. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
-    {eoerror_value_SYS_canservices_rxmaisbug,   "SYS: the EOappCanSP received a canframe caused by MAISbug. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
-    {eoerror_value_SYS_canservices_rxfromwrongboard, "SYS: the EOappCanSP received a canframe from a wrong board. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
+    {eoerror_value_SYS_canservices_rxmaisbug,   "SYS: EOtheCANservice received a canframe caused by MAISbug. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
+    {eoerror_value_SYS_canservices_rxfromwrongboard, "SYS: EOtheCANservice received a canframe from a wrong board. The message is stored inside par64. In par16 is stored the size of the message for the single frame"},
     {eoerror_value_SYS_transceiver_rxseqnumber_error, "SYS: the board has detected a hole in rx ropframe sequence number. In par64 there is the expected number. The received is obtained by adding par64 with par16 treated as a int16_t"},    
     {eoerror_value_SYS_canservices_boards_missing, "SYS: the can discovery service detected that some boards are missing. Check with canLoader. In par64 MS 32 bits there is the bit mask of the searched, in LS 32 bits the mask of the found ones."},    
     {eoerror_value_SYS_canservices_boards_searched, "SYS: the can discovery service searched the following boards on the specified CAN bus. In par64 there are the searched addresses represented as nibbles."},    
@@ -223,7 +223,8 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
 const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 {   // very important: fill table with order of eOerror_value_CFG_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: number of boards in 0x000f. In p64: search time [ms] in 0xffff000000000000, board type in 0x0000ff0000000000, req prot in 0x000000ffff000000, req fw in 0x0000000000ffffff."},
+    {eoerror_value_CFG_candiscovery_started, "CFG: CANdiscovery started the search for boards. In p16: can2 map in 0xffff. In p64: can1 map in 0xffff000000000000, board type in 0x0000ff0000000000, req prot in 0x000000ffff000000, req fw in 0x0000000000ffffff. If prot and fw are zero, search on bus is not done"},
+    {eoerror_value_CFG_candiscovery_ok, "CFG: CANdiscovery successful. In p16: fake search in 0xf000, number of boards in 0x00ff. In p64: search time [ms] in 0xffff000000000000, board type in 0x0000ff0000000000, req prot in 0x000000ffff000000, req fw in 0x0000000000ffffff."},
     {eoerror_value_CFG_candiscovery_detectedboard, "CFG: CANdiscovery has detected this board. In p16: board address in 0x000f. In p64: search time [ms] in 0xffff000000000000, board type in 0x0000ff0000000000, prot in 0x000000ffff000000, fw in 0x0000000000ffffff."},       
     {eoerror_value_CFG_candiscovery_boardsmissing, "CFG: CANdiscovery cannot find some boards. In p16: target board type in 0xff00 and number of missing in 0x000f. In p64: search time [ms] in 0xffff000000000000, mask of missing addresses in 0x000000000000ffff"},
     {eoerror_value_CFG_candiscovery_boardsinvalid, "CFG: CANdiscovery detected invalid boards. In p16: target board type in 0xff00 and number of invalid in 0x000f. In p64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"},
@@ -234,6 +235,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_strain_failed_candiscovery, "CFG: EOtheSTRAIN cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
     {eoerror_value_CFG_mais_ok, "CFG: EOtheMAIS can be correctly configured. can address in p16, prot and vers in p64 lower 32 bits"},
     {eoerror_value_CFG_mais_failed_candiscovery, "CFG: EOtheMAIS cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_mais_failed_verify_because_active, "CFG: EOtheMAIS cannot be configured. it was already activated with different configuration."}, 
     {eoerror_value_CFG_mc_foc_ok, "CFG: EOtheMotionController can correctly configure 2foc-based motion. more info will follow"},
     {eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc, "CFG: EOtheMotionController cannot be configured. can discovery of 2foc boards fails. see CANdiscovery messages for more details"},
     {eoerror_value_CFG_mc_foc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoders fails. see other messages for more details"},    
@@ -259,9 +261,15 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mais_not_verified_yet, "CFG: EOtheMAIS service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_skin_not_verified_yet, "CFG: EOtheSKIN service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_inertials_not_verified_yet, "CFG: EOtheInertials service was not verified yet, thus it cannot start."},
-    {eoerror_value_CFG_encoders_not_verified_yet, "CFG: EOtheEncoderReader service was not verified yet, thus it cannot start."}
+    {eoerror_value_CFG_encoders_not_verified_yet, "CFG: EOtheEncoderReader service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_mc_using_onboard_config, "CFG: EOtheMotionController service is using the local default configuration based on its IP address."},
+    {eoerror_value_CFG_strain_using_onboard_config, "CFG: EOtheSTRAIN service is using the local default configuration based on its IP address."},
+    {eoerror_value_CFG_mais_using_onboard_config, "CFG: EOtheMAIS service is using the local default configuration based on its IP address."},
+    {eoerror_value_CFG_inertials_using_onboard_config, "CFG: EOtheInertials service is using the local default configuration based on its IP address."},
+    {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."}
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
+
 
 
 const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =

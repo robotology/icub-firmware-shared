@@ -42,6 +42,7 @@ extern "C" {
 // - external dependencies --------------------------------------------------------------------------------------------
 
 #include "EoCommon.h"
+#include "iCubCanProto_types.h"    
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -52,50 +53,71 @@ extern "C" {
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
-typedef uint8_t eObrd_boardId_t;
 
-
-//typedef enum
-//{
-//    eobrd_mc4                       = 0,
-//    eobrd_cantype_strain                    = 1,
-//    eobrd_cantype_1foc                      = 2,
-//    eobrd_mais                      = 3,
-//    eobrd_ems                       = 4,
-//    eobdr_aea                       = 5,
-//    eobrd_skin                      = 6 	
-//} eObrd_types_t;
-
-// using the same values as in can protocol
+// using the same values as in can protocol (apart from none) 
 typedef enum
-{
-    eobrd_cantype_mc4               = 3,
-    eobrd_cantype_strain            = 6,
-    eobrd_cantype_1foc              = 8,
-    eobrd_cantype_foc               = 8,    // prefer using foc than 1foc
-    eobrd_cantype_mais              = 7,
-    eobrd_cantype_skin              = 5, 
-    eobrd_cantype_mtb               = 5,    // much better using the real name which is mtb
-    eobrd_cantype_none              = 127, 	
-    eobrd_cantype_unknown           = 255 // but better 128 ... 
+{   
+    eobrd_cantype_dsp               = ICUBCANPROTO_BOARDTYPE__DSP,      // 0, not used
+    eobrd_cantype_pic               = ICUBCANPROTO_BOARDTYPE__PIC,      // 2, not used
+    eobrd_cantype_2dc               = ICUBCANPROTO_BOARDTYPE__2DC,      // 2, not used
+    eobrd_cantype_mc4               = ICUBCANPROTO_BOARDTYPE__4DC,      // 3
+    eobrd_cantype_bll               = ICUBCANPROTO_BOARDTYPE__BLL,      // 4, not used
+    eobrd_cantype_mtb               = ICUBCANPROTO_BOARDTYPE__SKIN,     // 5 
+    eobrd_cantype_strain            = ICUBCANPROTO_BOARDTYPE__STRAIN,   // 6
+    eobrd_cantype_mais              = ICUBCANPROTO_BOARDTYPE__MAIS,     // 7
+    eobrd_cantype_foc               = ICUBCANPROTO_BOARDTYPE__2FOC,     // 8   
+    eobrd_cantype_6sg               = ICUBCANPROTO_BOARDTYPE__6SG,      // 9, not used
+    eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used    
+   
+    eobrd_cantype_none              = 254, 	
+    eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 5 };
+enum { eobrd_cantype_numberof = 11 };
 
 
-//typedef struct                  // size is: 1+1+0 = 2
-//{
-//    uint8_t                     major;
-//    uint8_t                     minor;    
-//} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 2);
+typedef enum
+{  
+    eobrd_ethtype_ems4              = 32,      
+    eobrd_ethtype_mc4plus           = 33,     
+    eobrd_ethtype_mc2plus           = 34,   
+   
+    eobrd_ethtype_none              = 254, 	
+    eobrd_ethtype_unknown           = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN 
+} eObrd_ethtype_t;
 
-//typedef struct                  // size is: 1+1+2+2+0 = 6
-//{
-//    eOenum08_t                  boardtype;
-//    uint8_t                     firmwarebuildnumber;
-//    eObrd_version_t             firmwareversion;
-//    eObrd_version_t             protocolversion;   
-//} eObrd_typeandversions_t;      EO_VERIFYsizeof(eObrd_typeandversions_t, 6);
+enum { eobrd_ethtype_numberof = 3 };
+
+
+// use eoboards_is_can() / eoboards_is_eth() to check if the eObrd_type_t belongs also to eObrd_cantype_t / eObrd_ethtype_t group.
+// use eoboards_type2string() / eoboards_string2type() to transform between string and value
+// use eoboards_type2ethtype() / eoboards_type2cantype() when obtain a eObrd_type_t from a string and you need a specific type.
+
+typedef enum
+{
+    eobrd_ems4                  = eobrd_ethtype_ems4,       // associated string is: "eobrd_ems4"
+    eobrd_mc4plus               = eobrd_ethtype_mc4plus,    // etc ... the string is equal to the enum
+    eobrd_mc2plus               = eobrd_ethtype_mc2plus,     
+        
+    eobrd_mc4                   = eobrd_cantype_mc4,        
+    eobrd_mtb                   = eobrd_cantype_mtb,        
+    eobrd_strain                = eobrd_cantype_strain,     
+    eobrd_mais                  = eobrd_cantype_mais,       
+    eobrd_foc                   = eobrd_cantype_foc,        
+    
+    // not used: ...
+    eobrd_dsp                   = eobrd_cantype_dsp,        
+    eobrd_pic                   = eobrd_cantype_pic,        
+    eobrd_2dc                   = eobrd_cantype_2dc,        
+    eobrd_bll                   = eobrd_cantype_bll,       
+    eobrd_6sg                   = eobrd_cantype_6sg,        
+    eobrd_jog                   = eobrd_cantype_jog,           
+    
+    eobrd_none                  = 254,                      
+    eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
+} eObrd_type_t;
+
+enum { eobrd_type_numberof = 14 };
 
 
 typedef struct                  
@@ -122,113 +144,105 @@ typedef struct
 
 
 typedef struct
-{   
-    uint8_t                     fault_undervoltage                  : 1; //pos 00
-    uint8_t                     fault_overvoltage                   : 1; //pos 01
-    uint8_t                     fault_external                      : 1; //pos 02
-    uint8_t                     highcurrent                         : 1; //pos 03 
-    uint8_t                     error_motorhall                     : 1; //pos 04
-    uint8_t                     error_absoluteencodereading         : 1; //pos 05
-    uint8_t                     error_halltable                     : 1; //pos 06
-    uint8_t                     error_hallglitch                    : 1; //pos 07    
-} eObrd_axis_faults_t;          EO_VERIFYsizeof(eObrd_axis_faults_t, 1);
+{
+    eObrd_firmwareversion_t     firmware;
+    eObrd_protocolversion_t     protocol; 
+} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 5);  
+
+
+typedef enum
+{
+    eobrd_place_none    = 0,    // the place is ... nowhere
+    eobrd_place_can     = 1,    // the place is on can bus, hence it requires a can address with (port, adr)
+    eobrd_place_eth     = 2,    // the place is on the eth board. if more than one of the same type we need an identifier / index
+    eobrd_place_extcan  = 3     // the place is on can bus but we need also an index (as for mc4can board)
+} eObrd_place_t;
 
 
 typedef struct
 {
-    eOenum08_t                  controlmode;        // use values of enum eObrd_controlmode_t  
-    eObrd_axis_faults_t         faults;             // use the fields of the struct with 1 or 0.
-} eObrd_axis_status_t;          EO_VERIFYsizeof(eObrd_axis_status_t, 2);
+    uint8_t place : 2;       /**< use eObrd_place_t */    
+    uint8_t dummy : 6;    
+} eObrd_on_any_t;
 
 
 typedef struct
 {
-    uint32_t                    can_txsoftwarebufferoverrun        : 1; //pos 00
-    uint32_t                    can_busoff                         : 1; //pos 01
-    uint32_t                    can_transmittererror               : 1; //pos 02 
-    uint32_t                    can_receivererror                  : 1; //pos 03  
-    uint32_t                    can_transmitterwarning             : 1; //pos 04 
-    uint32_t                    can_receiverwarning                : 1; //pos 05
-    uint32_t                    can_receiverhardwareoverrun        : 1; //pos 06
-    uint32_t                    notusedpos07                       : 1; //pos 07     
-    uint32_t                    brd_mainloopoverflow               : 1; //pos 08
-    uint32_t                    brd_overtemperaturech1             : 1; //pos 09
-    uint32_t                    brd_overtemperaturech2             : 1; //pos 10 
-    uint32_t                    brd_errortemperaturech1            : 1; //pos 11  
-    uint32_t                    brd_errortemperaturech2            : 1; //pos 12 
-    uint32_t                    brd_i2t                            : 1; //pos 13
-    uint32_t                    notusedpos14                       : 1; //pos 14
-    uint32_t                    notusedpos15                       : 1; //pos 15     
-    uint32_t                    alg_initialrotoraligninprog        : 1; //pos 16
-    uint32_t                    alg_initialrotoraligncomplete      : 1; //pos 17
-    uint32_t                    alg_currentrampupinprog            : 1; //pos 18
-    uint32_t                    alg_currentrampdowninprog          : 1; //pos 19 
-    uint32_t                    alg_currentrampupcomplete          : 1; //pos 20  
-    uint32_t                    alg_currentrampdowncomplete        : 1; //pos 21 
-    uint32_t                    notusedfrom22to31                  :10; //pos 22-31
-} eObrd_canboard_mc_info_t;     EO_VERIFYsizeof(eObrd_canboard_mc_info_t, 4);            
+    uint8_t place : 2;       /**< use eObrd_place_t */    
+    uint8_t port  : 1;       /**< use eOcanport_t */
+    uint8_t addr  : 4;       /**< use 0->14 */   
+    uint8_t ffu   : 1;    
+} eObrd_on_can_t;
 
-
-
-typedef struct                      // size is: 4+2+2+2+2+0 = 12
+typedef struct
 {
-    eObrd_canboard_mc_info_t        canboardmcinfo;            // use fields of struct with 0 or 1  
-    eObrd_axis_status_t             axis0;
-    eObrd_axis_status_t             axis1;
-    eObrd_axis_status_t             axis2;
-    eObrd_axis_status_t             axis3;    
-} eObrd_mc4_status_t;               EO_VERIFYsizeof(eObrd_mc4_status_t, 12);
+    uint8_t place : 2;       /**< use eObrd_place_t */    
+    uint8_t port  : 1;       /**< use eOcanport_t */
+    uint8_t addr  : 4;       /**< use 0->14 */   
+    uint8_t index : 1;       // use eobrd_caninsideindex_first or eobrd_caninsideindex_second 
+} eObrd_on_extcan_t;
 
 
-typedef struct                      // size is: 4+2+2+0 = 8
+typedef struct
 {
-    eObrd_canboard_mc_info_t        canboardmcinfo;            // use fields of struct with 0 or 1  
-    eObrd_axis_status_t             axis0;
-    eObrd_axis_status_t             axis1;
-} eObrd_halfmc4_status_t;           EO_VERIFYsizeof(eObrd_halfmc4_status_t, 8);
+    uint8_t place : 2;       /**< use eObrd_place_t */    
+    uint8_t id    : 6;       /**< not used for now */   
+} eObrd_on_eth_t;
 
 
-typedef struct                      // size is: 4+2+2+0 = 8
+// it is a compact location which can specify a can, an extended can (as used by mc can protocol), a simple eth placement 
+typedef union
 {
-    eObrd_canboard_mc_info_t        canboardmcinfo;            // use fields of struct with 0 or 1  
-    eObrd_axis_status_t             axis0;
-    uint8_t                         filler02[2];
-} eObrd_1foc_status_t;              EO_VERIFYsizeof(eObrd_1foc_status_t, 8);
+    eObrd_on_any_t      any;
+    eObrd_on_can_t      can;
+    eObrd_on_extcan_t   extcan;
+    eObrd_on_eth_t      eth;   
+} eObrd_location_t;     EO_VERIFYsizeof(eObrd_location_t, 1)
 
 
-typedef struct                      // size is: 4+4+2+2+0 = 12
+typedef struct
 {
-    eObrd_canboard_mc_info_t        canboardmcinfo0;            // use fields of struct with 0 or 1 
-    eObrd_canboard_mc_info_t        canboardmcinfo1;            // use fields of struct with 0 or 1     
-    eObrd_axis_status_t             axis0;
-    eObrd_axis_status_t             axis1;
-} eObrd_2foc_status_t;              EO_VERIFYsizeof(eObrd_2foc_status_t, 12);
+    eOipv4addr_t            ipv4address;        // it identifies the eth board
+    eObrd_location_t        location;           // it tells where we locate inside the eth board 
+    uint8_t                 ffu[3];
+} eObrd_absolutelocation_t; EO_VERIFYsizeof(eObrd_absolutelocation_t, 8)
 
 
-typedef struct                      // size is: 4+0 = 4
+// it is an extended can location used fo far in .... EOtheCANmapping and in EoManagement (to describe placement of can boards)
+
+typedef enum
 {
-    uint8_t                         tobedefined[4];            // used with ... see hal_encoder.h for bitfield formatting  
-} eObrd_aea_status_t;               //EO_VERIFYsizeof(eObrd_aea_status_t, 4);
+    eobrd_caninsideindex_first          = 0,
+    eobrd_caninsideindex_second         = 1,
+    eobrd_caninsideindex_none           = 2
+} eObrd_caninsideindex_t;
 
 
-typedef struct                          // size is: 8+0 = 8
+/** @typedef    typedef struct eObrd_canlocation_t
+    @brief      tells the can location of a can board or of an entity (joint or motor or strain etc.) mapped into a can board.
+                the location of the board uses port and addr. the location of an entity of motioncontrol (joint, motor) 
+                uses also insideindex. all other entities dont need insideindex. when insideindex is not used, use value
+                of eobrd_caninsideindex_none for it.
+ **/ 
+typedef struct
 {
-    uint8_t                         tobedefined[4];             
-} eObrd_mais_status_t;              //EO_VERIFYsizeof(eObrd_mais_status_t, 4);
+    uint8_t port : 1;               /**< use eOcanport_t */
+    uint8_t addr : 4;               /**< use 0->14 */ 
+    uint8_t insideindex : 2;        /**< use eObrd_caninsideindex_t*/
+    uint8_t dummy : 1;              /**< unused ... but it could specify board or entity */
+} eObrd_canlocation_t;
 
 
-typedef struct                      // size is: 4+0 = 4
+/** @typedef    typedef struct eObrd_canproperties_t
+    @brief      tells about properties of a can board or of an entity (joint or motor or strain etc.) mapped into a can board.
+                it contains type of can board, it location, and teh required protocol.
+ **/ 
+typedef struct
 {
-    uint8_t                         tobedefined[4];    
-} eObrd_strain_status_t;            //EO_VERIFYsizeof(eObrd_strain_status_t, 4);
-
-
-typedef struct                      // size is: 4+0 = 4
-{
-    uint8_t                         tobedefined[4];    
-} eObrd_ems_status_t;               //EO_VERIFYsizeof(eObrd_ems_status_t, 4);
-
-
+    uint8_t                     type;               /**< use eObrd_cantype_t */
+    eObrd_canlocation_t         location;           /**< its can location */
+    eObrd_protocolversion_t     requiredprotocol;   /**< its protocol */
+} eObrd_canproperties_t;        EO_VERIFYsizeof(eObrd_canproperties_t, 4); 
 
 
     
@@ -236,8 +250,23 @@ typedef struct                      // size is: 4+0 = 4
 // empty-section
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
 
+
+extern eObool_t eoboards_is_can(eObrd_type_t type);
+
+extern eObool_t eoboards_is_eth(eObrd_type_t type);
+
+extern eObrd_cantype_t eoboards_type2cantype(eObrd_type_t type);
+
+extern eObrd_ethtype_t eoboards_type2ethtype(eObrd_type_t type);
+
+extern eObrd_type_t eoboards_ethtype2type(eObrd_ethtype_t type);
+
+extern eObrd_type_t eoboards_cantype2type(eObrd_cantype_t type);
+
+extern const char * eoboards_type2string(eObrd_type_t type);
+
+extern eObrd_type_t eoboards_string2type(const char * name);
 
 
 

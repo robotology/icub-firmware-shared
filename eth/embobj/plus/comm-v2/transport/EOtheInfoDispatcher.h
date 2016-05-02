@@ -99,7 +99,7 @@ extern eOresult_t eo_infodispatcher_Put(EOtheInfoDispatcher* p, eOmn_info_proper
 // use  .... if you want try sending them all
 enum { eoinfodispatcher_sendnumber_all = EOK_uint16dummy };
 
-extern eOresult_t eo_infodispatcher_Send(EOtheInfoDispatcher* p, uint16_t number, uint16_t* numberofsent);
+extern eOresult_t eo_infodispatcher_Send(EOtheInfoDispatcher* p, uint16_t number, uint16_t* numberofsent, uint16_t* numberofremaining);
 
 
 
