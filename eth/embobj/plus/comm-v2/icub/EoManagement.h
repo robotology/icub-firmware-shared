@@ -776,7 +776,7 @@ typedef enum
     eomn_serv_state_verified                = 3,
     eomn_serv_state_activated               = 4,
     eomn_serv_state_failureofverify         = 5, 
-    eomn_serv_state_running                 = 6,
+    eomn_serv_state_started                 = 6,
     eomn_serv_state_system_in_fatalerror    = 7
 } eOmn_serv_state_t;
 
