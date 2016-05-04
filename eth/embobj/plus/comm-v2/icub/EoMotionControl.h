@@ -212,6 +212,7 @@ typedef enum
     eomc_calibration_type9_tripod_external_hard_stop= 9,    // cannot change
     eomc_calibration_type10_abs_hard_stop           = 10,   // cannot change 
     eomc_calibration_type11_cer_hands               = 11,   // cannot change 
+    eomc_calibration_typeMixed                      = 254,  // cannot change 
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
@@ -619,7 +620,12 @@ typedef uint8_t  eOmc_torqueControlFilterType_t;
 typedef enum 
 {
     eomc_encoder_NONE           = 0,
-    eomc_encoder_AEA            = 1
+    eomc_encoder_AEA            = 1,
+    eomc_encoder_ROIE           = 2,
+    eomc_encoder_HALL_ADC       = 3,
+    eomc_encoder_MAIS           = 4,
+    eomc_encoder_OPTICAL_QUAD   = 5,
+    eomc_encoder_HALL_MOTOR_SENS= 6
     // etc
 } eOmc_EncoderType_t;
 
