@@ -159,6 +159,9 @@ extern "C" {
 #define EOK_Q17_14_NEG_BIGGEST          ((eOq17_14_t)0x80000000)
 #define EOK_FLOATQ17_14_NEG_BIGGEST     (-131072.0f)
 
+#define EOK_CLIP_INT32(floatnum)             ( ((floatnum)>INT32_MAX) ? (INT32_MAX) : ( ((floatnum)<(-INT32_MAX)) ? (-INT32_MAX) : (floatnum) )  )
+#define EOK_CLIP_INT16(floatnum)             ( ((floatnum)>INT16_MAX) ? (INT16_MAX) : ( ((floatnum)<(-INT16_MAX)) ? (-INT16_MAX) : (floatnum) )  )
+
 
 // - declaration of public user-defined types -------------------------------------------------------------------------
 
