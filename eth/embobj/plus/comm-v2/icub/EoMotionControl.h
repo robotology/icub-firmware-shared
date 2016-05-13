@@ -731,7 +731,7 @@ typedef struct
 /** @typedef    typedef uinion eOmc_joint_status_ofpid_t
     @brief      eOmc_joint_status_ofpid_t contains the status of a PID.
  **/
-typedef union                  // size is: 4+4+4+0 = 16
+typedef union                  // size is: 20
 {   
     eOmc_status_ofpid_legacy_t      legacy;
     eOmc_status_ofpid_generic_t     generic;
@@ -755,7 +755,7 @@ typedef struct                  // size is 4 = 4
 /** @typedef    typedef struct eOmc_joint_status_measures_t
     @brief      eOmc_joint_status_measures_t contains the measures of a joint
  **/
-typedef struct                  // size is: 4+4+4+2+2+0 = 16
+typedef struct                  // size is: 4+4+4+4 = 16
 {   
     eOmeas_position_t           meas_position;               /**< the position of the joint */           
     eOmeas_velocity_t           meas_velocity;               /**< the velocity of the joint */          
@@ -767,7 +767,7 @@ typedef struct                  // size is: 4+4+4+2+2+0 = 16
 /** @typedef    typedef struct eOmc_joint_status_modes_t
     @brief      eOmc_joint_status_modes_t contains the status modes of a joint
  **/
-typedef struct
+typedef struct                  //size is 1+1+1+1 = 4
 {
     eOenum08_t                  controlmodestatus;          /**< use eOmc_controlmode_t. */
     eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
@@ -801,14 +801,27 @@ typedef struct                  // size is:  4+4+4+4+4+4 = 24
 } eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 24); 
 
 
+enum{ eOmc_joint_multienc_maxnum = 3};
+//typedef struct              //size is 4*3 = 12
+//{
+//    eOmeas_position_t   listofenc[eOmc_joint_multiEnc_maxnum];
+//} eOmc_joint_multipleEncoders_t;
+
+typedef struct              //size is = 12
+{
+    //eOmc_joint_multipleEncoders_t multienc;
+    eOmeas_position_t   multienc[eOmc_joint_multienc_maxnum];
+} eOmc_joint_status_additionalInfo_t;
+
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint
  **/
-typedef struct                  // size is:  16+24+4 = 44
+typedef struct                  // size is:  40+24+12 = 44
 {
-    eOmc_joint_status_core_t    core;
-    eOmc_joint_status_target_t  target;
-} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 64); 
+    eOmc_joint_status_core_t            core;
+    eOmc_joint_status_target_t          target;
+    eOmc_joint_status_additionalInfo_t  addinfo;
+} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 76); 
 
 
 
@@ -835,7 +848,7 @@ typedef struct                  // size is 168+40+4+44+0 = 256
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 280);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 292);
 
 
 

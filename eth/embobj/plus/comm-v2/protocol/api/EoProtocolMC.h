@@ -84,16 +84,17 @@ typedef enum
     eoprot_tag_mc_joint_status_core_modes_controlmodestatus         = 12,
     eoprot_tag_mc_joint_status_core_modes_interactionmodestatus     = 13,
     eoprot_tag_mc_joint_status_core_modes_ismotiondone              = 14,
-    eoprot_tag_mc_joint_inputs                                      = 15,
-    eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 16,
-    eoprot_tag_mc_joint_cmmnds_calibration                          = 17,
-    eoprot_tag_mc_joint_cmmnds_setpoint                             = 18,
-    eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 19,
-    eoprot_tag_mc_joint_cmmnds_controlmode                          = 20,
-    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 21
+    eoprot_tag_mc_joint_status_addinfo_multienc                     = 15,
+    eoprot_tag_mc_joint_inputs                                      = 16,
+    eoprot_tag_mc_joint_inputs_externallymeasuredtorque             = 17,
+    eoprot_tag_mc_joint_cmmnds_calibration                          = 18,
+    eoprot_tag_mc_joint_cmmnds_setpoint                             = 19,
+    eoprot_tag_mc_joint_cmmnds_stoptrajectory                       = 20,
+    eoprot_tag_mc_joint_cmmnds_controlmode                          = 21,
+    eoprot_tag_mc_joint_cmmnds_interactionmode                      = 22
 } eOprot_tag_mc_joint_t;
 
-enum { eoprot_tags_mc_joint_numberof = 22 };  // it MUST be equal to the number of tags
+enum { eoprot_tags_mc_joint_numberof = 23 };  // it MUST be equal to the number of tags
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_joint_t
@@ -118,6 +119,7 @@ typedef enum
     eoprot_rwm_mc_joint_status_core_modes_controlmodestatus         = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_core_modes_interactionmodestatus     = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_status_core_modes_ismotiondone              = eo_nv_rwmode_RO,
+    eoprot_rwm_mc_joint_status_addinfo_multienc                     = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_inputs                                      = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_inputs_externallymeasuredtorque             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_cmmnds_calibration                          = eo_nv_rwmode_RW,
@@ -127,7 +129,7 @@ typedef enum
     eoprot_rwm_mc_joint_cmmnds_interactionmode                      = eo_nv_rwmode_RW
 } eOprot_rwm_mc_joint_t;    
 
-enum { eoprot_rwms_mc_joint_numberof = 22 };  // it MUST be equal to the number of rw modes  
+enum { eoprot_rwms_mc_joint_numberof = 23 };  // it MUST be equal to the number of rw modes  
 
 
 // - definition of the motor
@@ -290,7 +292,8 @@ extern void eoprot_fun_UPDT_mc_joint_status_core_modes_interactionmodestatus(con
 extern void eoprot_fun_INIT_mc_joint_status_core_modes_ismotiondone(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_status_core_modes_ismotiondone(const EOnv* nv, const eOropdescriptor_t* rd);
 
-   
+extern void eoprot_fun_INIT_mc_joint_status_addinfo_multienc(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_status_addinfo_multienc(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_joint_inputs(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_inputs(const EOnv* nv, const eOropdescriptor_t* rd);
