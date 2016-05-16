@@ -155,6 +155,7 @@ static EOtheErrorManager s_errman_singleton =
     },
     EO_INIT(.errorstrings)
     {
+        "TRACE",
         "INFO", 
         "DEBUG", 
         "WARNING", 
@@ -291,7 +292,7 @@ extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char
 }
 
 
-extern void eo_errman_Trace(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr) 
+extern void eo_errman_Trace(EOtheErrorManager *p, const char *info, const char *eobjstr) 
 {
 #ifndef EODEF_DONT_USE_THE_ERRORMAN
     EOVtaskDerived *task = NULL;
@@ -314,7 +315,7 @@ extern void eo_errman_Trace(EOtheErrorManager *p, eOerrmanErrorType_t errtype, c
     
     
 
-    s_eo_errman_OnError(errtype, info, &caller, NULL);
+    s_eo_errman_OnError(eo_errortype_trace, info, &caller, NULL);
 #else
     ;
 #endif

@@ -65,14 +65,15 @@ typedef struct EOtheErrorManager_hid EOtheErrorManager;
  **/  
 typedef enum  
 {
-    eo_errortype_info    = 0,       /**< used to communicate some innocent situation */
-    eo_errortype_debug   = 1,       /**< used to communicate debugging situation */
-    eo_errortype_warning = 2,       /**< used to communicate some strange situation */
-    eo_errortype_error   = 3,       /**< used to communicate an error */
-    eo_errortype_fatal   = 4        /**< used to communicate a fatal error which requires stopping the system */
+    eo_errortype_trace   = 0,       /**< used to print info only on the trace port of the board */
+    eo_errortype_info    = 1,       /**< used to communicate some innocent situation */
+    eo_errortype_debug   = 2,       /**< used to communicate debugging situation */
+    eo_errortype_warning = 3,       /**< used to communicate some strange situation */
+    eo_errortype_error   = 4,       /**< used to communicate an error */
+    eo_errortype_fatal   = 5        /**< used to communicate a fatal error which requires stopping the system */
 } eOerrmanErrorType_t;
 
-enum { eo_errortype_numberof = 5 };
+enum { eo_errortype_numberof = 6 };
 
 
 /** @typedef    typedef struct eOerrmanCaller_t
@@ -277,7 +278,7 @@ extern void eo_errman_Debug(EOtheErrorManager *p, const char *info, const char *
 extern void eo_errman_Warning(EOtheErrorManager *p, const char *info, const char *eobjstr, const eOerrmanDescriptor_t *des);
 
 
-extern void eo_errman_Trace(EOtheErrorManager *p, eOerrmanErrorType_t errtype, const char *info, const char *eobjstr);
+extern void eo_errman_Trace(EOtheErrorManager *p, const char *info, const char *eobjstr);
 
 /** @}            
     end of group eo_theerrormanager  
