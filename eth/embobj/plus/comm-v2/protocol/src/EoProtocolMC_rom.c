@@ -338,7 +338,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_addinfo_mu
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.addinfo.multienc),
     EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_addinfo_multienc,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.addinfo.multienc,
+    EO_INIT(.resetval)  (const void*)eoprot_mc_rom_joint_defaultvalue.status.addinfo.multienc,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL

@@ -811,7 +811,7 @@ typedef struct              //size is = 12
 {
     //eOmc_joint_multipleEncoders_t multienc;
     eOmeas_position_t   multienc[eOmc_joint_multienc_maxnum];
-} eOmc_joint_status_additionalInfo_t;
+} eOmc_joint_status_additionalInfo_t;  EO_VERIFYsizeof(eOmc_joint_status_additionalInfo_t, 12); 
 
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint
