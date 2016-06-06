@@ -509,6 +509,76 @@ extern void eo_common_ipv4addr_to_decimal(eOipv4addr_t ipv4, uint8_t *ip1, uint8
     }       
 }
 
+static const char * months[16] = {"ERR", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "ERR", "ERR", "ERR"}; 
+    
+extern void eo_common_date_to_string(eOdate_t date, char *str, uint8_t size)
+{
+    if(NULL != str)
+    {
+        snprintf(str, size, "%d %s %.2d %d:%d", date.year, months[date.month], date.day, date.hour, date.min);
+    }
+}
+
+
+//extern eObool_t eo_common_string_to_date(const char *str, uint8_t size, eOdate_t *date)
+//{
+//    eObool_t ret = eobool_false;
+//    if(NULL != str)
+//    {
+//        int year = 0;
+//        char mon[4] = {0};
+//        int day = 0;
+//        int hour = 0;
+//        int min = 0;
+//        sscanf(str, "%d %s %d %d:%d", &year, mon, &day, &hour, &min);
+//        
+//        if(year > 2047)
+//        {
+//            return(eobool_false);
+//        }
+//        
+//        uint8_t index = 0;
+//        for(uint8_t i=1; i<13; i++)
+//        {
+//            if(0 == strcmp(mon, months[i]))
+//            {
+//                index = i;
+//                break;
+//            }
+//        }
+//        if(0 == index)
+//        {
+//            return(eobool_false);
+//        }
+//        
+//        if((0 == day) || (day > 31))
+//        {
+//            return(eobool_false);
+//        } 
+//        
+//        if((hour > 24))
+//        {
+//            return(eobool_false);
+//        }   
+
+//        if((min > 60))
+//        {
+//            return(eobool_false);
+//        } 
+
+//       
+//        date->year = year;
+//        date->month = index;
+//        date->day = day;
+//        date->hour = hour;
+//        date->min = min;        
+//        
+//        ret = eobool_true;
+//    }
+//    
+//    return(ret);
+//}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

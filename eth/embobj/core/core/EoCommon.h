@@ -455,7 +455,7 @@ typedef struct
 } eO32flags_t; 
 
 
-/** @typedef    typedef enum  eOutil_canport_t
+/** @typedef    typedef enum  eOcanport_t
     @brief      eOcanport_t contains a can port as defined in hal_can.h. 
  **/
 typedef enum              
@@ -599,6 +599,19 @@ extern const eOipv4addr_t   eok_ipv4addr_localhost;
 enum { eo_sizecntnr_dynamic = EOK_uint16dummy };
 
 
+/** @typedef    typedef struct eOdate_t
+    @brief      eOdate_t contains a date. 
+ **/
+typedef struct              
+{
+    uint32_t            year  : 12;    /**< the year a.d. upto 2047 */
+    uint32_t            month : 4;     /**< the month, where Jan is 1, Dec is 12 */
+    uint32_t            day   : 5;     /**< the day from 1 to 31 */
+    uint32_t            hour  : 5;     /**< the hour from 0 to 23 */
+    uint32_t            min   : 6;     /**< the minute from 0 to 59 */
+} eOdate_t;    
+
+
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
@@ -684,6 +697,10 @@ extern uint64_t eo_common_canframe_data2u64(eOcanframe_t *frame);
 extern void eo_common_ipv4addr_to_string(eOipv4addr_t ipv4, char *str, uint8_t size);
 
 extern void eo_common_ipv4addr_to_decimal(eOipv4addr_t ipv4, uint8_t *ip1, uint8_t *ip2, uint8_t *ip3, uint8_t *ip4);
+
+extern void eo_common_date_to_string(eOdate_t date, char *str, uint8_t size);
+
+//extern eObool_t eo_common_string_to_date(const char *str, uint8_t size, eOdate_t *date);
 
 
 // - definition of extern public macros ------------------------------------------------------------------------------
