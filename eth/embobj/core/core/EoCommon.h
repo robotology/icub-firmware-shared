@@ -95,6 +95,8 @@ extern "C" {
 
 #define EO_CLIP_INT32(i32)                  ( ((i32)>INT32_MAX) ? (INT32_MAX) : ( ((i32)<(-INT32_MAX)) ? (-INT32_MAX) : (i32) )  )
 #define EO_CLIP_INT16(i16)                  ( ((i16)>INT16_MAX) ? (INT16_MAX) : ( ((i16)<(-INT16_MAX)) ? (-INT16_MAX) : (i16) )  )
+#define EO_CLIP_UINT16(u16)                 ( ((u16)>UINT16_MAX) ? (UINT16_MAX) : (u16) )
+
 
 
 // issues a compiler error if the sizeof the struct is not what in second argument
