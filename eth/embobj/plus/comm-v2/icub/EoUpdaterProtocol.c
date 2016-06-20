@@ -362,6 +362,30 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
     return(yeswecan);
 }
 
+extern uint8_t eouprot_process2index(eOuprot_process_t process)
+{
+    uint8_t ret = 255;
+    
+    switch(process)
+    {
+        case eLoader: 
+        {            
+            ret = 0; 
+        } break;
+        case eUpdater:   
+        {            
+            ret = 1; 
+        } break;
+        case eApplication:    
+        case eApplPROGupdater:
+        {
+            ret = 2; 
+        } break;
+    }
+    
+    return ret;
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

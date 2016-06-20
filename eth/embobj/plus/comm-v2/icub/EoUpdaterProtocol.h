@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2016 iCub Facility - Istituto Italiano di Tecnologia
  * Author:  Marco Accame
@@ -190,7 +191,7 @@ typedef struct
     uint8_t             numberofthem;       // number of processes. it typically is 3, but it can be 2 if the eApplication is not available   
     uint8_t             startup;            // it is the process launched by the eLoader at bootstrap. it typically is the eUpdater but it may be the eApplication
     uint8_t             def2run;            // it is the process launched after the 5 second safe time is terminated
-    uint8_t             runningnow;         // it is the process which is running at the time of processing teh reply. it may be eUpdater or eApplication 
+    uint8_t             runningnow;         // it is the process which is running at the time of processing teh reply. it may be eUpdater or eApplication or eApplPROGupdater
     eOuprot_procinfo_t  info[3];
 } eOuprot_proctable_t;  EO_VERIFYsizeof(eOuprot_proctable_t, 40)
 
@@ -292,7 +293,7 @@ typedef struct
     uint8_t             boardtype;      // use a eObrd_type_t value ... which of course it must be of eth type
     uint8_t             unused[1];      // it must be {EOUPROT_VALUE_OF_UNUSED_BYTE}
     uint8_t             mac48[6];       // it is ordered so that positions 0, 1, 2 hold the OUI (Organizationally Unique Identifier), whereas positions 3, 4, 5 hold a value unique for the ETH boards.
-    uint32_t            capabilities;   // for now it only contains the 3 bits field canPROGpartition, which tells what of the three partitions the running process can program.
+    uint32_t            capabilities;   // it contains a mask of eOuprot_proc_capabilities_t which tells what the remote board can do.
     eOuprot_proctable_t processes;
     uint8_t             boardinfo32[32];// where: boardinfo32[0] = strlen(&boardinfo32[1]) but if boardinfo32[0] is 255 then it means that it is not used
 } eOuprot_cmd_DISCOVER_REPLY_t; EO_VERIFYsizeof(eOuprot_cmd_DISCOVER_REPLY_t, 88)
@@ -571,6 +572,8 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
 
 extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t protocolversion, eOuprot_opcodes_t opcode, uint32_t param);
 
+extern uint8_t eouprot_process2index(eOuprot_process_t process);
+
 
 /** @}            
     end of group eo_cevcwervcrev666  
@@ -584,7 +587,6 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
 
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
-
 
 
 
