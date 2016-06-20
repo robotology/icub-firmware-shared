@@ -88,7 +88,7 @@ extern "C" {
 
 #define EOK_VER_MAJ                         (0x01)
 #define EOK_VER_MIN                         (0x00)
-#define EOK_VER_REL                         (0x0000)
+
 
 #define EO_MIN(a, b)                        (((a)<(b))?(a):(b))
 #define EO_MAX(a, b)                        (((a)>(b))?(a):(b))
@@ -118,7 +118,7 @@ extern "C" {
 #define EO_8BtoU64(a, b, c, d, e, f, g, h)  (((uint64_t)EO_4BtoU32(a, b, c, d))|((uint64_t)EO_4BtoU32(e, f, g, h)<<32))
 
 
-#define EOK_U32VERSION                      ((EO_U8toU32(EOK_VER_MAJ))|((EO_U8toU32(EOK_VER_MIN)<<8))|((EO_U16toU32(EOK_VER_REL))<<16))
+#define EOK_U32VERSION                      ((EO_U8toU32(EOK_VER_MAJ))|((EO_U8toU32(EOK_VER_MIN)<<8)))
 
 #define EOK_uint04dummy                     (0xf)
 #define EOK_uint08dummy                     (0xff)
@@ -236,7 +236,6 @@ typedef struct
 {
     uint8_t     major;                  /**< the major number */
     uint8_t     minor;                  /**< the minor number */
-    uint16_t    release;                /**< the release */
 } eOversion_t;
 
 
@@ -573,8 +572,8 @@ typedef int32_t eOq17_14_t;
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOversion_t    eok_version;            /**< = major, minor, release */
-extern const uint32_t       eok_u32version;         /**< = LSB->MSB: major (1B), minor (1B), release (2B), w/ same layout as eok_version */
+extern const eOversion_t    eok_version;            /**< = major, minor */
+extern const uint32_t       eok_u32version;         /**< = LSB->MSB: major (1B), minor (1B) w/ same layout as eok_version */
 
 extern const uint8_t        eok_uint04dummy;        /**< = EOK_uint04dummy = 0xf;                   // dummy for a nibble */
 extern const uint8_t        eok_uint08dummy;        /**< = EOK_uint08dummy = 0xff;                  // dummy for a uint8_t */
@@ -700,7 +699,9 @@ extern void eo_common_ipv4addr_to_decimal(eOipv4addr_t ipv4, uint8_t *ip1, uint8
 
 extern void eo_common_date_to_string(eOdate_t date, char *str, uint8_t size);
 
-//extern eObool_t eo_common_string_to_date(const char *str, uint8_t size, eOdate_t *date);
+extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date);
+
+extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *date);
 
 
 // - definition of extern public macros ------------------------------------------------------------------------------
