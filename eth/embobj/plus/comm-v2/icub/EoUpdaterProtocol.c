@@ -201,7 +201,8 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
                 uprot_canDO_LEGACY_scan |
                 uprot_canDO_LEGACY_IPaddr_set |
                 uprot_canDO_LEGACY_procs |
-                uprot_canDO_blink
+                uprot_canDO_blink |
+                uprot_canDO_PAGE_get
             )
         }    
     };
@@ -307,7 +308,7 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
 
         case uprot_OPC_EEPROM_ERASE:
         {
-            targetcapability = uprot_canDO_nothing;
+            targetcapability = uprot_canDO_EEPROM_erase;
         } break;
 
         case uprot_OPC_EEPROM_READ:
