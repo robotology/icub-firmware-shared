@@ -574,6 +574,8 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
 
 extern uint8_t eouprot_process2index(eOuprot_process_t process);
 
+extern eOuprot_process_t eouprot_raw2process(uint8_t rawvalue);
+
 
 /** @}            
     end of group eo_cevcwervcrev666  

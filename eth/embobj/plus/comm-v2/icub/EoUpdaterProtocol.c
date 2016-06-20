@@ -362,6 +362,7 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
     return(yeswecan);
 }
 
+
 extern uint8_t eouprot_process2index(eOuprot_process_t process)
 {
     uint8_t ret = 255;
@@ -381,6 +382,23 @@ extern uint8_t eouprot_process2index(eOuprot_process_t process)
         {
             ret = 2; 
         } break;
+        default:
+        {
+            ret = 255;
+        } break;
+    }
+    
+    return ret;
+}
+
+
+extern eOuprot_process_t eouprot_raw2process(uint8_t rawvalue)
+{
+    eOuprot_process_t ret = uprot_proc_None;
+    
+    if(rawvalue < uprot_proc_numberofthem)
+    {
+        ret = (eOuprot_process_t) rawvalue;
     }
     
     return ret;
