@@ -889,7 +889,9 @@ typedef struct                  // size is: 40+4+4+4+6+2+ 1+1+1+1+1+1 +2 + 8 +2+
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
-    uint8_t                         filler02[2];
+    eObool_t                        hasSpeedEncoder;            /**< true if there is a speed encoder not useful for motor internal control */
+    uint8_t                         filler01[1];
+    //uint8_t                         filler02[2];
 } eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 80);
 
 
