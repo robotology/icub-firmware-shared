@@ -537,7 +537,8 @@ extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date)
         }
         
         uint8_t index = 0;
-        for(uint8_t i=1; i<13; i++)
+        uint8_t i=0;
+        for(i=1; i<13; i++)
         {
             if(0 == strcmp(mon, months[i]))
             {
@@ -599,7 +600,8 @@ extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *dat
         }
         
         uint8_t index = 0;
-        for(uint8_t i=1; i<13; i++)
+        uint8_t i = 0;
+        for(i=1; i<13; i++)
         {
             if(0 == strcmp(mon, months[i]))
             {
