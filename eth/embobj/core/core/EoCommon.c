@@ -252,7 +252,7 @@ extern void eo_common_word_bittoggle(uint32_t* word, uint8_t bit)
 
 extern eObool_t eo_common_dword_bitcheck(uint64_t dword, uint8_t bit)
 {
-    if(dword & (1<<bit))
+    if(dword & ((uint64_t)1<<bit))
     {
         return(eobool_true);
     }
@@ -265,17 +265,17 @@ extern eObool_t eo_common_dword_bitcheck(uint64_t dword, uint8_t bit)
 
 extern void eo_common_dword_bitset(uint64_t* dword, uint8_t bit)
 {
-    (*dword) |= (1<<bit);    
+    (*dword) |= ((uint64_t)1<<bit);    
 }
 
 extern void eo_common_dword_bitclear(uint64_t* dword, uint8_t bit)
 {
-    (*dword) &= (~(1<<bit));    
+    (*dword) &= (~((uint64_t)1<<bit));    
 }
 
 extern void eo_common_dword_bittoggle(uint64_t* dword, uint8_t bit)
 {
-    (*dword) ^= (1<<bit);    
+    (*dword) ^= ((uint64_t)1<<bit);    
 }
 
 // see http://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
@@ -522,6 +522,8 @@ extern void eo_common_date_to_string(eOdate_t date, char *str, uint8_t size)
 extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date)
 {
     eObool_t ret = eobool_false;
+    uint8_t index;
+    uint8_t i;
     if(NULL != str)
     {
         int year = 0;
@@ -536,8 +538,8 @@ extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date)
             return(eobool_false);
         }
         
-        uint8_t index = 0;
-        uint8_t i=0;
+        index = 0;
+        i=0;
         for(i=1; i<13; i++)
         {
             if(0 == strcmp(mon, months[i]))
@@ -583,6 +585,9 @@ extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date)
 extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *date)
 {
     eObool_t ret = eobool_false;
+    uint8_t index = 0;
+    uint8_t i = 0;
+
     if(NULL != str)
     {
         int year = 0;
@@ -599,8 +604,6 @@ extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *dat
             return(eobool_false);
         }
         
-        uint8_t index = 0;
-        uint8_t i = 0;
         for(i=1; i<13; i++)
         {
             if(0 == strcmp(mon, months[i]))

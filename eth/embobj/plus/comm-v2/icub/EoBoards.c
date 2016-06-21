@@ -195,12 +195,11 @@ extern const char * eoboards_type2string(eObrd_type_t type)
 
 extern eObrd_type_t eoboards_string2type(const char * name)
 {    
+    uint8_t i = 0;
     if(NULL == name)
     {
         return(eobrd_unknown);
     }
-    
-    uint8_t i = 0;
     
     for(i=0; i<eobrd_cantype_numberof; i++)
     {
