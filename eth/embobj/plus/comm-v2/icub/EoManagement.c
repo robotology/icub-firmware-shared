@@ -140,7 +140,34 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
 }
 
 
+extern eOmn_serv_mc_sensor_nuomofcomponents_t eomn_mc_sensor_getnumofcomponets(eOmn_serv_mc_sensor_type_t type)
+{
 
+    switch(type)
+    {
+        case eomn_serv_mc_sensor_none:
+        case eomn_serv_mc_sensor_maxvalidvalue:
+            return eomn_serv_mc_sensor_nuomofcomp_zero;
+        
+        
+        case eomn_serv_mc_sensor_encoder_aea:
+        case eomn_serv_mc_sensor_encoder_amo:
+        case eomn_serv_mc_sensor_encoder_inc: 
+        case eomn_serv_mc_sensor_encoder_absanalog:
+        case eomn_serv_mc_sensor_mais:    
+        case eomn_serv_mc_sensor_encoder_onfoc:
+            return eomn_serv_mc_sensor_nuomofcomp_one;
+    
+        case eomn_serv_mc_sensor_encoder_spichainof2:
+            return eomn_serv_mc_sensor_nuomofcomp_two;
+  
+        case eomn_serv_mc_sensor_encoder_spichainof3:
+            return eomn_serv_mc_sensor_nuomofcomp_three;
+
+        default:
+            return eomn_serv_mc_sensor_nuomofcomp_zero;
+    } 
+}
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------

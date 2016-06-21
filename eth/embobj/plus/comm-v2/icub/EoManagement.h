@@ -590,6 +590,17 @@ typedef enum
     eomn_serv_mc_sensor_maxvalidvalue       = 255 
 } eOmn_serv_mc_sensor_type_t;
 
+
+typedef enum
+{   // values can be from 1 to 255. 0 is none
+    eomn_serv_mc_sensor_nuomofcomp_zero     = eomn_serv_item_none,
+    eomn_serv_mc_sensor_nuomofcomp_one      = 1,
+    eomn_serv_mc_sensor_nuomofcomp_two      = 2,
+    eomn_serv_mc_sensor_nuomofcomp_three    = 3,
+    eomn_serv_mc_sensor_nuomofcomp_max      = eomn_serv_mc_sensor_nuomofcomp_three
+} eOmn_serv_mc_sensor_nuomofcomponents_t;
+
+
 //#warning TODO: split eOmn_serv_mc_port_t into eOmn_serv_mc_sensor_port_t and eOmn_serv_mc_actuator_port_t. uniform 0 as the _none (and use port-1 in hal_) ...
 
 typedef enum
@@ -866,7 +877,7 @@ extern const char * eomn_servicetype2string(eOmn_serv_type_t service);
 
 extern eOmn_serv_type_t eomn_string2servicetype(const char * string);
 
-
+extern eOmn_serv_mc_sensor_nuomofcomponents_t eomn_mc_sensor_getnumofcomponets(eOmn_serv_mc_sensor_type_t type);
 
 
 /** @}            
