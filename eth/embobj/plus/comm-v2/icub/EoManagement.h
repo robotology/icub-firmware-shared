@@ -668,9 +668,19 @@ typedef struct
 
 typedef eOq17_14_t eOmn_4x4_matrix_t[4][4];
 
+typedef enum
+{
+    eomn_jointSetNum_zero = 0,
+    eomn_jointSetNum_one = 1,
+    eomn_jointSetNum_two = 2,
+    eomn_jointSetNum_three = 3,
+    eomn_jointSetNum_none = 255
+
+}eOmn_jointSetNumber_t;
+
 typedef struct 
 {
-    uint8_t                 joint2set[4];       // it contains the set each joint belongs to. the sets must be in increasing order 0, 1, etc.
+    uint8_t                 joint2set[4];       // it contains the set each joint belongs to. Use eOmn_jointSetNumber_t values
     eOmn_4x4_matrix_t       joint2motor;
     eOmn_4x4_matrix_t       joint2encoder;    
 } eOmn_4jomo_coupling_t;    EO_VERIFYsizeof(eOmn_4jomo_coupling_t, 132);
