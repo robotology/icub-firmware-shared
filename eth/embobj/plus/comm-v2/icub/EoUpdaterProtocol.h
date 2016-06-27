@@ -113,8 +113,6 @@ typedef enum
     uprot_OPC_LEGACY_MAC_SET    = 0x11,
     uprot_OPC_LEGACY_IP_MASK_SET= 0x08  // former MASKSET 
 
-   
-
 } eOuprot_opcodes_t;
 
 
@@ -150,24 +148,24 @@ enum { uprot_pagemaxsize = 128, uprot_UDPmaxsize = 1200, uprot_PROGmaxsize = 512
 
 typedef enum
 {   // to be used as bitfields
-    uprot_canDO_nothing         = 0x0,          // the normal eApplication can do: nothing and restart. as soon as it receives a discovery it jumps to eUpdater
-    uprot_canDO_reply2discover  = 0x1 << 29,    // eUpdater, eApplication, eApplPROGupdater
-    uprot_canDO_reply2moreinfo  = 0x1 << 30,    // eUpdater, eApplPROGupdater
-    uprot_canDO_PROG_loader        = 0x1 << 1,     // eUpdater (not the eApplPROGupdater).
-    uprot_canDO_PROG_updater       = 0x1 << 2,     // eApplPROGupdater
-    uprot_canDO_PROG_application   = 0x1 << 3,     // eUpdater
-    uprot_canDO_restart    = 0x1 << 4,     // eUpdater + eApplication     
-    uprot_canDO_cangateway      = 0x1 << 5,     // eUpdater
-    uprot_canDO_IPaddr_set      = 0x1 << 6,     // eUpdater
-    uprot_canDO_EEPROM_erase    = 0x1 << 7,     // eUpdater
-    uprot_canDO_EEPROM_read     = 0x1 << 8,     // eUpdater w/ prot > 0
-    uprot_canDO_DEF2RUN_set     = 0x1 << 9,     // eUpdater w/ prot > 0
-    uprot_canDO_JUMP2UPDATER    = 0x1 << 10,    // eApplPROGupdater
-    uprot_canDO_PAGE_get        = 0x1 << 11,    // eUpdater w/ prot > 0
-    uprot_canDO_PAGE_set        = 0x1 << 12,    // eUpdater w/ prot > 0    
-    uprot_canDO_PAGE_clr        = 0x1 << 13,    // eUpdater w/ prot > 0
-    uprot_canDO_LEGACY_IPmask_set   = 0x1 << 14,    // eUpdater
-    uprot_canDO_LEGACY_MAC_set    = 0x1 << 15,    // eUpdater
+    uprot_canDO_nothing             = 0x0,          
+    uprot_canDO_reply2discover      = 0x1 << 29,
+    uprot_canDO_reply2moreinfo      = 0x1 << 30,
+    uprot_canDO_PROG_loader         = 0x1 << 1, 
+    uprot_canDO_PROG_updater        = 0x1 << 2, 
+    uprot_canDO_PROG_application    = 0x1 << 3, 
+    uprot_canDO_restart             = 0x1 << 4, 
+    uprot_canDO_cangateway          = 0x1 << 5, 
+    uprot_canDO_IPaddr_set          = 0x1 << 6, 
+    uprot_canDO_EEPROM_erase        = 0x1 << 7, 
+    uprot_canDO_EEPROM_read         = 0x1 << 8, 
+    uprot_canDO_DEF2RUN_set         = 0x1 << 9, 
+    uprot_canDO_JUMP2UPDATER        = 0x1 << 10,
+    uprot_canDO_PAGE_get            = 0x1 << 11,
+    uprot_canDO_PAGE_set            = 0x1 << 12,
+    uprot_canDO_PAGE_clr            = 0x1 << 13,
+    uprot_canDO_LEGACY_IPmask_set   = 0x1 << 14,
+    uprot_canDO_LEGACY_MAC_set      = 0x1 << 15,
     uprot_canDO_LEGACY_cangateway   = 0x1 << 16,
     uprot_canDO_LEGACY_scan         = 0x1 << 17,
     uprot_canDO_LEGACY_IPaddr_set   = 0x1 << 18,
@@ -183,7 +181,9 @@ typedef struct
     eOversion_t         version;            // the version of the firmware
     eOdate_t            date;               // the date associated to the firmware as it is in repository
     eOdate_t            compilationdate;    // the compilation date, as set by the compiler with a macro.
-} eOuprot_procinfo_t;   EO_VERIFYsizeof(eOuprot_procinfo_t, 12);
+    uint16_t            rom_addr_kb;        // the rom address in kb from where the process starts
+    uint16_t            rom_size_kb;        // the max size in kb of the rom of the process.
+} eOuprot_procinfo_t;  EO_VERIFYsizeof(eOuprot_procinfo_t, 16)
 
 
 typedef struct 
@@ -193,7 +193,9 @@ typedef struct
     uint8_t             def2run;            // it is the process launched after the 5 second safe time is terminated
     uint8_t             runningnow;         // it is the process which is running at the time of processing teh reply. it may be eUpdater or eApplication or eApplPROGupdater
     eOuprot_procinfo_t  info[3];
-} eOuprot_proctable_t;  EO_VERIFYsizeof(eOuprot_proctable_t, 40)
+} eOuprot_proctable_t;  EO_VERIFYsizeof(eOuprot_proctable_t, 52)
+
+
 
 
 // - format of commands and of their replies (if any)
@@ -296,7 +298,7 @@ typedef struct
     uint32_t            capabilities;   // it contains a mask of eOuprot_proc_capabilities_t which tells what the remote board can do.
     eOuprot_proctable_t processes;
     uint8_t             boardinfo32[32];// where: boardinfo32[0] = strlen(&boardinfo32[1]) but if boardinfo32[0] is 255 then it means that it is not used
-} eOuprot_cmd_DISCOVER_REPLY_t; EO_VERIFYsizeof(eOuprot_cmd_DISCOVER_REPLY_t, 88)
+} eOuprot_cmd_DISCOVER_REPLY_t;  EO_VERIFYsizeof(eOuprot_cmd_DISCOVER_REPLY_t, 100)
 
 
 // used to achieve more information about a specific board. this command is now superseded by what teh command eOuprot_cmd_DISCOVERY_t retrieves.
@@ -316,7 +318,7 @@ typedef struct
     eOuprot_cmd_DISCOVER_REPLY_t    discover;           // only change to eOuprot_cmd_DISCOVER_REPLY_t is that discover.reply.opc = uprot_OPC_MOREINFO.
     uint8_t                         hasdescription;     // tells if there is a string which follows. the string can have at most 384 chars
     uint8_t                         description[3];     // from here we have a string.
-} eOuprot_cmd_MOREINFO_REPLY_t;     EO_VERIFYsizeof(eOuprot_cmd_MOREINFO_REPLY_t, 92)
+} eOuprot_cmd_MOREINFO_REPLY_t;     EO_VERIFYsizeof(eOuprot_cmd_MOREINFO_REPLY_t, 104)
 
 
 // used to start programming onto flash the code of a process.
