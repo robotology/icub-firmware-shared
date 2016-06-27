@@ -179,7 +179,8 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
                 uprot_canDO_LEGACY_IPaddr_set |
                 uprot_canDO_LEGACY_EEPROM_erase |
                 uprot_canDO_LEGACY_procs |
-                uprot_canDO_blink                
+                uprot_canDO_blink |
+                uprot_canDO_JUMP2ADDRESS                
             ),
             
             (   // eApplication
@@ -202,7 +203,8 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
                 uprot_canDO_LEGACY_IPaddr_set |
                 uprot_canDO_LEGACY_procs |
                 uprot_canDO_blink |
-                uprot_canDO_PAGE_get
+                uprot_canDO_PAGE_get |
+                uprot_canDO_JUMP2ADDRESS
             )
         }    
     };
@@ -325,7 +327,12 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
         {
             targetcapability = uprot_canDO_JUMP2UPDATER;
         } break;
-    
+
+        case uprot_OPC_JUMP2ADDRESS:
+        {
+            targetcapability = uprot_canDO_JUMP2ADDRESS;
+        } break;
+        
         case uprot_OPC_PAGE_CLR:
         {
             targetcapability = uprot_canDO_PAGE_clr;

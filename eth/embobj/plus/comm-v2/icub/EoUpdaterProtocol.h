@@ -102,10 +102,11 @@ typedef enum
     
     uprot_OPC_BLINK             = 0x0B,
     uprot_OPC_JUMP2UPDATER      = 0x0C,
-    
+        
     uprot_OPC_PAGE_CLR          = 0x30,
     uprot_OPC_PAGE_SET          = 0x31,
     uprot_OPC_PAGE_GET          = 0x32,
+    uprot_OPC_JUMP2ADDRESS      = 0x33,
     
     uprot_OPC_CANGATEWAY        = 0x2f,
     
@@ -171,7 +172,8 @@ typedef enum
     uprot_canDO_LEGACY_IPaddr_set   = 0x1 << 18,
     uprot_canDO_LEGACY_EEPROM_erase = 0x1 << 19,
     uprot_canDO_LEGACY_procs        = 0x1 << 20,
-    uprot_canDO_blink               = 0x1 << 21
+    uprot_canDO_blink               = 0x1 << 21,
+    uprot_canDO_JUMP2ADDRESS        = 0x1 << 22
 } eOuprot_proc_capabilities_t;
 
 typedef struct
@@ -432,6 +434,7 @@ typedef struct
 } eOuprot_cmd_JUMP2UPDATER_t;  EO_VERIFYsizeof(eOuprot_cmd_JUMP2UPDATER_t, 4)
 
 
+
 // former SYSEEPROMERASE
 // in legacy mode is used to reset the EEPROM of the board between 6k and 8k. 
 // In there the EEPROM contains: 
@@ -526,6 +529,14 @@ typedef struct
     uint8_t             page[uprot_pagemaxsize];      // it contains the value of the page
 } eOuprot_cmd_PAGE_GET_REPLY_t;  EO_VERIFYsizeof(eOuprot_cmd_PAGE_GET_REPLY_t, 134)
 
+
+// it is used to attempt a jump to a given address
+typedef struct
+{
+    uint8_t             opc;            // it must be 0x0C (uprot_OPC_JUMP2ADDRESS)
+    uint8_t             filler[3];      // it must be {EOUPROT_VALUE_OF_UNUSED_BYTE}
+    uint32_t            address;
+} eOuprot_cmd_JUMP2ADDRESS_t;  EO_VERIFYsizeof(eOuprot_cmd_JUMP2ADDRESS_t, 8)
 
 
 // it is used to start the CAN gateway mode in the manner specified by the parameters.
