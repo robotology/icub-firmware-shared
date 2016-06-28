@@ -682,7 +682,7 @@ typedef struct
 {
     uint8_t                 joint2set[4];       // it contains the set each joint belongs to. Use eOmn_jointSetNumber_t values
     eOmn_4x4_matrix_t       joint2motor;
-    eOmn_4x4_matrix_t       joint2encoder;    
+    eOmn_4x4_matrix_t       encoder2joint;    
 } eOmn_4jomo_coupling_t;    EO_VERIFYsizeof(eOmn_4jomo_coupling_t, 132);
 
 
