@@ -186,7 +186,9 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
             (   // eApplication
                 uprot_canDO_reply2discover |
                 uprot_canDO_LEGACY_scan |
-                uprot_canDO_restart
+                uprot_canDO_restart |
+                uprot_canDO_cangateway |
+                uprot_canDO_LEGACY_cangateway
             ),
             
             (   // eApplPROGupdater            

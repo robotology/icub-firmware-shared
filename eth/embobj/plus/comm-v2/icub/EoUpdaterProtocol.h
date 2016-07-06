@@ -119,12 +119,13 @@ typedef enum
 
 typedef enum 
 {
-    uprot_RES_OK              = 0,
-    uprot_RES_ERR_PROT        = 1,
-    uprot_RES_ERR_FLASH       = 2,
-    uprot_RES_ERR_LOST        = 3,
-    uprot_RES_ERR_UNK         = 4,
-    uprot_RES_ERR_UNSUPPORTED = 5
+    uprot_RES_OK                = 0,
+    uprot_RES_ERR_PROT          = 1,
+    uprot_RES_ERR_FLASH         = 2,
+    uprot_RES_ERR_LOST          = 3,
+    uprot_RES_ERR_UNK           = 4,
+    uprot_RES_ERR_UNSUPPORTED   = 5,
+    uprot_RES_ERR_FAILED        = 6       
 } eOuprot_result_t;
 
 
