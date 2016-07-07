@@ -45,8 +45,7 @@
 
 const eOversion_t eok_version               = {
                                                 EO_INIT(.major)     EOK_VER_MAJ, 
-                                                EO_INIT(.minor)     EOK_VER_MIN, 
-                                                EO_INIT(.release)   EOK_VER_REL
+                                                EO_INIT(.minor)     EOK_VER_MIN
                                               };            
 
 const uint32_t  eok_u32version              = EOK_U32VERSION;
@@ -253,7 +252,7 @@ extern void eo_common_word_bittoggle(uint32_t* word, uint8_t bit)
 
 extern eObool_t eo_common_dword_bitcheck(uint64_t dword, uint8_t bit)
 {
-    if(dword & (1<<bit))
+    if(dword & ((uint64_t)1<<bit))
     {
         return(eobool_true);
     }
@@ -266,17 +265,17 @@ extern eObool_t eo_common_dword_bitcheck(uint64_t dword, uint8_t bit)
 
 extern void eo_common_dword_bitset(uint64_t* dword, uint8_t bit)
 {
-    (*dword) |= (1<<bit);    
+    (*dword) |= ((uint64_t)1<<bit);    
 }
 
 extern void eo_common_dword_bitclear(uint64_t* dword, uint8_t bit)
 {
-    (*dword) &= (~(1<<bit));    
+    (*dword) &= (~((uint64_t)1<<bit));    
 }
 
 extern void eo_common_dword_bittoggle(uint64_t* dword, uint8_t bit)
 {
-    (*dword) ^= (1<<bit);    
+    (*dword) ^= ((uint64_t)1<<bit);    
 }
 
 // see http://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
@@ -509,6 +508,142 @@ extern void eo_common_ipv4addr_to_decimal(eOipv4addr_t ipv4, uint8_t *ip1, uint8
     }       
 }
 
+static const char * months[16] = {"ERR", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "ERR", "ERR", "ERR"}; 
+    
+extern void eo_common_date_to_string(eOdate_t date, char *str, uint8_t size)
+{
+    if(NULL != str)
+    {
+        snprintf(str, size, "%d %s %.2d %d:%d", date.year, months[date.month], date.day, date.hour, date.min);
+    }
+}
+
+
+extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date)
+{
+    eObool_t ret = eobool_false;
+    uint8_t index;
+    uint8_t i;
+    if(NULL != str)
+    {
+        int year = 0;
+        char mon[4] = {0};
+        int day = 0;
+        int hour = 0;
+        int min = 0;
+        sscanf(str, "%d %s %d %d:%d", &year, mon, &day, &hour, &min);
+        
+        if(year > 2047)
+        {
+            return(eobool_false);
+        }
+        
+        index = 0;
+        i=0;
+        for(i=1; i<13; i++)
+        {
+            if(0 == strcmp(mon, months[i]))
+            {
+                index = i;
+                break;
+            }
+        }
+        if(0 == index)
+        {
+            return(eobool_false);
+        }
+        
+        if((0 == day) || (day > 31))
+        {
+            return(eobool_false);
+        } 
+        
+        if((hour > 24))
+        {
+            return(eobool_false);
+        }   
+
+        if((min > 60))
+        {
+            return(eobool_false);
+        } 
+
+       
+        date->year = year;
+        date->month = index;
+        date->day = day;
+        date->hour = hour;
+        date->min = min;        
+        
+        ret = eobool_true;
+    }
+    
+    return(ret);
+}
+
+
+extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *date)
+{
+    eObool_t ret = eobool_false;
+    uint8_t index = 0;
+    uint8_t i = 0;
+
+    if(NULL != str)
+    {
+        int year = 0;
+        char mon[4] = {0};
+        int day = 0;
+        int hour = 0;
+        int min = 0;
+        int sec = 0;
+        // Jun 14 2016 15:41:22
+        sscanf(str, "%s %d %d %d:%d:%d", mon, &day, &year, &hour, &min, &sec);
+        
+        if(year > 2047)
+        {
+            return(eobool_false);
+        }
+        
+        for(i=1; i<13; i++)
+        {
+            if(0 == strcmp(mon, months[i]))
+            {
+                index = i;
+                break;
+            }
+        }
+        if(0 == index)
+        {
+            return(eobool_false);
+        }
+        
+        if((0 == day) || (day > 31))
+        {
+            return(eobool_false);
+        } 
+        
+        if((hour > 24))
+        {
+            return(eobool_false);
+        }   
+
+        if((min > 60))
+        {
+            return(eobool_false);
+        } 
+
+       
+        date->year = year;
+        date->month = index;
+        date->day = day;
+        date->hour = hour;
+        date->min = min;        
+        
+        ret = eobool_true;
+    }
+    
+    return(ret);
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
