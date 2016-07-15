@@ -81,6 +81,50 @@ static const char * s_mn_servicetype_strings[] =
 };  EO_VERIFYsizeof(s_mn_servicetype_strings, eomn_serv_types_numberof*sizeof(const char *));    
 
 
+static const char * s_mn_controllertype_strings[] =
+{
+    "eomn_servMC_controller_NO_CONTROL", //0
+    "eomn_servMC_controller_ANKLE",      //1
+    "eomn_servMC_controller_UPPERLEG",   //2
+    "eomn_servMC_controller_WAIST",      //3
+    "eomn_servMC_controller_SHOULDER",   //4
+    "eomn_servMC_controller_HEAD_neckpitch_neckroll", //5
+    "eomn_servMC_controller_HEAD_neckyaw_eyes",      //6
+    "eomn_servMC_controller_FACE_eyelids_jaw",       //7
+    "eomn_servMC_controller_4jointsNotCoupled",      //8
+    "eomn_servMC_controller_HAND_thumb",             //9
+    "eomn_servMC_controller_HAND_2",                 //10
+    "eomn_servMC_controller_FOREARM",                //11
+    //CER
+    "eomn_servMC_controller_CER_LOWER_ARM",         //12
+    "",                                            //13
+    "eomn_servMC_controller_CER_HAND",              //14
+    "eomn_servMC_controller_CER_WAIST",             //15
+    "eomn_servMC_controller_DONTCARE",              //16
+    "eomn_servMC_controller_CER_UPPER_ARM",         //17
+    "", //18
+    "", //19
+    "", //20
+    "eomn_servMC_controller_CER_BASE",   //21
+    "eomn_servMC_controller_CER_NECK"    //22
+
+};  EO_VERIFYsizeof(s_mn_controllertype_strings, eomn_controller_type_numberof*sizeof(const char *));    
+
+
+
+
+static const char * s_mn_mcsensor_strings[] =
+{   // values can be from 1 to 255. 0 is none
+    "NONE", // eomn_serv_mc_sensor_none                = eomn_serv_item_none,
+    "AEA",  //eomn_serv_mc_sensor_encoder_aea         = 1,
+    "AMO",  //eomn_serv_mc_sensor_encoder_amo         = 2,
+    "ÏNC", //eomn_serv_mc_sensor_encoder_inc         = 3,
+    "SPICHAINOF2", //eomn_serv_mc_sensor_encoder_spichainof2 = 4,
+    "ABSANALOG", //eomn_serv_mc_sensor_encoder_absanalog   = 5,
+    "MAIS", //eomn_serv_mc_sensor_mais                = 6,
+    "SPICHAINOF3", //eomn_serv_mc_sensor_encoder_spichainof3 = 7,
+    "ONFOC", //eomn_serv_mc_sensor_encoder_onfoc       = 8,
+}; EO_VERIFYsizeof(s_mn_mcsensor_strings, eOmn_serv_mc_sensor_type_numberof*sizeof(const char *));    
 
 static const char * s_mn_servicetype_string_unknown = "eomn_serv_UNKNOWN";
 
@@ -137,6 +181,50 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
     }        
     
     return(eomn_serv_UNKNOWN);    
+}
+
+
+
+extern eOmn_serv_mc_sensor_type_t eomn_string2mcsensortype(const char * string)
+{    
+    if(NULL == string)
+    {
+        return(eomn_serv_mc_sensor_unknown);
+    }
+    
+    uint8_t i = 0;
+    
+    for(i=0; i<eOmn_serv_mc_sensor_type_numberof; i++)
+    {
+        if(0 == strcmp(string, s_mn_mcsensor_strings[i]))
+        {
+            return((eOmn_serv_mc_sensor_type_t)(i+0));
+        }
+    }
+      
+    return(eomn_serv_mc_sensor_unknown);    
+}
+
+
+
+extern eOmn_servMC_controller_type_t eomn_string2MCcontrollertype(const char * string)
+{    
+    if(NULL == string)
+    {
+        return(eomn_servMC_controller_UNKNOWN);
+    }
+    
+    uint8_t i = 0;
+    
+    for(i=0; i<eomn_controller_type_numberof; i++)
+    {
+        if(0 == strcmp(string, s_mn_controllertype_strings[i]))
+        {
+            return((eOmn_serv_type_t)(i+0));
+        }
+    }     
+    
+    return(eomn_servMC_controller_UNKNOWN);    
 }
 
 

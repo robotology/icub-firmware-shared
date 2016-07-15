@@ -587,9 +587,11 @@ typedef enum
     eomn_serv_mc_sensor_encoder_spichainof3 = 7,
     eomn_serv_mc_sensor_encoder_onfoc       = 8,
     
+    eomn_serv_mc_sensor_unknown             = 254, 
     eomn_serv_mc_sensor_maxvalidvalue       = 255 
 } eOmn_serv_mc_sensor_type_t;
 
+enum {eOmn_serv_mc_sensor_type_numberof = 9};
 
 typedef enum
 {   // values can be from 1 to 255. 0 is none
@@ -677,6 +679,36 @@ typedef enum
     eomn_jointSetNum_none = 255
 
 }eOmn_jointSetNumber_t;
+
+
+
+typedef enum
+{
+    eomn_servMC_controller_DONTCARE              = 16,
+    eomn_servMC_controller_NO_CONTROL            = 0,
+    eomn_servMC_controller_ANKLE                 = 1,  //2FOC
+    eomn_servMC_controller_UPPERLEG              = 2,  //2FOC
+    eomn_servMC_controller_WAIST                 = 3,  //2FOC
+    eomn_servMC_controller_SHOULDER              = 4,  //2FOC
+    eomn_servMC_controller_HEAD_neckpitch_neckroll = 5,//MC4plus
+    eomn_servMC_controller_HEAD_neckyaw_eyes     = 6,  //MC4plus
+    eomn_servMC_controller_FACE_eyelids_jaw      = 7,  //MC4plus
+    eomn_servMC_controller_4jointsNotCoupled     = 8,  //MC4plus this is the new name of emscontroller_board_FACE_lips
+    eomn_servMC_controller_HAND_thumb            = 9,  //MC4plus
+    eomn_servMC_controller_HAND_2                = 10, //MC4plus
+    eomn_servMC_controller_FOREARM               = 11, //MC4plus
+    // CER
+    eomn_servMC_controller_CER_LOWER_ARM         = 12, //MC4plus
+    eomn_servMC_controller_CER_HAND              = 14, //MC2plus
+    eomn_servMC_controller_CER_WAIST             = 15, //2FOC
+    eomn_servMC_controller_CER_UPPER_ARM         = 17, //2FOC
+    eomn_servMC_controller_CER_BASE              = 21, //2FOC
+    eomn_servMC_controller_CER_NECK              = 22, //MC4plus
+    eomn_servMC_controller_UNKNOWN               = 255 //this value is returned by eomn_string2controllertype if string param is not valid
+    
+} eOmn_servMC_controller_type_t; //this enum was defined as eOemscontroller_board_t in EOmcController.h
+
+enum { eomn_controller_type_numberof = 23 };
 
 typedef struct 
 {
@@ -888,6 +920,10 @@ extern const char * eomn_servicetype2string(eOmn_serv_type_t service);
 extern eOmn_serv_type_t eomn_string2servicetype(const char * string);
 
 extern eOmn_serv_mc_sensor_nuomofcomponents_t eomn_mc_sensor_getnumofcomponets(eOmn_serv_mc_sensor_type_t type);
+
+extern eOmn_servMC_controller_type_t eomn_string2MCcontrollertype(const char * string);
+
+extern eOmn_serv_mc_sensor_type_t eomn_string2mcsensortype(const char * string);
 
 
 /** @}            
