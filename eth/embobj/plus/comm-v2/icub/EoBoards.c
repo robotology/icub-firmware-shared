@@ -100,6 +100,28 @@ static const char * s_eoboards_string_none = "brdNONE";
 static const char * s_eoboards_string_unknown = "brdUNKNOWN";
 
 
+static const char * s_eoboards_conn_strings[] =
+{
+    "eobrd_conn_P1",
+    "eobrd_conn_P2",
+    "eobrd_conn_P3",
+    "eobrd_conn_P4",
+    "eobrd_conn_P5",
+    "eobrd_conn_P6",
+    "eobrd_conn_P7",
+    "eobrd_conn_P8",
+    "eobrd_conn_P9",
+    "eobrd_conn_P10",
+    "eobrd_conn_P11",
+    "eobrd_conn_P12",
+    "eobrd_conn_P13",
+    "eobrd_conn_P14",
+    "eobrd_conn_P15"
+}; EO_VERIFYsizeof(s_eoboards_conn_strings, eobrd_conn_numberof*sizeof(const char *));
+
+static const char * s_eoboards_conn_string_none = "eobrd_conn_none";
+static const char * s_eoboards_conn_string_unknown = "eobrd_conn_unknown";
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -223,6 +245,51 @@ extern eObrd_type_t eoboards_string2type(const char * name)
     }        
     
     return(eobrd_unknown);    
+}
+
+
+extern eObrd_connector_t eoboards_string2connector(const char * name)
+{
+    if(NULL == name)
+    {
+        return(eobrd_conn_unknown);
+    }
+
+    uint8_t i = 0;
+
+    for(i=0; i<eobrd_conn_numberof; i++)
+    {
+        if(0 == strcmp(name, s_eoboards_conn_strings[i]))
+        {
+            return((eObrd_connector_t)(i+1));
+        }
+    }
+
+    if(0 == strcmp(name, s_eoboards_conn_string_none))
+    {
+        return(eobrd_conn_none);
+    }
+
+    return(eobrd_conn_unknown);
+}
+
+
+extern const char * eoboards_connector2string(eObrd_connector_t connector)
+{
+    if(eobrd_conn_none == connector)
+    {
+        return(s_eoboards_conn_string_none);
+    }
+    else if(eobrd_conn_unknown == connector)
+    {
+        return(s_eoboards_conn_string_unknown);
+    }
+    else if(connector <= eobrd_conn_numberof)
+    {
+        return(s_eoboards_conn_strings[connector-1]);
+    }
+
+    return(s_eoboards_conn_string_unknown);
 }
 
 
