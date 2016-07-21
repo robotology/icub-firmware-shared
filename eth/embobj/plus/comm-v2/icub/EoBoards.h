@@ -105,7 +105,6 @@ typedef enum
     eobrd_mais                  = eobrd_cantype_mais,       
     eobrd_foc                   = eobrd_cantype_foc,        
     
-    // not used: ...
     eobrd_dsp                   = eobrd_cantype_dsp,        
     eobrd_pic                   = eobrd_cantype_pic,        
     eobrd_2dc                   = eobrd_cantype_2dc,        
@@ -249,13 +248,12 @@ typedef struct
     @brief      contains numbers used for specifying a connector on a generic board. For instance, if we we want to refer to
                 connector P10 of the ems board (which may be used by an AEA encoder), we use the value eobrd_conn_P10.
                 The same we do if the connector is P10 on the mc4plus board, which incidentally is also an SPI connector.
-                However, the physical ports in HAL terms corresponding to P10 in two difefrent boards may be different.
+                However, the physical ports in HAL terms corresponding to P10 in two different boards may be different.
                 In ems P10 is linked to hal_encoder3 which has value 2, whereas in the mc4plus is linked to hal_encoder1
                 which has value 0. Use proper function to convert between them.
  **/
 typedef enum
 {
-    eobrd_conn_none = 0,
     eobrd_conn_P1   = 1,
     eobrd_conn_P2   = 2,
     eobrd_conn_P3   = 3,
@@ -271,45 +269,39 @@ typedef enum
     eobrd_conn_P13  = 13,
     eobrd_conn_P14  = 14,
     eobrd_conn_P15  = 15,
+    eobrd_conn_none = 0,
     eobrd_conn_unknown = 255
 } eObrd_connector_t;
 
-enum { eobrd_conn_numberof = 15 };
+enum { eobrd_connectors_numberof = 15 };
+
 
 typedef enum
 {
-    eobrd_port_NONE                 = 31,
+    eobrd_port_none                 = 31,
+    eobrd_port_unknown              = 30,
 
-    eobrd_port_ems_P6               = 0,        // SPI encoder: hal_encoder1
-    eobrd_port_ems_P7               = 3,        // SPI encoder: hal_encoder4
-    eobrd_port_ems_P8               = 1,        // SPI encoder: hal_encoder2
-    eobrd_port_ems_P9               = 4,        // SPI encoder: hal_encoder5
-    eobrd_port_ems_P10              = 2,        // SPI encoder: hal_encoder3
-    eobrd_port_ems_P11              = 5,        // SPI encoder: hal_encoder6
+    eobrd_port_emsP6                = 0,        // SPI encoder: hal_encoder1
+    eobrd_port_emsP7                = 3,        // SPI encoder: hal_encoder4
+    eobrd_port_emsP8                = 1,        // SPI encoder: hal_encoder2
+    eobrd_port_emsP9                = 4,        // SPI encoder: hal_encoder5
+    eobrd_port_emsP10               = 2,        // SPI encoder: hal_encoder3
+    eobrd_port_emsP11               = 5,        // SPI encoder: hal_encoder6
 
-    eobrd_port_mc4plus_P2           = 1,        // PWM & QUADENC: hal_motor2, hal_quad_enc2
-    eobrd_port_mc4plus_P3           = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
-    eobrd_port_mc4plus_P4           = 2,
-    eobrd_port_mc4plus_P5           = 3,
-    eobrd_port_mc4plus_P10          = 0,        // SPI encoder: hal_encoder1
-    eobrd_port_mc4plus_P11          = 1,        // SPI encoder: hal_encoder2
-
-
-    eobrd_port_mc2plus_P2           = 1,        // PWM & QUADENC: hal_motor2, hal_quad_enc2
-    eobrd_port_mc2plus_P3           = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
-    eobrd_port_mc2plus_P10          = 0,        // SPI encoder: hal_encoder1
-    eobrd_port_mc2plus_P11          = 1,        // SPI encoder: hal_encoder2
-
-    eobrd_port_mais_thumb_proximal  = 0,        // the value comes from mais
-    eobrd_port_mais_thumb_distal    = 1,
-    eobrd_port_mais_index_proximal  = 2,
-    eobrd_port_mais_index_distal    = 3,
-    eobrd_port_mais_medium_proximal = 4,
-    eobrd_port_mais_medium_distal   = 5,
-    eobrd_port_mais_littlefingers   = 6
+    eobrd_port_mc4plusP2            = 1,        // PWM & QUADENC: hal_motor2, hal_quad_enc2
+    eobrd_port_mc4plusP3            = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
+    eobrd_port_mc4plusP4            = 2,        // PWM & QUADENC: hal_motor3, hal_quad_enc3
+    eobrd_port_mc4plusP5            = 3,        // PWM & QUADENC: hal_motor4, hal_quad_enc4
+    eobrd_port_mc4plusP10           = 0,        // SPI encoder: hal_encoder1
+    eobrd_port_mc4plusP11           = 1,        // SPI encoder: hal_encoder2
+    
+    eobrd_port_mc2plusP2            = 1,        // PWM & QUADENC: hal_motor2, hal_quad_enc2
+    eobrd_port_mc2plusP3            = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
+    eobrd_port_mc2plusP10           = 0,        // SPI encoder: hal_encoder1
+    eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2    
 } eObrd_port_t;
 
-
+enum { eobrd_ports_numberof = 16 };
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -329,14 +321,21 @@ extern eObrd_type_t eoboards_ethtype2type(eObrd_ethtype_t type);
 
 extern eObrd_type_t eoboards_cantype2type(eObrd_cantype_t type);
 
-extern const char * eoboards_type2string(eObrd_type_t type);
+extern eObrd_type_t eoboards_string2type2(const char * name, eObool_t usecompactstring);
+extern const char * eoboards_type2string2(eObrd_type_t type, eObool_t usecompactstring);
 
 extern eObrd_type_t eoboards_string2type(const char * name);
+extern const char * eoboards_type2string(eObrd_type_t type);
 
+extern eObrd_connector_t eoboards_string2connector(const char * string, eObool_t usecompactstring);
+extern const char * eoboards_connector2string(eObrd_connector_t connector, eObool_t usecompactstring);
 
-extern eObrd_connector_t eoboards_string2connector(const char * name);
-extern const char * eoboards_connector2string(eObrd_connector_t connector);
+extern eObrd_port_t eoboards_string2port(const char * string, eObool_t usecompactstring);
+extern const char * eoboards_port2string(eObrd_port_t port, eObrd_type_t board, eObool_t usecompactstring);
 
+extern eObrd_port_t eoboards_connector2port(eObrd_connector_t connector, eObrd_type_t board);
+extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t board);
+    
 
 
 /** @}            
