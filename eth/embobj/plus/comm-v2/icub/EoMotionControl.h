@@ -986,6 +986,61 @@ typedef struct                  // size is 72+16+0 = 88
 
 
 
+typedef enum
+{
+    eomc_act_foc        = 1,
+    eomc_act_mc4        = 2,
+    eomc_act_pwm        = 3,    
+    eomc_act_none       = 0,
+    eomc_act_unknown    = 255    
+} eOmc_actuator_t;
+
+enum { eomc_actuators_numberof = 3 };
+
+
+typedef enum
+{
+    eomc_enc_none           = 0,
+    eomc_enc_aea            = 1,
+    eomc_enc_amo            = 2,
+    eomc_enc_qenc           = 3,   
+    eomc_enc_spichainof2    = 4,   
+    eomc_enc_absanalog      = 5,   
+    eomc_enc_mais           = 6,          
+    eomc_enc_spichainof3    = 7, 
+    eomc_enc_onfoc          = 8,
+    eomc_enc_unknown        = 255    
+} eOmc_encoder_t;
+
+enum { eomc_encoders_numberof = 8 };
+
+
+typedef enum
+{
+    eomc_pos_atjoint        = 1,
+    eomc_pos_atmotor        = 2,
+    eomc_pos_none           = 0,
+    eomc_pos_unknown        = 255    
+} eOmc_position_t;
+
+enum { eomc_positions_numberof = 2 };
+
+
+
+typedef enum
+{
+    eomc_maisvalue_thumbproximal    = 0,
+    eomc_maisvalue_thumbdistal      = 1,
+    eomc_maisvalue_indexproximal    = 2,
+    eomc_maisvalue_indexdistal      = 3,
+    eomc_maisvalue_mediumproximal   = 4,
+    eomc_maisvalue_mediumdistal     = 5,
+    eomc_maisvalue_littlefingers    = 6,    
+    eomc_maisvalue_none             = 254,
+    eomc_maisvalue_unknown          = 255
+} eOmc_maisvalue_t;
+
+enum { eomc_maisvalues_numberof = 7 };
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -993,8 +1048,22 @@ typedef struct                  // size is 72+16+0 = 88
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
-// empty-section
 
+
+extern const char * eomc_actuator2string(eOmc_actuator_t actuator, eObool_t usecompactstring);
+extern eOmc_actuator_t eomc_string2actuator(const char * string, eObool_t usecompactstring);
+
+
+extern const char * eomc_encoder2string(eOmc_encoder_t encoder, eObool_t usecompactstring);
+extern eOmc_encoder_t eomc_string2encoder(const char * string, eObool_t usecompactstring);
+
+
+extern const char * eomc_position2string(eOmc_position_t position, eObool_t usecompactstring);
+extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecompactstring);
+
+
+extern const char * eomc_maisvalue2string(eOmc_maisvalue_t maisvalue, eObool_t usecompactstring);
+extern eOmc_maisvalue_t eomc_string2maisvalue(const char * string, eObool_t usecompactstring);
 
 
 
