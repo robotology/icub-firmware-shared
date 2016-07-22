@@ -44,7 +44,8 @@ extern "C" {
 #include "EoCommon.h"
 #include "EoUtilities.h"
 #include "EoMeasures.h"
-
+#include "EoBoards.h"
+#include "EOarray.h"
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -998,9 +999,38 @@ typedef enum
 enum { eomc_actuators_numberof = 3 };
 
 
+typedef struct
+{
+    eObrd_canlocation_t         canloc;
+} eOmc_actuator_descriptor_foc_t;
+
+
+typedef struct
+{
+    eObrd_canlocation_t         canloc;
+} eOmc_actuator_descriptor_mc4_t;
+
+
+typedef struct
+{
+    uint8_t                     port : 5;   // use eObrd_port_t
+    uint8_t                     dummy : 3;
+} eOmc_actuator_descriptor_pwm_t;
+
+
+// comment: the descriptor does not contain a .type fieles because we dont mix joints with different types of actuators.
+// however, we may transform the eOmc_actuator_descriptor_t to be a struct of size 2 bytes with .type and .data where
+// .data is a union with .foc, .mc4, .pwm
+typedef union
+{
+    eOmc_actuator_descriptor_foc_t     foc;
+    eOmc_actuator_descriptor_mc4_t     mc4;
+    eOmc_actuator_descriptor_pwm_t     pwm;
+} eOmc_actuator_descriptor_t; EO_VERIFYsizeof(eOmc_actuator_descriptor_t, 1);   
+
+
 typedef enum
 {
-    eomc_enc_none           = 0,
     eomc_enc_aea            = 1,
     eomc_enc_amo            = 2,
     eomc_enc_qenc           = 3,   
@@ -1009,10 +1039,12 @@ typedef enum
     eomc_enc_mais           = 6,          
     eomc_enc_spichainof3    = 7, 
     eomc_enc_onfoc          = 8,
+    eomc_enc_none           = 0,
     eomc_enc_unknown        = 255    
 } eOmc_encoder_t;
 
 enum { eomc_encoders_numberof = 8 };
+enum { eomc_encoders_maxnumberofcomponents = 3 };
 
 
 typedef enum
@@ -1026,21 +1058,90 @@ typedef enum
 enum { eomc_positions_numberof = 2 };
 
 
+typedef struct
+{
+    uint8_t     type;           // use eOmc_encoder_t
+    uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t 
+    uint8_t     pos  : 3;       // use eOmc_position_t
+} eOmc_encoder_descriptor_t;   EO_VERIFYsizeof(eOmc_encoder_descriptor_t, 2);    
+
+
+// a joint-motor couple is mapped into hw by an actuator and by up to two (maybe three in future) sensors or encoder
+typedef struct                  // 1+2+2=5
+{
+    eOmc_actuator_descriptor_t     actuator;
+    eOmc_encoder_descriptor_t      encoder1;
+    eOmc_encoder_descriptor_t      encoder2;
+} eOmc_jomo_descriptor_t; EO_VERIFYsizeof(eOmc_jomo_descriptor_t, 5);
+
+// we typically host not more than 4 joint-motor couples
+typedef struct                          
+{   // 4+4*5=24
+    eOarray_head_t                      head;
+    eOmc_jomo_descriptor_t              data[4];
+} eOmc_arrayof_4jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_4jomodescriptors_t, 24);
+
 
 typedef enum
 {
-    eomc_maisvalue_thumbproximal    = 0,
-    eomc_maisvalue_thumbdistal      = 1,
-    eomc_maisvalue_indexproximal    = 2,
-    eomc_maisvalue_indexdistal      = 3,
-    eomc_maisvalue_mediumproximal   = 4,
-    eomc_maisvalue_mediumdistal     = 5,
-    eomc_maisvalue_littlefingers    = 6,    
-    eomc_maisvalue_none             = 254,
-    eomc_maisvalue_unknown          = 255
-} eOmc_maisvalue_t;
+    eomc_ctrlboard_DONTCARE                 = 16,
+    eomc_ctrlboard_NO_CONTROL                = 0,
+    eomc_ctrlboard_ANKLE                    = 1,  
+    eomc_ctrlboard_UPPERLEG                 = 2,  
+    eomc_ctrlboard_WAIST                    = 3,  
+    eomc_ctrlboard_SHOULDER                 = 4,  
+    // V3
+    eomc_ctrlboard_HEAD_neckpitch_neckroll  = 5,   
+    eomc_ctrlboard_HEAD_neckyaw_eyes        = 6, 
+    eomc_ctrlboard_FACE_eyelids_jaw         = 7, 
+    eomc_ctrlboard_4jointsNotCoupled        = 8, 
+    eomc_ctrlboard_HAND_thumb               = 9,  
+    eomc_ctrlboard_HAND_2                   = 10,
+    eomc_ctrlboard_FOREARM                  = 11, 
+    // CER
+    eomc_ctrlboard_CER_LOWER_ARM            = 12, 
+    eomc_ctrlboard_CER_HAND                 = 14, 
+    eomc_ctrlboard_CER_WAIST                = 15, 
+    eomc_ctrlboard_CER_UPPER_ARM            = 17, 
+    eomc_ctrlboard_CER_BASE                 = 21, 
+    eomc_ctrlboard_CER_NECK                 = 22, 
+    
+    eomc_ctrlboard_none                     = 0,
+    eomc_ctrlboard_unknown                  = 255 
+    
+} eOmc_ctrlboard_t; // this enum was defined as eOeomc_ctrlboard_t in EOmcController.h
 
-enum { eomc_maisvalues_numberof = 7 };
+enum { eomc_ctrlboards_numberof = 19 };
+
+
+typedef eOq17_14_t eOmc_4x4_matrix_t[4][4];
+
+typedef enum
+{
+    eomc_jointSetNum_zero = 0,
+    eomc_jointSetNum_one = 1,
+    eomc_jointSetNum_two = 2,
+    eomc_jointSetNum_three = 3,
+    eomc_jointSetNum_none = 255
+} eOmc_jointSetNumber_t;
+
+
+typedef struct 
+{
+    uint8_t                 joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
+    eOmc_4x4_matrix_t       joint2motor;
+    eOmc_4x4_matrix_t       encoder2joint;    
+} eOmc_4jomo_coupling_t;    EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 132);
+
+
+typedef struct
+{
+    uint8_t         velocity;
+    uint8_t         estimJointVelocity      : 4;
+    uint8_t         estimJointAcceleration  : 4;
+    uint8_t         estimMotorVelocity      : 4;
+    uint8_t         estimMotorAcceleration  : 4;    
+} eOmc_mc4shifts_t; EO_VERIFYsizeof(eOmc_mc4shifts_t, 3);
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -1062,8 +1163,9 @@ extern const char * eomc_position2string(eOmc_position_t position, eObool_t usec
 extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecompactstring);
 
 
-extern const char * eomc_maisvalue2string(eOmc_maisvalue_t maisvalue, eObool_t usecompactstring);
-extern eOmc_maisvalue_t eomc_string2maisvalue(const char * string, eObool_t usecompactstring);
+extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder);
+
+extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring);
 
 
 

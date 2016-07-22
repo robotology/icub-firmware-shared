@@ -159,6 +159,20 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
 };  EO_VERIFYsizeof(s_eoboards_map_of_ports, (eobrd_ports_numberof+2)*sizeof(eOmap_str_str_u08_u08_u08_t));
 
 
+static const eOmap_str_str_u08_t s_boards_map_of_portmaiss[] =
+{
+    {"thumbproximal", "eobrd_portmais_thumbproximal", eobrd_portmais_thumbproximal},
+    {"thumbdistal", "eobrd_portmais_thumbdistal", eobrd_portmais_thumbdistal},
+    {"indexproximal", "eobrd_portmais_indexproximal", eobrd_portmais_indexproximal},
+    {"indexdistal", "eobrd_portmais_indexdistal", eobrd_portmais_indexdistal},
+    {"mediumproximal", "eobrd_portmais_mediumproximal", eobrd_portmais_mediumproximal},
+    {"mediumdistal", "eobrd_portmais_mediumdistal", eobrd_portmais_mediumdistal},
+    {"littlefingers", "eobrd_portmais_littlefingers", eobrd_portmais_littlefingers},
+    
+    {"none", "eobrd_portmais_none", eobrd_portmais_none},
+    {"unknown", "eobrd_portmais_unknown", eobrd_portmais_unknown}    
+};  EO_VERIFYsizeof(s_boards_map_of_portmaiss, (eobrd_portmaiss_numberof+2)*sizeof(eOmap_str_str_u08_t));
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -382,6 +396,33 @@ extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t
     return((eObrd_connector_t)defvalue);           
 }
 
+
+
+extern const char * eobrd_portmais2string(eObrd_portmais_t portmais, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portmaiss;
+    const uint8_t size = eobrd_portmaiss_numberof+2;
+    const uint8_t value = portmais;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);   
+
+}
+
+
+extern eObrd_portmais_t eomc_string2portmais(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portmaiss;
+    const uint8_t size = eobrd_portmaiss_numberof+2;
+    const uint8_t defvalue = eobrd_portmais_unknown;
+    
+    return((eObrd_portmais_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
+}
 
 
 // --------------------------------------------------------------------------------------------------------------------

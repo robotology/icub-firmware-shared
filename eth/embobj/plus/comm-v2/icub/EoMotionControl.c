@@ -105,20 +105,31 @@ static const eOmap_str_str_u08_t s_eomc_map_of_positions[] =
 };  EO_VERIFYsizeof(s_eomc_map_of_positions, (eomc_positions_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
-static const eOmap_str_str_u08_t s_eomc_map_of_maisvalues[] =
-{
-    {"thumbproximal", "eomc_maisvalue_thumbproximal", eomc_maisvalue_thumbproximal},
-    {"thumbdistal", "eomc_maisvalue_thumbdistal", eomc_maisvalue_thumbdistal},
-    {"indexproximal", "eomc_maisvalue_indexproximal", eomc_maisvalue_indexproximal},
-    {"indexdistal", "eomc_maisvalue_indexdistal", eomc_maisvalue_indexdistal},
-    {"mediumproximal", "eomc_maisvalue_mediumproximal", eomc_maisvalue_mediumproximal},
-    {"mediumdistal", "eomc_maisvalue_mediumdistal", eomc_maisvalue_mediumdistal},
-    {"littlefingers", "eomc_maisvalue_littlefingers", eomc_maisvalue_littlefingers},
+static const eOmap_str_str_u08_t s_eomc_map_of_ctrlboards[] =
+{    
+    {"DONTCARE", "eomc_ctrlboard_DONTCARE", eomc_ctrlboard_DONTCARE},
+    {"NO_CONTROL", "eomc_ctrlboard_NO_CONTROL", eomc_ctrlboard_NO_CONTROL},
+    {"ANKLE", "eomc_ctrlboard_ANKLE", eomc_ctrlboard_ANKLE},
+    {"UPPERLEG", "eomc_ctrlboard_UPPERLEG", eomc_ctrlboard_UPPERLEG},
+    {"WAIST", "eomc_ctrlboard_WAIST", eomc_ctrlboard_WAIST},
+    {"SHOULDER", "eomc_ctrlboard_SHOULDER", eomc_ctrlboard_SHOULDER},
+    {"HEAD_neckpitch_neckroll", "eomc_ctrlboard_HEAD_neckpitch_neckroll", eomc_ctrlboard_HEAD_neckpitch_neckroll},
+    {"HEAD_neckyaw_eyes", "eomc_ctrlboard_HEAD_neckyaw_eyes", eomc_ctrlboard_HEAD_neckyaw_eyes},
+    {"FACE_eyelids_jaw", "eomc_ctrlboard_FACE_eyelids_jaw", eomc_ctrlboard_FACE_eyelids_jaw},
+    {"4jointsNotCoupled", "eomc_ctrlboard_4jointsNotCoupled", eomc_ctrlboard_4jointsNotCoupled},
+    {"HAND_thumb", "eomc_ctrlboard_HAND_thumb", eomc_ctrlboard_HAND_thumb},
+    {"HAND_2", "eomc_ctrlboard_HAND_2", eomc_ctrlboard_HAND_2},
+    {"FOREARM", "eomc_ctrlboard_FOREARM", eomc_ctrlboard_FOREARM},
+    {"CER_LOWER_ARM", "eomc_ctrlboard_CER_LOWER_ARM", eomc_ctrlboard_CER_LOWER_ARM},
+    {"CER_HAND", "eomc_ctrlboard_CER_HAND", eomc_ctrlboard_CER_HAND},
+    {"CER_WAIST", "eomc_ctrlboard_CER_WAIST", eomc_ctrlboard_CER_WAIST},
+    {"CER_UPPER_ARM", "eomc_ctrlboard_CER_UPPER_ARM", eomc_ctrlboard_CER_UPPER_ARM},
+    {"CER_BASE", "eomc_ctrlboard_CER_BASE", eomc_ctrlboard_CER_BASE},
+    {"CER_NECK", "eomc_ctrlboard_CER_NECK", eomc_ctrlboard_CER_NECK},
     
-    {"none", "eomc_maisvalue_none", eomc_maisvalue_none},
-    {"unknown", "eomc_maisvalue_unknown", eomc_maisvalue_unknown}    
-};  EO_VERIFYsizeof(s_eomc_map_of_maisvalues, (eomc_maisvalues_numberof+2)*sizeof(eOmap_str_str_u08_t));
-    
+    {"none", "eomc_ctrlboard_none", eomc_ctrlboard_none},
+    {"unknown", "eomc_ctrlboard_unknown", eomc_ctrlboard_unknown}
+};  EO_VERIFYsizeof(s_eomc_map_of_ctrlboards, (eomc_ctrlboards_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -210,30 +221,49 @@ extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecom
 }
 
 
-extern const char * eomc_maisvalue2string(eOmc_maisvalue_t maisvalue, eObool_t usecompactstring)
+extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
 {
-    const eOmap_str_str_u08_t * map = s_eomc_map_of_maisvalues;
-    const uint8_t size = eomc_maisvalues_numberof+2;
-    const uint8_t value = maisvalue;
-    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    uint8_t ret = 0;
     
-    if(NULL == str)
+    switch(encoder)
     {
-        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
-    }
+        
+        case eomc_enc_aea:
+        case eomc_enc_amo:
+        case eomc_enc_qenc: 
+        case eomc_enc_absanalog:
+        case eomc_enc_mais:    
+        case eomc_enc_onfoc:
+        {
+            ret = 1;
+        } break;
     
-    return(str);   
+        case eomc_enc_spichainof2:
+        {
+            ret = 2;
+        } break;
+  
+        case eomc_enc_spichainof3:
+        {
+            ret = 3;
+        } break;
 
+        default:
+        {
+            ret = 0;
+        } break;
+    } 
+    
+    return(ret);
 }
 
-
-extern eOmc_maisvalue_t eomc_string2maisvalue(const char * string, eObool_t usecompactstring)
+extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring)
 {
-    const eOmap_str_str_u08_t * map = s_eomc_map_of_maisvalues;
-    const uint8_t size = eomc_maisvalues_numberof+2;
-    const uint8_t defvalue = eomc_maisvalue_unknown;
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_ctrlboards;
+    const uint8_t size = eomc_ctrlboards_numberof+2;
+    const uint8_t defvalue = eomc_ctrlboard_unknown;
     
-    return((eOmc_maisvalue_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
+    return((eOmc_ctrlboard_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
 }
 
 

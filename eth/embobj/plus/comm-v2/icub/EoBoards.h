@@ -302,6 +302,22 @@ typedef enum
 } eObrd_port_t;
 
 enum { eobrd_ports_numberof = 16 };
+
+
+typedef enum
+{
+    eobrd_portmais_thumbproximal    = 0,
+    eobrd_portmais_thumbdistal      = 1,
+    eobrd_portmais_indexproximal    = 2,
+    eobrd_portmais_indexdistal      = 3,
+    eobrd_portmais_mediumproximal   = 4,
+    eobrd_portmais_mediumdistal     = 5,
+    eobrd_portmais_littlefingers    = 6,    
+    eobrd_portmais_none             = 31,    // as ... eobrd_port_none
+    eobrd_portmais_unknown          = 30     // as ... eobrd_port_unknown
+} eObrd_portmais_t;
+
+enum { eobrd_portmaiss_numberof = 7 };
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -335,8 +351,11 @@ extern const char * eoboards_port2string(eObrd_port_t port, eObrd_type_t board, 
 
 extern eObrd_port_t eoboards_connector2port(eObrd_connector_t connector, eObrd_type_t board);
 extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t board);
-    
 
+extern const char * eoboards_portmais2string(eObrd_portmais_t portmais, eObool_t usecompactstring);
+extern eObrd_portmais_t eoboards_string2portmais(const char * string, eObool_t usecompactstring);
+
+    
 
 /** @}            
     end of group eo_cevcwervcrev5555  
