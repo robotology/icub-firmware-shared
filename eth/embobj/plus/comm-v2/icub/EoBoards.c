@@ -55,9 +55,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 // - typedef with internal scope
 // --------------------------------------------------------------------------------------------------------------------
-
-enum { brdFirstEthBoard = eobrd_ethtype_ems4, brdLastEthBoard = eobrd_ethtype_ems4 + eobrd_ethtype_numberof - 1 };
-enum { eobrd_otherstype_numberof = 2 };
+// empty-section
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -70,34 +68,110 @@ enum { eobrd_otherstype_numberof = 2 };
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char * s_eoboards_can_strings[] =
+static const uint64_t s_eoboards_is_eth_mask =  (0x1LL << eobrd_ems4) | 
+                                                (0x1LL << eobrd_mc4plus) | 
+                                                (0x1LL << eobrd_mc2plus);
+
+static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) | 
+                                                (0x1LL << eobrd_mtb) | 
+                                                (0x1LL << eobrd_strain) |                                                
+                                                (0x1LL << eobrd_mais) |
+                                                (0x1LL << eobrd_foc) |
+                                                (0x1LL << eobrd_dsp) |
+                                                (0x1LL << eobrd_pic) |
+                                                (0x1LL << eobrd_2dc) |
+                                                (0x1LL << eobrd_bll) |
+                                                (0x1LL << eobrd_6sg) |
+                                                (0x1LL << eobrd_jog);
+       
+   
+static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
+{    
+    {"ems4", "eobrd_ems4", eobrd_ems4},
+    {"mc4plus", "eobrd_mc4plus", eobrd_mc4plus},
+    {"mc2plus", "eobrd_mc2plus", eobrd_mc2plus},
+    
+    {"mc4", "eobrd_mc4", eobrd_mc4},
+    {"mtb", "eobrd_mtb", eobrd_mtb},
+    {"strain", "eobrd_strain", eobrd_strain},
+    {"mais", "eobrd_mais", eobrd_mais},
+    {"foc", "eobrd_foc", eobrd_foc},
+    
+    {"dsp", "eobrd_dsp", eobrd_dsp},
+    {"pic", "eobrd_pic", eobrd_pic},
+    {"2dc", "eobrd_2dc", eobrd_2dc},
+    {"bll", "eobrd_bll", eobrd_bll},    
+    {"6sg", "eobrd_6sg", eobrd_6sg},
+    {"jog", "eobrd_jog", eobrd_jog},
+    
+    {"none", "eobrd_none", eobrd_none},
+    {"unknown", "eobrd_unknown", eobrd_unknown}
+};  EO_VERIFYsizeof(s_eoboards_map_of_boards, (eobrd_type_numberof+2)*sizeof(eOmap_str_str_u08_t));
+
+
+
+static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
+{    
+    {"P1", "eobrd_conn_P1",eobrd_conn_P1},
+    {"P2", "eobrd_conn_P2", eobrd_conn_P2},
+    {"P3", "eobrd_conn_P3", eobrd_conn_P3},
+    {"P4", "eobrd_conn_P4", eobrd_conn_P4},
+    {"P5", "eobrd_conn_P5", eobrd_conn_P5},
+    {"P6", "eobrd_conn_P6", eobrd_conn_P6},
+    {"P7", "eobrd_conn_P7", eobrd_conn_P7},
+    {"P8", "eobrd_conn_P8", eobrd_conn_P8},
+    {"P9", "eobrd_conn_P9", eobrd_conn_P9},
+    {"P10", "eobrd_conn_P10", eobrd_conn_P10},
+    {"P11", "eobrd_conn_P11", eobrd_conn_P11},
+    {"P12", "eobrd_conn_P12", eobrd_conn_P12},
+    {"P13", "eobrd_conn_P13", eobrd_conn_P13},
+    {"P14", "eobrd_conn_P14", eobrd_conn_P14},
+    {"P15", "eobrd_conn_P15", eobrd_conn_P15},
+    
+    {"none", "eobrd_conn_none", eobrd_conn_none},
+    {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
+};  EO_VERIFYsizeof(s_eoboards_map_of_connectors, (eobrd_connectors_numberof+2)*sizeof(eOmap_str_str_u08_t));
+
+
+static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
+{//  shortname  longname          port value        boardtype   connector  
+    {"emsP6", "eobrd_port_emsP6", eobrd_port_emsP6, eobrd_ems4, eobrd_conn_P6},
+    {"emsP7", "eobrd_port_emsP7", eobrd_port_emsP7, eobrd_ems4, eobrd_conn_P7},
+    {"emsP8", "eobrd_port_emsP8", eobrd_port_emsP8, eobrd_ems4, eobrd_conn_P8},
+    {"emsP9", "eobrd_port_emsP9", eobrd_port_emsP9, eobrd_ems4, eobrd_conn_P9},
+    {"emsP10", "eobrd_port_emsP10", eobrd_port_emsP10, eobrd_ems4, eobrd_conn_P10},
+    {"emsP11", "eobrd_port_emsP11", eobrd_port_emsP11, eobrd_ems4, eobrd_conn_P11},
+    
+    {"mc4plusP2", "eobrd_port_mc4plusP2", eobrd_port_mc4plusP2, eobrd_mc4plus, eobrd_conn_P2},
+    {"mc4plusP3", "eobrd_port_mc4plusP3", eobrd_port_mc4plusP3, eobrd_mc4plus, eobrd_conn_P3},
+    {"mc4plusP4", "eobrd_port_mc4plusP4", eobrd_port_mc4plusP4, eobrd_mc4plus, eobrd_conn_P4},
+    {"mc4plusP5", "eobrd_port_mc4plusP5", eobrd_port_mc4plusP5, eobrd_mc4plus, eobrd_conn_P5},
+    {"mc4plusP10", "eobrd_port_mc4plusP10", eobrd_port_mc4plusP10, eobrd_mc4plus, eobrd_conn_P10},
+    {"mc4plusP11", "eobrd_port_mc4plusP11", eobrd_port_mc4plusP11, eobrd_mc4plus, eobrd_conn_P11},
+    
+    {"mc2plusP2", "eobrd_port_mc2plusP2", eobrd_port_mc2plusP2, eobrd_mc2plus, eobrd_conn_P2},
+    {"mc2plusP3", "eobrd_port_mc2plusP3", eobrd_port_mc2plusP3, eobrd_mc2plus, eobrd_conn_P3},
+    {"mc2plusP10", "eobrd_port_mc2plusP10", eobrd_port_mc2plusP10, eobrd_mc2plus, eobrd_conn_P10},
+    {"mc2plusP11", "eobrd_port_mc2plusP11", eobrd_port_mc2plusP11, eobrd_mc2plus, eobrd_conn_P11},
+    
+    {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
+    {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}
+};  EO_VERIFYsizeof(s_eoboards_map_of_ports, (eobrd_ports_numberof+2)*sizeof(eOmap_str_str_u08_u08_u08_t));
+
+
+static const eOmap_str_str_u08_t s_boards_map_of_portmaiss[] =
 {
-    "eobrd_dsp",
-    "eobrd_pic",
-    "eobrd_2dc",
-    "eobrd_mc4",
-    "eobrd_bll",   
-    "eobrd_mtb",    
-    "eobrd_strain",
-    "eobrd_mais",
-    "eobrd_foc",
-    "eobrd_6sg",
-    "eobrd_jog"    
-};  EO_VERIFYsizeof(s_eoboards_can_strings, eobrd_cantype_numberof*sizeof(const char *));    
-
-
-static const char * s_eoboards_eth_strings[] =
-{
-    "eobrd_ems4",
-    "eobrd_mc4plus",
-    "eobrd_mc2plus"
-};  EO_VERIFYsizeof(s_eoboards_eth_strings, eobrd_ethtype_numberof*sizeof(const char *));    
-
-
-
-static const char * s_eoboards_string_none = "brdNONE";
-
-static const char * s_eoboards_string_unknown = "brdUNKNOWN";
+    {"thumbproximal", "eobrd_portmais_thumbproximal", eobrd_portmais_thumbproximal},
+    {"thumbdistal", "eobrd_portmais_thumbdistal", eobrd_portmais_thumbdistal},
+    {"indexproximal", "eobrd_portmais_indexproximal", eobrd_portmais_indexproximal},
+    {"indexdistal", "eobrd_portmais_indexdistal", eobrd_portmais_indexdistal},
+    {"mediumproximal", "eobrd_portmais_mediumproximal", eobrd_portmais_mediumproximal},
+    {"mediumdistal", "eobrd_portmais_mediumdistal", eobrd_portmais_mediumdistal},
+    {"littlefingers", "eobrd_portmais_littlefingers", eobrd_portmais_littlefingers},
+    
+    {"none", "eobrd_portmais_none", eobrd_portmais_none},
+    {"unknown", "eobrd_portmais_unknown", eobrd_portmais_unknown}    
+};  EO_VERIFYsizeof(s_boards_map_of_portmaiss, (eobrd_portmaiss_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -113,21 +187,23 @@ static const char * s_eoboards_string_unknown = "brdUNKNOWN";
 
 extern eObool_t eoboards_is_can(eObrd_type_t type)
 {
-    if(type < eobrd_cantype_numberof)
+    if(type > 63)
     {
-        return(eobool_true);     
-    }   
-    return(eobool_false);   
+        return(eobool_false);
+    }
+ 
+    return(eo_common_dword_bitcheck(s_eoboards_is_can_mask, type));      
 }
 
 
 extern eObool_t eoboards_is_eth(eObrd_type_t type)
 {
-   if((type >= brdFirstEthBoard) && (type <= brdLastEthBoard))
+    if(type > 63)
     {
-        return(eobool_true);     
-    }   
-    return(eobool_false);       
+        return(eobool_false);
+    }
+ 
+    return(eo_common_dword_bitcheck(s_eoboards_is_eth_mask, type));       
 }
 
 
@@ -172,111 +248,181 @@ extern eObrd_type_t eoboards_ethtype2type(eObrd_ethtype_t type)
     return((eObrd_type_t)type);
 }
 
-extern const char * eoboards_type2string(eObrd_type_t type)
-{
-//    const char * ret = s_eoboards_string_unknown;
-    
-    if(eobool_true == eoboards_is_can(type))
-    {
-        return(s_eoboards_can_strings[type]);
-    }
-    else if(eobool_true == eoboards_is_eth(type))
-    {
-        return(s_eoboards_eth_strings[type - brdFirstEthBoard]);
-    }
-    else if(eobrd_ethtype_none == type)
-    {
-        return(s_eoboards_string_none);
-    }
-    
-    return(s_eoboards_string_unknown);
-}
-
 
 extern eObrd_type_t eoboards_string2type(const char * name)
 {    
-    uint8_t i = 0;
-    if(NULL == name)
-    {
-        return(eobrd_unknown);
-    }
-    
-    for(i=0; i<eobrd_cantype_numberof; i++)
-    {
-        if(0 == strcmp(name, s_eoboards_can_strings[i]))
-        {
-            return((eObrd_type_t)(i+0));
-        }
-    }
-    
-    for(i=0; i<eobrd_ethtype_numberof; i++)
-    {
-        if(0 == strcmp(name, s_eoboards_eth_strings[i]))
-        {
-            return((eObrd_type_t)(i+brdFirstEthBoard));
-        }
-    } 
+    return(eoboards_string2type2(name, eobool_false));
+}
 
-    if(0 == strcmp(name, s_eoboards_string_none))
-    {
-        return(eobrd_none);
-    }        
+
+extern const char * eoboards_type2string(eObrd_type_t type)
+{
+    return(eoboards_type2string2(type, eobool_false));
+}
+
+
+extern eObrd_type_t eoboards_string2type2(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eoboards_map_of_boards;
+    const uint8_t size = eobrd_type_numberof+2;
+    const uint8_t defvalue = eobrd_unknown;
     
-    return(eobrd_unknown);    
+    return((eObrd_type_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));    
+}
+
+
+extern const char * eoboards_type2string2(eObrd_type_t type, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eoboards_map_of_boards;
+    const uint8_t size = eobrd_type_numberof+2;
+    const uint8_t value = type;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str); 
+}
+
+
+extern eObrd_connector_t eoboards_string2connector(const char * string, eObool_t usecompactstring)
+{    
+    const eOmap_str_str_u08_t * map = s_eoboards_map_of_connectors;
+    const uint8_t size = eobrd_connectors_numberof+2;
+    const uint8_t defvalue = eobrd_conn_unknown;
+    
+    return((eObrd_connector_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
+
+
+extern const char * eoboards_connector2string(eObrd_connector_t connector, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eoboards_map_of_connectors;
+    const uint8_t size = eobrd_connectors_numberof+2;
+    const uint8_t value = connector;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str); 
+}
+
+
+extern eObrd_port_t eoboards_string2port(const char * string, eObool_t usecompactstring)
+{    
+    const eOmap_str_str_u08_u08_u08_t * map = s_eoboards_map_of_ports;
+    const uint8_t size = eobrd_ports_numberof+2;
+    const uint8_t defvalue = eobrd_port_unknown;    
+    
+    uint8_t i = 0;    
+    if(NULL == string)
+    {
+        return((eObrd_port_t)defvalue);
+    }
+      
+    for(i=0; i<size; i++)
+    {
+        const char * str = (eobool_true == usecompactstring) ? map[i].str0 : map[i].str1;
+        if(0 == strcmp(string, str))
+        {
+            return((eObrd_port_t)map[i].val0);
+        }
+    }
+    
+    return((eObrd_port_t)defvalue);       
+}
+
+
+extern const char * eoboards_port2string(eObrd_port_t port, eObrd_type_t board, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_u08_u08_t * map = s_eoboards_map_of_ports;
+    const uint8_t size = eobrd_ports_numberof+2;
+    const uint8_t value0 = port;
+    const uint8_t value1 = board;
+    
+    uint8_t i = 0;
+    for(i=0; i<size; i++)
+    {
+        if((value0 == map[i].val0) && (value1 == map[i].val1))
+        {
+            const char * str = (eobool_true == usecompactstring) ? map[i].str0 : map[i].str1;
+            return(str);
+        }
+    }    
+    
+    return((eobool_true == usecompactstring) ? map[size-1].str0 : map[size-1].str1);   
+}
+
+
+extern eObrd_port_t eoboards_connector2port(eObrd_connector_t connector, eObrd_type_t board)
+{
+    const eOmap_str_str_u08_u08_u08_t * map = s_eoboards_map_of_ports;
+    const uint8_t size = eobrd_ports_numberof+2;
+    const uint8_t defvalue = eobrd_port_unknown;    
+    
+    uint8_t i = 0;    
+    for(i=0; i<size; i++)
+    {
+        if((board == map[i].val1) && (connector == map[i].val2))
+        {
+            return((eObrd_port_t)map[i].val0);
+        }
+    }
+    
+    return((eObrd_port_t)defvalue);               
+}
+
+
+extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t board)
+{
+    const eOmap_str_str_u08_u08_u08_t * map = s_eoboards_map_of_ports;
+    const uint8_t size = eobrd_ports_numberof+2;
+    const uint8_t defvalue = eobrd_conn_unknown;    
+    
+    uint8_t i = 0;    
+    for(i=0; i<size; i++)
+    {
+        if((board == map[i].val1) && (port == map[i].val0))
+        {
+            return((eObrd_connector_t)map[i].val2);
+        }
+    }
+    
+    return((eObrd_connector_t)defvalue);           
 }
 
 
 
-//extern eObrd_cantype_t eoboards_string2cantype(const char * name)
-//{
-//    if(NULL == name)
-//    {
-//        return(eobrd_cantype_unknown);
-//    }
-//    
-//    uint8_t i = 0;
-//    
-//    for(i=0; i<eobrd_cantype_numberof; i++)
-//    {
-//        if(0 == strcmp(name, s_eoboards_can_strings[i]))
-//        {
-//            return((eObrd_cantype_t)(i+0));
-//        }
-//    }
+extern const char * eobrd_portmais2string(eObrd_portmais_t portmais, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portmaiss;
+    const uint8_t size = eobrd_portmaiss_numberof+2;
+    const uint8_t value = portmais;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);   
 
-//    if(0 == strcmp(name, s_eoboards_string_none))
-//    {
-//        return(eobrd_cantype_none);
-//    }   
-//    
-//    return(eobrd_cantype_unknown);            
-//}
+}
 
 
-//extern eObrd_ethtype_t eoboards_string2ethtype(const char * name)
-//{
-//    if(NULL == name)
-//    {
-//        return(eobrd_ethtype_unknown);
-//    }
-//    
-//    uint8_t i = 0;
-//        
-//    for(i=0; i<eobrd_ethtype_numberof; i++)
-//    {
-//        if(0 == strcmp(name, s_eoboards_eth_strings[i]))
-//        {
-//            return((eObrd_ethtype_t)(i+brdFirstEthBoard));
-//        }
-//    } 
-// 
-//    if(0 == strcmp(name, s_eoboards_string_none))
-//    {
-//        return(eobrd_ethtype_none);
-//    }   
-//    
-//    return(eobrd_ethtype_unknown);    
-//}
+extern eObrd_portmais_t eomc_string2portmais(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portmaiss;
+    const uint8_t size = eobrd_portmaiss_numberof+2;
+    const uint8_t defvalue = eobrd_portmais_unknown;
+    
+    return((eObrd_portmais_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
+}
 
 
 // --------------------------------------------------------------------------------------------------------------------

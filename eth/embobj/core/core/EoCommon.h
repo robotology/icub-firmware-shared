@@ -611,6 +611,62 @@ typedef struct
 } eOdate_t;    
 
 
+/** @typedef    typedef struct eOmap_str_u08_t
+    @brief      it can be used to build a map containing a string and a value. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    uint8_t         val0;   
+} eOmap_str_u08_t;
+
+
+/** @typedef    typedef struct eOmap_str_u08_u08_t
+    @brief      it can be used to build a map containing a string and two values. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    uint8_t         val0;  
+    uint8_t         val1;    
+} eOmap_str_u08_u08_t;
+
+
+/** @typedef    typedef struct eOmap_str_str_u08_t
+    @brief      it can be used to build a map containing two strings and a value. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    const char *    str1;
+    uint8_t         val0;    
+} eOmap_str_str_u08_t;
+
+
+/** @typedef    typedef struct eOmap_str_str_u08_u08_t
+    @brief      it can be used to build a map containing two strings and two values. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    const char *    str1;
+    uint8_t         val0;
+    uint8_t         val1;    
+} eOmap_str_str_u08_u08_t;
+
+
+/** @typedef    typedef struct eOmap_str_str_u08_u08_u08_t
+    @brief      it can be used to build a map containing two strings and three values. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    const char *    str1;
+    uint8_t         val0;
+    uint8_t         val1;    
+    uint8_t         val2;    
+} eOmap_str_str_u08_u08_u08_t;
+
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
@@ -702,6 +758,10 @@ extern void eo_common_date_to_string(eOdate_t date, char *str, uint8_t size);
 extern eObool_t eo_common_string_to_date(const char *str, eOdate_t *date);
 
 extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *date);
+
+extern const char * eo_common_map_str_str_u08__value2string(const eOmap_str_str_u08_t * map, uint8_t size, uint8_t value, eObool_t usestr0);
+
+extern uint8_t eo_common_map_str_str_u08__string2value(const eOmap_str_str_u08_t * map, uint8_t size, const char * string, eObool_t usestr0, uint8_t defvalue);
 
 
 // - definition of extern public macros ------------------------------------------------------------------------------

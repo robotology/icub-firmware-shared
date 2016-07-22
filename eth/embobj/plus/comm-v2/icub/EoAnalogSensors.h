@@ -386,7 +386,7 @@ typedef struct
 {
     eObrd_location_t            on;
     uint8_t                     type; // use relevant entry of eOas_inertial_type_t
-} eOas_inertial_descriptor_t;   EO_VERIFYsizeof(eOas_inertial_descriptor_t, 2);
+} eOas_inertial_descriptor_t;   EO_VERIFYsizeof(eOas_inertial_descriptor_t, 2)
 
 
 // we use this struct to send activate-verify command to the board
@@ -395,7 +395,7 @@ typedef struct
 {
     eOarray_head_t                  head;
     eOas_inertial_descriptor_t      data[eOas_inertials_maxnumber];
-} eOas_inertial_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_inertial_arrayof_sensors_t, 100);
+} eOas_inertial_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_inertial_arrayof_sensors_t, 100)
 
 
 // this struct describes the data acquired by a single intertial sensor
@@ -406,7 +406,7 @@ typedef struct
     int16_t     x;              /**< x value */
     int16_t     y;              /**< y value */
     int16_t     z;              /**< z value */
-} eOas_inertial_data_t;         EO_VERIFYsizeof(eOas_inertial_data_t, 16);
+} eOas_inertial_data_t;         EO_VERIFYsizeof(eOas_inertial_data_t, 16)
 
 
 typedef struct
@@ -414,20 +414,20 @@ typedef struct
     uint8_t                         datarate;       /**< it specifies the acquisition rate in ms with accepted range [10, 200]. bug: if 250 the mtb emits every 35  */
     uint8_t                         filler[7];
     uint64_t                        enabled;        // bitmask of enabled sensors with reference to array-of-sensors
-} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 16);
+} eOas_inertial_config_t;           EO_VERIFYsizeof(eOas_inertial_config_t, 16)
 
 
 typedef struct
 {
     eOas_inertial_data_t           data;   /**< it is the most recent reading of the inertial sensors which are related to this entity */
-} eOas_inertial_status_t;          EO_VERIFYsizeof(eOas_inertial_status_t, 16);
+} eOas_inertial_status_t;          EO_VERIFYsizeof(eOas_inertial_status_t, 16)
 
 
 typedef struct
 {
     uint8_t                     enable;         /**< use 0 or 1*/
     uint8_t                     filler[7];
-} eOas_inertial_commands_t;     EO_VERIFYsizeof(eOas_inertial_commands_t, 8);
+} eOas_inertial_commands_t;     EO_VERIFYsizeof(eOas_inertial_commands_t, 8)
 
 
 typedef struct                      // size is: 16+16+8 = 40
@@ -435,7 +435,7 @@ typedef struct                      // size is: 16+16+8 = 40
     eOas_inertial_config_t         config;
     eOas_inertial_status_t         status;
     eOas_inertial_commands_t       cmmnds;
-} eOas_inertial_t;                 EO_VERIFYsizeof(eOas_inertial_t, 40);
+} eOas_inertial_t;                 EO_VERIFYsizeof(eOas_inertial_t, 40)
 
 
 

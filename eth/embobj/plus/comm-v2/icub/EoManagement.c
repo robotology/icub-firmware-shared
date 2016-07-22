@@ -79,11 +79,8 @@ static const char * s_mn_servicetype_strings[] =
     "eomn_serv_AS_inertials",
     "eomn_serv_SK_skin"
 };  EO_VERIFYsizeof(s_mn_servicetype_strings, eomn_serv_types_numberof*sizeof(const char *));    
-
-
-
+ 
 static const char * s_mn_servicetype_string_unknown = "eomn_serv_UNKNOWN";
-
 static const char * s_mn_servicetype_string_none = "eomn_serv_NONE";
 
 
@@ -115,14 +112,14 @@ extern const char * eomn_servicetype2string(eOmn_serv_type_t service)
 }
 
 extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
-{    
+{     
+    uint8_t i = 0;   
+    
     if(NULL == string)
     {
         return(eomn_serv_UNKNOWN);
     }
-    
-    uint8_t i = 0;
-    
+      
     for(i=0; i<eomn_serv_types_numberof; i++)
     {
         if(0 == strcmp(string, s_mn_servicetype_strings[i]))
@@ -140,34 +137,8 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
 }
 
 
-extern eOmn_serv_mc_sensor_nuomofcomponents_t eomn_mc_sensor_getnumofcomponets(eOmn_serv_mc_sensor_type_t type)
-{
 
-    switch(type)
-    {
-        case eomn_serv_mc_sensor_none:
-        case eomn_serv_mc_sensor_maxvalidvalue:
-            return eomn_serv_mc_sensor_nuomofcomp_zero;
-        
-        
-        case eomn_serv_mc_sensor_encoder_aea:
-        case eomn_serv_mc_sensor_encoder_amo:
-        case eomn_serv_mc_sensor_encoder_inc: 
-        case eomn_serv_mc_sensor_encoder_absanalog:
-        case eomn_serv_mc_sensor_mais:    
-        case eomn_serv_mc_sensor_encoder_onfoc:
-            return eomn_serv_mc_sensor_nuomofcomp_one;
-    
-        case eomn_serv_mc_sensor_encoder_spichainof2:
-            return eomn_serv_mc_sensor_nuomofcomp_two;
-  
-        case eomn_serv_mc_sensor_encoder_spichainof3:
-            return eomn_serv_mc_sensor_nuomofcomp_three;
 
-        default:
-            return eomn_serv_mc_sensor_nuomofcomp_zero;
-    } 
-}
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------
