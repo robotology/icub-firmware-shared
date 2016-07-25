@@ -1017,15 +1017,22 @@ typedef struct
     uint8_t                     dummy : 3;
 } eOmc_actuator_descriptor_pwm_t;
 
+typedef struct
+{
+    uint8_t                     port : 5;   // use eobrd_port_none
+    uint8_t                     dummy : 3;
+} eOmc_actuator_descriptor_none_t;
+
 
 // comment: the descriptor does not contain a .type fieles because we dont mix joints with different types of actuators.
 // however, we may transform the eOmc_actuator_descriptor_t to be a struct of size 2 bytes with .type and .data where
 // .data is a union with .foc, .mc4, .pwm
 typedef union
 {
-    eOmc_actuator_descriptor_foc_t     foc;
-    eOmc_actuator_descriptor_mc4_t     mc4;
-    eOmc_actuator_descriptor_pwm_t     pwm;
+    eOmc_actuator_descriptor_foc_t      foc;
+    eOmc_actuator_descriptor_mc4_t      mc4;
+    eOmc_actuator_descriptor_pwm_t      pwm;
+    eOmc_actuator_descriptor_none_t     none;
 } eOmc_actuator_descriptor_t; EO_VERIFYsizeof(eOmc_actuator_descriptor_t, 1);   
 
 
@@ -1052,7 +1059,7 @@ typedef enum
     eomc_pos_atjoint        = 1,
     eomc_pos_atmotor        = 2,
     eomc_pos_none           = 0,
-    eomc_pos_unknown        = 255    
+    eomc_pos_unknown        = 7     // must be 3 because we use it with 3 bits only
 } eOmc_position_t;
 
 enum { eomc_positions_numberof = 2 };
