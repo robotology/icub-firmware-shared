@@ -132,6 +132,19 @@ static const eOmap_str_str_u08_t s_eomc_map_of_ctrlboards[] =
 };  EO_VERIFYsizeof(s_eomc_map_of_ctrlboards, (eomc_ctrlboards_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
+static const eOmap_str_str_u08_t s_eomc_map_of_mc4broadcasts[] =
+{    
+    {"position", "eomc_mc4broadcast_position", eomc_mc4broadcast_position},
+    {"status", "eomc_mc4broadcast_status", eomc_mc4broadcast_status},
+    {"print", "eomc_mc4broadcast_print", eomc_mc4broadcast_print},
+    {"pidvalues", "eomc_mc4broadcast_pidvalues", eomc_mc4broadcast_pidvalues},
+
+    {"none", "eomc_mc4broadcast_none", eomc_mc4broadcast_none},
+    {"unknown", "eomc_mc4broadcast_unknown", eomc_mc4broadcast_unknown}
+};  EO_VERIFYsizeof(s_eomc_map_of_mc4broadcasts, (eomc_mc4broadcasts_numberof+2)*sizeof(eOmap_str_str_u08_t));
+
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -264,6 +277,48 @@ extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_
     const uint8_t defvalue = eomc_ctrlboard_unknown;
     
     return((eOmc_ctrlboard_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
+
+
+extern const char * eomc_controllerboard2string(eOmc_ctrlboard_t ctrlboard, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_ctrlboards;
+    const uint8_t size = eomc_ctrlboards_numberof+2;
+    const uint8_t value = ctrlboard;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);       
+}
+
+
+extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_mc4broadcasts;
+    const uint8_t size = eomc_mc4broadcasts_numberof+2;
+    const uint8_t defvalue = eomc_mc4broadcast_unknown;
+    
+    return((eOmc_mc4broadcast_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
+
+
+extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_mc4broadcasts;
+    const uint8_t size = eomc_mc4broadcasts_numberof+2;
+    const uint8_t value = mode;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);       
 }
 
 

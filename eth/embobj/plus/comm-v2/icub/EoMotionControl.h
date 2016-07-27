@@ -46,6 +46,7 @@ extern "C" {
 #include "EoMeasures.h"
 #include "EoBoards.h"
 #include "EOarray.h"
+#include "iCubCanProto_motorControlMessages.h"
 
 
 // - public #define  --------------------------------------------------------------------------------------------------
@@ -1092,7 +1093,7 @@ typedef struct
 typedef enum
 {
     eomc_ctrlboard_DONTCARE                 = 16,
-    eomc_ctrlboard_NO_CONTROL                = 0,
+    eomc_ctrlboard_NO_CONTROL               = 0,
     eomc_ctrlboard_ANKLE                    = 1,  
     eomc_ctrlboard_UPPERLEG                 = 2,  
     eomc_ctrlboard_WAIST                    = 3,  
@@ -1113,7 +1114,7 @@ typedef enum
     eomc_ctrlboard_CER_BASE                 = 21, 
     eomc_ctrlboard_CER_NECK                 = 22, 
     
-    eomc_ctrlboard_none                     = 0,
+    eomc_ctrlboard_none                     = 254,
     eomc_ctrlboard_unknown                  = 255 
     
 } eOmc_ctrlboard_t; // this enum was defined as eOeomc_ctrlboard_t in EOmcController.h
@@ -1151,11 +1152,28 @@ typedef struct
 } eOmc_mc4shifts_t; EO_VERIFYsizeof(eOmc_mc4shifts_t, 3);
 
 
+typedef enum
+{
+    eomc_mc4broadcast_position      = ICUBCANPROTO_PER_MC_MSG__POSITION,
+    eomc_mc4broadcast_status        = ICUBCANPROTO_PER_MC_MSG__STATUS,
+    eomc_mc4broadcast_print         = ICUBCANPROTO_PER_MC_MSG__PRINT,
+    eomc_mc4broadcast_pidvalues     = ICUBCANPROTO_PER_MC_MSG__PID_VAL,
+    
+    eomc_mc4broadcast_none          = 30,
+    eomc_mc4broadcast_unknown       = 31 
+} eOmc_mc4broadcast_t;
+
+enum { eomc_mc4broadcasts_numberof = 4 };
+
+
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
+
+extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder);
 
 
 extern const char * eomc_actuator2string(eOmc_actuator_t actuator, eObool_t usecompactstring);
@@ -1170,11 +1188,12 @@ extern const char * eomc_position2string(eOmc_position_t position, eObool_t usec
 extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecompactstring);
 
 
-extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder);
-
+extern const char * eomc_controllerboard2string(eOmc_ctrlboard_t ctrlboard, eObool_t usecompactstring);
 extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring);
 
 
+extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t usecompactstring);
+extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring);
 
 /** @}            
     end of group eo_motioncontrol  
