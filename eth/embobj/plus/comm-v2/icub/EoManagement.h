@@ -545,8 +545,9 @@ typedef struct
     eObrd_version_t                         mc4version; 
     eOmc_mc4shifts_t                        mc4shifts; 
     eObrd_canlocation_t                     mc4joints[12];    
-    eOmn_serv_config_data_as_mais_t         mais;                    
-} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 26);
+    eOmn_serv_config_data_as_mais_t         mais;
+    uint16_t                                broadcastflags; // use an | combination of (1<<x) where x is a value from eOmc_mc4broadcast_t
+} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 28);
 
 
 typedef struct
@@ -569,7 +570,7 @@ typedef struct
 
 
 typedef union                               
-{   // max(164, 26, 160, 164)
+{   // max(164, 28, 160, 164)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
