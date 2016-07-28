@@ -435,7 +435,7 @@ extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t
 
 
 
-extern const char * eobrd_portmais2string(eObrd_portmais_t portmais, eObool_t usecompactstring)
+extern const char * eoboards_portmais2string(eObrd_portmais_t portmais, eObool_t usecompactstring)
 {
     const eOmap_str_str_u08_t * map = s_boards_map_of_portmaiss;
     const uint8_t size = eobrd_portmaiss_numberof+2;
@@ -452,7 +452,7 @@ extern const char * eobrd_portmais2string(eObrd_portmais_t portmais, eObool_t us
 }
 
 
-extern eObrd_portmais_t eomc_string2portmais(const char * string, eObool_t usecompactstring)
+extern eObrd_portmais_t eoboards_string2portmais(const char * string, eObool_t usecompactstring)
 {
     const eOmap_str_str_u08_t * map = s_boards_map_of_portmaiss;
     const uint8_t size = eobrd_portmaiss_numberof+2;
