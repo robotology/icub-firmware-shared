@@ -118,12 +118,11 @@ extern const char * eoas_sensor2string(eOas_sensor_t sensor)
 
 extern eOas_sensor_t eoas_string2sensor(const char * string)
 {    
+    uint8_t i = 0;
     if(NULL == string)
     {
         return(eoas_unknown);
     }
-    
-    uint8_t i = 0;
     
     for(i=0; i<eoas_sensors_numberof; i++)
     {

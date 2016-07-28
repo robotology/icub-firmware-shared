@@ -344,6 +344,7 @@ extern const char * eoboards_port2string(eObrd_port_t port, eObrd_type_t board, 
     const uint8_t size = eobrd_ports_numberof+2;
     const uint8_t value0 = port;
     const uint8_t value1 = board;
+    uint8_t i = 0;
 
     if((eobrd_port_none == port) || (eobrd_none == board))
     {   // force the be equal _none
@@ -357,7 +358,6 @@ extern const char * eoboards_port2string(eObrd_port_t port, eObrd_type_t board, 
         board = eobrd_unknown;
     }
     
-    uint8_t i = 0;
     for(i=0; i<size; i++)
     {
         if((value0 == map[i].val0) && (value1 == map[i].val1))
@@ -376,6 +376,7 @@ extern eObrd_port_t eoboards_connector2port(eObrd_connector_t connector, eObrd_t
     const eOmap_str_str_u08_u08_u08_t * map = s_eoboards_map_of_ports;
     const uint8_t size = eobrd_ports_numberof+2;
     const uint8_t defvalue = eobrd_port_unknown;
+    uint8_t i = 0;
 
     if((eobrd_conn_none == connector) || (eobrd_none == board))
     {   // force to be equal to _none
@@ -388,8 +389,7 @@ extern eObrd_port_t eoboards_connector2port(eObrd_connector_t connector, eObrd_t
         connector = eobrd_conn_unknown;
         board = eobrd_unknown;
     }
-
-    uint8_t i = 0;    
+    
     for(i=0; i<size; i++)
     {
         if((board == map[i].val1) && (connector == map[i].val2))
@@ -407,7 +407,7 @@ extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t
     const eOmap_str_str_u08_u08_u08_t * map = s_eoboards_map_of_ports;
     const uint8_t size = eobrd_ports_numberof+2;
     const uint8_t defvalue = eobrd_conn_unknown;
-
+    uint8_t i = 0;
 
     if((eobrd_port_none == port) || (eobrd_none == board))
     {   // force to be equal to _none
@@ -421,7 +421,7 @@ extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t
         board = eobrd_unknown;
     }
     
-    uint8_t i = 0;    
+        
     for(i=0; i<size; i++)
     {
         if((board == map[i].val1) && (port == map[i].val0))
