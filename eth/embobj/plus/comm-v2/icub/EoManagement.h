@@ -309,7 +309,7 @@ typedef struct                      // size is 4+2+16+1+1+6+2 = 32 bytes
     eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
 	uint16_t						cloop_timings[3];
     uint8_t                         txdecimationfactor;
-    uint8_t                         filler01;
+    uint8_t                         boardtype;          // use eObrd_ethtype_t
 } eOmn_appl_status_t;               EO_VERIFYsizeof(eOmn_appl_status_t, 32);
 
                                          
