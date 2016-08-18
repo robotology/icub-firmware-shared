@@ -404,7 +404,7 @@ static eOresult_t s_eo_common_Q17_14_clip(int64_t in, eOq17_14_t *out)
 extern eOq17_14_t eo_common_float_to_Q17_14(float f_num)
 {   // check vs overflow and clip ....
     eOq17_14_t ret = 0;
-    int64_t rr = ((int64_t)f_num * 16384.0f);    // note: 16384.0 = 2^14
+    int64_t rr = (int64_t)(f_num * 16384.0f);    // note: 16384.0 = 2^14
     s_eo_common_Q17_14_clip(rr, &ret);
     return(ret);
 }
