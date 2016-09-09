@@ -621,17 +621,6 @@ typedef uint8_t  eOmc_jointId_t;
  **/
 typedef uint8_t  eOmc_torqueControlFilterType_t;
 
-typedef enum 
-{
-    eomc_encoder_NONE           = 0,
-    eomc_encoder_AEA            = 1,
-    eomc_encoder_ROIE           = 2,
-    eomc_encoder_HALL_ADC       = 3,
-    eomc_encoder_MAIS           = 4,
-    eomc_encoder_OPTICAL_QUAD   = 5,
-    eomc_encoder_HALL_MOTOR_SENS= 6
-    // etc
-} eOmc_EncoderType_t;
 
 
 /** @typedef    typedef struct eOmc_joint_config_t
@@ -649,7 +638,7 @@ typedef struct                  // size is: 40+40+40+8+12 +4+4+12+2 +1+1+4 = 168
     eOmc_motor_params_t         motor_params;
     eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
     uint8_t                     tcfiltertype;               /**< use values from eOmc_torqueControlFilterType_t */
-    uint8_t                     jntEncoderType;             /**< use values from eOmc_EncoderType_t */
+    uint8_t                     jntEncoderType;             /**< use values from eOmc_encoder_t */
     uint8_t                     filler04[4];
 } eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 168)
 
@@ -872,6 +861,7 @@ typedef struct
     eOmeas_current_t    overloadCurrent;
 } eOmc_current_limits_params_t;
 
+
 /** @typedef    typedef struct eOmc_motor_config_t
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
@@ -895,8 +885,8 @@ typedef struct                  // size is: 40+4+4+4+6+2+ 1+1+1+1+1+1 +2 + 8 +2+
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eObool_t                        hasSpeedEncoder;            /**< true if there is a speed encoder not useful for motor internal control */
     uint8_t                         filler01[1];
-    //uint8_t                         filler02[2];
 } eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 80)
+
 
 
 
@@ -1039,22 +1029,36 @@ typedef union
     eOmc_actuator_descriptor_none_t     none;
 } eOmc_actuator_descriptor_t; EO_VERIFYsizeof(eOmc_actuator_descriptor_t, 1)   
 
+//typedef enum 
+//{
+//    eomc_encoder_NONE           = 0,
+//    eomc_encoder_AEA            = 1,
+//    eomc_encoder_ROIE           = 2,
+//    eomc_encoder_HALL_ADC       = 3,
+//    eomc_encoder_MAIS           = 4,
+//    eomc_encoder_OPTICAL_QUAD   = 5,
+//    eomc_encoder_HALL_MOTOR_SENS= 6
+//    // etc
+//} eOmc_EncoderType_t;
+
 
 typedef enum
 {
-    eomc_enc_aea            = 1,
-    eomc_enc_amo            = 2,
-    eomc_enc_qenc           = 3,   
-    eomc_enc_spichainof2    = 4,   
-    eomc_enc_absanalog      = 5,   
-    eomc_enc_mais           = 6,          
-    eomc_enc_spichainof3    = 7, 
-    eomc_enc_onfoc          = 8,
+    eomc_enc_aea            = 1, 
+    eomc_enc_roie           = 2,
+    eomc_enc_absanalog      = 3, // or HALL_ADC
+    eomc_enc_mais           = 4, // MAIS 
+    eomc_enc_qenc           = 5, // or OPTICAL_QUAD
+    eomc_enc_hallmotor      = 6, // HALL_MOTOR_SENS    
+    eomc_enc_spichainof2    = 7,  
+    eomc_enc_spichainof3    = 8,    
+    eomc_enc_amo            = 9, 
+    
     eomc_enc_none           = 0,
     eomc_enc_unknown        = 255    
 } eOmc_encoder_t;
 
-enum { eomc_encoders_numberof = 8 };
+enum { eomc_encoders_numberof = 9 };
 enum { eomc_encoders_maxnumberofcomponents = 3 };
 
 
@@ -1125,7 +1129,63 @@ typedef enum
 enum { eomc_ctrlboards_numberof = 19 };
 
 
-typedef eOq17_14_t eOmc_4x4_matrix_t[4][4];
+typedef enum
+{
+    eomc_motorcontrol_pwm       = 1,
+    eomc_motorcontrol_vel       = 2,
+    eomc_motorcontrol_iqq       = 3,
+    eomc_motorcontrol_pos       = 4,    
+    
+    eomc_motorcontrol_none      = 0,
+    eomc_motorcontrol_unknown   = 7    
+} eOmc_motorcontroltype_t;
+
+
+enum { eomc_motorcontroltypes_numberof = 4 };
+
+
+typedef enum
+{
+    eomc_jsetconstraint_tobedef = 1,
+    eomc_jsetconstraint_cerhand = 2,
+    eomc_jsetconstraint_trifid  = 3,
+     
+    eomc_jsetconstraint_none    = 0,
+    eomc_jsetconstraint_unknown = 7    
+} eOmc_jsetconstraint_t;
+
+
+enum { eomc_jsetconstraints_numberof = 3 };
+
+
+typedef struct
+{
+    uint8_t     candotorquecontrol          : 1;        // use eobool_true / eobool_false
+    uint8_t     motorcontroltype            : 3;        // use eOmc_motorcontroltype_t
+    uint8_t     dummy                       : 4;   
+} eOmc_joint_props_t;   EO_VERIFYsizeof(eOmc_joint_props_t, 1);
+
+
+typedef struct
+{
+    uint8_t     motorcontroltype            : 3;        // use eOmc_motorcontroltype_t
+    uint8_t     dummy                       : 5;   
+} eOmc_motor_props_t; EO_VERIFYsizeof(eOmc_motor_props_t, 1);
+
+
+typedef struct
+{
+    uint8_t     candotorquecontrol          : 1;        // use eobool_true / eobool_false
+    uint8_t     usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
+    uint8_t     motorcontroltype            : 3;        // use eOmc_motorcontroltype_t
+    uint8_t     specialconstraint           : 3;        // use eOmc_jsetconstraint_t
+} eOmc_jset_props_t; EO_VERIFYsizeof(eOmc_jset_props_t, 1);
+
+
+// size is 
+typedef eOq17_14_t eOmc_4x6_matrix_t[4][6]; EO_VERIFYsizeof(eOmc_4x6_matrix_t, 96);
+
+typedef eOq17_14_t eOmc_4x4_matrix_t[4][4]; EO_VERIFYsizeof(eOmc_4x4_matrix_t, 64);
 
 typedef enum
 {
@@ -1138,11 +1198,25 @@ typedef enum
 
 
 typedef struct 
-{
+{   // 4+64+64=132
     uint8_t                 joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
     eOmc_4x4_matrix_t       joint2motor;
     eOmc_4x4_matrix_t       encoder2joint;    
 } eOmc_4jomo_coupling_t;    EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 132)
+
+
+typedef struct 
+{   // 4+4+4+4+64+64+64+96=304
+    uint8_t                 joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
+    eOmc_jset_props_t       jsetprops[4];
+    eOmc_joint_props_t      jointprops[4];
+    eOmc_motor_props_t      motorprops[4];
+    eOmc_4x4_matrix_t       joint2motor;
+    eOmc_4x4_matrix_t       m2;
+    eOmc_4x4_matrix_t       m3; 
+    eOmc_4x6_matrix_t       encoder2joint;      
+} eOmc_4jomo_coupling2_t;   EO_VERIFYsizeof(eOmc_4jomo_coupling2_t, 304);
+// requires to increase EOMTHEEMSAPPLCFG_TRANSCEIVER_ROPCAPACITY from 256 to 384 ....
 
 
 typedef struct
@@ -1199,6 +1273,15 @@ extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_
 extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t usecompactstring);
 extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring);
 
+
+extern const char * eomc_motorcontroltype2string(eOmc_motorcontroltype_t motorcontroltype, eObool_t usecompactstring);
+extern eOmc_motorcontroltype_t eomc_string2motorcontroltyp(const char * string, eObool_t usecompactstring);
+
+
+extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring);
+extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstraint, eObool_t usecompactstring);
+
+
 /** @}            
     end of group eo_motioncontrol  
  **/
@@ -1211,6 +1294,7 @@ extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_
 
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
+
 
 
 

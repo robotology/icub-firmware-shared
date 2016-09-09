@@ -541,6 +541,16 @@ typedef struct
 
 
 typedef struct
+{   // 1+5+2+24+304=336   
+    uint8_t                                 boardtype4mccontroller; // use eOmc_ctrlboard_t
+    eObrd_version_t                         version;
+    uint8_t                                 filler[2];  
+    eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
+    eOmc_4jomo_coupling2_t                  jomocoupling;  
+} eOmn_serv_config_data_mc_foc2_t;          EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc2_t, 336);
+
+
+typedef struct
 {   // 5+3+12+6=26
     eObrd_version_t                         mc4version; 
     eOmc_mc4shifts_t                        mc4shifts; 
@@ -577,6 +587,14 @@ typedef union
     eOmn_serv_config_data_mc_mc4plusmais_t  mc4plusmais_based;
 } eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 164) 
 
+typedef union                               
+{   // max(336, 28, 160, 164)
+    eOmn_serv_config_data_mc_foc2_t         foc_based;
+    eOmn_serv_config_data_mc_mc4_t          mc4_based;
+    eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
+    eOmn_serv_config_data_mc_mc4plusmais_t  mc4plusmais_based;
+} eOmn_serv_config_data_mc2_t;   
+
 
 typedef union                               
 {   // max(108, 164, 24)
@@ -586,6 +604,13 @@ typedef union
 } eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 164) 
 
 
+typedef union                               
+{   // max(108, 164, 24)
+    eOmn_serv_config_data_as_t              as;
+    eOmn_serv_config_data_mc2_t             mc;
+    eOmn_serv_config_data_sk_t              sk;   
+} eOmn_serv_config_data2_t;                 EO_VERIFYsizeof(eOmn_serv_config_data2_t, 336); 
+
 
 typedef struct                              
 {   // 1+3+164=168
@@ -593,6 +618,14 @@ typedef struct
     uint8_t                                 filler[3];
     eOmn_serv_config_data_t                 data;   
 } eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 168) 
+
+
+typedef struct                              
+{   // 1+3+336=340
+    uint8_t                                 type;           // use eOmn_serv_type_t to identify what kind of service it is
+    uint8_t                                 filler[3];
+    eOmn_serv_config_data2_t                data;   
+} eOmn_serv_configuration2_t;               EO_VERIFYsizeof(eOmn_serv_configuration2_t, 340); 
 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
@@ -640,6 +673,12 @@ typedef union
 } eOmn_serv_parameter_t;
 
 
+typedef union
+{
+    eOmn_serv_configuration2_t  configuration;
+    eOmn_serv_arrayof_id32_t    arrayofid32;
+} eOmn_serv_parameter2_t;
+
 typedef struct                                
 {   // 1+3+168=172
     uint8_t                                 operation;              // use eOmn_serv_operation_t
@@ -649,11 +688,25 @@ typedef struct
 } eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 172)
 
 
+typedef struct                                
+{   // 1+3+340=344
+    uint8_t                                 operation;              // use eOmn_serv_operation_t
+    uint8_t                                 category;               // use eOmn_serv_category_t
+    uint8_t                                 filler[2];
+    eOmn_serv_parameter2_t                  parameter;
+} eOmn_service_cmmnds_command2_t;           EO_VERIFYsizeof(eOmn_service_cmmnds_command2_t, 344);
+
+
 typedef struct
 {   // 172
     eOmn_service_cmmnds_command_t           command;    
 } eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 172)
 
+typedef struct
+{   // 172
+    eOmn_service_cmmnds_command2_t          command;    
+} eOmn_service_cmmnds2_t;                   EO_VERIFYsizeof(eOmn_service_cmmnds2_t, 344);
+// requires to increase EOMTHEEMSAPPLCFG_TRANSCEIVER_ROPCAPACITY from 256 to 384 ....
 
 typedef struct
 {   // 1+1+1+1+28=32

@@ -82,13 +82,14 @@ static const eOmap_str_str_u08_t s_eomc_map_of_actuators[] =
 static const eOmap_str_str_u08_t s_eomc_map_of_encoders[] =
 {    
     {"aea", "eomc_enc_aea",eomc_enc_aea},
-    {"amo", "eomc_enc_amo", eomc_enc_amo},
-    {"qenc", "eomc_enc_qenc", eomc_enc_qenc},
-    {"spichainof2", "eomc_enc_spichainof2", eomc_enc_spichainof2},
-    {"absanalog", "eomc_enc_absanalog", eomc_enc_absanalog},
+    {"roie", "eomc_enc_roie",eomc_enc_roie},
+    {"absanalog", "eomc_enc_absanalog", eomc_enc_absanalog},    
     {"mais", "eomc_enc_mais", eomc_enc_mais},
-    {"spichainof3", "eomc_enc_spichainof3", eomc_enc_spichainof3},
-    {"onfoc", "eomc_enc_onfoc", eomc_enc_onfoc},
+    {"qenc", "eomc_enc_qenc", eomc_enc_qenc},
+    {"hallmotor", "eomc_enc_hallmotor", eomc_enc_hallmotor},
+    {"spichainof2", "eomc_enc_spichainof2", eomc_enc_spichainof2},
+    {"spichainof3", "eomc_enc_spichainof3", eomc_enc_spichainof3},    
+    {"amo", "eomc_enc_amo", eomc_enc_amo},
 
     {"none", "eomc_enc_none", eomc_enc_none},
     {"unknown", "eomc_enc_unknown", eomc_enc_unknown}
@@ -144,6 +145,28 @@ static const eOmap_str_str_u08_t s_eomc_map_of_mc4broadcasts[] =
     {"unknown", "eomc_mc4broadcast_unknown", eomc_mc4broadcast_unknown}
 };  EO_VERIFYsizeof(s_eomc_map_of_mc4broadcasts, (eomc_mc4broadcasts_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
+
+static const eOmap_str_str_u08_t s_eomc_map_of_motorcontroltypes[] =
+{    
+    {"pwm", "eomc_motorcontrol_pwm", eomc_motorcontrol_pwm},
+    {"vel", "eomc_motorcontrol_vel", eomc_motorcontrol_vel},
+    {"iqq", "eomc_motorcontrol_iqq", eomc_motorcontrol_iqq},
+    {"pos", "eomc_motorcontrol_pos", eomc_motorcontrol_pos},
+
+    {"none", "eomc_motorcontrol_none", eomc_motorcontrol_none},
+    {"unknown", "eomc_motorcontrol_unknown", eomc_motorcontrol_unknown}
+};  EO_VERIFYsizeof(s_eomc_map_of_motorcontroltypes, (eomc_motorcontroltypes_numberof+2)*sizeof(eOmap_str_str_u08_t));
+
+
+static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
+{    
+    {"tobedef", "eomc_jsetconstraint_tobedef", eomc_jsetconstraint_tobedef},
+    {"cerhand", "eomc_jsetconstraint_cerhand", eomc_jsetconstraint_cerhand},
+    {"trifid", "eomc_jsetconstraint_trifid", eomc_jsetconstraint_trifid},
+
+    {"none", "eomc_jsetconstraint_none", eomc_jsetconstraint_none},
+    {"unknown", "eomc_jsetconstraint_unknown", eomc_jsetconstraint_unknown}
+};  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -240,14 +263,14 @@ extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
     uint8_t ret = 0;
     
     switch(encoder)
-    {
-        
+    {        
         case eomc_enc_aea:
-        case eomc_enc_amo:
-        case eomc_enc_qenc: 
+        case eomc_enc_roie:
         case eomc_enc_absanalog:
         case eomc_enc_mais:    
-        case eomc_enc_onfoc:
+        case eomc_enc_qenc:
+        case eomc_enc_hallmotor: 
+        case eomc_enc_amo: 
         {
             ret = 1;
         } break;
@@ -321,6 +344,58 @@ extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t 
     
     return(str);       
 }
+
+extern eOmc_motorcontroltype_t eomc_string2motorcontroltype(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_motorcontroltypes;
+    const uint8_t size = eomc_motorcontroltypes_numberof+2;
+    const uint8_t defvalue = eomc_motorcontrol_unknown;
+    
+    return((eOmc_motorcontroltype_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
+
+
+extern const char * eomc_motorcontroltype2string(eOmc_motorcontroltype_t motorcontroltype, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_motorcontroltypes;
+    const uint8_t size = eomc_motorcontroltypes_numberof+2;
+    const uint8_t value = motorcontroltype;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);       
+}
+
+
+extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_jsetconstraints;
+    const uint8_t size = eomc_jsetconstraints_numberof+2;
+    const uint8_t defvalue = eomc_jsetconstraint_unknown;
+    
+    return((eOmc_jsetconstraint_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
+
+
+extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstraint, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_jsetconstraints;
+    const uint8_t size = eomc_jsetconstraints_numberof+2;
+    const uint8_t value = jsetconstraint;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);       
+}
+
 
 
 
