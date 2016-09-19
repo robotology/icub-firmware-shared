@@ -867,7 +867,7 @@ typedef struct
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+2+8+2 = 76
+typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+2+2+8 = 76
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
     int32_t                         gearboxratio;               /**< the gearbox reduction ration */
@@ -884,10 +884,10 @@ typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+2+8+2 = 76
     uint8_t                         useSpeedFbkFromMotor  :1;
     uint8_t                         dummy                 :2;
     uint8_t                         rotorEncoderType;           /**< rotor encoder type */
+    uint8_t                         filler01;
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
-    eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
-    uint8_t                         filler01[3];
+    eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
 } eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 76);
 
 
@@ -1135,21 +1135,25 @@ typedef enum
     eomc_motorcontrol_pwm       = 1,
     eomc_motorcontrol_vel       = 2,
     eomc_motorcontrol_iqq       = 3,
+    
+    eomc_motorcontrol_unknown   = 255
 } eOmc_motorcontroltype_t;
 
 
-enum { eomc_motorcontroltypes_numberof = 4 };
+enum { eomc_motorcontroltypes_numberof = 3 };
 
 
 typedef enum
 {
     eomc_jsetconstraint_none    = 0,
     eomc_jsetconstraint_cerhand = 1,
-    eomc_jsetconstraint_trifid  = 2
-} eOmc_jsetconstraint_type_t;
+    eomc_jsetconstraint_trifid  = 2,
+    
+    eomc_jsetconstraint_unknown   = 255
+} eOmc_jsetconstraint_t;
 
 
-enum { eomc_jsetconstrainttypes_numberof = 2 };
+enum { eomc_jsetconstraints_numberof = 3 };
 
 
 // size is 
@@ -1182,15 +1186,15 @@ typedef struct
 // requires to increase EOMTHEEMSAPPLCFG_TRANSCEIVER_ROPCAPACITY from 256 to 384 ....
 typedef struct
 {   // 1 +3 +4+ 4 = 12
-    uint8_t type;           //it contains type of constraints. Use eOmc_jsetconstraint_type_t enum
+    uint8_t type;           //it contains type of constraints. Use eOmc_jsetconstraint_t enum
     uint8_t filler[3];
     float   param1;
     float   param2;
-} eOmc_jointSet_constraints_t;
+} eOmc_jointSet_constraints_t;  EO_VERIFYsizeof(eOmc_jointSet_constraints_t, 12);
 
 
 typedef struct
-{   1+ 3+ 12 = 16
+{   //1+ 3+ 12 = 16
     uint8_t                         candotorquecontrol          : 1;        // use eobool_true / eobool_false
     uint8_t                         usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
     uint8_t                         motorcontroltype            : 3;        // use eOmc_motorcontroltype_t
@@ -1201,13 +1205,13 @@ typedef struct
 
 
 typedef struct
-{   // 4+ 16 + 64 + 64 + 96 = 244
+{   // 4+ 64 + 64 + 64 + 96 = 292
     uint8_t                         joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
     eOmc_jointset_configuration_t   jsetcfg[4];
     eOmc_4x4_matrix_t               joint2motor;
     eOmc_4x4_matrix_t               motor2joint; 
     eOmc_4x6_matrix_t               encoder2joint;
-} eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 244);
+} eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292);
 //end VALE
 
 

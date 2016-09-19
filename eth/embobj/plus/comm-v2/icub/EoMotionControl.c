@@ -151,22 +151,20 @@ static const eOmap_str_str_u08_t s_eomc_map_of_motorcontroltypes[] =
     {"pwm", "eomc_motorcontrol_pwm", eomc_motorcontrol_pwm},
     {"vel", "eomc_motorcontrol_vel", eomc_motorcontrol_vel},
     {"iqq", "eomc_motorcontrol_iqq", eomc_motorcontrol_iqq},
-    {"pos", "eomc_motorcontrol_pos", eomc_motorcontrol_pos},
-
-    {"none", "eomc_motorcontrol_none", eomc_motorcontrol_none},
+    
     {"unknown", "eomc_motorcontrol_unknown", eomc_motorcontrol_unknown}
-};  EO_VERIFYsizeof(s_eomc_map_of_motorcontroltypes, (eomc_motorcontroltypes_numberof+2)*sizeof(eOmap_str_str_u08_t));
+
+};  EO_VERIFYsizeof(s_eomc_map_of_motorcontroltypes, (eomc_motorcontroltypes_numberof +1)*sizeof(eOmap_str_str_u08_t));
 
 
 static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
 {    
-    {"tobedef", "eomc_jsetconstraint_tobedef", eomc_jsetconstraint_tobedef},
+    {"none", "eomc_jsetconstraint_none", eomc_jsetconstraint_none},
     {"cerhand", "eomc_jsetconstraint_cerhand", eomc_jsetconstraint_cerhand},
     {"trifid", "eomc_jsetconstraint_trifid", eomc_jsetconstraint_trifid},
 
-    {"none", "eomc_jsetconstraint_none", eomc_jsetconstraint_none},
     {"unknown", "eomc_jsetconstraint_unknown", eomc_jsetconstraint_unknown}
-};  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof+2)*sizeof(eOmap_str_str_u08_t));
+};  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof + 1)*sizeof(eOmap_str_str_u08_t));
 
 
 // --------------------------------------------------------------------------------------------------------------------
