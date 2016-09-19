@@ -189,11 +189,10 @@ typedef enum
 {
      eoprot_tag_mc_controller_wholeitem                              = 0,
      eoprot_tag_mc_controller_config                                 = 1,
-     eoprot_tag_mc_controller_config_jointcoupling                   = 2,
-     eoprot_tag_mc_controller_status                                 = 3
+     eoprot_tag_mc_controller_status                                 = 2
 } eOprot_tag_mc_controller_t;
 
-enum { eoprot_tags_mc_controller_numberof = 4 };  // it MUST be equal to the number of tags
+enum { eoprot_tags_mc_controller_numberof = 3 };  // it MUST be equal to the number of tags
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_controller_t
@@ -205,11 +204,10 @@ typedef enum
 {
     eoprot_rwm_mc_controller_wholeitem                              = eo_nv_rwmode_RO,
     eoprot_rwm_mc_controller_config                                 = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_controller_config_jointcoupling                   = eo_nv_rwmode_RW,
     eoprot_rwm_mc_controller_status                                 = eo_nv_rwmode_RO
 } eOprot_rwm_mc_controller_t; 
 
-enum { eoprot_rwms_mc_controller_numberof = 4 };  // it MUST be equal to the number of rw modes 
+enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the number of rw modes 
 
 
 // - structures implementing the endpoints
@@ -353,12 +351,8 @@ extern void eoprot_fun_UPDT_mc_controller_wholeitem(const EOnv* nv, const eOropd
 extern void eoprot_fun_INIT_mc_controller_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_controller_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_controller_config_jointcoupling(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_controller_config_jointcoupling(const EOnv* nv, const eOropdescriptor_t* rd);
-
 extern void eoprot_fun_INIT_mc_controller_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_controller_status(const EOnv* nv, const eOropdescriptor_t* rd);
-
 
 /** @}            
     end of group eo_EoProtocolMC  
