@@ -531,23 +531,12 @@ typedef union
 
 
 typedef struct
-{   // 1+5+2+24+132=164   
-    uint8_t                                 boardtype4mccontroller; // use eOmc_ctrlboard_t
+{   //5+3+24+244=276   
     eObrd_version_t                         version;
-    uint8_t                                 filler[2];  
+    uint8_t                                 filler[3];  
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;  
-} eOmn_serv_config_data_mc_foc_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 164)
-
-
-typedef struct
-{   // 1+5+2+24+304=336   
-    uint8_t                                 boardtype4mccontroller; // use eOmc_ctrlboard_t
-    eObrd_version_t                         version;
-    uint8_t                                 filler[2];  
-    eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
-    eOmc_4jomo_coupling2_t                  jomocoupling;  
-} eOmn_serv_config_data_mc_foc2_t;          EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc2_t, 336);
+} eOmn_serv_config_data_mc_foc_t;          EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 276);
 
 
 typedef struct
@@ -561,22 +550,19 @@ typedef struct
 
 
 typedef struct
-{   // 1+3+24+132=160
-    uint8_t                                 boardtype4mccontroller;     // use eOmc_ctrlboard_t
-    uint8_t                                 filler[3];
+{   // 24+244=268
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors; 
     eOmc_4jomo_coupling_t                   jomocoupling;   
-} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 160)
+} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 268);
 
 
 typedef struct
-{   // 1+6+1+24+132=164
-    uint8_t                                 boardtype4mccontroller;     // use eOmc_ctrlboard_t
+{   // 6+2+24+244=276
     eOmn_serv_config_data_as_mais_t         mais;
-    uint8_t                                 filler[1];
+    uint8_t                                 filler[2];
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;   
-} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 164)
+} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 276);
 
 
 typedef union                               
