@@ -178,18 +178,18 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidtorque 
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_limitsofjoint =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_userlimits =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.limitsofjoint),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_limitsofjoint,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.userlimits),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_userlimits,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.config.limitsofjoint,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.config.userlimits,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_limitsofjoint,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_limitsofjoint
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_userlimits,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_userlimits
 #endif
 }; 
 
@@ -691,7 +691,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_config_pidposition,
     &eoprot_mc_rom_descriptor_joint_config_pidvelocity,
     &eoprot_mc_rom_descriptor_joint_config_pidtorque,
-    &eoprot_mc_rom_descriptor_joint_config_limitsofjoint,
+    &eoprot_mc_rom_descriptor_joint_config_userlimits,
     &eoprot_mc_rom_descriptor_joint_config_impedance,
     &eoprot_mc_rom_descriptor_joint_config_motor_params,
     &eoprot_mc_rom_descriptor_joint_config_tcfiltertype,
@@ -786,7 +786,7 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_config_pidposition",
     "eoprot_tag_mc_joint_config_pidvelocity",
     "eoprot_tag_mc_joint_config_pidtorque",
-    "eoprot_tag_mc_joint_config_limitsofjoint",
+    "eoprot_tag_mc_joint_config_userlimits",
     "eoprot_tag_mc_joint_config_impedance",
     "eoprot_tag_mc_joint_config_motor_params",
     "eoprot_tag_mc_joint_config_tcfiltertype",

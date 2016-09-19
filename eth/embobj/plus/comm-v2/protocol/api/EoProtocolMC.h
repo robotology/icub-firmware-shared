@@ -74,7 +74,7 @@ typedef enum
     eoprot_tag_mc_joint_config_pidposition                          =  2,
     eoprot_tag_mc_joint_config_pidvelocity                          =  3,
     eoprot_tag_mc_joint_config_pidtorque                            =  4,
-    eoprot_tag_mc_joint_config_limitsofjoint                        =  5,
+    eoprot_tag_mc_joint_config_userlimits                           =  5,
     eoprot_tag_mc_joint_config_impedance                            =  6,
     eoprot_tag_mc_joint_config_motor_params                         =  7,
     eoprot_tag_mc_joint_config_tcfiltertype                         =  8,
@@ -109,7 +109,7 @@ typedef enum
     eoprot_rwm_mc_joint_config_pidposition                          = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidvelocity                          = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidtorque                            = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_config_limitsofjoint                        = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_userlimits                           = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_impedance                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_motor_params                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_tcfiltertype                         = eo_nv_rwmode_RW,
@@ -260,8 +260,8 @@ extern void eoprot_fun_UPDT_mc_joint_config_pidvelocity(const EOnv* nv, const eO
 extern void eoprot_fun_INIT_mc_joint_config_pidtorque(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_pidtorque(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_config_limitsofjoint(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_config_limitsofjoint(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_config_userlimits(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_userlimits(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_joint_config_impedance(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_impedance(const EOnv* nv, const eOropdescriptor_t* rd);
