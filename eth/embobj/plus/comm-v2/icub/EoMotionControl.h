@@ -1132,15 +1132,15 @@ enum { eomc_ctrlboards_numberof = 19 };
 
 typedef enum
 {
-    eomc_motorcontrol_pwm       = 1,
-    eomc_motorcontrol_vel       = 2,
-    eomc_motorcontrol_iqq       = 3,
+    eomc_pidoutputtype_pwm       = 1,
+    eomc_pidoutputtype_vel       = 2,
+    eomc_pidoutputtype_iqq       = 3,
     
-    eomc_motorcontrol_unknown   = 255
-} eOmc_motorcontroltype_t;
+    eomc_pidoutputtype_unknown   = 255
+} eOmc_pidoutputtype_t;
 
 
-enum { eomc_motorcontroltypes_numberof = 3 };
+enum { eomc_pidoutputtypes_numberof = 3 };
 
 
 typedef enum
@@ -1197,7 +1197,7 @@ typedef struct
 {   //1+ 3+ 12 = 16
     uint8_t                         candotorquecontrol          : 1;        // use eobool_true / eobool_false
     uint8_t                         usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
-    uint8_t                         motorcontroltype            : 3;        // use eOmc_motorcontroltype_t
+    uint8_t                         pidoutputtype               : 3;        // use eOmc_motorcontroltype_t
     uint8_t                         dummy                       : 3;        
     uint8_t                         filler[3];
     eOmc_jointSet_constraints_t     constraints;
@@ -1270,8 +1270,8 @@ extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t 
 extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring);
 
 
-extern const char * eomc_motorcontroltype2string(eOmc_motorcontroltype_t motorcontroltype, eObool_t usecompactstring);
-extern eOmc_motorcontroltype_t eomc_string2motorcontroltyp(const char * string, eObool_t usecompactstring);
+extern const char * eomc_pidoutputtype2string(eOmc_pidoutputtype_t pidoutputtype, eObool_t usecompactstring);
+extern eOmc_pidoutputtype_t eomc_string2pidoutputtype(const char * string, eObool_t usecompactstring);
 
 
 extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring);

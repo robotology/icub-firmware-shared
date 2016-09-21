@@ -146,15 +146,15 @@ static const eOmap_str_str_u08_t s_eomc_map_of_mc4broadcasts[] =
 };  EO_VERIFYsizeof(s_eomc_map_of_mc4broadcasts, (eomc_mc4broadcasts_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
-static const eOmap_str_str_u08_t s_eomc_map_of_motorcontroltypes[] =
+static const eOmap_str_str_u08_t s_eomc_map_of_pidoutputtypes[] =
 {    
-    {"pwm", "eomc_motorcontrol_pwm", eomc_motorcontrol_pwm},
-    {"vel", "eomc_motorcontrol_vel", eomc_motorcontrol_vel},
-    {"iqq", "eomc_motorcontrol_iqq", eomc_motorcontrol_iqq},
+    {"pwm", "eomc_pidoutputtype_pwm", eomc_pidoutputtype_pwm},
+    {"vel", "eomc_pidoutputtype_vel", eomc_pidoutputtype_vel},
+    {"iqq", "eomc_pidoutputtype_iqq", eomc_pidoutputtype_iqq},
     
-    {"unknown", "eomc_motorcontrol_unknown", eomc_motorcontrol_unknown}
+    {"unknown", "eomc_pidoutputtype_unknown", eomc_pidoutputtype_unknown}
 
-};  EO_VERIFYsizeof(s_eomc_map_of_motorcontroltypes, (eomc_motorcontroltypes_numberof +1)*sizeof(eOmap_str_str_u08_t));
+};  EO_VERIFYsizeof(s_eomc_map_of_pidoutputtypes, (eomc_pidoutputtypes_numberof +1)*sizeof(eOmap_str_str_u08_t));
 
 
 static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
@@ -343,21 +343,21 @@ extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t 
     return(str);       
 }
 
-extern eOmc_motorcontroltype_t eomc_string2motorcontroltype(const char * string, eObool_t usecompactstring)
+extern eOmc_pidoutputtype_t eomc_string2pidoutputtype(const char * string, eObool_t usecompactstring)
 {
-    const eOmap_str_str_u08_t * map = s_eomc_map_of_motorcontroltypes;
-    const uint8_t size = eomc_motorcontroltypes_numberof+2;
-    const uint8_t defvalue = eomc_motorcontrol_unknown;
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_pidoutputtypes;
+    const uint8_t size = eomc_pidoutputtypes_numberof+1;
+    const uint8_t defvalue = eomc_pidoutputtype_unknown;
     
-    return((eOmc_motorcontroltype_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+    return((eOmc_pidoutputtype_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
 }
 
 
-extern const char * eomc_motorcontroltype2string(eOmc_motorcontroltype_t motorcontroltype, eObool_t usecompactstring)
+extern const char * eomc_pidoutputtype2string(eOmc_pidoutputtype_t pidoutputtype, eObool_t usecompactstring)
 {
-    const eOmap_str_str_u08_t * map = s_eomc_map_of_motorcontroltypes;
-    const uint8_t size = eomc_motorcontroltypes_numberof+2;
-    const uint8_t value = motorcontroltype;
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_pidoutputtypes;
+    const uint8_t size = eomc_pidoutputtypes_numberof+1;
+    const uint8_t value = pidoutputtype;
     const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
     
     if(NULL == str)
