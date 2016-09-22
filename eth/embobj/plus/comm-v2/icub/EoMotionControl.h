@@ -1197,7 +1197,7 @@ typedef struct
 {   //1+ 3+ 12 = 16
     uint8_t                         candotorquecontrol          : 1;        // use eobool_true / eobool_false
     uint8_t                         usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
-    uint8_t                         pidoutputtype               : 3;        // use eOmc_motorcontroltype_t
+    uint8_t                         pidoutputtype               : 3;        // use eOmc_pidoutputtype_t
     uint8_t                         dummy                       : 3;        
     uint8_t                         filler[3];
     eOmc_jointSet_constraints_t     constraints;
