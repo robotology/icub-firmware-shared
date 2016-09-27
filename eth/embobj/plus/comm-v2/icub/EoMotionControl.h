@@ -870,7 +870,8 @@ typedef struct
 typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+2+2+8 = 76
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
-    int32_t                         gearboxratio;               /**< the gearbox reduction ration */
+    int16_t                         gearboxratio;               /**< the gearbox reduction ration*/
+    int16_t                         gearboxratio2;              /**< the gearbox reduction ration*/
     int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
     eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmc_current_limits_params_t    currentLimits;              /**< the maximum current in the motor */
