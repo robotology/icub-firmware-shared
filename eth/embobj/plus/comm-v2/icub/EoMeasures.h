@@ -109,7 +109,7 @@ typedef int32_t             eOmeas_force_t;
     @brief      eOmeas_torque_t contains the torque values.
                 the measurement unit is mN m (milli Newton metre).
  **/
-typedef int32_t             eOmeas_torque_t;
+typedef float             eOmeas_torque_t;
 
 
 /** @typedef    typedef int16_t             eOmeas_current_t
@@ -123,14 +123,14 @@ typedef int16_t             eOmeas_current_t;
     @brief      eOmeas_stiffness_t contains the stiffness values.
                 the measurement unit is mN m / degree (milli Newton metre per degree, not idg!).
  **/
-typedef uint32_t            eOmeas_stiffness_t;
+typedef float            eOmeas_stiffness_t;
 
 
 /** @typedef    typedef uint32_t             eOmeas_damping_t
     @brief      eOmeas_damping_t contains the damping values.
                 the measurement unit is mN m / (degree/sec) (milli Newton metre per degree/sec, not idg/sec!).
  **/
-typedef uint32_t            eOmeas_damping_t;
+typedef float            eOmeas_damping_t;
 
 
 /** @typedef    typedef int16_t             eOmeas_temperature_t
