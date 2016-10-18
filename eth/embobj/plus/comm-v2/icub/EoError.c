@@ -266,7 +266,9 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_strain_using_onboard_config, "CFG: EOtheSTRAIN service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_mais_using_onboard_config, "CFG: EOtheMAIS service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_inertials_using_onboard_config, "CFG: EOtheInertials service is using the local default configuration based on its IP address."},
-    {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."}
+    {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."},
+    
+    {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."}
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
 
