@@ -327,11 +327,12 @@ typedef enum
     eoerror_value_CFG_inertials_using_onboard_config    = 40,
     eoerror_value_CFG_skin_using_onboard_config         = 41,
     
-    eoerror_value_CFG_inertials_failed_unsupportedsensor= 42    
+    eoerror_value_CFG_inertials_failed_unsupportedsensor= 42,
+    eoerror_value_CFG_inertials_changed_requestedrate   = 43     
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 43 };
+enum { eoerror_value_CFG_numberof = 44 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

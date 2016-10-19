@@ -268,7 +268,8 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_inertials_using_onboard_config, "CFG: EOtheInertials service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."},
     
-    {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."}
+    {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."},    
+    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."} 
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
 
