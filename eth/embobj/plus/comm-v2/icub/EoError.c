@@ -156,7 +156,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_board_detected, "SYS: the can discovery service found the board on the specified CAN bus / adr. In par64 there is the type, fw and prot version."},
     {eoerror_value_SYS_canservices_board_wrongprotversion, "SYS: the board on the specified CAN bus / adr has incompatible fw protocol version. In par16 there is required prot, in par64 there is detected type, fw and prot version."},
     {eoerror_value_SYS_canservices_board_notfound, "SYS: the board on the specified CAN bus / adr was not found during the discovery phase. In par16 there is the board type"},
-    {eoerror_value_SYS_transceiver_rxinvalidframe_error, "SYS: the board has detected an invalid ropframe in reception."}
+    {eoerror_value_SYS_transceiver_rxinvalidframe_error, "SYS: the board has detected an invalid ropframe in reception."},
+    {eoerror_value_SYS_canservices_boards_lostcontact, "SYS: a service has detected that some CAN boards are not broacasting anymore. In par16 the type of boards, in par64 LS 32 bits the bit mask of lost board (CAN1 in MS 16 bits and CAN2 in LS 16 bits)"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
 
 
