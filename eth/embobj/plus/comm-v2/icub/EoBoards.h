@@ -278,6 +278,7 @@ enum { eobrd_connectors_numberof = 15 };
 
 typedef enum
 {
+    eobrd_port_nolocal              = 32,
     eobrd_port_none                 = 31,
     eobrd_port_unknown              = 30,
 
