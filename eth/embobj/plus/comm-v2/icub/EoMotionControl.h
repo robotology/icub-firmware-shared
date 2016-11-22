@@ -640,7 +640,8 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+12+2+1+1+4 = 176
     eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
     uint8_t                     tcfiltertype;               /**< use values from eOmc_torqueControlFilterType_t */
     uint8_t                     jntEncoderType;             /**< use values from eOmc_encoder_t */
-    uint8_t                     filler04[4];
+    uint8_t                     jntEncNumOfNoiseBits;       /**< max number of passable error. It is use to determine a spike */
+    uint8_t                     filler03[3];
 } eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 176);
 
 
@@ -885,7 +886,7 @@ typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+2+2+8 = 76
     uint8_t                         useSpeedFbkFromMotor  :1;
     uint8_t                         dummy                 :2;
     uint8_t                         rotorEncoderType;           /**< rotor encoder type */
-    uint8_t                         filler01;
+    uint8_t                         rotEncNumOfNoiseBits;     /**< max number of passable error. It is use to determine a spike */
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
