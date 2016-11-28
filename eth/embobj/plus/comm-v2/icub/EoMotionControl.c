@@ -138,6 +138,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_mc4broadcasts[] =
     {"status", "eomc_mc4broadcast_status", eomc_mc4broadcast_status},
     {"print", "eomc_mc4broadcast_print", eomc_mc4broadcast_print},
     {"pidvalues", "eomc_mc4broadcast_pidvalues", eomc_mc4broadcast_pidvalues},
+    {"motorposition", "eomc_mc4broadcast_motorposition", eomc_mc4broadcast_motorposition},
 
     {"none", "eomc_mc4broadcast_none", eomc_mc4broadcast_none},
     {"unknown", "eomc_mc4broadcast_unknown", eomc_mc4broadcast_unknown}

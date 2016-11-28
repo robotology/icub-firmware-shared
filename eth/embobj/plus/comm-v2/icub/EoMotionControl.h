@@ -1158,12 +1158,13 @@ typedef enum
     eomc_mc4broadcast_status        = ICUBCANPROTO_PER_MC_MSG__STATUS,
     eomc_mc4broadcast_print         = ICUBCANPROTO_PER_MC_MSG__PRINT,
     eomc_mc4broadcast_pidvalues     = ICUBCANPROTO_PER_MC_MSG__PID_VAL,
+    eomc_mc4broadcast_motorposition = ICUBCANPROTO_PER_MC_MSG__MOTOR_POSITION,
     
     eomc_mc4broadcast_none          = 30,
     eomc_mc4broadcast_unknown       = 31 
 } eOmc_mc4broadcast_t;
 
-enum { eomc_mc4broadcasts_numberof = 4 };
+enum { eomc_mc4broadcasts_numberof = 5 };
 
 
 
