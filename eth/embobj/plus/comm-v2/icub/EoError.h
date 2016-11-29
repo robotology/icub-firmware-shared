@@ -169,10 +169,11 @@ typedef enum
     eoerror_value_SYS_canservices_board_detected            = 53,
     eoerror_value_SYS_canservices_board_wrongprotversion    = 54,
     eoerror_value_SYS_canservices_board_notfound            = 55,
-    eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56
+    eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56,
+    eoerror_value_SYS_canservices_boards_lostcontact        = 57
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 57 };
+enum { eoerror_value_SYS_numberof = 58 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
@@ -325,11 +326,14 @@ typedef enum
     eoerror_value_CFG_strain_using_onboard_config       = 38,
     eoerror_value_CFG_mais_using_onboard_config         = 39,
     eoerror_value_CFG_inertials_using_onboard_config    = 40,
-    eoerror_value_CFG_skin_using_onboard_config         = 41   
+    eoerror_value_CFG_skin_using_onboard_config         = 41,
+    
+    eoerror_value_CFG_inertials_failed_unsupportedsensor= 42,
+    eoerror_value_CFG_inertials_changed_requestedrate   = 43     
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 42 };
+enum { eoerror_value_CFG_numberof = 44 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

@@ -107,8 +107,8 @@ extern eOuprot_process_t eouprot_string2process(const char * name)
 
 
 extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protocolversion)
-{
-    static const uint32_t s_capabilities_procs[2][uprot_proc_numberofthem] =
+{   // we have one set of capabilities for each protocol version: 0, 1, etc. hence EOUPROT_PROTOCOL_VERSION+1
+    static const uint32_t s_capabilities_procs[EOUPROT_PROTOCOL_VERSION+1][uprot_proc_numberofthem] =
     {
         {   // version 0: legacy    
             
@@ -208,7 +208,65 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
                 uprot_canDO_PAGE_get |
                 uprot_canDO_JUMP2ADDRESS
             )
-        }    
+        },
+        {   // version 2: in sept 2016 added uprot_canDO_reply2moreinfo for eApplication
+            
+            (   // eLoader
+                uprot_canDO_nothing
+            ),
+            
+            (   // eUpdater
+                uprot_canDO_reply2discover |
+                uprot_canDO_reply2moreinfo |
+                uprot_canDO_PROG_loader | 
+                uprot_canDO_PROG_application |
+                uprot_canDO_restart | 
+                uprot_canDO_cangateway |
+                uprot_canDO_IPaddr_set |
+                uprot_canDO_EEPROM_erase |
+                uprot_canDO_EEPROM_read |
+                uprot_canDO_DEF2RUN_set |
+                uprot_canDO_PAGE_get |
+                uprot_canDO_PAGE_set |
+                uprot_canDO_PAGE_clr |
+                uprot_canDO_LEGACY_IPmask_set |
+                uprot_canDO_LEGACY_MAC_set |
+                uprot_canDO_LEGACY_cangateway |
+                uprot_canDO_LEGACY_scan |
+                uprot_canDO_LEGACY_IPaddr_set |
+                uprot_canDO_LEGACY_EEPROM_erase |
+                uprot_canDO_LEGACY_procs |
+                uprot_canDO_blink |
+                uprot_canDO_JUMP2ADDRESS                
+            ),
+            
+            (   // eApplication
+                uprot_canDO_reply2discover |
+                uprot_canDO_reply2moreinfo |
+                uprot_canDO_LEGACY_scan |
+                uprot_canDO_restart |
+                uprot_canDO_cangateway |
+                uprot_canDO_LEGACY_cangateway
+            ),
+            
+            (   // eApplPROGupdater            
+                uprot_canDO_reply2discover |
+                uprot_canDO_reply2moreinfo |
+                uprot_canDO_PROG_updater |                 
+                uprot_canDO_restart | 
+                uprot_canDO_IPaddr_set |
+                uprot_canDO_DEF2RUN_set |
+                uprot_canDO_JUMP2UPDATER |
+                uprot_canDO_LEGACY_IPmask_set |
+                uprot_canDO_LEGACY_MAC_set |                
+                uprot_canDO_LEGACY_scan |
+                uprot_canDO_LEGACY_IPaddr_set |
+                uprot_canDO_LEGACY_procs |
+                uprot_canDO_blink |
+                uprot_canDO_PAGE_get |
+                uprot_canDO_JUMP2ADDRESS
+            )
+        }            
     };
     
     if((uprot_proc_None == proc) || (proc > uprot_proc_numberofthem))
@@ -216,7 +274,7 @@ extern uint32_t eouprot_get_capabilities(eOuprot_process_t proc, uint8_t protoco
         return uprot_canDO_nothing;
     }
     
-    if(protocolversion > 1)
+    if(protocolversion > EOUPROT_PROTOCOL_VERSION)
     {
         return uprot_canDO_nothing;
     }

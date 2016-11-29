@@ -50,7 +50,7 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
-#define EOUPROT_PROTOCOL_VERSION        1
+#define EOUPROT_PROTOCOL_VERSION        2
 
 #define EOUPROT_VALUE_OF_UNUSED_BYTE    255
 
@@ -290,7 +290,8 @@ typedef struct
 {
     uint8_t             opc;        // it must be 0xFF (uprot_OPC_LEGACY_SCAN).
     uint8_t             opc2;       // it must be uprot_OPC_DISCOVER
-    uint8_t             filler[2];  // it must be {EOUPROT_VALUE_OF_UNUSED_BYTE}
+    uint8_t             jump2updater;   // if 0 the e-process which receives it does not perform any jump. if 1 (or 0xff) it jumps to updater (or it stays in uprot_proc_ApplPROGupdater).
+    uint8_t             filler1[1];  // it must be {EOUPROT_VALUE_OF_UNUSED_BYTE}
 } eOuprot_cmd_DISCOVER_t; EO_VERIFYsizeof(eOuprot_cmd_DISCOVER_t, 4)
 
 typedef struct
@@ -313,7 +314,7 @@ typedef struct
     uint8_t             opc;            // it must be 0x09 (uprot_OPC_LEGACY_PROCS).
     uint8_t             opc2;           // it must be uprot_OPC_MOREINFO
     uint8_t             plusdescription;// if 1 the receiver must send also a description in string format
-    uint8_t             filler[1];      // it must be {EOUPROT_VALUE_OF_UNUSED_BYTE}
+    uint8_t             jump2updater;   // if 0 the e-process which receives it does not perform any jump. if 1 (or 0xff) it jumps to updater (or it stays in uprot_proc_ApplPROGupdater).
 } eOuprot_cmd_MOREINFO_t; EO_VERIFYsizeof(eOuprot_cmd_MOREINFO_t, 4)
 
 
