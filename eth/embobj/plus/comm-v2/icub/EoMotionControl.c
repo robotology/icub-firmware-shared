@@ -372,7 +372,7 @@ extern const char * eomc_pidoutputtype2string(eOmc_pidoutputtype_t pidoutputtype
 extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring)
 {
     const eOmap_str_str_u08_t * map = s_eomc_map_of_jsetconstraints;
-    const uint8_t size = eomc_jsetconstraints_numberof+2;
+    const uint8_t size = eomc_jsetconstraints_numberof+1;
     const uint8_t defvalue = eomc_jsetconstraint_unknown;
     
     return((eOmc_jsetconstraint_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
