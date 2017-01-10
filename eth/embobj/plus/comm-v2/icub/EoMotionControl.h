@@ -1138,7 +1138,7 @@ typedef enum
     eomc_pidoutputtype_vel       = 2,
     eomc_pidoutputtype_iqq       = 3,
     
-    eomc_pidoutputtype_unknown   = 255
+    eomc_pidoutputtype_unknown   = 0
 } eOmc_pidoutputtype_t;
 
 
