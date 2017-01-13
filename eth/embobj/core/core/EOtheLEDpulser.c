@@ -25,8 +25,8 @@
 #include "string.h"
 #include "EOtheErrorManager.h"
 
-#include "EOMtask.h"
-#include "EOMmutex.h"
+//#include "EOMtask.h"
+//#include "EOMmutex.h"
 #include "EOVtheCallbackManager_hid.h"
 
 
