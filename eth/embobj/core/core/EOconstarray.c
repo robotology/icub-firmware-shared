@@ -77,7 +77,7 @@
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
 
-extern EOconstarray* eo_constarray_Load(EOarray *array)
+extern EOconstarray* eo_constarray_Load(const EOarray *array)
 {
     return((EOconstarray*)array);
 }

@@ -62,17 +62,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // - guard on max number of entities
-EO_VERIFYproposition(eoprot_mc_dew4, eoprot_entities_mc_numberof <= eoprot_entities_maxnumberof);
+EO_VERIFYproposition(eoprot_mc_dew4, eoprot_entities_mc_numberof <= eoprot_entities_maxnumberof)
 
 // - guard on tags ...
-EO_VERIFYproposition(eoprot_mc_tagsnum_jo, eoprot_tags_mc_joint_numberof == eoprot_rwms_mc_joint_numberof);
-EO_VERIFYproposition(eoprot_mc_tagsmax_jo, eoprot_tags_mc_joint_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mc_tagsnum_jo, eoprot_tags_mc_joint_numberof == eoprot_rwms_mc_joint_numberof)
+EO_VERIFYproposition(eoprot_mc_tagsmax_jo, eoprot_tags_mc_joint_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_mc_tagsnum_mo, eoprot_tags_mc_motor_numberof == eoprot_rwms_mc_motor_numberof);
-EO_VERIFYproposition(eoprot_mc_tagsmax_mo, eoprot_tags_mc_motor_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mc_tagsnum_mo, eoprot_tags_mc_motor_numberof == eoprot_rwms_mc_motor_numberof)
+EO_VERIFYproposition(eoprot_mc_tagsmax_mo, eoprot_tags_mc_motor_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_mc_tagsnum_co, eoprot_tags_mc_controller_numberof == eoprot_rwms_mc_controller_numberof);
-EO_VERIFYproposition(eoprot_mc_tagsmax_co, eoprot_tags_mc_controller_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mc_tagsnum_co, eoprot_tags_mc_controller_numberof == eoprot_rwms_mc_controller_numberof)
+EO_VERIFYproposition(eoprot_mc_tagsmax_co, eoprot_tags_mc_controller_numberof <= eoprot_tags_maxnumberof)
 
 
 
@@ -709,7 +709,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_cmmnds_stoptrajectory,
     &eoprot_mc_rom_descriptor_joint_cmmnds_controlmode,
     &eoprot_mc_rom_descriptor_joint_cmmnds_interactionmode  
-};  EO_VERIFYsizeof(s_eoprot_mc_rom_joint_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_joint_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mc_rom_joint_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_joint_numberof))
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_motor_descriptors[] =
 {   // here are eoprot_tags_mc_motor_numberof descriptors for the motor entity
@@ -731,7 +731,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_controller_descriptors[]
     &eoprot_mc_rom_descriptor_controller_config,
     &eoprot_mc_rom_descriptor_controller_config_jointcoupling,
     &eoprot_mc_rom_descriptor_controller_status
-};  EO_VERIFYsizeof(s_eoprot_mc_rom_controller_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_controller_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mc_rom_controller_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_controller_numberof))
 
 
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mc_rom_descriptors[] = 
@@ -739,7 +739,7 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mc_rom_descriptors[] =
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_joint_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_motor_descriptors,   
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mc_rom_controller_descriptors, 
-};  EO_VERIFYsizeof(eoprot_mc_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mc_numberof));
+};  EO_VERIFYsizeof(eoprot_mc_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mc_numberof))
 
 
 
@@ -750,7 +750,7 @@ const uint8_t eoprot_mc_rom_tags_numberof[] =
     eoprot_tags_mc_joint_numberof, 
     eoprot_tags_mc_motor_numberof, 
     eoprot_tags_mc_controller_numberof
-};  EO_VERIFYsizeof(eoprot_mc_rom_tags_numberof, eoprot_entities_mc_numberof*sizeof(uint8_t)); 
+};  EO_VERIFYsizeof(eoprot_mc_rom_tags_numberof, eoprot_entities_mc_numberof*sizeof(uint8_t)) 
 
 
 const uint16_t eoprot_mc_rom_entities_sizeof[] = 
@@ -758,7 +758,7 @@ const uint16_t eoprot_mc_rom_entities_sizeof[] =
     sizeof(eOmc_joint_t), 
     sizeof(eOmc_motor_t), 
     sizeof(eOmc_controller_t)
-};  EO_VERIFYsizeof(eoprot_mc_rom_entities_sizeof, eoprot_entities_mc_numberof*sizeof(uint16_t)); 
+};  EO_VERIFYsizeof(eoprot_mc_rom_entities_sizeof, eoprot_entities_mc_numberof*sizeof(uint16_t)) 
 
 
 const void* const eoprot_mc_rom_entities_defval[] = 
@@ -766,7 +766,7 @@ const void* const eoprot_mc_rom_entities_defval[] =
     (const void*)&eoprot_mc_rom_joint_defaultvalue, 
     (const void*)&eoprot_mc_rom_motor_defaultvalue,
 	(const void*)&eoprot_mc_rom_controller_defaultvalue
-};  EO_VERIFYsizeof(eoprot_mc_rom_entities_defval, eoprot_entities_mc_numberof*sizeof(const void*)); 
+};  EO_VERIFYsizeof(eoprot_mc_rom_entities_defval, eoprot_entities_mc_numberof*sizeof(const void*)) 
 
 
 // the strings of the endpoint
@@ -776,7 +776,7 @@ const char * const eoprot_mc_strings_entity[] =
     "eoprot_entity_mc_joint",   
     "eoprot_entity_mc_motor",
     "eoprot_entity_mc_controller"
-};  EO_VERIFYsizeof(eoprot_mc_strings_entity, eoprot_entities_mc_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(eoprot_mc_strings_entity, eoprot_entities_mc_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_mc_strings_tags_joint[] =
@@ -804,7 +804,7 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_cmmnds_stoptrajectory",
     "eoprot_tag_mc_joint_cmmnds_controlmode",
     "eoprot_tag_mc_joint_cmmnds_interactionmode"
-};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_joint, eoprot_tags_mc_joint_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_joint, eoprot_tags_mc_joint_numberof*sizeof(const char*)) 
 
 static const char * const s_eoprot_mc_strings_tags_motor[] =
 {
@@ -817,7 +817,7 @@ static const char * const s_eoprot_mc_strings_tags_motor[] =
     "eoprot_tag_mc_motor_config_temperaturelimit",
     "eoprot_tag_mc_motor_status",
     "eoprot_tag_mc_motor_status_basic"
-};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_mc_strings_tags_controller[] =
@@ -826,14 +826,14 @@ static const char * const s_eoprot_mc_strings_tags_controller[] =
      "eoprot_tag_mc_controller_config",
      "eoprot_tag_mc_controller_config_jointcoupling",
      "eoprot_tag_mc_controller_status"
-};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_controller, eoprot_tags_mc_controller_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_controller, eoprot_tags_mc_controller_numberof*sizeof(const char*)) 
 
 const char ** const eoprot_mc_strings_tags[] =
 {
     (const char**)&s_eoprot_mc_strings_tags_joint,   
     (const char**)&s_eoprot_mc_strings_tags_motor,
     (const char**)&s_eoprot_mc_strings_tags_controller
-};  EO_VERIFYsizeof(eoprot_mc_strings_tags, eoprot_entities_mc_numberof*sizeof(const char**)); 
+};  EO_VERIFYsizeof(eoprot_mc_strings_tags, eoprot_entities_mc_numberof*sizeof(const char**)) 
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions

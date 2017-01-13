@@ -142,7 +142,7 @@ extern EOlist* eo_list_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
 
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOlist), 1);
+    retptr = (EOlist*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOlist), 1);
 
     
     // now the obj has valid memory. i need to initialise it with user-defined data,
@@ -1051,7 +1051,7 @@ static void s_eo_list_clean_iterator(EOlist *list, EOlistIter *li)
 static EOlistIter* s_eo_list_iterator_create(EOlist* list)
 {
 //    #warning --> prima allocavo errato e troppo: una sizeof(EOlist)
-    EOlistIter *li = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOlistIter), 1);
+    EOlistIter *li = (EOlistIter*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOlistIter), 1);
     //eo_mempool_New(eo_mempool_GetHandle(), sizeof(EOlist));
     
     // now we allocate memory for storing the items with size item_size. 
@@ -1059,7 +1059,7 @@ static EOlistIter* s_eo_list_iterator_create(EOlist* list)
     // store the item directly instead of allocating extra memory .... 
     if(list->item_size > sizeof(void*))
     {   // normal mode: the .data field contains a pointer to the actual data
-        li->data = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, list->item_size, 1);
+        li->data = (void*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, list->item_size, 1);
         //eo_mempool_New(eo_mempool_GetHandle(), list->item_size);
         
         if(NULL != list->item_init_fn)

@@ -224,7 +224,7 @@ typedef struct                  // 188*1+48*1+80 = 316
     eOmc_joint_t                joints[1]; 
     eOmc_motor_t                motors[1];
     eOmc_controller_t           thecontroller;
-} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 316);
+} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 316)
 
 
   

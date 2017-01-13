@@ -203,10 +203,10 @@ extern EOVtheTimerManager * eov_timerman_hid_Initialise(eOres_fp_tmrmanp_tmrp_t 
     eo_errman_Assert(eo_errman_GetHandle(), NULL != addtimer_fn, "eov_timerman_hid_Initialise(): NULL addtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     eo_errman_Assert(eo_errman_GetHandle(), NULL != remtimer_fn, "eov_timerman_hid_Initialise(): NULL remtimer_fn", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
-    s_eov_timermanager.vtable[VF00_onnewtimer]          = onnewtimer_fn;
-    s_eov_timermanager.vtable[VF01_addtimer]            = addtimer_fn;
-    s_eov_timermanager.vtable[VF02_remtimer]            = remtimer_fn;
-    s_eov_timermanager.vtable[VF03_ondeltimer]          = ondeltimer_fn;
+    s_eov_timermanager.vtable[VF00_onnewtimer]          = (void*) onnewtimer_fn;
+    s_eov_timermanager.vtable[VF01_addtimer]            = (void*) addtimer_fn;
+    s_eov_timermanager.vtable[VF02_remtimer]            = (void*) remtimer_fn;
+    s_eov_timermanager.vtable[VF03_ondeltimer]          = (void*) ondeltimer_fn;
     
     // i copy the mutex. i also accept a NULL mutex.
     s_eov_timermanager.mutex = mutex;

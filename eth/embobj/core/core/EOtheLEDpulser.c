@@ -62,11 +62,11 @@ static int8_t s_eo_ledpulser_fake_led_toggle(uint8_t id);
 
 const eOledpulser_cfg_t eo_ledpulser_DefaultCfg = 
 { 
-    .led_enable_mask    = 1 << eo_ledpulser_led_zero,
-    .led_init           = s_eo_ledpulser_fake_led_init,
-    .led_on             = s_eo_ledpulser_fake_led_on,
-    .led_off            = s_eo_ledpulser_fake_led_off,
-    .led_toggle         = s_eo_ledpulser_fake_led_toggle
+    EO_INIT(.led_enable_mask)   (1 << eo_ledpulser_led_zero),
+    EO_INIT(.led_init)          s_eo_ledpulser_fake_led_init,
+    EO_INIT(.led_on)            s_eo_ledpulser_fake_led_on,
+    EO_INIT(.led_off)           s_eo_ledpulser_fake_led_off,
+    EO_INIT(.led_toggle)        s_eo_ledpulser_fake_led_toggle
 };
 
 
@@ -91,19 +91,19 @@ static void s_eo_ledpulser_callback(void* p);
 
 static EOtheLEDpulser s_theledpulser = 
 {
-    .config         = 
+    EO_INIT(.config) 
     {
-        .led_enable_mask    = 1 << eo_ledpulser_led_zero,
-        .led_init           = s_eo_ledpulser_fake_led_init,
-        .led_on             = s_eo_ledpulser_fake_led_on,
-        .led_off            = s_eo_ledpulser_fake_led_off,
-        .led_toggle         = s_eo_ledpulser_fake_led_toggle     
+        EO_INIT(.led_enable_mask)   (1 << eo_ledpulser_led_zero),
+        EO_INIT(.led_init)          s_eo_ledpulser_fake_led_init,
+        EO_INIT(.led_on)            s_eo_ledpulser_fake_led_on,
+        EO_INIT(.led_off)           s_eo_ledpulser_fake_led_off,
+        EO_INIT(.led_toggle)        s_eo_ledpulser_fake_led_toggle     
     },
-    .action         = NULL,
-    .timer          = {NULL},
-    .ticks          = {0},
-    .onmask         = 0,
-    .initted        = 0   
+    EO_INIT(.action)        NULL,
+    EO_INIT(.timer)         {NULL},
+    EO_INIT(.ticks)         {0},
+    EO_INIT(.onmask)        0,
+    EO_INIT(.initted)       0   
 }; 
 
 
@@ -176,7 +176,7 @@ extern EOtheLEDpulser * eo_ledpulser_Initialise(const eOledpulser_cfg_t *ledpuls
 
 extern EOtheLEDpulser * eo_ledpulser_GetHandle(void) 
 { 
-    return( (NULL != s_theledpulser.timer) ? (&s_theledpulser) : (NULL) );   
+    return( (1 == s_theledpulser.initted) ? (&s_theledpulser) : (NULL) );   
 }
 
 

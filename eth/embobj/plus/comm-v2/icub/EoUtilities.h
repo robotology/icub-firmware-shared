@@ -64,7 +64,7 @@ typedef struct
 {
     uint8_t     size        : 2;            /**< 0 for 1 byte, 1 for 2 bytes, 2 for 4 bytes, 3 for none. */
     uint8_t     identifier  : 6;            /**< from 0 to 63 */
-} eOutil_chameleon_descr_t;                 EO_VERIFYsizeof(eOutil_chameleon_descr_t, 1);  
+} eOutil_chameleon_descr_t;                 EO_VERIFYsizeof(eOutil_chameleon_descr_t, 1)  
 
 
 /** @typedef    typedef struct eOutil_debug_values_t
@@ -90,7 +90,7 @@ typedef struct              // size is 12 bytes
     uint8_t                 identifier[2];      /**< the identifiers of each chameleon */
     uint8_t                 filler01[1];        /**< a filler */
     int32_t                 chameleon[2];       /**< the two chameleons */
-} eOutil_2chameleons32_t;   EO_VERIFYsizeof(eOutil_2chameleons32_t, 12);
+} eOutil_2chameleons32_t;   EO_VERIFYsizeof(eOutil_2chameleons32_t, 12)
 
 
 /** @typedef    typedef struct eOutil_3chameleons32_t
@@ -102,7 +102,7 @@ typedef struct              // size is 16 bytes
     uint8_t                 numberof;           /**< tells how many chameleons are used */ 
     uint8_t                 identifier[3];      /**< the identifiers of each chameleon */
     int32_t                 chameleon[3];       /**< the three chameleons */
-} eOutil_3chameleons32_t;   EO_VERIFYsizeof(eOutil_3chameleons32_t, 16);
+} eOutil_3chameleons32_t;   EO_VERIFYsizeof(eOutil_3chameleons32_t, 16)
 
 
 /** @typedef    typedef struct eOutil_canframe_t
@@ -116,7 +116,7 @@ typedef struct              // size is 16 bytes
     uint8_t                 size;           /**< data size */
     uint8_t                 unused;         /**< filler */
     uint8_t                 data[8];        /**< the data (payload) */    
-} eOutil_canframe_t;        EO_VERIFYsizeof(eOutil_canframe_t, 16);
+} eOutil_canframe_t;        EO_VERIFYsizeof(eOutil_canframe_t, 16)
 
 
 /** @typedef    typedef enum  eOutil_canport_t

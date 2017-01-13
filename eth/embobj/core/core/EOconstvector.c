@@ -83,7 +83,7 @@
 
 
 
-extern EOconstvector * eo_constvector_Load(EOvector *vector)
+extern EOconstvector * eo_constvector_Load(const EOvector *vector)
 {
     return((EOconstvector*)vector);
 }

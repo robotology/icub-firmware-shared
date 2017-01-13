@@ -27,9 +27,6 @@
 #include "EOVtask.h"
 
 
-
-
-
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern public interface
 // --------------------------------------------------------------------------------------------------------------------
@@ -87,7 +84,7 @@ extern EOaction* eo_action_New()
     EOaction *retptr = NULL;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOaction), 1);
+    retptr = (EOaction*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOaction), 1);
     
     retptr->actiontype = eo_actypeNONE;
 

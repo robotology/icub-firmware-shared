@@ -92,7 +92,7 @@ extern EOsm * eo_sm_New(const eOsm_cfg_t * cfg)
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg), "eo_sm_New(): NULL cfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);    
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOsm), 1);
+    retptr = (EOsm*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOsm), 1);
     
     // now the obj has valid memory. i need to initialise it with other user-defined data, by means of cfg.
     s_eo_sm_Specialise(retptr, cfg);
@@ -284,12 +284,12 @@ static void s_eo_sm_Specialise(EOsm *p, const eOsm_cfg_t * c)
 
     // statequickinfo: get memory. the memory is zero initialised. 
     // IMPORTANT: every evtmask must be zero.
-    p->statequickinfo = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOsmStateQuickInfo_t), c->nstates);
+    p->statequickinfo = (EOsmStateQuickInfo_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOsmStateQuickInfo_t), c->nstates);
     // also for transindices
     for(i=0; i<c->nstates; i++)
     {
         p->statequickinfo[i].evtmask = 0; // it is a redundant instruction.
-        p->statequickinfo[i].transindices = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, 1, c->maxevts);
+        p->statequickinfo[i].transindices = (uint8_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, 1, c->maxevts);
     }
     
 

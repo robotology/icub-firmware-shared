@@ -25,7 +25,7 @@
 #include "stdio.h"
 #include "string.h"
 
-
+#include "EoCommon.h"
 
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern public interface
@@ -45,7 +45,6 @@
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
 // empty-section
-
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables, but better using _get(), _set() 
@@ -113,12 +112,12 @@ extern OPCprotocolManager * opcprotman_New(const opcprotman_cfg_t *cfg)
 }
 
 // they must be defined externally, even if we dont use the opcprotocol manager
-//__weak extern opcprotman_cfg_t* opcprotman_getconfiguration(void)
+//EO_weak extern opcprotman_cfg_t* opcprotman_getconfiguration(void)
 //{
 //    return(NULL);
 //}
 
-//__weak extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p)
+//EO_weak extern opcprotman_res_t opcprotman_personalize_database(OPCprotocolManager *p)
 //{
 //   return(opcprotman_NOK_generic);
 //}
@@ -314,7 +313,7 @@ extern uint32_t opcprotman_getSeqNum(OPCprotocolManager* p, opcprotman_message_t
 {
     if((NULL == p) || (NULL == msg) )
     {
-        return(INT32_MAX);
+        return(EO_INT32_MAX);
     }
     return(msg->head.seqnum);
 }

@@ -72,7 +72,7 @@ typedef struct
     uint16_t                            capacityoflistofropdes;
     eOreltime_t                         replyroptimeout;            // no timeout if eok_reltimeINFINITE 
     eov_mutex_fn_mutexderived_new       mutex_fn_new;
-    void*                               transceiver; // points to a EOtransceiver
+    void*                               transceiver;                // points to a EOtransceiver
 } eOproxy_cfg_t;
 
 
@@ -82,7 +82,7 @@ typedef struct
     uint8_t     p08_2;
     uint16_t    p16_3;
     uint32_t    p32_4;
-} eOproxy_params_t; //EO_VERIFYsizeof(eOproxy_params_t, 8); 
+} eOproxy_params_t; //EO_VERIFYsizeof(eOproxy_params_t, 8) 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 

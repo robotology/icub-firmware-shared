@@ -115,7 +115,7 @@ extern EOconfirmationManager* eo_confman_New(const eOconfman_cfg_t *cfg)
     }
     
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOconfirmationManager), 1);
+    retptr = (EOconfirmationManager*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOconfirmationManager), 1);
     
     memcpy(&retptr->config, cfg, sizeof(eOconfman_cfg_t));
     

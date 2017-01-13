@@ -19,7 +19,8 @@
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EMBODYPORTING_H_
 #define _EMBODYPORTING_H_
-//-
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,19 +51,49 @@ extern "C" {
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
+                       
+//#ifdef __cplusplus                                          
+//    #warning __cplusplus is defined: COMPILING IN C++            
+//#endif
+
 
 #if defined(__arm__)
+
     // __arm__ or __ARMCC_VERSION are always defined in armcc compiler
     #define EO_extern_inline        extern inline
     #define EO_static_inline        static inline
-    // other compilers which support c99 can keep the designated initializers in structs
-    #define EO_INIT(f)      f =
+        
+#if defined(__cplusplus)
+    // c++ does not have designated initializers ... they are only in c99
+    #define EO_INIT(f)
+
+    // c++ does not have INT32_MAX etc.
+    // i dont use std::numeric_limits<std::int32_t>::max() because the inclusion of <cstdint> and <limits> gives me problem on linkage
+    #define EO_INT32_MAX  2147483647
+    #define EO_INT16_MAX  32767
+    #define EO_INT16_MIN  (-32768)
+    #define EO_UINT16_MAX 65535
+
+#else 
+    
+    #define EO_INIT(f)     f =
+    #define EO_INT32_MAX   INT32_MAX
+    #define EO_INT16_MAX   INT16_MAX
+    #define EO_INT16_MIN   INT16_MIN
+    #define EO_UINT16_MAX  UINT16_MAX
+    
+#endif
+    
     #pragma pack(8)
     //#define snprintf        snprintf  
     #define EO_weak         __weak
+// armcc version 6.6 does not support __weak anymore
+//    // __attribute__((weak)) is ok for bot compiler v5 and for new version 6
+//    #define EO_weak         __attribute__((weak))
     #define float32_t       float
     #define EO_TAILOR_CODE_FOR_ARM    
     #define EO_READ_PREV_WORD_OF_MALLOC_FOR_SIZEOF_ALLOCATION
+    
 #elif defined(_MSC_VER)
     // msc does not support c99, thus inline must be redefined as __inline
     #define EO_extern_inline       extern __inline
@@ -70,11 +101,16 @@ extern "C" {
     //#define inline          __inline
     // msc does not support c99, thus designated initializers in structs (i.e., .item = val) must be moved to the old way
     #define EO_INIT(f) 
+    #define EO_INT32_MAX   INT32_MAX
+    #define EO_INT16_MAX   INT16_MAX
+    #define EO_UINT16_MAX  UINT16_MAX    
+    #define EO_INT16_MIN   INT16_MIN
     //#pragma pack(4) 
     #pragma pack(8) 
     #define snprintf        sprintf_s
     #define float32_t       float
-    #define __weak	
+    #define __weak 
+    #define EO_weak 
     #define EO_TAILOR_CODE_FOR_WINDOWS
     #define EO_WARNING(a)   __pragma(message("EOWARNING-> "##a))
     #define OVERRIDE_eo_receiver_callback_incaseoferror_in_sequencenumberReceived
@@ -85,6 +121,9 @@ extern "C" {
     #define EO_extern_inline       static inline
     #define EO_static_inline       static inline
     #define EO_INIT(f)
+    #define EO_INT32_MAX   INT32_MAX
+    #define EO_INT16_MAX   INT16_MAX
+    #define EO_UINT16_MAX  UINT16_MAX
     #pragma pack(8)
     #define snprintf        snprintf
     #define float32_t       float

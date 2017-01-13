@@ -128,7 +128,7 @@ extern EOhostTransceiver * eo_hosttransceiver_New(const eOhosttransceiver_cfg_t 
         eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_hosttransceiver_New(): NULL nvsetbrdcfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     }  
     
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOhostTransceiver), 1);
+    retptr = (EOhostTransceiver*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOhostTransceiver), 1);
 
     // 1. init the proper transceiver cfg
 

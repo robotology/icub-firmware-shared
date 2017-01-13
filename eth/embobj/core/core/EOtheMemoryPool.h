@@ -103,7 +103,7 @@ typedef struct
     uint64_t*                   data64;    
 } eOmempool_pool_config_t;
 
-typedef union
+typedef struct
 {
     eOmempool_pool_config_t     pool;
     eOmempool_heap_config_t     heap;

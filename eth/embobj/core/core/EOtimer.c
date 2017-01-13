@@ -92,7 +92,7 @@ extern EOtimer* eo_timer_New(void)
     eOresult_t res = eores_NOK_generic;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtimer), 1);
+    retptr = (EOtimer*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtimer), 1);
 
     // now the obj has valid memory. i need to initialise it with user-defined data,
     // sets dummy values for the timer. VERY IMPORTANT: i also set initted = 1.

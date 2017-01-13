@@ -86,7 +86,7 @@ extern EOpacket* eo_packet_New(uint16_t capacity)
     EOpacket *retptr = NULL;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOpacket), 1);
+    retptr = (EOpacket*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOpacket), 1);
     
     retptr->remoteaddr          = 0;
     retptr->remoteport          = 0;
@@ -97,7 +97,7 @@ extern EOpacket* eo_packet_New(uint16_t capacity)
     retptr->read_index          = 0;
     retptr->data                = (0 == capacity) ? 
                                   (NULL) : 
-                                  (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, capacity, 1));
+                                  ((uint8_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, capacity, 1));
 
     retptr->externaldatastorage = (0 == capacity) ? (1) : (0);
 
@@ -429,7 +429,7 @@ extern eOresult_t eo_packet_hid_DefInit(void *p, uint32_t a)
     dtg->write_index        = 0;
     dtg->read_index         = 0;
     dtg->capacity           = a;
-    dtg->data               = (0 ==a ) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, sizeof(uint8_t), a));
+    dtg->data               = (0 ==a ) ? (NULL) : ((uint8_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, sizeof(uint8_t), a));
     dtg->externaldatastorage = (0 == a) ? (1) : (0);
 
     return(eores_OK);
@@ -499,7 +499,7 @@ extern EOpacket* eo_packet_hid_Initialise(EOpacket *p, void *data, uint16_t capa
     retptr->capacity            = capacity; 
     retptr->write_index         = 0;
     retptr->read_index          = 0;
-    retptr->data                = data;
+    retptr->data                = (uint8_t*) data;
 
     retptr->externaldatastorage = (0 == capacity) ? (1) : (0);
 

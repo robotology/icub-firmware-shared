@@ -106,9 +106,9 @@ static const char s_eobj_ownname[] = "EOvector";
 // --------------------------------------------------------------------------------------------------------------------
 
 
-extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
-                                eOres_fp_voidp_uint32_t item_init, uint32_t init_par,  
-                                eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear)
+extern EOvector* eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
+                               eOres_fp_voidp_uint32_t item_init, uint32_t init_par,  
+                               eOres_fp_voidp_voidp_t item_copy, eOres_fp_voidp_t item_clear)
 {
     EOvector *retptr = NULL;
     uint8_t *start = NULL;
@@ -117,7 +117,7 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
 
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOvector), 1);
+    retptr = (EOvector*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOvector), 1);
 
 
     // now the object has valid memory. i need to initialise it with user-defined data,
@@ -133,7 +133,7 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     retptr->functions           = NULL;
     if((NULL != item_init) || (NULL != item_copy) || (NULL != item_clear))
     {
-        retptr->functions = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOcontainer_functions_t), 1);
+        retptr->functions = (EOcontainer_functions_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOcontainer_functions_t), 1);
         retptr->functions->item_init_fn        = item_init;
         retptr->functions->item_init_par       = init_par;
         retptr->functions->item_copy_fn        = item_copy;
@@ -171,7 +171,7 @@ extern EOvector * eo_vector_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
         }
 
         // here is the memory from the correct memory pool (or the heap)
-        retptr->stored_items  = eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
+        retptr->stored_items  = (void*) eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
               
 
         start = (uint8_t*) (retptr->stored_items);

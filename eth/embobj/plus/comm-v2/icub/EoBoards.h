@@ -124,14 +124,14 @@ typedef struct
     uint8_t                     major;
     uint8_t                     minor;    
     uint8_t                     build;
-} eObrd_firmwareversion_t;      EO_VERIFYsizeof(eObrd_firmwareversion_t, 3);
+} eObrd_firmwareversion_t;      EO_VERIFYsizeof(eObrd_firmwareversion_t, 3)
 
 
 typedef struct                  
 {   // size is: 1+1+0 = 2
     uint8_t                     major;
     uint8_t                     minor;    
-} eObrd_protocolversion_t;      EO_VERIFYsizeof(eObrd_protocolversion_t, 2);
+} eObrd_protocolversion_t;      EO_VERIFYsizeof(eObrd_protocolversion_t, 2)
 
 
 typedef struct                  
@@ -139,14 +139,14 @@ typedef struct
     uint8_t                     type;
     eObrd_firmwareversion_t     firmware;
     eObrd_protocolversion_t     protocol;   
-} eObrd_info_t;                 EO_VERIFYsizeof(eObrd_info_t, 6);
+} eObrd_info_t;                 EO_VERIFYsizeof(eObrd_info_t, 6)
 
 
 typedef struct
 {
     eObrd_firmwareversion_t     firmware;
     eObrd_protocolversion_t     protocol; 
-} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 5);  
+} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 5)  
 
 
 typedef enum
@@ -241,7 +241,7 @@ typedef struct
     uint8_t                     type;               /**< use eObrd_cantype_t */
     eObrd_canlocation_t         location;           /**< its can location */
     eObrd_protocolversion_t     requiredprotocol;   /**< its protocol */
-} eObrd_canproperties_t;        EO_VERIFYsizeof(eObrd_canproperties_t, 4); 
+} eObrd_canproperties_t;        EO_VERIFYsizeof(eObrd_canproperties_t, 4) 
 
 
 /** @typedef    typedef enum eObrd_connector_t

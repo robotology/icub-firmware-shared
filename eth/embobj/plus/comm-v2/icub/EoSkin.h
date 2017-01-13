@@ -95,7 +95,7 @@ typedef struct
 {
     uint16_t        info;       // the bytes are formatted with following nibbles: [size | id | id | id], with 11 bits id
     uint8_t         data[8];    // the can payload  
-} eOsk_candata_t;   EO_VERIFYsizeof(eOsk_candata_t, 10);
+} eOsk_candata_t;   EO_VERIFYsizeof(eOsk_candata_t, 10)
 
 enum {eosk_capacity_arrayof_skincandata = 24 };
 
@@ -103,20 +103,20 @@ typedef struct              // size is 4+24*10 = 244
 {
     eOarray_head_t          head;
     uint8_t                 data[eosk_capacity_arrayof_skincandata*sizeof(eOsk_candata_t)];      
-} EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 244);
+} EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 244)
 
 //typedef struct              // size is 4+10*16+0 = 164
 //{
 //    eOarray_head_t          head;
 //    uint8_t                 data[10*sizeof(eOutil_canframe_t)];
-//} EOarray_of_10canframes;   //EO_VERIFYsizeof(EOarray_of_10canframes, 164);
+//} EOarray_of_10canframes;   //EO_VERIFYsizeof(EOarray_of_10canframes, 164)
 
 
 //typedef struct              // size is 4+24*16+0 = 388
 //{
 //    eOarray_head_t          head;
 //    uint8_t                 data[24*sizeof(eOutil_canframe_t)];
-//} EOarray_of_24canframes;   //EO_VERIFYsizeof(EOarray_of_24canframes, 388);
+//} EOarray_of_24canframes;   //EO_VERIFYsizeof(EOarray_of_24canframes, 388)
 
 
 ///** @typedef    typedef struct eOsk_array_data_t
@@ -127,7 +127,7 @@ typedef struct              // size is 4+24*10 = 244
 //{
 //    EOarray_of_10canframes  array;
 //    uint8_t                 filler04[4];
-//} eOsk_array_data_t;        //EO_VERIFYsizeof(eOsk_array_data_t, 168);
+//} eOsk_array_data_t;        //EO_VERIFYsizeof(eOsk_array_data_t, 168)
 
 
 ///** @typedef    typedef struct eOsk_array_largedata_t
@@ -138,7 +138,7 @@ typedef struct              // size is 4+24*10 = 244
 //{
 //    EOarray_of_24canframes  array;
 //    uint8_t                 filler04[4];
-//} eOsk_array_largedata_t;   //EO_VERIFYsizeof(eOsk_array_largedata_t, 392);
+//} eOsk_array_largedata_t;   //EO_VERIFYsizeof(eOsk_array_largedata_t, 392)
 
 
 // -- the definition of a skin entity 
@@ -157,7 +157,7 @@ typedef struct
     uint8_t                     period;
     uint8_t                     noload;
     uint8_t                     filler1;
-} eOsk_board_config_t;          EO_VERIFYsizeof(eOsk_board_config_t, 4);
+} eOsk_board_config_t;          EO_VERIFYsizeof(eOsk_board_config_t, 4)
 
 
 typedef struct                      
@@ -165,20 +165,20 @@ typedef struct
     uint8_t                     enable;
     uint8_t                     shift;
     uint16_t                    CDCoffset;
-} eOsk_triangle_config_t;       EO_VERIFYsizeof(eOsk_triangle_config_t, 4);
+} eOsk_triangle_config_t;       EO_VERIFYsizeof(eOsk_triangle_config_t, 4)
 
 
 typedef struct                      
 {
     eOenum08_t                  sigmode;        /**< use values from eOsk_sigmode_t */
     uint8_t                     filler[7];
-} eOsk_config_t;                EO_VERIFYsizeof(eOsk_config_t, 8);
+} eOsk_config_t;                EO_VERIFYsizeof(eOsk_config_t, 8)
 
 
 typedef struct                      
 {
     uint8_t                     filler04[4];                           
-} eOsk_inputs_t;                EO_VERIFYsizeof(eOsk_inputs_t, 4);
+} eOsk_inputs_t;                EO_VERIFYsizeof(eOsk_inputs_t, 4)
 
 typedef struct                      
 {
@@ -187,7 +187,7 @@ typedef struct
     uint8_t                     idend;
     uint8_t                     filler01;
     eOsk_triangle_config_t      cfg;
-} eOsk_cmd_trianglesCfg_t;      EO_VERIFYsizeof(eOsk_cmd_trianglesCfg_t, 8);
+} eOsk_cmd_trianglesCfg_t;      EO_VERIFYsizeof(eOsk_cmd_trianglesCfg_t, 8)
 
 
 typedef struct                      
@@ -196,20 +196,20 @@ typedef struct
     uint8_t                     addrend;
     uint8_t                     filler[2];
     eOsk_board_config_t         cfg;
-} eOsk_cmd_boardsCfg_t;         EO_VERIFYsizeof(eOsk_cmd_boardsCfg_t, 8);
+} eOsk_cmd_boardsCfg_t;         EO_VERIFYsizeof(eOsk_cmd_boardsCfg_t, 8)
 
 typedef struct                      
 {
     eOsk_cmd_boardsCfg_t        boardscfg;
     eOsk_cmd_trianglesCfg_t     trianglescfg;
-} eOsk_command_t;               EO_VERIFYsizeof(eOsk_command_t, 16);
+} eOsk_command_t;               EO_VERIFYsizeof(eOsk_command_t, 16)
 
 
 typedef struct                  // size is: 124+4+0 = 128  or 94+2 = 96                  
 {
     EOarray_of_skincandata_t    arrayofcandata;
     uint8_t                     filler04[4];                           
-} eOsk_status_t;                EO_VERIFYsizeof(eOsk_status_t, 248);
+} eOsk_status_t;                EO_VERIFYsizeof(eOsk_status_t, 248)
 
 
 typedef struct                  // size is: 8+248+16 = 272 
@@ -217,7 +217,7 @@ typedef struct                  // size is: 8+248+16 = 272
     eOsk_config_t               config; 
     eOsk_status_t               status;
     eOsk_command_t              cmmnds;    
-} eOsk_skin_t;                  EO_VERIFYsizeof(eOsk_skin_t, 272);
+} eOsk_skin_t;                  EO_VERIFYsizeof(eOsk_skin_t, 272)
 
 
 

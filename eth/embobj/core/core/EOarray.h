@@ -58,7 +58,7 @@ typedef struct
     uint8_t         itemsize;       /**< it is the size of a single item in bytes */
     uint8_t         size;           /**< it keeps the number of items in the array */
     eObool_t        internalmem;    /**< if eobool_true the object use internally allocated memory, else it uses externally allocated memory */  
-} eOarray_head_t;   EO_VERIFYsizeof(eOarray_head_t, 4);
+} eOarray_head_t;   EO_VERIFYsizeof(eOarray_head_t, 4)
 
 typedef struct
 {

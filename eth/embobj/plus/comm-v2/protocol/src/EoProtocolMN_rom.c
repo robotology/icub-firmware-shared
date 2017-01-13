@@ -62,21 +62,21 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // - guard on max number of entities
-EO_VERIFYproposition(eoprot_mn_ded34, eoprot_entities_mn_numberof <= eoprot_entities_maxnumberof);
+EO_VERIFYproposition(eoprot_mn_ded34, eoprot_entities_mn_numberof <= eoprot_entities_maxnumberof)
 
 // - guard on tags ...
-EO_VERIFYproposition(eoprot_mn_tagsnum_co, eoprot_tags_mn_comm_numberof == eoprot_rwms_mn_comm_numberof);
-EO_VERIFYproposition(eoprot_mn_tagsmax_co, eoprot_tags_mn_comm_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mn_tagsnum_co, eoprot_tags_mn_comm_numberof == eoprot_rwms_mn_comm_numberof)
+EO_VERIFYproposition(eoprot_mn_tagsmax_co, eoprot_tags_mn_comm_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_mn_tagsnum_ap, eoprot_tags_mn_appl_numberof == eoprot_rwms_mn_appl_numberof);
-EO_VERIFYproposition(eoprot_mn_tagsmax_ap, eoprot_tags_mn_appl_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mn_tagsnum_ap, eoprot_tags_mn_appl_numberof == eoprot_rwms_mn_appl_numberof)
+EO_VERIFYproposition(eoprot_mn_tagsmax_ap, eoprot_tags_mn_appl_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_mn_tagsnum_in, eoprot_tags_mn_info_numberof == eoprot_rwms_mn_info_numberof);
-EO_VERIFYproposition(eoprot_mn_tagsmax_in, eoprot_tags_mn_info_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mn_tagsnum_in, eoprot_tags_mn_info_numberof == eoprot_rwms_mn_info_numberof)
+EO_VERIFYproposition(eoprot_mn_tagsmax_in, eoprot_tags_mn_info_numberof <= eoprot_tags_maxnumberof)
 
 
-EO_VERIFYproposition(eoprot_mn_tagsnum_se, eoprot_tags_mn_service_numberof == eoprot_rwms_mn_service_numberof);
-EO_VERIFYproposition(eoprot_mn_tagsmax_se, eoprot_tags_mn_service_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_mn_tagsnum_se, eoprot_tags_mn_service_numberof == eoprot_rwms_mn_service_numberof)
+EO_VERIFYproposition(eoprot_mn_tagsmax_se, eoprot_tags_mn_service_numberof <= eoprot_tags_maxnumberof)
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -461,7 +461,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_comm_descriptors[] =
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_replynumof,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_replyarray,
     &eoprot_mn_rom_descriptor_comm_cmmnds_command_config         
-};  EO_VERIFYsizeof(s_eoprot_mn_rom_comm_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_comm_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_comm_numberof))
 
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
@@ -471,7 +471,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
     &eoprot_mn_rom_descriptor_appl_config_txratedivider,
     &eoprot_mn_rom_descriptor_appl_status,
     &eoprot_mn_rom_descriptor_appl_cmmnds_go2state     
-};  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof))
 
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_info_descriptors[] =
@@ -481,14 +481,14 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_info_descriptors[] =
     &eoprot_mn_rom_descriptor_info_config_enabled,
     &eoprot_mn_rom_descriptor_info_status,
     &eoprot_mn_rom_descriptor_info_status_basic
-};  EO_VERIFYsizeof(s_eoprot_mn_rom_info_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_info_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_info_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_info_numberof))
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_service_descriptors[] =
 {   // here are eoprot_mn_tags_service_numberof descriptors for the info entity
     &eoprot_mn_rom_descriptor_service_wholeitem,
     &eoprot_mn_rom_descriptor_service_status_commandresult,
     &eoprot_mn_rom_descriptor_service_cmmnds_command
-};  EO_VERIFYsizeof(s_eoprot_mn_rom_service_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_service_numberof));
+};  EO_VERIFYsizeof(s_eoprot_mn_rom_service_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_service_numberof))
 
 
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mn_rom_descriptors[] = 
@@ -497,7 +497,7 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_mn_rom_descriptors[] =
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_appl_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_info_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_mn_rom_service_descriptors       
-};  EO_VERIFYsizeof(eoprot_mn_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mn_numberof));
+};  EO_VERIFYsizeof(eoprot_mn_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_mn_numberof))
 
     
 
@@ -509,7 +509,7 @@ const uint8_t eoprot_mn_rom_tags_numberof[] =
     eoprot_tags_mn_appl_numberof,
     eoprot_tags_mn_info_numberof,
     eoprot_tags_mn_service_numberof
-};  EO_VERIFYsizeof(eoprot_mn_rom_tags_numberof, eoprot_entities_mn_numberof*sizeof(uint8_t));
+};  EO_VERIFYsizeof(eoprot_mn_rom_tags_numberof, eoprot_entities_mn_numberof*sizeof(uint8_t))
 
 const uint16_t eoprot_mn_rom_entities_sizeof[] = 
 {
@@ -517,7 +517,7 @@ const uint16_t eoprot_mn_rom_entities_sizeof[] =
     sizeof(eOmn_appl_t),
     sizeof(eOmn_info_t),
     sizeof(eOmn_service_t)
-};  EO_VERIFYsizeof(eoprot_mn_rom_entities_sizeof, eoprot_entities_mn_numberof*sizeof(uint16_t));
+};  EO_VERIFYsizeof(eoprot_mn_rom_entities_sizeof, eoprot_entities_mn_numberof*sizeof(uint16_t))
 
 
 const void* const eoprot_mn_rom_entities_defval[] = 
@@ -526,7 +526,7 @@ const void* const eoprot_mn_rom_entities_defval[] =
     (const void*)&eoprot_mn_rom_appl_defaultvalue,
     (const void*)&eoprot_mn_rom_info_defaultvalue,
     (const void*)&eoprot_mn_rom_service_defaultvalue          
-};  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(const void*)); 
+};  EO_VERIFYsizeof(eoprot_mn_rom_entities_defval, eoprot_entities_mn_numberof*sizeof(const void*)) 
 
 
 // the strings of the endpoint
@@ -537,7 +537,7 @@ const char * const eoprot_mn_strings_entity[] =
     "eoprot_entity_mn_application",
     "eoprot_entity_mn_info",
     "eoprot_entity_mn_service"
-};  EO_VERIFYsizeof(eoprot_mn_strings_entity, eoprot_entities_mn_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(eoprot_mn_strings_entity, eoprot_entities_mn_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_mn_strings_tags_comm[] =
@@ -550,7 +550,7 @@ static const char * const s_eoprot_mn_strings_tags_comm[] =
     "eoprot_tag_mn_comm_cmmnds_command_replynumof",
     "eoprot_tag_mn_comm_cmmnds_command_replyarray",
     "eoprot_tag_mn_comm_cmmnds_command_config"
-};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_comm, eoprot_tags_mn_comm_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_comm, eoprot_tags_mn_comm_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_mn_strings_tags_appl[] =
@@ -560,7 +560,7 @@ static const char * const s_eoprot_mn_strings_tags_appl[] =
     "eoprot_tag_mn_appl_config_txratedivider",
     "eoprot_tag_mn_appl_status",
     "eoprot_tag_mn_appl_cmmnds_go2state"
-};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_mn_strings_tags_info[] =
@@ -570,7 +570,7 @@ static const char * const s_eoprot_mn_strings_tags_info[] =
     "eoprot_tag_mn_info_config_enabled",
     "eoprot_tag_mn_info_status",
     "eoprot_tag_mn_info_status_basic"
-};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_info, eoprot_tags_mn_info_numberof*sizeof(const char*));
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_info, eoprot_tags_mn_info_numberof*sizeof(const char*))
 
 
 static const char * const s_eoprot_mn_strings_tags_service[] =
@@ -578,7 +578,7 @@ static const char * const s_eoprot_mn_strings_tags_service[] =
     "eoprot_tag_mn_service_wholeitem", 
     "eoprot_tag_mn_service_status_commandresult",
     "eoprot_tag_mn_service_cmmnds_command"
-};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_service, eoprot_tags_mn_service_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_service, eoprot_tags_mn_service_numberof*sizeof(const char*)) 
 
 const char ** const eoprot_mn_strings_tags[] =
 {
@@ -586,7 +586,7 @@ const char ** const eoprot_mn_strings_tags[] =
     (const char**)&s_eoprot_mn_strings_tags_appl,
     (const char**)&s_eoprot_mn_strings_tags_info,
     (const char**)&s_eoprot_mn_strings_tags_service    
-};  EO_VERIFYsizeof(eoprot_mn_strings_tags, eoprot_entities_mn_numberof*sizeof(const char**)); 
+};  EO_VERIFYsizeof(eoprot_mn_strings_tags, eoprot_entities_mn_numberof*sizeof(const char**)) 
 
 
 // --------------------------------------------------------------------------------------------------------------------

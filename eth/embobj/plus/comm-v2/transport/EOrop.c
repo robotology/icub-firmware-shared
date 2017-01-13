@@ -120,13 +120,13 @@ extern EOrop* eo_rop_New(uint16_t capacity)
     EOrop *retptr = NULL;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOrop), 1);
+    retptr = (EOrop*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOrop), 1);
 
     retptr->stream.capacity = capacity;
 
     if(0 != capacity)
     {
-        retptr->stream.data = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, sizeof(uint8_t), capacity);
+        retptr->stream.data = (uint8_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_08bit, sizeof(uint8_t), capacity);
     }
 
     eo_rop_Reset(retptr);

@@ -112,7 +112,7 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
     }
     
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOreceiver), 1);
+    retptr = (EOreceiver*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOreceiver), 1);
     retptr->ropframeinput       = eo_ropframe_New();
     retptr->ropframereply       = eo_ropframe_New();
     retptr->ropinput            = eo_rop_New(cfg->sizes.capacityofropinput);
@@ -120,7 +120,7 @@ extern EOreceiver* eo_receiver_New(const eOreceiver_cfg_t *cfg)
     retptr->agent               = cfg->agent;
     retptr->ipv4addr            = 0;
     retptr->ipv4port            = 0;
-    retptr->bufferropframereply = (0 == cfg->sizes.capacityofropframereply) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereply, 1));
+    retptr->bufferropframereply = (uint8_t*)( (0 == cfg->sizes.capacityofropframereply) ? (NULL) : (eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, cfg->sizes.capacityofropframereply, 1)) );
     retptr->rx_seqnum           = eok_uint64dummy;
     retptr->tx_ageofframe       = eok_uint64dummy;
     memset(&retptr->error_seqnumber, 0, sizeof(retptr->error_seqnumber));       // even if it is already zero.

@@ -449,7 +449,7 @@ typedef struct
     icubCanProto_skinType_t     skintype;
     uint8_t                     period;
     uint8_t                     noload;
-} icubCanProto_skinboard_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4);
+} icubCanProto_skinboard_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4)
 
 typedef struct                      
 {
