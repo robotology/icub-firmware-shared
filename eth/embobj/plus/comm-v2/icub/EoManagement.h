@@ -641,16 +641,6 @@ typedef struct
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
     eOmn_serv_parameter_t                   parameter;
-<<<<<<< 96c8e66d01ef01048c53f6ebf422ed332a0a79cc
-} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 172)
-
-
-typedef struct                                
-{   // 1+3+340=344
-    uint8_t                                 operation;              // use eOmn_serv_operation_t
-    uint8_t                                 category;               // use eOmn_serv_category_t
-    uint8_t                                 filler[2];
-    eOmn_serv_parameter2_t                  parameter;
 } eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 332);
 
 
