@@ -278,7 +278,7 @@ extern EOVtask* eov_task_hid_New(void)
 	EOVtask *retptr = NULL;	
 
 	// i get the memory for the object
-	retptr = (EOVtask*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOVtask), 1);
+    retptr = (EOVtask*) eo_mempool_New(eo_mempool_GetHandle(), sizeof(EOVtask));
 
 	// now the obj has valid memory. i need to initialise it with user-defined data
     
@@ -295,6 +295,19 @@ extern EOVtask* eov_task_hid_New(void)
 
 
 	return(retptr);	
+}
+
+
+extern void eov_task_hid_Delete(EOVtask* p) 
+{
+    
+    if(NULL == p)
+    {
+        return;
+    } 
+    
+    memset(p, 0, sizeof(EOVtask));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
 }
 
 
