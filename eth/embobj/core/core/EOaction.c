@@ -118,6 +118,53 @@ extern eOresult_t eo_action_Clear(EOaction *p)
 }
 
 
+extern eObool_t eo_action_Isvalid(EOaction *p)
+{
+    if(NULL == p)
+    {
+        return(eobool_false);
+    }
+    
+    eObool_t res = eobool_false;
+    
+    switch(p->actiontype)
+    {
+        case eo_actypeEvent:
+        {
+            if((0 != p->data.evt.event) && (NULL != p->data.evt.totask))
+            {
+                res = eobool_true;                
+            }
+            
+        } break;
+        
+        case eo_actypeMessage:
+        {
+            if((NULL != p->data.msg.totask))
+            {
+                res = eobool_true;                
+            }
+            
+        } break;
+        
+        case eo_actypeCallback:
+        {
+            if((NULL != p->data.cbk.callback) && (NULL != p->data.cbk.exectask))
+            {
+                res = eobool_true;                
+            }
+            
+        } break;
+        
+        default:
+        {
+            res = eobool_false;
+        } break;
+    }
+    
+    return(res);
+}
+
 extern eOresult_t eo_action_Copy(EOaction *p, const EOaction *src)
 {
     if((NULL == p) || (NULL == src))

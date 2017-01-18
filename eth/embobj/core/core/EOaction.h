@@ -104,6 +104,8 @@ extern void eo_action_Delete(EOaction *p);
  **/
 extern eOresult_t eo_action_Clear(EOaction *p);
 
+extern eObool_t eo_action_Isvalid(EOaction *p);
+
 
 /** @fn         extern eOresult_t eo_action_Copy(EOaction *p, const EOaction *src)
     @brief      Copies the action @e src into a given EOaction object. 
