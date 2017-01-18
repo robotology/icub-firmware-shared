@@ -73,7 +73,7 @@ typedef struct EOtimer_hid EOtimer;
 typedef enum 
 {
     eo_tmrmode_ONESHOT = 0,        /**< The countdown is executed only once        */    
-    eo_tmrmode_FOREVER             /**< The countdown is automatically reloaded    */
+    eo_tmrmode_FOREVER = 1        /**< The countdown is automatically reloaded    */
 } eOtimerMode_t;
 
 
@@ -164,6 +164,9 @@ extern eOabstime_t eo_timer_Remaining(EOtimer *t);
     @return     The status of the timer, or eo_tmrstat_Idle if t is NULL.
  **/
 extern eOtimerStatus_t eo_timer_GetStatus(EOtimer *t);
+
+
+extern eOtimerMode_t eo_timer_GetMode(EOtimer *t);
  
 
 
