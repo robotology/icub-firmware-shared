@@ -149,8 +149,8 @@ extern eObool_t eo_action_Isvalid(EOaction *p)
         
         case eo_actypeCallback:
         {
-            if((NULL != p->data.cbk.callback) && (NULL != p->data.cbk.exectask))
-            {
+            if((NULL != p->data.cbk.callback))
+            {   // p->data.cbk.exectask can be NULL. in such a cas the callback will be executed directly by eo_action_Execute()
                 res = eobool_true;                
             }
             
