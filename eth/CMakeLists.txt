@@ -5,10 +5,10 @@
 
 project(embobj NONE)
 if(WITH_EMBOBJ)
-    #install(DIRECTORY embobj
-    #        DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
-    #install(DIRECTORY robotconfig
-    #        DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
+    install(DIRECTORY embobj
+            DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
+    install(DIRECTORY robotconfig
+            DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
 endif()
 
 set_property(GLOBAL APPEND PROPERTY icub_firmware_shared_TARGETS embobj)
