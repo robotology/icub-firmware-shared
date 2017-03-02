@@ -280,6 +280,7 @@ typedef enum
 {
     eobrd_port_none                 = 31,
     eobrd_port_unknown              = 30,
+    eobrd_port_nolocal              = 29,
 
     eobrd_port_emsP6                = 0,        // SPI encoder: hal_encoder1
     eobrd_port_emsP7                = 3,        // SPI encoder: hal_encoder4
