@@ -67,13 +67,15 @@ typedef enum
     eobrd_cantype_mais              = ICUBCANPROTO_BOARDTYPE__MAIS,     // 7
     eobrd_cantype_foc               = ICUBCANPROTO_BOARDTYPE__2FOC,     // 8   
     eobrd_cantype_6sg               = ICUBCANPROTO_BOARDTYPE__6SG,      // 9, not used
-    eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used    
+    eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used 
+    eobrd_cantype_mtb4              = ICUBCANPROTO_BOARDTYPE__MTB4,     // 11 
+    eobrd_cantype_strain2           = ICUBCANPROTO_BOARDTYPE__STRAIN2,  // 12     
    
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 11 };
+enum { eobrd_cantype_numberof = 13 };
 
 
 typedef enum
@@ -110,13 +112,15 @@ typedef enum
     eobrd_2dc                   = eobrd_cantype_2dc,        
     eobrd_bll                   = eobrd_cantype_bll,       
     eobrd_6sg                   = eobrd_cantype_6sg,        
-    eobrd_jog                   = eobrd_cantype_jog,           
+    eobrd_jog                   = eobrd_cantype_jog,   
+    eobrd_mtb4                  = eobrd_cantype_mtb4,
+    eobrd_strain2               = eobrd_cantype_strain2,    
     
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 14 };
+enum { eobrd_type_numberof = 16 };
 
 
 typedef struct                  
