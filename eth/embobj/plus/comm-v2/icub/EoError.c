@@ -245,8 +245,10 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_mc4_failed_mais_verify, "CFG: EOtheMotionController cannot be configured. verification of mais fails. see other messages for more details"},
     {eoerror_value_CFG_mc_mc4plus_ok, "CFG: EOtheMotionController can correctly configure mc4plus-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4plus_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails. see other messages for more details"},
-    {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured. in p16 the number of joints (msb) and failure mask (lsb), in p64 for each physical joint a byte with (port, errorcode)"},
-    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured. verification fails. in p16 the number of joints (msb) and failure mask (lsb), in p64 for each physical joint a byte with (port, errorcode)"},        
+
+    {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured. p16&0xf000: number of joint; primary encs: failure mask in p16&0x000f and errorcodes in p64&0x0000ffff; secondary encs: failure mask in p16&0x00f0 and errorcodes in p64&0xffff0000"},
+    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured: verification fails. p16&0xf000: number of joint; primary encs: failure mask in p16&0x000f and errorcodes in p64&0x0000ffff; secondary encs: failure mask in p16&0x00f0 and errorcodes in p64&0xffff0000"},        
+
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
     {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
@@ -270,7 +272,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."},
     
     {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."},    
-    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."} 
+    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."}    
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
@@ -279,9 +281,9 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
 {   // very important: fill table with order of eOerror_value_ETHMON_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal)"},        
-    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal)"},
-    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Number of errors in par64"},
+    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},        
+    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},
+    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running. Number of errors in par64&0xffffffff"},
     {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)) 
 
