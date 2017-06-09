@@ -221,21 +221,6 @@ typedef struct              // size is 76+4 = 80 bytes
 
 
 
-/** @typedef    typedef enum eOmn_appl_runMode_t;
-    @brief      contains ems application's run mode.
-                Currently runMode is not set to ems by pc104, but application itself understands its runmode
-                depending on connected CAN boards.
- **/
-typedef enum
-{
-    applrunMode__default       = 0,
-    applrunMode__skinOnly      = 1,
-    applrunMode__mc4Only       = 2,
-    applrunMode__skinAndMc4    = 3,
-    applrunMode__2foc          = 4
-} eOmn_appl_runMode_t;
-
-
 typedef struct
 {
     uint16_t    listeningPort;
@@ -291,10 +276,13 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
  **/
 typedef struct                      // size is 4+3+3 = 8 bytes
 {
-    eOreltime_t                     cycletime;      /**< FOR-FUTURE_USE: the time to be used for the control loop expressed in microseconds */
-    uint8_t                         txratedivider;  /**< if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles */ 
-    uint8_t                         filler03[3];
-} eOmn_appl_config_t;               //EO_VERIFYsizeof(eOmn_appl_config_t, 8)
+    eOreltime_t                     cycletime;      // in usec
+    uint16_t                        maxtimeRX;      // in usec
+    uint16_t                        maxtimeDO;      // in usec         
+    uint16_t                        maxtimeTX;      // in usec  
+    uint8_t                         txratedivider;  // if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles
+    uint8_t                         filler05[5];     
+} eOmn_appl_config_t;               EO_VERIFYsizeof(eOmn_appl_config_t, 16)
 
 
 /** @typedef    typedef struct eOmn_appl_status_t;
@@ -306,9 +294,9 @@ typedef struct                      // size is 4+2+16+1+1+6+2 = 32 bytes
     eOversion_t                     version;
     uint8_t                         name[16];
     eOenum08_t                      currstate;          /**< use eOmn_appl_state_t */
-    eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
-	uint16_t						cloop_timings[3];
-    uint8_t                         txdecimationfactor;
+    uint8_t                         filler01;            
+    uint16_t                        cloop_timings[3];   // rx, do, tx. their sum is the duration of control-loop
+    uint8_t                         txdecimationfactor; // of the regulars. 1 is every tx phase of control-loop. 2 is every two ...
     uint8_t                         boardtype;          // use eObrd_ethtype_t
 } eOmn_appl_status_t;               EO_VERIFYsizeof(eOmn_appl_status_t, 32)
 
