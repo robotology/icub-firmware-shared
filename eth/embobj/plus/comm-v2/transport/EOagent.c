@@ -104,7 +104,7 @@ extern EOagent* eo_agent_New(const eOagent_cfg_t *cfg)
     
    
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOagent), 1);
+    retptr = (EOagent*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOagent), 1);
     
     memcpy(&retptr->config, cfg, sizeof(eOagent_cfg_t));
                

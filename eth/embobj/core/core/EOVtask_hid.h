@@ -80,6 +80,9 @@ struct EOVtask_hid
  **/ 
 extern EOVtask* eov_task_hid_New(void);
 
+
+extern void eov_task_hid_Delete(EOVtask* p);
+
 /** @fn         extern eOresult_t eov_task_hid_SetVTABLE(EOVtask *p, 
                                                          eOvoid_fp_voidp_uint32_t v_startup, eOvoid_fp_voidp_uint32_t v_run
                                                          eOres_fp_voidp_evt_t v_isr_set_evt, eOres_fp_voidp_evt_t v_tsk_set_evt,

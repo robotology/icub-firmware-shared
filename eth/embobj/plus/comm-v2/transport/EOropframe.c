@@ -127,7 +127,7 @@ extern EOropframe* eo_ropframe_New(void)
     EOropframe *retptr = NULL;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOropframe), 1);
+    retptr = (EOropframe*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOropframe), 1);
     
     retptr->capacity                = 0;
     retptr->size                    = 0;

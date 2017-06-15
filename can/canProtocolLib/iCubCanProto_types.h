@@ -68,6 +68,8 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__2FOC    8 
 #define ICUBCANPROTO_BOARDTYPE__6SG     9
 #define ICUBCANPROTO_BOARDTYPE__JOG     10
+#define ICUBCANPROTO_BOARDTYPE__MTB4    11
+#define ICUBCANPROTO_BOARDTYPE__STRAIN2 12
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
 
 // skin types
@@ -95,6 +97,8 @@ typedef enum
     icubCanProto_boardType__2foc    = ICUBCANPROTO_BOARDTYPE__2FOC,
     icubCanProto_boardType__6sg     = ICUBCANPROTO_BOARDTYPE__6SG,
     icubCanProto_boardType__jog     = ICUBCANPROTO_BOARDTYPE__JOG,
+    icubCanProto_boardType__mtb4    = ICUBCANPROTO_BOARDTYPE__MTB4,
+    icubCanProto_boardType__strain2 = ICUBCANPROTO_BOARDTYPE__STRAIN2,
     icubCanProto_boardType__unknown = ICUBCANPROTO_BOARDTYPE__UNKNOWN
 } icubCanProto_boardType_t;
 
@@ -449,7 +453,7 @@ typedef struct
     icubCanProto_skinType_t     skintype;
     uint8_t                     period;
     uint8_t                     noload;
-} icubCanProto_skinboard_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4);
+} icubCanProto_skinboard_config_t;          //EO_VERIFYsizeof(eOsk_config_board_t, 4)
 
 typedef struct                      
 {

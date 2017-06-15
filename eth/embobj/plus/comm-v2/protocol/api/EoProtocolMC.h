@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 18 };
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 19 };
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -74,7 +74,7 @@ typedef enum
     eoprot_tag_mc_joint_config_pidposition                          =  2,
     eoprot_tag_mc_joint_config_pidvelocity                          =  3,
     eoprot_tag_mc_joint_config_pidtorque                            =  4,
-    eoprot_tag_mc_joint_config_limitsofjoint                        =  5,
+    eoprot_tag_mc_joint_config_userlimits                           =  5,
     eoprot_tag_mc_joint_config_impedance                            =  6,
     eoprot_tag_mc_joint_config_motor_params                         =  7,
     eoprot_tag_mc_joint_config_tcfiltertype                         =  8,
@@ -109,7 +109,7 @@ typedef enum
     eoprot_rwm_mc_joint_config_pidposition                          = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidvelocity                          = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidtorque                            = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_config_limitsofjoint                        = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_userlimits                           = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_impedance                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_motor_params                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_tcfiltertype                         = eo_nv_rwmode_RW,
@@ -189,11 +189,10 @@ typedef enum
 {
      eoprot_tag_mc_controller_wholeitem                              = 0,
      eoprot_tag_mc_controller_config                                 = 1,
-     eoprot_tag_mc_controller_config_jointcoupling                   = 2,
-     eoprot_tag_mc_controller_status                                 = 3
+     eoprot_tag_mc_controller_status                                 = 2
 } eOprot_tag_mc_controller_t;
 
-enum { eoprot_tags_mc_controller_numberof = 4 };  // it MUST be equal to the number of tags
+enum { eoprot_tags_mc_controller_numberof = 3 };  // it MUST be equal to the number of tags
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_controller_t
@@ -205,11 +204,10 @@ typedef enum
 {
     eoprot_rwm_mc_controller_wholeitem                              = eo_nv_rwmode_RO,
     eoprot_rwm_mc_controller_config                                 = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_controller_config_jointcoupling                   = eo_nv_rwmode_RW,
     eoprot_rwm_mc_controller_status                                 = eo_nv_rwmode_RO
 } eOprot_rwm_mc_controller_t; 
 
-enum { eoprot_rwms_mc_controller_numberof = 4 };  // it MUST be equal to the number of rw modes 
+enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the number of rw modes 
 
 
 // - structures implementing the endpoints
@@ -224,7 +222,7 @@ typedef struct                  // 188*1+48*1+80 = 316
     eOmc_joint_t                joints[1]; 
     eOmc_motor_t                motors[1];
     eOmc_controller_t           thecontroller;
-} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 316);
+} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 316)
 
 
   
@@ -260,8 +258,8 @@ extern void eoprot_fun_UPDT_mc_joint_config_pidvelocity(const EOnv* nv, const eO
 extern void eoprot_fun_INIT_mc_joint_config_pidtorque(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_pidtorque(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_config_limitsofjoint(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_config_limitsofjoint(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_config_userlimits(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_userlimits(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_joint_config_impedance(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_impedance(const EOnv* nv, const eOropdescriptor_t* rd);
@@ -353,12 +351,8 @@ extern void eoprot_fun_UPDT_mc_controller_wholeitem(const EOnv* nv, const eOropd
 extern void eoprot_fun_INIT_mc_controller_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_controller_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_controller_config_jointcoupling(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_controller_config_jointcoupling(const EOnv* nv, const eOropdescriptor_t* rd);
-
 extern void eoprot_fun_INIT_mc_controller_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_controller_status(const EOnv* nv, const eOropdescriptor_t* rd);
-
 
 /** @}            
     end of group eo_EoProtocolMC  

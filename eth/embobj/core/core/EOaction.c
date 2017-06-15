@@ -27,9 +27,6 @@
 #include "EOVtask.h"
 
 
-
-
-
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern public interface
 // --------------------------------------------------------------------------------------------------------------------
@@ -87,7 +84,7 @@ extern EOaction* eo_action_New()
     EOaction *retptr = NULL;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOaction), 1);
+    retptr = (EOaction*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOaction), 1);
     
     retptr->actiontype = eo_actypeNONE;
 
@@ -120,6 +117,53 @@ extern eOresult_t eo_action_Clear(EOaction *p)
     return(eores_OK);
 }
 
+
+extern eObool_t eo_action_Isvalid(EOaction *p)
+{
+    if(NULL == p)
+    {
+        return(eobool_false);
+    }
+    
+    eObool_t res = eobool_false;
+    
+    switch(p->actiontype)
+    {
+        case eo_actypeEvent:
+        {
+            if((0 != p->data.evt.event) && (NULL != p->data.evt.totask))
+            {
+                res = eobool_true;                
+            }
+            
+        } break;
+        
+        case eo_actypeMessage:
+        {
+            if((NULL != p->data.msg.totask))
+            {
+                res = eobool_true;                
+            }
+            
+        } break;
+        
+        case eo_actypeCallback:
+        {
+            if((NULL != p->data.cbk.callback))
+            {   // p->data.cbk.exectask can be NULL. in such a cas the callback will be executed directly by eo_action_Execute()
+                res = eobool_true;                
+            }
+            
+        } break;
+        
+        default:
+        {
+            res = eobool_false;
+        } break;
+    }
+    
+    return(res);
+}
 
 extern eOresult_t eo_action_Copy(EOaction *p, const EOaction *src)
 {

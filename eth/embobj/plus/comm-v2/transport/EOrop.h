@@ -94,7 +94,7 @@ typedef struct
     uint8_t         rqsttime    : 1;        /**< if 1 the ROP requests that a reply shall have the time field */
     uint8_t         rqstconf    : 1;        /**< if 1 the ROP requests that the received shall send confirmation */
     uint8_t         version     : 2;        /**< it is formed by bits 7 and 6 of the first byte of the ROP. It must be zero  */
-} eOropctrl_t;      EO_VERIFYsizeof(eOropctrl_t, 1);
+} eOropctrl_t;      EO_VERIFYsizeof(eOropctrl_t, 1)
 
 
 
@@ -114,7 +114,7 @@ typedef enum
 typedef struct      // 04 bytes
 {
     eOnvID32_t      id32;
-} eOropSIGcfg_t;    EO_VERIFYsizeof(eOropSIGcfg_t, 4);
+} eOropSIGcfg_t;    EO_VERIFYsizeof(eOropSIGcfg_t, 4)
 
 
 typedef struct      // 24 bytes
@@ -126,7 +126,7 @@ typedef struct      // 24 bytes
     uint8_t*                data;               // 4B
     uint32_t                signature;          // 4B
     uint64_t                time;               // 4B
-} eOropdescriptor_t;        //EO_VERIFYsizeof(eOropdescriptor_t, 24); 
+} eOropdescriptor_t;        //EO_VERIFYsizeof(eOropdescriptor_t, 24) 
 
 
 /** @typedef struct eOrophead_t
@@ -139,7 +139,7 @@ typedef struct
     eOropcode_t     ropc;
     uint16_t        dsiz;
     eOnvID32_t      id32;
-} eOrophead_t;      EO_VERIFYsizeof(eOrophead_t, 8);
+} eOrophead_t;      EO_VERIFYsizeof(eOrophead_t, 8)
 
 
 

@@ -74,13 +74,13 @@ typedef struct EOvector_hid EOconstvector;
 
 
  
-/** @fn         extern EOconstvector * eo_constvector_Load(EOvector *vector)
+/** @fn         extern EOconstvector * eo_constvector_Load(const EOvector *vector)
     @brief      it loads a EOconstvector object with data coming from a EOvector
     @param      vector       the EOvector
     @return     The pointer to the required object.
  **/
 
-extern EOconstvector * eo_constvector_Load(EOvector *vector);
+extern EOconstvector * eo_constvector_Load(const EOvector *vector);
 
 
 

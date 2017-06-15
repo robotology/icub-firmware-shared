@@ -166,10 +166,10 @@ const eOprot_EPcfg_t eoprot_arrayof_maxEPcfg[eoprot_endpoints_numberof] =
 
 // current implementation depends on the fact taht we have the 32 bits of the id assigned to ep-entity-index-tag
 // with 8-8-8-8 bits. thus we put a guard which fails compilation in case those values change.
-EO_VERIFYproposition(eoprot_ep_1233, 256 == eoprot_endpoints_maxnumberof);
-EO_VERIFYproposition(eoprot_ep_1234, 256 == eoprot_entities_maxnumberof);
-EO_VERIFYproposition(eoprot_ep_1235, 256 == eoprot_indices_maxnumberof);
-EO_VERIFYproposition(eoprot_ep_1236, 256 == eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_ep_1233, 256 == eoprot_endpoints_maxnumberof)
+EO_VERIFYproposition(eoprot_ep_1234, 256 == eoprot_entities_maxnumberof)
+EO_VERIFYproposition(eoprot_ep_1235, 256 == eoprot_indices_maxnumberof)
+EO_VERIFYproposition(eoprot_ep_1236, 256 == eoprot_tags_maxnumberof)
 
 extern eOprotID32_t eoprot_ID_get(eOprotEndpoint_t ep, eOprotEntity_t entity, eOprotIndex_t index, eOprotTag_t tag)
 {
@@ -374,7 +374,7 @@ extern eOresult_t eoprot_config_board_reserve(eOprotBRD_t brd)
     {   
         // ok. just realloc   
         uint8_t oldsize = eoprot_rem_board_data_size;
-        void *p = realloc(eoprot_rem_board_data, (brd+1)*sizeof(eOprot_board_data_t));  
+        eOprot_board_data_t *p = (eOprot_board_data_t*)realloc(eoprot_rem_board_data, (brd+1)*sizeof(eOprot_board_data_t));  
         if(NULL == p)
         {
             return(eores_NOK_generic);
@@ -1585,7 +1585,7 @@ static void* s_eoprot_rom_get_nvrom(eOprotID32_t id)
 
 static uint16_t s_eoprot_rom_get_sizeofvar(uint8_t epi, eOprotID32_t id)
 {     
-    EOnv_rom_t* rom = s_eoprot_rom_get_nvrom(id);  
+    EOnv_rom_t* rom = (EOnv_rom_t*) s_eoprot_rom_get_nvrom(id);  
     if(NULL == rom)
     {
         return(0);

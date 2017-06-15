@@ -30,6 +30,7 @@
 #include "EOnv_hid.h"
 #include "EOrop_hid.h"
 #include "EOVtheSystem.h"
+#include "EOlist.h"
 
 
 
@@ -79,7 +80,7 @@ typedef struct              // 24+24=48
     eOropdescriptor_t       ropdes; // ropdes.time contains the expiry time ...
     EOnv                    nv;
     eOproxy_params_t        params;
-} eo_proxy_ropdes_plus_t;   //EO_VERIFYsizeof(eo_proxy_ropdes_plus_t, 56); 
+} eo_proxy_ropdes_plus_t;   //EO_VERIFYsizeof(eo_proxy_ropdes_plus_t, 56) 
 
 typedef struct
 {
@@ -139,13 +140,13 @@ extern EOproxy* eo_proxy_New(const eOproxy_cfg_t *cfg)
     }
     
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOproxy), 1);
+    retptr = (EOproxy*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOproxy), 1);
     
     memcpy(&retptr->config, cfg, sizeof(eOproxy_cfg_t));
     
     // i get the list ...
     
-    retptr->transceiver = cfg->transceiver;
+    retptr->transceiver = (EOtransceiver*) cfg->transceiver;
     
     retptr->listofropdes    = (0 == cfg->capacityoflistofropdes) ? (NULL) : (eo_list_New(sizeof(eo_proxy_ropdes_plus_t), cfg->capacityoflistofropdes, NULL, 0, NULL, NULL));
     
@@ -269,7 +270,7 @@ extern eOproxy_params_t * eo_proxy_Params_Get(EOproxy *p, eOnvID32_t id32)
     
     eov_mutex_Take(p->mtx, eok_reltimeINFINITE);
     
-    li = eo_list_Find(p->listofropdes, s_matching_rule_id32, &skey);
+    li = eo_list_Find(p->listofropdes, s_matching_rule_id32, (void*)&skey);
 
     if(NULL == li)
     {   // there is no entry with id32 in the list ... i cannot give teh param back
@@ -313,7 +314,7 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, void *data
         
     eov_mutex_Take(p->mtx, eok_reltimeINFINITE);
     
-    li = eo_list_Find(p->listofropdes, s_matching_rule_id32, &skey);
+    li = eo_list_Find(p->listofropdes, s_matching_rule_id32, (void*)&skey);
 
     if(NULL == li)
     {   // there is no entry with id32 in the list ... i dont load any reply rop
@@ -336,7 +337,7 @@ extern eOresult_t eo_proxy_ReplyROP_Load(EOproxy *p, eOnvID32_t id32, void *data
 
     // item->ropdes is already ok (opc is say, id32 is ..., etc.) ... i just change the time
     item->ropdes.time = 0;    
-    res = eo_transceiver_ReplyROP_Load(p->config.transceiver, &item->ropdes);
+    res = eo_transceiver_ReplyROP_Load((EOtransceiver*)p->config.transceiver, &item->ropdes);
     if(eores_OK != res)
     {
         errdes.par16 = 0;

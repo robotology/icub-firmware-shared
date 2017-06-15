@@ -149,7 +149,7 @@ extern EOnvSet* eo_nvset_New(eOnvset_protection_t prot, eov_mutex_fn_mutexderive
     EOnvSet *p = NULL;  
 
     // i get the memory for the object
-    p = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(EOnvSet), 1);
+    p = (EOnvSet*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(EOnvSet), 1);
     
     // i dont initialise yet the device. i simply rely on the fact that it contains all zero data.
     p->theboard.ipaddress       = 0;    
@@ -375,7 +375,7 @@ static eOresult_t s_eo_nvset_NVsOfEP_Initialise(EOnvSet* p, eOnvset_ep_t* endpoi
             if(eo_nvset_protection_one_per_netvar == p->protection)
             {
                 //#warning -> think of uint32 and void* maybe use uint64
-                uint32_t** addr = eo_vector_At(theEndpoint->themtxofthenvs, k);
+                uint32_t** addr = (uint32_t**) eo_vector_At(theEndpoint->themtxofthenvs, k);
                 mtx2use = (EOVmutexDerived*) (*addr);
             }
             
@@ -645,7 +645,7 @@ extern eOresult_t eo_nvset_LoadEP(EOnvSet* p, eOprot_EPcfg_t *cfgofep, eObool_t 
     theBoard = &p->theboard;
     brd = p->theboard.boardnum;
         
-    theEndpoint = eo_mempool_New(eo_mempool_GetHandle(), 1*sizeof(eOnvset_ep_t));
+    theEndpoint = (eOnvset_ep_t*) eo_mempool_New(eo_mempool_GetHandle(), 1*sizeof(eOnvset_ep_t));
     
     memcpy(&theEndpoint->epcfg, cfgofep, sizeof(eOprot_EPcfg_t));   
     
@@ -671,7 +671,7 @@ extern eOresult_t eo_nvset_LoadEP(EOnvSet* p, eOprot_EPcfg_t *cfgofep, eObool_t 
     
     theEndpoint->epnvsnumberof      = epnvsnumberof;
     theEndpoint->initted            = eobool_false;    
-    theEndpoint->epram              = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeofram, 1);
+    theEndpoint->epram              = (void*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeofram, 1);
     theEndpoint->mtx_endpoint       = (eo_nvset_protection_one_per_endpoint == p->protection) ? p->mtxderived_new() : NULL;
         
     // now we must load the ram in the endpoint
@@ -793,7 +793,7 @@ static EOVmutexDerived* s_eo_nvset_get_nvmutex(EOnvSet* p, eOnvID32_t id32)
                 {
                     //#warning .... i think of void* as a uint32_t* ///////////// think of it
                     uint32_t nvprognumber = eoprot_endpoint_id2prognum(p->theboard.boardnum, id32);
-                    uint32_t** addr = eo_vector_At(theEndpoint->themtxofthenvs, nvprognumber);
+                    uint32_t** addr = (uint32_t**) eo_vector_At(theEndpoint->themtxofthenvs, nvprognumber);
                     mtx2use = (EOVmutexDerived*) (*addr);
                 }
             } break;  

@@ -67,13 +67,15 @@ typedef enum
     eobrd_cantype_mais              = ICUBCANPROTO_BOARDTYPE__MAIS,     // 7
     eobrd_cantype_foc               = ICUBCANPROTO_BOARDTYPE__2FOC,     // 8   
     eobrd_cantype_6sg               = ICUBCANPROTO_BOARDTYPE__6SG,      // 9, not used
-    eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used    
+    eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used 
+    eobrd_cantype_mtb4              = ICUBCANPROTO_BOARDTYPE__MTB4,     // 11 
+    eobrd_cantype_strain2           = ICUBCANPROTO_BOARDTYPE__STRAIN2,  // 12     
    
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 11 };
+enum { eobrd_cantype_numberof = 13 };
 
 
 typedef enum
@@ -110,13 +112,15 @@ typedef enum
     eobrd_2dc                   = eobrd_cantype_2dc,        
     eobrd_bll                   = eobrd_cantype_bll,       
     eobrd_6sg                   = eobrd_cantype_6sg,        
-    eobrd_jog                   = eobrd_cantype_jog,           
+    eobrd_jog                   = eobrd_cantype_jog,   
+    eobrd_mtb4                  = eobrd_cantype_mtb4,
+    eobrd_strain2               = eobrd_cantype_strain2,    
     
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 14 };
+enum { eobrd_type_numberof = 16 };
 
 
 typedef struct                  
@@ -124,14 +128,14 @@ typedef struct
     uint8_t                     major;
     uint8_t                     minor;    
     uint8_t                     build;
-} eObrd_firmwareversion_t;      EO_VERIFYsizeof(eObrd_firmwareversion_t, 3);
+} eObrd_firmwareversion_t;      EO_VERIFYsizeof(eObrd_firmwareversion_t, 3)
 
 
 typedef struct                  
 {   // size is: 1+1+0 = 2
     uint8_t                     major;
     uint8_t                     minor;    
-} eObrd_protocolversion_t;      EO_VERIFYsizeof(eObrd_protocolversion_t, 2);
+} eObrd_protocolversion_t;      EO_VERIFYsizeof(eObrd_protocolversion_t, 2)
 
 
 typedef struct                  
@@ -139,14 +143,14 @@ typedef struct
     uint8_t                     type;
     eObrd_firmwareversion_t     firmware;
     eObrd_protocolversion_t     protocol;   
-} eObrd_info_t;                 EO_VERIFYsizeof(eObrd_info_t, 6);
+} eObrd_info_t;                 EO_VERIFYsizeof(eObrd_info_t, 6)
 
 
 typedef struct
 {
     eObrd_firmwareversion_t     firmware;
     eObrd_protocolversion_t     protocol; 
-} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 5);  
+} eObrd_version_t;              EO_VERIFYsizeof(eObrd_version_t, 5)  
 
 
 typedef enum
@@ -241,7 +245,7 @@ typedef struct
     uint8_t                     type;               /**< use eObrd_cantype_t */
     eObrd_canlocation_t         location;           /**< its can location */
     eObrd_protocolversion_t     requiredprotocol;   /**< its protocol */
-} eObrd_canproperties_t;        EO_VERIFYsizeof(eObrd_canproperties_t, 4); 
+} eObrd_canproperties_t;        EO_VERIFYsizeof(eObrd_canproperties_t, 4) 
 
 
 /** @typedef    typedef enum eObrd_connector_t
@@ -280,6 +284,7 @@ typedef enum
 {
     eobrd_port_none                 = 31,
     eobrd_port_unknown              = 30,
+    eobrd_port_nolocal              = 29,
 
     eobrd_port_emsP6                = 0,        // SPI encoder: hal_encoder1
     eobrd_port_emsP7                = 3,        // SPI encoder: hal_encoder4

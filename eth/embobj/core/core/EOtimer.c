@@ -92,7 +92,7 @@ extern EOtimer* eo_timer_New(void)
     eOresult_t res = eores_NOK_generic;    
 
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtimer), 1);
+    retptr = (EOtimer*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtimer), 1);
 
     // now the obj has valid memory. i need to initialise it with user-defined data,
     // sets dummy values for the timer. VERY IMPORTANT: i also set initted = 1.
@@ -152,6 +152,12 @@ extern eOresult_t eo_timer_Start(EOtimer *t, eOabstime_t startat, eOreltime_t co
     {
          return(eores_NOK_nullpointer);
          //eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "eo_timer_Start(): NULL arg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
+    }
+    
+    // i verify the action is valid.
+    if(eobool_false == eo_action_Isvalid(action))
+    {
+        return(eores_NOK_generic);
     }
     
     if((eok_abstimeNOW != startat) && (0 == countdown))
@@ -286,6 +292,20 @@ extern eOtimerStatus_t eo_timer_GetStatus(EOtimer *t)
          ((EOTIMER_STATUS_RUNNING == sss) ? (eo_tmrstat_Running) : (eo_tmrstat_Completed) );
 
     return(st);
+}
+
+extern eOtimerMode_t eo_timer_GetMode(EOtimer *t) 
+{
+    eOtimerMode_t mode = eo_tmrmode_ONESHOT;
+    
+    if(NULL != t) 
+    {    
+        // we dont protect because there is no need to do that in reading a byte in ram
+        //eov_timerman_Take(eov_timerman_GetHandle(), eok_reltimeZERO);
+        mode = (0 == t->mode) ? (eo_tmrmode_ONESHOT) : (eo_tmrmode_FOREVER);
+        //eov_timerman_Release(eov_timerman_GetHandle());
+    }
+    return(mode);
 }
 
 

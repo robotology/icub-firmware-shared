@@ -83,7 +83,7 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
     eoerror_value_CFG_numberof,
     eoerror_value_ETHMON_numberof,
     eoerror_category_InertialSensor
-};  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t));    
+};  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t))    
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -158,7 +158,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_board_notfound, "SYS: the board on the specified CAN bus / adr was not found during the discovery phase. In par16 there is the board type"},
     {eoerror_value_SYS_transceiver_rxinvalidframe_error, "SYS: the board has detected an invalid ropframe in reception."},
     {eoerror_value_SYS_canservices_boards_lostcontact, "SYS: a service has detected that some CAN boards are not broacasting anymore. In par16 the type of boards, in par64 LS 32 bits the bit mask of lost board (CAN1 in MS 16 bits and CAN2 in LS 16 bits)"}
-};  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 const eoerror_valuestring_t eoerror_valuestrings_HW[] =
@@ -167,7 +167,7 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
     {eoerror_value_HW_first,                "HW: first error message of category hw"},       
     {eoerror_value_HW_second,               "HW: second error message of category hw"},
     {eoerror_value_HW_strain_saturation,    "HW: strain values saturation. In p16 there is the channel involved, in p64 there are the saturation counts for the last sec of both types (lower: LS32bits, upper MS32bits"},
-};  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 const eoerror_valuestring_t eoerror_valuestrings_MC[] =
@@ -189,7 +189,7 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_qencoder_phase,  "MC: 2FOC quadrature encoder phase broken. The motor encoder is not counting even if the motor is moving, please check motor encoder cables. In par64 0xFF is the mask of raw encoder value. par16 = ID of joint."},
     {eoerror_value_MC_generic_error,         "MC: generic motor error (see 64 bit mask parameter)."},
     {eoerror_value_MC_motor_wrong_state,     "MC: 2FOC wrong state. The 2FOC motor controller is in a control state different from required by the EMS. In par64 0xF0 is the mask of requested state, 0x0F is the mask of actual state. par16 = ID of joint."}
-};  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 
@@ -201,7 +201,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SK[] =
     {eoerror_value_SK_onoroff,                  "SK: the skin transmission has been switched on or off. In par16 there's the corresponding code (0: OFF, 1: ON)"},
     {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. In par16 there's the actual state of the EMS board (0: CFG, 1: RUN)"},
     {eoerror_value_SK_obsoletecommand,          "SK: the board has received an obsolete command of type eosk_sigmode_signal_oldway. use eosk_sigmode_signal instead."}
-};  EO_VERIFYsizeof(eoerror_valuestrings_SK, eoerror_value_SK_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_SK, eoerror_value_SK_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
@@ -218,7 +218,7 @@ const eoerror_valuestring_t eoerror_valuestrings_DEB[] =
     {eoerror_value_DEB_hwfault1,            "DEBUG: hw fault1 detected: in par16 there are controlmodestatus in lsb and frame[1] in msb"},
     {eoerror_value_DEB_hwfault2,            "DEBUG: hw fault2 detected: in par16 there are controlmodestatus in lsb and frame[1] in msb"},
     {eoerror_value_DEB_hwfault3,            "DEBUG: hw fault3 detected: in par16 there are controlmodestatus in lsb and frame[1] in msb"}
-};  EO_VERIFYsizeof(eoerror_valuestrings_DEB, eoerror_value_DEB_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_DEB, eoerror_value_DEB_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
@@ -245,8 +245,10 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_mc4_failed_mais_verify, "CFG: EOtheMotionController cannot be configured. verification of mais fails. see other messages for more details"},
     {eoerror_value_CFG_mc_mc4plus_ok, "CFG: EOtheMotionController can correctly configure mc4plus-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4plus_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails. see other messages for more details"},
-    {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured. in p16 the number of joints (msb) and failure mask (lsb), in p64 for each physical joint a byte with (port, errorcode)"},
-    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured. verification fails. in p16 the number of joints (msb) and failure mask (lsb), in p64 for each physical joint a byte with (port, errorcode)"},        
+
+    {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured. p16&0xf000: number of joint; primary encs: failure mask in p16&0x000f and errorcodes in p64&0x0000ffff; secondary encs: failure mask in p16&0x00f0 and errorcodes in p64&0xffff0000"},
+    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured: verification fails. p16&0xf000: number of joint; primary encs: failure mask in p16&0x000f and errorcodes in p64&0x0000ffff; secondary encs: failure mask in p16&0x00f0 and errorcodes in p64&0xffff0000"},        
+
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
     {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
@@ -270,26 +272,26 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."},
     
     {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."},    
-    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."} 
+    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."}    
     
-};  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t));
+};  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
 
 
 const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
 {   // very important: fill table with order of eOerror_value_ETHMON_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal)"},        
-    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal)"},
-    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Number of errors in par64"},
+    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},        
+    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},
+    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running. Number of errors in par64&0xffffffff"},
     {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"}
-};  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)) 
 
 const eoerror_valuestring_t eoerror_valuestrings_IS[] =
 {   // very important: fill table with order of eOerror_value_IS_t
     //                 in case of holes, use {0, NULL}
     {eoerror_value_IS_arrayofinertialdataoverflow, "IS: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
-};  EO_VERIFYsizeof(eoerror_valuestrings_IS, eoerror_value_IS_numberof*sizeof(const eoerror_valuestring_t)); 
+};  EO_VERIFYsizeof(eoerror_valuestrings_IS, eoerror_value_IS_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 
@@ -305,7 +307,7 @@ const eoerror_valuestring_t * const eoerror_valuestrings[] =
     (const eoerror_valuestring_t *)&eoerror_valuestrings_CFG,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_ETHMON,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_IS
-};  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *));  
+};  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *))  
 
 
 // - end of: section for error strings 

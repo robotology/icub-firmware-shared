@@ -82,7 +82,9 @@ static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) |
                                                 (0x1LL << eobrd_2dc) |
                                                 (0x1LL << eobrd_bll) |
                                                 (0x1LL << eobrd_6sg) |
-                                                (0x1LL << eobrd_jog);
+                                                (0x1LL << eobrd_jog) |
+                                                (0x1LL << eobrd_mtb4) |
+                                                (0x1LL << eobrd_strain2);
        
    
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
@@ -103,10 +105,12 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"bll", "eobrd_bll", eobrd_bll},    
     {"6sg", "eobrd_6sg", eobrd_6sg},
     {"jog", "eobrd_jog", eobrd_jog},
+    {"mtb4", "eobrd_mtb4", eobrd_mtb4},
+    {"strain2", "eobrd_strain2", eobrd_strain2},
     
     {"none", "eobrd_none", eobrd_none},
     {"unknown", "eobrd_unknown", eobrd_unknown}
-};  EO_VERIFYsizeof(s_eoboards_map_of_boards, (eobrd_type_numberof+2)*sizeof(eOmap_str_str_u08_t));
+};  EO_VERIFYsizeof(s_eoboards_map_of_boards, (eobrd_type_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 
 
@@ -130,7 +134,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
-};  EO_VERIFYsizeof(s_eoboards_map_of_connectors, (eobrd_connectors_numberof+2)*sizeof(eOmap_str_str_u08_t));
+};  EO_VERIFYsizeof(s_eoboards_map_of_connectors, (eobrd_connectors_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 
 static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
@@ -156,7 +160,7 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}
-};  EO_VERIFYsizeof(s_eoboards_map_of_ports, (eobrd_ports_numberof+2)*sizeof(eOmap_str_str_u08_u08_u08_t));
+};  EO_VERIFYsizeof(s_eoboards_map_of_ports, (eobrd_ports_numberof+2)*sizeof(eOmap_str_str_u08_u08_u08_t))
 
 
 static const eOmap_str_str_u08_t s_boards_map_of_portmaiss[] =
@@ -171,7 +175,7 @@ static const eOmap_str_str_u08_t s_boards_map_of_portmaiss[] =
     
     {"none", "eobrd_portmais_none", eobrd_portmais_none},
     {"unknown", "eobrd_portmais_unknown", eobrd_portmais_unknown}    
-};  EO_VERIFYsizeof(s_boards_map_of_portmaiss, (eobrd_portmaiss_numberof+2)*sizeof(eOmap_str_str_u08_t));
+};  EO_VERIFYsizeof(s_boards_map_of_portmaiss, (eobrd_portmaiss_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 
 // --------------------------------------------------------------------------------------------------------------------

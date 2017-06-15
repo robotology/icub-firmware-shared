@@ -129,7 +129,7 @@ extern EOtransceiver* eo_transceiver_New(const eOtransceiver_cfg_t *cfg)
     
     
     // i get the memory for the object
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtransceiver), 1);
+    retptr = (EOtransceiver*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOtransceiver), 1);
     
     // save the config
     

@@ -203,13 +203,13 @@ extern EOVtheSystem * eov_sys_hid_Initialise(const eOmempool_cfg_t *mpcfg,
     eo_errman_Assert(eo_errman_GetHandle(), NULL != nanotimeget, "eov_sys_hid_Initialise(): NULL nanotimeget", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
     // i copy the functions
-    s_eov_system.vtable[VF00_start]         = (eOres_fp_voidfpvoid_t)start;
-    s_eov_system.vtable[VF01_getcurrtask]   = (eOvoidp_fp_void_t)getcurrtask;
-    s_eov_system.vtable[VF02_timeget]       = (eOuint64_fp_void_t)timeget;
-    s_eov_system.vtable[VF03_timeset]       = (eOvoid_fp_uint64_t)timeset;
-    s_eov_system.vtable[VF04_nanotimeget]   = (eOuint64_fp_void_t)nanotimeget;
+    s_eov_system.vtable[VF00_start]         = (void*) start;
+    s_eov_system.vtable[VF01_getcurrtask]   = (void*) getcurrtask;
+    s_eov_system.vtable[VF02_timeget]       = (void*) timeget;
+    s_eov_system.vtable[VF03_timeset]       = (void*) timeset;
+    s_eov_system.vtable[VF04_nanotimeget]   = (void*) nanotimeget;
 
-    s_eov_system.vtable[VF04_stop]          =  (NULL != stop) ? (stop) : s_eov_sys_dummy_stop;
+    s_eov_system.vtable[VF04_stop]          = (void*)( (NULL != stop) ? (stop) : s_eov_sys_dummy_stop);
 
 
     // initialise error manager

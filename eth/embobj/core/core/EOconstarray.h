@@ -67,7 +67,7 @@ typedef EOarray_of EOconstarray;
     @param      array       the EOarray
     @return     The pointer to the required object.
  **/
-extern EOconstarray* eo_constarray_Load(EOarray *array);
+extern EOconstarray* eo_constarray_Load(const EOarray *array);
 
 
 /** @fn         extern uint8_t eo_constarray_Size(EOconstarray *p)

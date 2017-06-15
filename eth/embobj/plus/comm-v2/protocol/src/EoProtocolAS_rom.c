@@ -62,20 +62,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // - guard on max number of entities
-EO_VERIFYproposition(eoprot_as_ded34, eoprot_entities_as_numberof <= eoprot_entities_maxnumberof);
+EO_VERIFYproposition(eoprot_as_ded34, eoprot_entities_as_numberof <= eoprot_entities_maxnumberof)
 
 // - guard on tags ...
-EO_VERIFYproposition(eoprot_as_tagsnum_st, eoprot_tags_as_strain_numberof == eoprot_rwms_as_strain_numberof);
-EO_VERIFYproposition(eoprot_as_tagsmax_st, eoprot_tags_as_strain_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_as_tagsnum_st, eoprot_tags_as_strain_numberof == eoprot_rwms_as_strain_numberof)
+EO_VERIFYproposition(eoprot_as_tagsmax_st, eoprot_tags_as_strain_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_as_tagsnum_ma, eoprot_tags_as_mais_numberof == eoprot_rwms_as_mais_numberof);
-EO_VERIFYproposition(eoprot_as_tagsmax_ma, eoprot_tags_as_mais_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_as_tagsnum_ma, eoprot_tags_as_mais_numberof == eoprot_rwms_as_mais_numberof)
+EO_VERIFYproposition(eoprot_as_tagsmax_ma, eoprot_tags_as_mais_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_as_tagsnum_et, eoprot_tags_as_extorque_numberof == eoprot_rwms_as_extorque_numberof);
-EO_VERIFYproposition(eoprot_as_tagsmax_et, eoprot_tags_as_extorque_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_as_tagsnum_et, eoprot_tags_as_extorque_numberof == eoprot_rwms_as_extorque_numberof)
+EO_VERIFYproposition(eoprot_as_tagsmax_et, eoprot_tags_as_extorque_numberof <= eoprot_tags_maxnumberof)
 
-EO_VERIFYproposition(eoprot_as_tagsnum_in, eoprot_tags_as_inertial_numberof == eoprot_rwms_as_inertial_numberof);
-EO_VERIFYproposition(eoprot_as_tagsmax_in, eoprot_tags_as_inertial_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_as_tagsnum_in, eoprot_tags_as_inertial_numberof == eoprot_rwms_as_inertial_numberof)
+EO_VERIFYproposition(eoprot_as_tagsmax_in, eoprot_tags_as_inertial_numberof <= eoprot_tags_maxnumberof)
 
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of static functions
@@ -465,7 +465,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_strain_descriptors[] =
     &eoprot_as_rom_descriptor_strain_status_fullscale,
     &eoprot_as_rom_descriptor_strain_status_calibratedvalues,
     &eoprot_as_rom_descriptor_strain_status_uncalibratedvalues
-};  EO_VERIFYsizeof(s_eoprot_as_rom_strain_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_strain_numberof));
+};  EO_VERIFYsizeof(s_eoprot_as_rom_strain_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_strain_numberof))
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_mais_descriptors[] =
 {   // here are eoprot_tags_as_mais_numberof descriptors for the strain entity
@@ -476,14 +476,14 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_mais_descriptors[] =
     &eoprot_as_rom_descriptor_mais_config_resolution,
     &eoprot_as_rom_descriptor_mais_status,
     &eoprot_as_rom_descriptor_mais_status_the15values
-};  EO_VERIFYsizeof(s_eoprot_as_rom_mais_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_mais_numberof));
+};  EO_VERIFYsizeof(s_eoprot_as_rom_mais_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_mais_numberof))
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_extorque_descriptors[] =
 {   // here are eoprot_tags_as_extorque_numberof descriptors for the strain entity
     &eoprot_as_rom_descriptor_extorque_wholeitem,
     &eoprot_as_rom_descriptor_extorque_config,    
     &eoprot_as_rom_descriptor_extorque_inputs
-};  EO_VERIFYsizeof(s_eoprot_as_rom_extorque_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_extorque_numberof));
+};  EO_VERIFYsizeof(s_eoprot_as_rom_extorque_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_extorque_numberof))
 
 static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_inertial_descriptors[] =
 {   // here are eoprot_tags_as_inertial_numberof descriptors for the inertial entity
@@ -493,7 +493,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_inertial_descriptors[] =
     &eoprot_as_rom_descriptor_inertial_config_enabled,
     &eoprot_as_rom_descriptor_inertial_status,
     &eoprot_as_rom_descriptor_inertial_cmmnds_enable
-};  EO_VERIFYsizeof(s_eoprot_as_rom_inertial_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_inertial_numberof));
+};  EO_VERIFYsizeof(s_eoprot_as_rom_inertial_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_inertial_numberof))
 
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] = 
 {
@@ -501,7 +501,7 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] =
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_mais_descriptors,   
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_extorque_descriptors, 
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_inertial_descriptors
-};  EO_VERIFYsizeof(eoprot_as_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_as_numberof));
+};  EO_VERIFYsizeof(eoprot_as_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_as_numberof))
 
 
 // the other constants: to be changed when a new entity is added
@@ -512,7 +512,7 @@ const uint8_t eoprot_as_rom_tags_numberof[] =
     eoprot_tags_as_mais_numberof, 
     eoprot_tags_as_extorque_numberof,
     eoprot_tags_as_inertial_numberof
-};  EO_VERIFYsizeof(eoprot_as_rom_tags_numberof, eoprot_entities_as_numberof*sizeof(uint8_t)); 
+};  EO_VERIFYsizeof(eoprot_as_rom_tags_numberof, eoprot_entities_as_numberof*sizeof(uint8_t)) 
 
 const uint16_t eoprot_as_rom_entities_sizeof[] = 
 {
@@ -520,7 +520,7 @@ const uint16_t eoprot_as_rom_entities_sizeof[] =
     sizeof(eOas_mais_t), 
     sizeof(eOas_extorque_t),
     sizeof(eOas_inertial_t)
-};  EO_VERIFYsizeof(eoprot_as_rom_entities_sizeof, eoprot_entities_as_numberof*sizeof(uint16_t)); 
+};  EO_VERIFYsizeof(eoprot_as_rom_entities_sizeof, eoprot_entities_as_numberof*sizeof(uint16_t)) 
 
 const void* const eoprot_as_rom_entities_defval[] = 
 {
@@ -528,7 +528,7 @@ const void* const eoprot_as_rom_entities_defval[] =
     (const void*)&eoprot_as_rom_mais_defaultvalue,
     (const void*)&eoprot_as_rom_extorque_defaultvalue,
     (const void*)&eoprot_as_rom_inertial_defaultvalue
-};  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(const void*)); 
+};  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(const void*)) 
 
 
 // the strings of the endpoint
@@ -539,7 +539,7 @@ const char * const eoprot_as_strings_entity[] =
     "eoprot_entity_as_mais",
     "eoprot_entity_as_extorque",
     "eoprot_entity_as_inertial"
-};  EO_VERIFYsizeof(eoprot_as_strings_entity, eoprot_entities_as_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(eoprot_as_strings_entity, eoprot_entities_as_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_as_strings_tags_strain[] =
@@ -550,7 +550,7 @@ static const char * const s_eoprot_as_strings_tags_strain[] =
     "eoprot_tag_as_strain_status_fullscale",
     "eoprot_tag_as_strain_status_calibratedvalues",
     "eoprot_tag_as_strain_status_uncalibratedvalues"
-};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_strain, eoprot_tags_as_strain_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_strain, eoprot_tags_as_strain_numberof*sizeof(const char*)) 
 
 static const char * const s_eoprot_as_strings_tags_mais[] =
 {
@@ -561,14 +561,14 @@ static const char * const s_eoprot_as_strings_tags_mais[] =
     "eoprot_tag_as_mais_config_resolution",
     "eoprot_tag_as_mais_status",
     "eoprot_tag_as_mais_status_the15values"
-};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_mais, eoprot_tags_as_mais_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_mais, eoprot_tags_as_mais_numberof*sizeof(const char*)) 
 
 static const char * const s_eoprot_as_strings_tags_extorque[] =
 {
     "eoprot_tag_as_extorque_wholeitem",
     "eoprot_tag_as_extorque_config",
     "eoprot_tag_as_extorque_inputs"
-};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_extorque, eoprot_tags_as_extorque_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_extorque, eoprot_tags_as_extorque_numberof*sizeof(const char*)) 
 
 static const char * const s_eoprot_as_strings_tags_inertial[] =
 {
@@ -578,7 +578,7 @@ static const char * const s_eoprot_as_strings_tags_inertial[] =
     "eoprot_tag_as_inertial_config_enabled",
     "eoprot_tag_as_inertial_status",
     "eoprot_tag_as_inertial_cmmnds_enable"
-};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_inertial, eoprot_tags_as_inertial_numberof*sizeof(const char*));
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_inertial, eoprot_tags_as_inertial_numberof*sizeof(const char*))
 
 const char ** const eoprot_as_strings_tags[] =
 {
@@ -586,7 +586,7 @@ const char ** const eoprot_as_strings_tags[] =
     (const char**)&s_eoprot_as_strings_tags_mais,
     (const char**)&s_eoprot_as_strings_tags_extorque,
     (const char**)&s_eoprot_as_strings_tags_inertial
-};  EO_VERIFYsizeof(eoprot_as_strings_tags, eoprot_entities_as_numberof*sizeof(const char**)); 
+};  EO_VERIFYsizeof(eoprot_as_strings_tags, eoprot_entities_as_numberof*sizeof(const char**)) 
 
 
 // --------------------------------------------------------------------------------------------------------------------

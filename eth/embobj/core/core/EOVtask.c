@@ -92,7 +92,7 @@ extern eOresult_t eov_task_isrSetEvent(EOVtaskDerived *t, eOevent_t evt)
     eOres_fp_voidp_evt_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -118,7 +118,7 @@ extern eOresult_t eov_task_tskSetEvent(EOVtaskDerived *t, eOevent_t evt)
     eOres_fp_voidp_evt_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -144,7 +144,7 @@ extern eOresult_t eov_task_isrSendMessage(EOVtaskDerived *t, eOmessage_t msg)
     eOres_fp_voidp_msg_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -170,7 +170,7 @@ extern eOresult_t eov_task_tskSendMessage(EOVtaskDerived *t, eOmessage_t msg, eO
     eOres_fp_voidp_msg_tim_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -196,7 +196,7 @@ extern eOresult_t eov_task_isrExecCallback(EOVtaskDerived *t, eOcallback_t cbk, 
     eOres_fp_voidp_cbk_voidp_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -222,7 +222,7 @@ extern eOresult_t eov_task_tskExecCallback(EOVtaskDerived *t, eOcallback_t cbk, 
     eOres_fp_voidp_cbk_voidp_tim_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -248,7 +248,7 @@ extern eOid08_t eov_task_GetID(EOVtaskDerived *t)
     eOuint8_fp_voidp_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -278,7 +278,7 @@ extern EOVtask* eov_task_hid_New(void)
 	EOVtask *retptr = NULL;	
 
 	// i get the memory for the object
-	retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOVtask), 1);
+    retptr = (EOVtask*) eo_mempool_New(eo_mempool_GetHandle(), sizeof(EOVtask));
 
 	// now the obj has valid memory. i need to initialise it with user-defined data
     
@@ -298,6 +298,19 @@ extern EOVtask* eov_task_hid_New(void)
 }
 
 
+extern void eov_task_hid_Delete(EOVtask* p) 
+{
+    
+    if(NULL == p)
+    {
+        return;
+    } 
+    
+    memset(p, 0, sizeof(EOVtask));    
+    eo_mempool_Delete(eo_mempool_GetHandle(), p);
+}
+
+
 extern eOresult_t eov_task_hid_SetVTABLE(EOVtask *p, 
                                          eOvoid_fp_voidp_uint32_t v_startup, eOvoid_fp_voidp_uint32_t v_run,
                                          eOres_fp_voidp_evt_t v_isr_set_evt, eOres_fp_voidp_evt_t v_tsk_set_evt,
@@ -311,16 +324,16 @@ extern eOresult_t eov_task_hid_SetVTABLE(EOVtask *p,
         return(eores_NOK_nullpointer);
     }
 
-    p->vtable[VF00_startup]        = (NULL != v_startup) ? (v_startup) : (s_eov_task_dummy);
-    p->vtable[VF01_run]            = (NULL != v_run) ? (v_run) : (s_eov_task_dummy);
+    p->vtable[VF00_startup]        = (void*)( (NULL != v_startup) ? (v_startup) : (s_eov_task_dummy) );
+    p->vtable[VF01_run]            = (void*)( (NULL != v_run) ? (v_run) : (s_eov_task_dummy) );
 
-    p->vtable[VF02_isr_set_evt]    = (NULL != v_isr_set_evt) ? (v_isr_set_evt) : (s_eov_task_dummy_isr_set_evt);
-    p->vtable[VF03_tsk_set_evt]    = (NULL != v_tsk_set_evt) ? (v_tsk_set_evt) : (s_eov_task_dummy_tsk_set_evt);;
-    p->vtable[VF04_isr_send_msg]   = (NULL != v_isr_send_msg) ? (v_isr_send_msg) : (s_eov_task_dummy_isr_send_msg);
-    p->vtable[VF05_tsk_send_msg]   = (NULL != v_tsk_send_msg) ? (v_tsk_send_msg) : (s_eov_task_dummy_tsk_send_msg);
-    p->vtable[VF06_isr_exec_cbk]   = (NULL != v_isr_exec_cbk) ? (v_isr_exec_cbk) : (s_eov_task_dummy_isr_exec_cbk);
-    p->vtable[VF07_tsk_exec_cbk]   = (NULL != v_tsk_exec_cbk) ? (v_tsk_exec_cbk) : (s_eov_task_dummy_tsk_exec_cbk);
-    p->vtable[VF08_get_id]         = (NULL != v_get_id) ? (v_get_id) : (s_eov_task_dummy_get_id);
+    p->vtable[VF02_isr_set_evt]    = (void*)( (NULL != v_isr_set_evt) ? (v_isr_set_evt) : (s_eov_task_dummy_isr_set_evt) );
+    p->vtable[VF03_tsk_set_evt]    = (void*)( (NULL != v_tsk_set_evt) ? (v_tsk_set_evt) : (s_eov_task_dummy_tsk_set_evt) );
+    p->vtable[VF04_isr_send_msg]   = (void*)( (NULL != v_isr_send_msg) ? (v_isr_send_msg) : (s_eov_task_dummy_isr_send_msg) );
+    p->vtable[VF05_tsk_send_msg]   = (void*)( (NULL != v_tsk_send_msg) ? (v_tsk_send_msg) : (s_eov_task_dummy_tsk_send_msg) );
+    p->vtable[VF06_isr_exec_cbk]   = (void*)( (NULL != v_isr_exec_cbk) ? (v_isr_exec_cbk) : (s_eov_task_dummy_isr_exec_cbk) );
+    p->vtable[VF07_tsk_exec_cbk]   = (void*)( (NULL != v_tsk_exec_cbk) ? (v_tsk_exec_cbk) : (s_eov_task_dummy_tsk_exec_cbk) );
+    p->vtable[VF08_get_id]         = (void*)( (NULL != v_get_id) ? (v_get_id) : (s_eov_task_dummy_get_id) );
 
     return(eores_OK);
 }
@@ -332,7 +345,7 @@ extern void eov_task_hid_StartUp(EOVtaskDerived *t, uint32_t u)
     eOvoid_fp_voidp_uint32_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{
@@ -358,7 +371,7 @@ extern void eov_task_hid_Run(EOVtaskDerived *t, uint32_t u)
     eOvoid_fp_voidp_uint32_t fptr;
 
     
-    task = eo_common_getbaseobject(t);
+    task = (EOVtask*) eo_common_getbaseobject(t);
 	
 	if(NULL == task) 
 	{

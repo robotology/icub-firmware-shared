@@ -115,7 +115,7 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
 
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOdeque), 1);
+    retptr = (EOdeque*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOdeque), 1);
 
 
 
@@ -163,7 +163,7 @@ extern EOdeque * eo_deque_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     // se uso align_64, anche qui ho array da uint64_t ma per 4 oggetti uso 4*(6+7)/8 = 4*1 = quattro uint64_t .... si spreca perche arrotondo sul item size e non sul totale. 
 
     // here is the memory from the correct memory pool (or the heap)
-    retptr->stored_items  = eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
+    retptr->stored_items  = (void*) eo_mempool_GetMemory(eo_mempool_GetHandle(), align, item_size, capacity);     
 
     start = (uint8_t*) (retptr->stored_items);
     for(i=0; i<capacity; i++) 

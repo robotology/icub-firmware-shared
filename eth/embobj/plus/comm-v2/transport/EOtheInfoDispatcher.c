@@ -140,8 +140,8 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     // 1. init the infostatus vector, overflow, transmitter etc.
 
     s_eo_theinfodispatcher.vectorOfinfostatus = eo_vector_New(sizeof(eOmn_info_status_t), cfg->capacity, NULL, NULL, NULL, NULL);    
-    s_eo_theinfodispatcher.overflow = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(eOmn_info_status_t), 1);
-    s_eo_theinfodispatcher.infostatus = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(eOmn_info_status_t), 1);
+    s_eo_theinfodispatcher.overflow = (eOmn_info_status_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(eOmn_info_status_t), 1);
+    s_eo_theinfodispatcher.infostatus = (eOmn_info_status_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(eOmn_info_status_t), 1);
     
     s_eo_theinfodispatcher.transmitter = cfg->transmitter;
     EOnvSet* nvset = eo_transmitter_GetNVset(s_eo_theinfodispatcher.transmitter);   
@@ -167,7 +167,7 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     // s_eo_theinfodispatcher.ropsizeinfostatus = sizeof(eOrophead_t) + sizeof(eOmn_info_status_t);
 
     // in here i build the ropstream which i want to send out to the transmitter. i use a single buffer and then i shape it later
-    s_eo_theinfodispatcher.ropstream = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, s_eo_theinfodispatcher.ropsizeinfostatus, 1);
+    s_eo_theinfodispatcher.ropstream = (uint8_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, s_eo_theinfodispatcher.ropsizeinfostatus, 1);
     
     
     // i get the pointers to header and data. i known from the protocol that the data is just after the header. 

@@ -104,6 +104,8 @@ extern void eo_action_Delete(EOaction *p);
  **/
 extern eOresult_t eo_action_Clear(EOaction *p);
 
+extern eObool_t eo_action_Isvalid(EOaction *p);
+
 
 /** @fn         extern eOresult_t eo_action_Copy(EOaction *p, const EOaction *src)
     @brief      Copies the action @e src into a given EOaction object. 
@@ -138,7 +140,11 @@ extern eOresult_t eo_action_SetMessage(EOaction *p, eOmessage_t message, EOVtask
     @brief      Configure the EOaction object to contain a callback. The execution of the callback is responsibility
                 of a proper callback manager (such as EOMtheCallbackManager or EOStheCallbackManager)
     @param      p               The target object
-    @param      message         The callback
+    @param      callback        The callback to execute
+    @param      arg             The param of the callback
+    @param      exectask        The task which will execute the callback = {NULL, eov_callbackman_GetTask(eov_callbackman_GetHandle()), pointer to a task of type eom_mtask_CallbackDriven}
+                                If NULL, the callback will be executed by the task which calls eo_action_Execute(). If used inside a EOtimer the task will be the EOtheTimerManager.
+                                Otherwise: the caller of eo_action_Execute() will send a request to the default callback manager or to any other task of type eom_mtask_CallbackDriven.
     @return     The value eores_NOK_nullpointer if @e p is NULL, eores_OK otherwise.
  **/
 extern eOresult_t eo_action_SetCallback(EOaction *p, eOcallback_t callback, void *arg, EOVtaskDerived *exectask);

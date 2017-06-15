@@ -97,7 +97,7 @@ extern EOumlsm * eo_umlsm_New(const eOumlsm_cfg_t * cfg)
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != cfg), "eo_umlsm_New(): NULL cfg", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);    
 
     // i get the memory for the object. no need to check versus NULL because the memory pool already does it
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOumlsm), 1);
+    retptr = (EOumlsm*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOumlsm), 1);
     
     // now the obj has valid memory. i need to initialise it with other user-defined data, by means of cfg.
     s_eo_umlsm_Specialise(retptr, cfg);

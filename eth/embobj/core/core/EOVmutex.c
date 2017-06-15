@@ -86,7 +86,7 @@ extern eOresult_t eov_mutex_Take(EOVmutexDerived *d, eOreltime_t tout)
     eOres_fp_voidp_uint32_t fptr;
 
     
-    mutex = eo_common_getbaseobject(d);
+    mutex = (EOVmutex*) eo_common_getbaseobject(d);
 	
 	if(NULL == mutex) 
 	{
@@ -111,7 +111,7 @@ extern eOresult_t eov_mutex_Release(EOVmutexDerived *d)
 	EOVmutex *mutex;
     eOres_fp_voidp_t fptr;
     
-    mutex = eo_common_getbaseobject(d);
+    mutex = (EOVmutex*) eo_common_getbaseobject(d);
 
 	if(NULL == mutex) 
 	{
@@ -136,7 +136,7 @@ extern void eov_mutex_Delete(EOVmutexDerived *d)
 	EOVmutex *mutex;
     eOres_fp_voidp_t fptr;
     
-    mutex = eo_common_getbaseobject(d);
+    mutex = (EOVmutex*) eo_common_getbaseobject(d);
 
 	if(NULL == mutex) 
 	{
@@ -168,7 +168,7 @@ extern EOVmutex* eov_mutex_hid_New(void)
 	EOVmutex *retptr = NULL;	
 
 	// i get the memory for the object
-	retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOVmutex), 1);
+	retptr = (EOVmutex*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOVmutex), 1);
 
 	// now the obj has valid memory. i need to initialise it with user-defined data
     
@@ -203,9 +203,9 @@ extern eOresult_t eov_mutex_hid_SetVTABLE(EOVmutex *p, eOres_fp_voidp_uint32_t v
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != v_release), "eov_mutex_hid_SetVTABLE(): NULL v_release", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != v_delete), "eov_mutex_hid_SetVTABLE(): NULL v_delete", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
 
-    p->vtable[VF00_take]            = v_take;
-    p->vtable[VF01_release]         = v_release;
-    p->vtable[VF02_delete]          = v_delete;
+    p->vtable[VF00_take]            = (void*) v_take;
+    p->vtable[VF01_release]         = (void*) v_release;
+    p->vtable[VF02_delete]          = (void*) v_delete;
 
     return(eores_OK);
 }

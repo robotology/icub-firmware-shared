@@ -62,11 +62,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // - guard on max number of entities
-EO_VERIFYproposition(eoprot_sk_ded34, eoprot_entities_sk_numberof <= eoprot_entities_maxnumberof);
+EO_VERIFYproposition(eoprot_sk_ded34, eoprot_entities_sk_numberof <= eoprot_entities_maxnumberof)
 
 // - guard on tags ...
-EO_VERIFYproposition(eoprot_sk_tagsnum_sk, eoprot_tags_sk_skin_numberof == eoprot_rwms_sk_skin_numberof);
-EO_VERIFYproposition(eoprot_sk_tagsmax_sk, eoprot_tags_sk_skin_numberof <= eoprot_tags_maxnumberof);
+EO_VERIFYproposition(eoprot_sk_tagsnum_sk, eoprot_tags_sk_skin_numberof == eoprot_rwms_sk_skin_numberof)
+EO_VERIFYproposition(eoprot_sk_tagsmax_sk, eoprot_tags_sk_skin_numberof <= eoprot_tags_maxnumberof)
 
 
 
@@ -189,14 +189,14 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_sk_rom_skin_descriptors[] =
     &eoprot_sk_rom_descriptor_skin_status_arrayofcandata,
     &eoprot_sk_rom_descriptor_skin_cmmnds_boardscfg,
     &eoprot_sk_rom_descriptor_skin_cmmnds_trianglescfg
-};  EO_VERIFYsizeof(s_eoprot_sk_rom_skin_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof));
+};  EO_VERIFYsizeof(s_eoprot_sk_rom_skin_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_sk_skin_numberof))
 
 
 
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_sk_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_sk_rom_skin_descriptors 
-};  EO_VERIFYsizeof(eoprot_sk_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_sk_numberof));
+};  EO_VERIFYsizeof(eoprot_sk_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_sk_numberof))
 
     
 
@@ -205,24 +205,24 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_sk_rom_descriptors[] =
 const uint8_t eoprot_sk_rom_tags_numberof[] = 
 {
     eoprot_tags_sk_skin_numberof
-};  EO_VERIFYsizeof(eoprot_sk_rom_tags_numberof, eoprot_entities_sk_numberof*sizeof(uint8_t)); 
+};  EO_VERIFYsizeof(eoprot_sk_rom_tags_numberof, eoprot_entities_sk_numberof*sizeof(uint8_t)) 
 
 const uint16_t eoprot_sk_rom_entities_sizeof[] = 
 {
     sizeof(eOsk_skin_t)
-};  EO_VERIFYsizeof(eoprot_sk_rom_entities_sizeof, eoprot_entities_sk_numberof*sizeof(uint16_t));
+};  EO_VERIFYsizeof(eoprot_sk_rom_entities_sizeof, eoprot_entities_sk_numberof*sizeof(uint16_t))
 
 const void* const eoprot_sk_rom_entities_defval[] = 
 {
     (const void*)&eoprot_sk_rom_skin_defaultvalue
-};  EO_VERIFYsizeof(eoprot_sk_rom_entities_defval, eoprot_entities_sk_numberof*sizeof(const void*)); 
+};  EO_VERIFYsizeof(eoprot_sk_rom_entities_defval, eoprot_entities_sk_numberof*sizeof(const void*)) 
 
 // the strings of the endpoint
 
 const char * const eoprot_sk_strings_entity[] =
 {
     "eoprot_entity_sk_skin"
-};  EO_VERIFYsizeof(eoprot_sk_strings_entity, eoprot_entities_sk_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(eoprot_sk_strings_entity, eoprot_entities_sk_numberof*sizeof(const char*)) 
 
 
 static const char * const s_eoprot_sk_strings_tags_skin[] =
@@ -232,12 +232,12 @@ static const char * const s_eoprot_sk_strings_tags_skin[] =
     "eoprot_tag_sk_skin_status_arrayofcandata",
     "eoprot_tag_sk_skin_cmmnds_boardscfg",
     "eoprot_tag_sk_skin_cmmnds_trianglescfg"
-};  EO_VERIFYsizeof(s_eoprot_sk_strings_tags_skin, eoprot_tags_sk_skin_numberof*sizeof(const char*)); 
+};  EO_VERIFYsizeof(s_eoprot_sk_strings_tags_skin, eoprot_tags_sk_skin_numberof*sizeof(const char*)) 
 
 const char ** const eoprot_sk_strings_tags[] =
 {
     (const char**)&s_eoprot_sk_strings_tags_skin
-};  EO_VERIFYsizeof(eoprot_sk_strings_tags, eoprot_entities_sk_numberof*sizeof(const char**)); 
+};  EO_VERIFYsizeof(eoprot_sk_strings_tags, eoprot_entities_sk_numberof*sizeof(const char**)) 
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions

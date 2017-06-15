@@ -90,7 +90,7 @@ extern EOfifo * eo_fifo_New(eOsizeitem_t item_size, eOsizecntnr_t capacity,
     EOfifo *retptr = NULL; 
     
     // i get memory for a mutexfifo. it will never be null
-    retptr = eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOfifo), 1);
+    retptr = (EOfifo*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOfifo), 1);
 
     eo_errman_Assert(eo_errman_GetHandle(), (0 != item_size), "eo_fifo_New(): 0 item_size", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);
     eo_errman_Assert(eo_errman_GetHandle(), (0 != capacity), "eo_fifo_New(): 0 capacity", s_eobj_ownname, &eo_errman_DescrWrongParamLocal);

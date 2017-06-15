@@ -265,7 +265,7 @@ extern eOresult_t eo_mempool_SetMutex(EOtheMemoryPool *p, EOVmutexDerived *mutex
         return(eores_NOK_generic);
     }
    
-    s_the_mempool.mutex = mutex;
+    s_the_mempool.mutex = (EOVmutex*) mutex;
     s_the_mempool.tout = tout;
     
     return(eores_OK);

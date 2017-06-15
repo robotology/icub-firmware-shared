@@ -93,9 +93,9 @@ extern "C" {
 #define EO_MIN(a, b)                        (((a)<(b))?(a):(b))
 #define EO_MAX(a, b)                        (((a)>(b))?(a):(b))
 
-#define EO_CLIP_INT32(i32)                  ( ((i32)>INT32_MAX) ? (INT32_MAX) : ( ((i32)<(-INT32_MAX)) ? (-INT32_MAX) : (i32) )  )
-#define EO_CLIP_INT16(i16)                  ( ((i16)>INT16_MAX) ? (INT16_MAX) : ( ((i16)<(-INT16_MAX)) ? (-INT16_MAX) : (i16) )  )
-#define EO_CLIP_UINT16(u16)                 ( ((u16)>UINT16_MAX) ? (UINT16_MAX) : (u16) )
+#define EO_CLIP_INT32(i32)                  ( ((i32)>EO_INT32_MAX) ? (EO_INT32_MAX) : ( ((i32)<(-EO_INT32_MAX)) ? (-EO_INT32_MAX) : (i32) )  )
+#define EO_CLIP_INT16(i16)                  ( ((i16)>EO_INT16_MAX) ? (EO_INT16_MAX) : ( ((i16)<(-EO_INT16_MAX)) ? (-EO_INT16_MAX) : (i16) )  )
+#define EO_CLIP_UINT16(u16)                 ( ((u16)>EO_UINT16_MAX) ? (EO_UINT16_MAX) : (u16) )
 
 
 
@@ -161,8 +161,6 @@ extern "C" {
 #define EOK_Q17_14_NEG_BIGGEST          ((eOq17_14_t)0x80000000)
 #define EOK_FLOATQ17_14_NEG_BIGGEST     (-131072.0f)
 
-#define EOK_CLIP_INT32(floatnum)             ( ((floatnum)>INT32_MAX) ? (INT32_MAX) : ( ((floatnum)<(-INT32_MAX)) ? (-INT32_MAX) : (floatnum) )  )
-#define EOK_CLIP_INT16(floatnum)             ( ((floatnum)>INT16_MAX) ? (INT16_MAX) : ( ((floatnum)<(-INT16_MAX)) ? (-INT16_MAX) : (floatnum) )  )
 
 
 // - declaration of public user-defined types -------------------------------------------------------------------------

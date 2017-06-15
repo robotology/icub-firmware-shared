@@ -206,7 +206,7 @@ typedef union
     eOmn_cmd_replynumof_t           replynumof;
     eOmn_cmd_replyarray_t           replyarray;
     eOmn_cmd_config_t               config;
-} eOmn_cmD_t;                       //EO_VERIFYsizeof(eOmn_cmD_t, 76);
+} eOmn_cmD_t;                       //EO_VERIFYsizeof(eOmn_cmD_t, 76)
 
 
 
@@ -217,23 +217,8 @@ typedef struct              // size is 76+4 = 80 bytes
 {
     eOmn_cmD_t              cmd;                /** < eomn_opc_query_ uses only cmd, eomn_opc_reply_ and eomn_opc_config use data as well */
     uint8_t                 filler04[4];
-} eOmn_command_t;           //EO_VERIFYsizeof(eOmn_command_t, 80);
+} eOmn_command_t;           //EO_VERIFYsizeof(eOmn_command_t, 80)
 
-
-
-/** @typedef    typedef enum eOmn_appl_runMode_t;
-    @brief      contains ems application's run mode.
-                Currently runMode is not set to ems by pc104, but application itself understands its runmode
-                depending on connected CAN boards.
- **/
-typedef enum
-{
-    applrunMode__default       = 0,
-    applrunMode__skinOnly      = 1,
-    applrunMode__mc4Only       = 2,
-    applrunMode__skinAndMc4    = 3,
-    applrunMode__2foc          = 4
-} eOmn_appl_runMode_t;
 
 
 typedef struct
@@ -256,7 +241,7 @@ typedef struct
 typedef struct
 {
     uint8_t                         filler08[8];
-} eOmn_comm_config_t;               //EO_VERIFYsizeof(eOmn_comm_config_t, 8);
+} eOmn_comm_config_t;               //EO_VERIFYsizeof(eOmn_comm_config_t, 8)
 
 
 typedef struct
@@ -264,12 +249,12 @@ typedef struct
     eOversion_t                     managementprotocolversion;  // of the mn endpoint
     uint8_t                         filler06[6];
     eOmn_transceiver_properties_t   transceiver;
-} eOmn_comm_status_t;               //EO_VERIFYsizeof(eOmn_comm_status_t, 32);
+} eOmn_comm_status_t;               //EO_VERIFYsizeof(eOmn_comm_status_t, 32)
 
 typedef struct
 {
     eOmn_command_t                  command;
-} eOmn_comm_cmmnds_t;               //EO_VERIFYsizeof(eOmn_comm_cmmnds_t, 80);
+} eOmn_comm_cmmnds_t;               //EO_VERIFYsizeof(eOmn_comm_cmmnds_t, 80)
 
 
 /** @typedef    typedef struct eOmn_comm_t;
@@ -280,7 +265,7 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
     eOmn_comm_config_t              config;
     eOmn_comm_status_t              status;
     eOmn_comm_cmmnds_t              cmmnds;
-} eOmn_comm_t;                      //EO_VERIFYsizeof(eOmn_comm_t, 120);
+} eOmn_comm_t;                      //EO_VERIFYsizeof(eOmn_comm_t, 120)
 
 
 
@@ -291,10 +276,13 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
  **/
 typedef struct                      // size is 4+3+3 = 8 bytes
 {
-    eOreltime_t                     cycletime;      /**< FOR-FUTURE_USE: the time to be used for the control loop expressed in microseconds */
-    uint8_t                         txratedivider;  /**< if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles */ 
-    uint8_t                         filler03[3];
-} eOmn_appl_config_t;               //EO_VERIFYsizeof(eOmn_appl_config_t, 8);
+    eOreltime_t                     cycletime;      // in usec
+    uint16_t                        maxtimeRX;      // in usec
+    uint16_t                        maxtimeDO;      // in usec         
+    uint16_t                        maxtimeTX;      // in usec  
+    uint8_t                         txratedivider;  // if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles
+    uint8_t                         filler05[5];     
+} eOmn_appl_config_t;               EO_VERIFYsizeof(eOmn_appl_config_t, 16)
 
 
 /** @typedef    typedef struct eOmn_appl_status_t;
@@ -306,11 +294,11 @@ typedef struct                      // size is 4+2+16+1+1+6+2 = 32 bytes
     eOversion_t                     version;
     uint8_t                         name[16];
     eOenum08_t                      currstate;          /**< use eOmn_appl_state_t */
-    eOenum08_t                      runmode;            /**< use eOmn_appl_runMode_t */
-	uint16_t						cloop_timings[3];
-    uint8_t                         txdecimationfactor;
+    uint8_t                         filler01;            
+    uint16_t                        cloop_timings[3];   // rx, do, tx. their sum is the duration of control-loop
+    uint8_t                         txdecimationfactor; // of the regulars. 1 is every tx phase of control-loop. 2 is every two ...
     uint8_t                         boardtype;          // use eObrd_ethtype_t
-} eOmn_appl_status_t;               EO_VERIFYsizeof(eOmn_appl_status_t, 32);
+} eOmn_appl_status_t;               EO_VERIFYsizeof(eOmn_appl_status_t, 32)
 
                                          
 /** @typedef    typedef struct eOmn_appl_cmmnds_t;
@@ -320,7 +308,7 @@ typedef struct                      // size is 1+7 = 8 bytes
 {
     eOenum08_t                      go2state;       /**< use eOmn_appl_state_t */
     uint8_t                         filler07[7];
-} eOmn_appl_cmmnds_t;               //EO_VERIFYsizeof(eOmn_appl_cmmnds_t, 8);
+} eOmn_appl_cmmnds_t;               //EO_VERIFYsizeof(eOmn_appl_cmmnds_t, 8)
 
 
 /** @typedef    typedef struct eOmn_appl_t;
@@ -331,7 +319,7 @@ typedef struct                      // size is 8+32+8 = 48 bytes
     eOmn_appl_config_t              config;
     eOmn_appl_status_t              status;
     eOmn_appl_cmmnds_t              cmmnds;
-} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 48);
+} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 48)
 
 
 // -- the definition of info entity
@@ -343,7 +331,7 @@ typedef struct                      // size is 1+7 = 8 bytes
 {
     uint8_t                         enabled;
     uint8_t                         filler07[7];
-} eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8);
+} eOmn_info_config_t;               //EO_VERIFYsizeof(eOmn_info_config_t, 8)
 
 
 
@@ -396,7 +384,7 @@ typedef struct
                                                  extraformat: 2 uses eOmn_info_extraformat_t to tell how eOmn_info_status_t::extra[] is used  */
     uint16_t                par16;          /**< these 2 bytes can be used to specify further the meaning of code. its use id code-dependant */
     uint64_t                par64;          /**< these 4 bytes can be used to specify further the meaning of code. its use id code-dependant */
-} eOmn_info_properties_t;   EO_VERIFYsizeof(eOmn_info_properties_t, 16);
+} eOmn_info_properties_t;   EO_VERIFYsizeof(eOmn_info_properties_t, 16)
 
 
 
@@ -405,7 +393,7 @@ typedef struct
 {
     uint64_t                timestamp;  /**< it keeps the absolute time in microseconds since the EMS has bootstrapped */
     eOmn_info_properties_t  properties; /**< specifies the properties of the info */          
-} eOmn_info_basic_t;        EO_VERIFYsizeof(eOmn_info_basic_t, 24);
+} eOmn_info_basic_t;        EO_VERIFYsizeof(eOmn_info_basic_t, 24)
 
 
 enum { eomn_info_status_extra_sizeof = 48 };
@@ -417,7 +405,7 @@ typedef struct
 {
     eOmn_info_basic_t       basic;                                  /**< the basic info status */  
     uint8_t                 extra[eomn_info_status_extra_sizeof];   /**< contains either a descriptive string or a compact representation */
-} eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72); 
+} eOmn_info_status_t;       EO_VERIFYsizeof(eOmn_info_status_t, 72) 
 
 
 
@@ -428,7 +416,7 @@ typedef struct                      // size is 8+32 = 40 bytes
 {
     eOmn_info_config_t              config;
     eOmn_info_status_t              status;
-} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 80);  
+} eOmn_info_t;                      EO_VERIFYsizeof(eOmn_info_t, 80)  
 
 
 
@@ -486,14 +474,14 @@ typedef struct
 {   // 5+1=6
     eObrd_version_t                     version;
     eObrd_canlocation_t                 canloc;
-} eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 6);
+} eOmn_serv_config_data_as_mais_t;      EO_VERIFYsizeof(eOmn_serv_config_data_as_mais_t, 6)
 
 
 typedef struct
 {   // 5+1=6
     eObrd_version_t                     version;
     eObrd_canlocation_t                 canloc;
-} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 6);
+} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 6)
 
 
 typedef struct
@@ -501,7 +489,7 @@ typedef struct
     eObrd_version_t                     mtbversion;
     uint8_t                             filler[3];
     eOas_inertial_arrayof_sensors_t     arrayofsensors;
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108);
+} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108)
 
 
 typedef union
@@ -509,7 +497,7 @@ typedef union
     eOmn_serv_config_data_as_mais_t     mais;
     eOmn_serv_config_data_as_strain_t   strain;
     eOmn_serv_config_data_as_inertial_t inertial;  
-} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 108);
+} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 108)
 
 
 
@@ -521,78 +509,73 @@ typedef struct
     uint8_t                             numofpatches;
     uint8_t                             filler[2];    
     uint16_t                            canmapskin[eomn_serv_skin_maxpatches][eOcanports_number]; 
-} eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24);
+} eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24)
 
 
 typedef union
 {   // max(24)
     eOmn_serv_config_data_sk_skin_t     skin;
-} eOmn_serv_config_data_sk_t;           EO_VERIFYsizeof(eOmn_serv_config_data_sk_t, 24); 
+} eOmn_serv_config_data_sk_t;           EO_VERIFYsizeof(eOmn_serv_config_data_sk_t, 24) 
 
 
 typedef struct
-{   // 1+5+2+24+132=164   
-    uint8_t                                 boardtype4mccontroller; // use eOmc_ctrlboard_t
+{   //5+3+24+292=324   
     eObrd_version_t                         version;
-    uint8_t                                 filler[2];  
+    uint8_t                                 filler[3];  
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;  
-} eOmn_serv_config_data_mc_foc_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 164);
+} eOmn_serv_config_data_mc_foc_t;          EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 324);
 
 
 typedef struct
-{   // 5+3+12+6=26
+{   // 5+3+12+6=28
     eObrd_version_t                         mc4version; 
     eOmc_mc4shifts_t                        mc4shifts; 
     eObrd_canlocation_t                     mc4joints[12];    
     eOmn_serv_config_data_as_mais_t         mais;
     uint16_t                                broadcastflags; // use an | combination of (1<<x) where x is a value from eOmc_mc4broadcast_t
-} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 28);
+} eOmn_serv_config_data_mc_mc4_t;           EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4_t, 28)
 
 
 typedef struct
-{   // 1+3+24+132=160
-    uint8_t                                 boardtype4mccontroller;     // use eOmc_ctrlboard_t
-    uint8_t                                 filler[3];
+{   // 24+292=268
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors; 
     eOmc_4jomo_coupling_t                   jomocoupling;   
-} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 160);
+} eOmn_serv_config_data_mc_mc4plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plus_t, 316);
 
 
 typedef struct
-{   // 1+6+1+24+132=164
-    uint8_t                                 boardtype4mccontroller;     // use eOmc_ctrlboard_t
+{   // 6+2+24+292=324
     eOmn_serv_config_data_as_mais_t         mais;
-    uint8_t                                 filler[1];
+    uint8_t                                 filler[2];
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;   
-} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 164);
+} eOmn_serv_config_data_mc_mc4plusmais_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusmais_t, 324);
 
 
 typedef union                               
-{   // max(164, 28, 160, 164)
+{   // max(324, 28, 316, 324)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
     eOmn_serv_config_data_mc_mc4plusmais_t  mc4plusmais_based;
-} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 164); 
-
+} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 324); 
 
 typedef union                               
-{   // max(108, 164, 24)
+{   // max(108, 324, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
-} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 164); 
+} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 324); 
 
 
 
 typedef struct                              
-{   // 1+3+164=168
+{   // 1+3+324=328
     uint8_t                                 type;           // use eOmn_serv_type_t to identify what kind of service it is
     uint8_t                                 filler[3];
     eOmn_serv_config_data_t                 data;   
-} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 168); 
+} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 328); 
 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
@@ -600,7 +583,7 @@ typedef struct
 {
     eOarray_head_t                          head;
     uint32_t                                data[eOmn_serv_capacity_arrayof_id32];   
-} eOmn_serv_arrayof_id32_t;                 EO_VERIFYsizeof(eOmn_serv_arrayof_id32_t, 168); 
+} eOmn_serv_arrayof_id32_t;                 EO_VERIFYsizeof(eOmn_serv_arrayof_id32_t, 168) 
 
 
 typedef enum
@@ -634,26 +617,28 @@ typedef enum
 
 
 typedef union
-{
+{  //max( 328, 168)
     eOmn_serv_configuration_t   configuration;
     eOmn_serv_arrayof_id32_t    arrayofid32;
 } eOmn_serv_parameter_t;
 
 
 typedef struct                                
-{   // 1+3+168=172
+{   // 1+3+328=304
     uint8_t                                 operation;              // use eOmn_serv_operation_t
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
     eOmn_serv_parameter_t                   parameter;
-} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 172);
+} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 332);
 
 
 typedef struct
-{   // 172
+{   // 332
     eOmn_service_cmmnds_command_t           command;    
-} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 172);
+} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 332);
 
+
+// requires to increase EOMTHEEMSAPPLCFG_TRANSCEIVER_ROPCAPACITY from 256 to 384 ....
 
 typedef struct
 {   // 1+1+1+1+28=32
@@ -662,7 +647,7 @@ typedef struct
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 type;                   // use eOmn_serv_type_t
     uint8_t                                 data[28];               // it may keep some params (e.g., the fullscale of strain).
-} eOmn_service_command_result_t;            EO_VERIFYsizeof(eOmn_service_command_result_t, 32); 
+} eOmn_service_command_result_t;            EO_VERIFYsizeof(eOmn_service_command_result_t, 32) 
 
 
 typedef struct
@@ -679,17 +664,17 @@ typedef struct
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
     uint8_t                                 filler[3];    
     eOmn_service_command_result_t           commandresult;
-} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 40); 
+} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 40) 
 
 
 /** @typedef    typedef struct eOmn_info_t;
     @brief      used to represent the info with config, status
  **/
 typedef struct                      
-{   // 40+172=212    
+{   // 40+332=372    
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
-} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 212);  
+} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 372);  
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------

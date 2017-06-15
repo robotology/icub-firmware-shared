@@ -58,7 +58,7 @@ typedef struct
     uint16_t            ropsnumberof;       /**< tells how many rops are inside: its value can be 0 to ... */
     uint64_t            ageofframe;         /**< tells the time (in usec) of creation of the frame */
     uint64_t            sequencenumber;     /**< contains a sequence number */
-} EOropframeHeader_t;   EO_VERIFYsizeof(EOropframeHeader_t, 24);
+} EOropframeHeader_t;   EO_VERIFYsizeof(EOropframeHeader_t, 24)
 
 
 /** @typedef    struct EOropframeData_t
@@ -75,16 +75,16 @@ struct EOropframeData_hid
 typedef struct  // 04 bytes
 {
     uint32_t            endoframe;
-} EOropframeFooter_t;   EO_VERIFYsizeof(EOropframeFooter_t, 4);
+} EOropframeFooter_t;   EO_VERIFYsizeof(EOropframeFooter_t, 4)
 
 
 typedef struct  // 28 bytes ... 
 {
     uint8_t             headerfooter[28];
-} EOropframeEmpty_t;    EO_VERIFYsizeof(EOropframeEmpty_t, sizeof(EOropframeHeader_t)+sizeof(EOropframeFooter_t));
+} EOropframeEmpty_t;    EO_VERIFYsizeof(EOropframeEmpty_t, sizeof(EOropframeHeader_t)+sizeof(EOropframeFooter_t))
 
 // the following is used to guarantee that eo_ropframe_sizeforZEROrops is equal to size of EOropframeEmpty_t.
-EO_VERIFYproposition(EOropframe_hid_verifyzerorops, sizeof(EOropframeEmpty_t) == eo_ropframe_sizeforZEROrops);
+EO_VERIFYproposition(EOropframe_hid_verifyzerorops, sizeof(EOropframeEmpty_t) == eo_ropframe_sizeforZEROrops)
 
 
 
@@ -92,7 +92,7 @@ typedef struct  // 32 bytes
 {
     EOropframeHeader_t          header;
     uint8_t                     ropsfooter[8];
-} EOropframeHeaderRopsFooter_t; EO_VERIFYsizeof(EOropframeHeaderRopsFooter_t, 32);
+} EOropframeHeaderRopsFooter_t; EO_VERIFYsizeof(EOropframeHeaderRopsFooter_t, 32)
 
 
 
