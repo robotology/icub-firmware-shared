@@ -426,6 +426,7 @@ typedef struct
 typedef struct  
 {
     int32_t                     rawValueAtZeroPos;
+    int32_t                     calibrationDelta;
 } eOmc_calibrator_params_type12_absolute_sensor_t;
 
 // -- all the possible data holding structures used in a joint
