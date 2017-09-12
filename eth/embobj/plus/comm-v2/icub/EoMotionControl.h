@@ -205,7 +205,7 @@ typedef enum
     eomc_calibration_type0_hard_stops               = 0,    // cannot change
     eomc_calibration_type1_abs_sens_analog          = 1,    // cannot change
     eomc_calibration_type2_hard_stops_diff          = 2,    // cannot change
-    eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change
+    eomc_calibration_type3_abs_sens_digital         = 3,    // cannot change  //old type
     eomc_calibration_type4_abs_and_incremental      = 4,    // cannot change
     eomc_calibration_type5_hard_stops               = 5,    // cannot change
     eomc_calibration_type6_mais                     = 6,    // cannot change 
@@ -213,7 +213,8 @@ typedef enum
     eomc_calibration_type8_tripod_internal_hard_stop= 8,    // cannot change
     eomc_calibration_type9_tripod_external_hard_stop= 9,    // cannot change
     eomc_calibration_type10_abs_hard_stop           = 10,   // cannot change 
-    eomc_calibration_type11_cer_hands               = 11,   // cannot change 
+    eomc_calibration_type11_cer_hands               = 11,   // cannot change
+    eomc_calibration_type12_absolute_sensor         = 12,   // cannot change  //substitutes type 3
     eomc_calibration_typeMixed                      = 254,  // cannot change 
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
@@ -419,6 +420,15 @@ typedef struct
     int32_t                     pwm;
 } eOmc_calibrator_params_type11_cer_hands_t;
 
+/** @typedef    typedef struct eomc_calibration_type12_absolute_sensor
+    @brief      contains the params in case of eOmc_calibration_type12_absolute_sensor
+ **/
+typedef struct  
+{
+    int32_t                     rawValueAtZeroPos;
+    int32_t                     calibrationDelta;
+} eOmc_calibrator_params_type12_absolute_sensor_t;
+
 // -- all the possible data holding structures used in a joint
 
 
@@ -518,7 +528,8 @@ typedef struct                  // size is 1+3+4*4 = 20
         eOmc_calibrator_params_type8_tripod_internal_hard_stop_t    type8;
         eOmc_calibrator_params_type9_tripod_external_hard_stop_t    type9;
         eOmc_calibrator_params_type10_abs_hard_stop_t               type10;
-        eOmc_calibrator_params_type11_cer_hands_t                   type11;         
+        eOmc_calibrator_params_type11_cer_hands_t                   type11; 
+        eOmc_calibrator_params_type12_absolute_sensor_t                   type12;        
     } params;                                                       /**< the params of the calibrator */   
 } eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 28)
 
