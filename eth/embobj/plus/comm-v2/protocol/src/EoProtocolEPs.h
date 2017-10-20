@@ -82,15 +82,10 @@ extern const char * eoprot_strings_special[];
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
 
-EO_extern_inline uint8_t eoprot_ep_ep2index(eOprotEndpoint_t ep)
-{   // dont use control that ep is lower than eoprot_endpoints_numberof ... use sensibly !
-    return(ep);
-}
+extern uint8_t eoprot_ep_ep2index(eOprotEndpoint_t ep);
 
-EO_extern_inline eOprotEndpoint_t eoprot_ep_index2ep(uint8_t index)
-{   // dont use control that index is lower than eoprot_endpoints_numberof ... use sensibly !
-    return(index);
-}
+extern eOprotEndpoint_t eoprot_ep_index2ep(uint8_t index);
+
 
 /** @}            
     end of group eo_EoProtocolEPs  

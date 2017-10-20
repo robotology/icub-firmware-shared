@@ -682,6 +682,22 @@ extern uint8_t eo_common_map_str_str_u08__string2value(const eOmap_str_str_u08_t
     return(defvalue);
 }
 
+extern eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4)
+{
+    return(EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4));
+}
+
+extern eOmacaddr_t eo_common_macaddr(uint8_t m1, uint8_t m2, uint8_t m3, uint8_t m4, uint8_t m5, uint8_t m6)
+{
+    return(EO_COMMON_MACADDR(m1, m2, m3, m4, m5, m6));
+}
+
+extern eObool_t eo_common_event_check(eOevent_t event, eOevent_t mask)
+{
+    return( (mask == (event & mask)) ? (eobool_true) : (eobool_false) );
+}
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------

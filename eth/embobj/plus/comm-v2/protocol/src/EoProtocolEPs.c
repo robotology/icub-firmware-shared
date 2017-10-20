@@ -182,7 +182,16 @@ const char * eoprot_strings_special[] =
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern public functions
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+extern uint8_t eoprot_ep_ep2index(eOprotEndpoint_t ep)
+{   // dont use control that ep is lower than eoprot_endpoints_numberof ... use sensibly !
+    return(ep);
+}
+
+extern eOprotEndpoint_t eoprot_ep_index2ep(uint8_t index)
+{   // dont use control that index is lower than eoprot_endpoints_numberof ... use sensibly !
+    return(index);
+}
 
 
 

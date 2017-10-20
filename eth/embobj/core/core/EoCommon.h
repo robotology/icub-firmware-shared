@@ -80,86 +80,6 @@ extern "C" {
 #include "stdio.h"
 
 
-//#include "stdbool.h"        // contains true, false, bool. you must use pragma -c99. 
-
-
-// - public #define  --------------------------------------------------------------------------------------------------
-
-
-#define EOK_VER_MAJ                         (0x01)
-#define EOK_VER_MIN                         (0x00)
-
-
-#define EO_MIN(a, b)                        (((a)<(b))?(a):(b))
-#define EO_MAX(a, b)                        (((a)>(b))?(a):(b))
-
-#define EO_CLIP_INT32(i32)                  ( ((i32)>EO_INT32_MAX) ? (EO_INT32_MAX) : ( ((i32)<(-EO_INT32_MAX)) ? (-EO_INT32_MAX) : (i32) )  )
-#define EO_CLIP_INT16(i16)                  ( ((i16)>EO_INT16_MAX) ? (EO_INT16_MAX) : ( ((i16)<(-EO_INT16_MAX)) ? (-EO_INT16_MAX) : (i16) )  )
-#define EO_CLIP_UINT16(u16)                 ( ((u16)>EO_UINT16_MAX) ? (EO_UINT16_MAX) : (u16) )
-
-
-
-// issues a compiler error if the sizeof the struct is not what in second argument
-#define EO_VERIFYsizeof(sname, ssize)       __emBODYportingVERIFYsizeof(sname, ssize)
-
-// issues a compiler error if the prop is false
-#define TOKENPASTE(x, y) x ## y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
-#define EO_VERIFYproposition(name, prop)    typedef uint8_t TOKENPASTE2(name, __LINE__)[ ( 0 == (prop) ) ? (-1) : (1)];
-
-// converts a macro into a string: #define ciao --> if(0 == strcmp(EO_STRINGIFY(ciao), "ciao")) { printf("ok\n"); }  
-#define EO_STRINGIFY(v) _EO_STRINGIFY(v)
-#define _EO_STRINGIFY(v) #v
-
-#define EO_U8toU32(a)                       ((uint32_t)(a)&0xff)
-#define EO_U16toU32(a)                      ((uint32_t)(a)&0xffff)
-#define EO_U8toU64(a)                       ((uint64_t)(a)&0xff)
-#define EO_4BtoU32(a, b, c, d)              ((EO_U8toU32(a))|(EO_U8toU32(b)<<8)|(EO_U8toU32(c)<<16)|(EO_U8toU32(d)<<24)) 
-#define EO_8BtoU64(a, b, c, d, e, f, g, h)  (((uint64_t)EO_4BtoU32(a, b, c, d))|((uint64_t)EO_4BtoU32(e, f, g, h)<<32))
-
-
-#define EOK_U32VERSION                      ((EO_U8toU32(EOK_VER_MAJ))|((EO_U8toU32(EOK_VER_MIN)<<8)))
-
-#define EOK_uint04dummy                     (0xf)
-#define EOK_uint08dummy                     (0xff)
-#define EOK_uint16dummy                     (0xffff)
-#define EOK_uint32dummy                     (0xffffffffL)
-#define EOK_uint64dummy                     (0xffffffffffffffffLL)
-
-#define EOK_int08dummy                      (0xff)
-
-#define EOK_reltimeZERO                     (0)
-#define EOK_reltime1ms                      (1000)
-#define EOK_reltime10ms                     (10*1000)
-#define EOK_reltime100ms                    (100*1000)
-#define EOK_reltime1sec                     (1000*1000)
-#define EOK_reltimeMAX                      (0xFFFFFFFE)
-#define EOK_reltimeINFINITE                 (0xFFFFFFFF)
-
-#define EOK_abstimeNOW                      (0xffffffffffffffffLL)
-
-// 0.0f
-#define EOK_Q17_14_ZERO                 ((eOq17_14_t)0x00000000)
-// +1.0f
-#define EOK_Q17_14_ONE                  ((eOq17_14_t)0x00004000)
-// -1.0f
-#define EOK_Q17_14_MINUS_ONE            ((eOq17_14_t)0xFFFFC000)
-
-// +0.00006103515625f = +2^-14
-#define EOK_Q17_14_POS_SMALLEST         ((eOq17_14_t)0x00000001)
-#define EOK_FLOATQ17_14_POS_SMALLEST    (+0.00006103515625f)
-
-// -0.00006103515625f = -2^-14
-#define EOK_Q17_14_NEG_SMALLEST         ((eOq17_14_t)0xffffffff)
-#define EOK_FLOATQ17_14_NEG_SMALLEST    (-0.00006103515625f)
-
-// +131071.99993896484375f = 131072.0f - 0.00006103515625f
-#define EOK_Q17_14_POS_BIGGEST          ((eOq17_14_t)0x7fffffff)
-#define EOK_FLOATQ17_14_POS_BIGGEST     (+131071.99993896484375f)
-
-// -131072.0f
-#define EOK_Q17_14_NEG_BIGGEST          ((eOq17_14_t)0x80000000)
-#define EOK_FLOATQ17_14_NEG_BIGGEST     (-131072.0f)
 
 
 
@@ -593,7 +513,7 @@ extern const eOabstime_t    eok_abstimeNOW;         /**< = 0xffffffffffffffffLL;
 extern const eOipv4addr_t   eok_ipv4addr_localhost;
 
 
-enum { eo_sizecntnr_dynamic = EOK_uint16dummy };
+enum { eo_sizecntnr_dynamic = 0xffff /*EOK_uint16dummy*/ };
 
 
 /** @typedef    typedef struct eOdate_t
@@ -664,6 +584,94 @@ typedef struct
     uint8_t         val1;    
     uint8_t         val2;    
 } eOmap_str_str_u08_u08_u08_t;
+
+
+// - public #define  --------------------------------------------------------------------------------------------------
+
+
+#define EOK_VER_MAJ                         (0x01)
+#define EOK_VER_MIN                         (0x00)
+
+
+#define EO_MIN(a, b)                        (((a)<(b))?(a):(b))
+#define EO_MAX(a, b)                        (((a)>(b))?(a):(b))
+
+#define EO_CLIP_INT32(i32)                  ( ((i32)>EO_INT32_MAX) ? (EO_INT32_MAX) : ( ((i32)<(-EO_INT32_MAX)) ? (-EO_INT32_MAX) : (i32) )  )
+#define EO_CLIP_INT16(i16)                  ( ((i16)>EO_INT16_MAX) ? (EO_INT16_MAX) : ( ((i16)<(-EO_INT16_MAX)) ? (-EO_INT16_MAX) : (i16) )  )
+#define EO_CLIP_UINT16(u16)                 ( ((u16)>EO_UINT16_MAX) ? (EO_UINT16_MAX) : (u16) )
+
+
+
+// issues a compiler error if the sizeof the struct is not what in second argument
+#define EO_VERIFYsizeof(sname, ssize)       __emBODYportingVERIFYsizeof(sname, ssize)
+
+// issues a compiler error if the prop is false
+#define TOKENPASTE(x, y) x ## y
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+#define EO_VERIFYproposition(name, prop)    typedef uint8_t TOKENPASTE2(name, __LINE__)[ ( 0 == (prop) ) ? (-1) : (1)];
+
+// converts a macro into a string: #define ciao --> if(0 == strcmp(EO_STRINGIFY(ciao), "ciao")) { printf("ok\n"); }  
+#define EO_STRINGIFY(v) _EO_STRINGIFY(v)
+#define _EO_STRINGIFY(v) #v
+
+#define EO_U8toU32(a)                       ((uint32_t)(a)&0xff)
+#define EO_U16toU32(a)                      ((uint32_t)(a)&0xffff)
+#define EO_U8toU64(a)                       ((uint64_t)(a)&0xff)
+#define EO_4BtoU32(a, b, c, d)              ((EO_U8toU32(a))|(EO_U8toU32(b)<<8)|(EO_U8toU32(c)<<16)|(EO_U8toU32(d)<<24)) 
+#define EO_8BtoU64(a, b, c, d, e, f, g, h)  (((uint64_t)EO_4BtoU32(a, b, c, d))|((uint64_t)EO_4BtoU32(e, f, g, h)<<32))
+
+
+#define EOK_U32VERSION                      ((EO_U8toU32(EOK_VER_MAJ))|((EO_U8toU32(EOK_VER_MIN)<<8)))
+
+#define EOK_uint04dummy                     (0xf)
+#define EOK_uint08dummy                     (0xff)
+#define EOK_uint16dummy                     (0xffff)
+#define EOK_uint32dummy                     (0xffffffffL)
+#define EOK_uint64dummy                     (0xffffffffffffffffLL)
+
+#define EOK_int08dummy                      (0xff)
+
+#define EOK_reltimeZERO                     (0)
+#define EOK_reltime1ms                      (1000)
+#define EOK_reltime10ms                     (10*1000)
+#define EOK_reltime100ms                    (100*1000)
+#define EOK_reltime1sec                     (1000*1000)
+#define EOK_reltimeMAX                      (0xFFFFFFFE)
+#define EOK_reltimeINFINITE                 (0xFFFFFFFF)
+
+#define EOK_abstimeNOW                      (0xffffffffffffffffLL)
+
+// 0.0f
+#define EOK_Q17_14_ZERO                 ((eOq17_14_t)0x00000000)
+// +1.0f
+#define EOK_Q17_14_ONE                  ((eOq17_14_t)0x00004000)
+// -1.0f
+#define EOK_Q17_14_MINUS_ONE            ((eOq17_14_t)0xFFFFC000)
+
+// +0.00006103515625f = +2^-14
+#define EOK_Q17_14_POS_SMALLEST         ((eOq17_14_t)0x00000001)
+#define EOK_FLOATQ17_14_POS_SMALLEST    (+0.00006103515625f)
+
+// -0.00006103515625f = -2^-14
+#define EOK_Q17_14_NEG_SMALLEST         ((eOq17_14_t)0xffffffff)
+#define EOK_FLOATQ17_14_NEG_SMALLEST    (-0.00006103515625f)
+
+// +131071.99993896484375f = 131072.0f - 0.00006103515625f
+#define EOK_Q17_14_POS_BIGGEST          ((eOq17_14_t)0x7fffffff)
+#define EOK_FLOATQ17_14_POS_BIGGEST     (+131071.99993896484375f)
+
+// -131072.0f
+#define EOK_Q17_14_NEG_BIGGEST          ((eOq17_14_t)0x80000000)
+#define EOK_FLOATQ17_14_NEG_BIGGEST     (-131072.0f)
+
+#define EO_COMMON_FLOAT_TO_Q17_14(v)                ((eOq17_14_t)(16384.0f*(v))) 
+
+#define EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4)      ((eOipv4addr_t)EO_4BtoU32(ip1, ip2, ip3, ip4))
+#define EO_COMMON_MACADDR(m1, m2, m3, m4, m5, m6)   ((eOmacaddr_t)EO_8BtoU64(m1, m2, m3, m4, m5, m6, 0, 0))
+
+#define EO_COMMON_IPV4ADDR_LOCALHOST                EO_COMMON_IPV4ADDR(127, 0, 0, 1)
+
+#define EO_COMMON_CHECK_FLAG(var, flagmask)         ((flagmask) == ((var)& (flagmask)))
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
@@ -762,33 +770,9 @@ extern const char * eo_common_map_str_str_u08__value2string(const eOmap_str_str_
 extern uint8_t eo_common_map_str_str_u08__string2value(const eOmap_str_str_u08_t * map, uint8_t size, const char * string, eObool_t usestr0, uint8_t defvalue);
 
 
-// - definition of extern public macros ------------------------------------------------------------------------------
-
-#define EO_COMMON_FLOAT_TO_Q17_14(v)                ((eOq17_14_t)(16384.0f*(v))) 
-
-#define EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4)      ((eOipv4addr_t)EO_4BtoU32(ip1, ip2, ip3, ip4))
-#define EO_COMMON_MACADDR(m1, m2, m3, m4, m5, m6)   ((eOmacaddr_t)EO_8BtoU64(m1, m2, m3, m4, m5, m6, 0, 0))
-
-#define EO_COMMON_IPV4ADDR_LOCALHOST                EO_COMMON_IPV4ADDR(127, 0, 0, 1)
-
-#define EO_COMMON_CHECK_FLAG(var, flagmask)         ((flagmask) == ((var)& (flagmask)))
-
-// - definition of extern public inlined functions --------------------------------------------------------------------
-
-EO_extern_inline eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4)
-{
-    return(EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4));
-}
-
-EO_extern_inline eOmacaddr_t eo_common_macaddr(uint8_t m1, uint8_t m2, uint8_t m3, uint8_t m4, uint8_t m5, uint8_t m6)
-{
-    return(EO_COMMON_MACADDR(m1, m2, m3, m4, m5, m6));
-}
-
-EO_extern_inline eObool_t eo_common_event_check(eOevent_t event, eOevent_t mask)
-{
-    return( (mask == (event & mask)) ? (eobool_true) : (eobool_false) );
-}
+extern eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4);
+extern eOmacaddr_t eo_common_macaddr(uint8_t m1, uint8_t m2, uint8_t m3, uint8_t m4, uint8_t m5, uint8_t m6);
+extern eObool_t eo_common_event_check(eOevent_t event, eOevent_t mask);
 
 
 
