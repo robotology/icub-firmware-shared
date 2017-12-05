@@ -109,7 +109,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_wrongparam,              "SYS: a function has a wrong parameter"},  
     {eoerror_value_SYS_wrongusage,              "SYS: a function is used in the wrong way"},  
     {eoerror_value_SYS_runtimeerror,            "SYS: detected a runtime error"},  
-    {eoerror_value_SYS_runninghappily,          "SYS: the board is running happily"},  
+    {eoerror_value_SYS_runninghappily,          "SYS: the board is running happily. application state is in par16&0x000f : 0 -> just (re)started, 1 -> idle, 2 -> running."},  
     {eoerror_value_SYS_runninginfatalerrorstate,"SYS: the board is running in fatal error state. check previous errors to verify the reason"},
     {eoerror_value_SYS_ctrloop_execoverflowRX,  "SYS: the RX phase of the control loop has last more than wanted. In par16: RX execution time [usec]. In par64: latest previous execution times of TX, RX, DO, TX [usec]"},  
     {eoerror_value_SYS_ctrloop_execoverflowDO,  "SYS: the DO phase of the control loop has last more than wanted. In par16: DO execution time [usec]. In par64: latest previous execution times of RX, DO, TX, RX [usec]"},    
@@ -284,7 +284,8 @@ const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
     {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},        
     {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},
     {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running. Number of errors in par64&0xffffffff"},
-    {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"}
+    {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"},
+    {eoerror_value_ETHMON_juststarted,      "ETH monitor: just started."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)) 
 
 const eoerror_valuestring_t eoerror_valuestrings_IS[] =
