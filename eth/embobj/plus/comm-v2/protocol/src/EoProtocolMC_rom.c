@@ -511,18 +511,18 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_currentlim
 #endif
 };
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_gearboxratio =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_gearbox_M2J =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.gearboxratio),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_gearboxratio,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.gearbox_M2J),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_gearbox_M2J,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.gearboxratio,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.gearbox_M2J,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_gearboxratio,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_gearboxratio
+    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_gearbox_M2J,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_gearbox_M2J
 #endif
 };
 
@@ -700,7 +700,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_motor_descriptors[] =
     &eoprot_mc_rom_descriptor_motor_wholeitem,
     &eoprot_mc_rom_descriptor_motor_config,
     &eoprot_mc_rom_descriptor_motor_config_currentlimits,
-    &eoprot_mc_rom_descriptor_motor_config_gearboxratio,
+    &eoprot_mc_rom_descriptor_motor_config_gearbox_M2J,
     &eoprot_mc_rom_descriptor_motor_config_rotorencoder,
     &eoprot_mc_rom_descriptor_motor_config_pwmlimit,
     &eoprot_mc_rom_descriptor_motor_config_temperaturelimit,
@@ -794,7 +794,7 @@ static const char * const s_eoprot_mc_strings_tags_motor[] =
     "eoprot_tag_mc_motor_wholeitem",
     "eoprot_tag_mc_motor_config",
     "eoprot_tag_mc_motor_config_maxcurrentofmotor",
-    "eoprot_tag_mc_motor_config_gearboxratio", 
+    "eoprot_tag_mc_motor_config_gearbox_M2J",
     "eoprot_tag_mc_motor_config_rotorencoder", 
     "eoprot_tag_mc_motor_config_pwmlimit",
     "eoprot_tag_mc_motor_config_temperaturelimit",

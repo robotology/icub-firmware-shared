@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 19 };
+enum { eoprot_version_mc_major = 1, eoprot_version_mc_minor = 20 };
 
 enum { eoprot_entities_mc_numberof = eomc_entities_numberof };
 
@@ -165,7 +165,7 @@ typedef enum
     eoprot_rwm_mc_motor_wholeitem                                   = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_config                                      = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_currentlimits                        = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_motor_config_gearboxratio                         = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_gearbox_M2J                          = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_rotorencoder                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_pwmlimit                             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_temperaturelimit                     = eo_nv_rwmode_RW,
@@ -325,8 +325,8 @@ extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescripto
 extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_motor_config_gearboxratio(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_motor_config_gearboxratio(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_motor_config_gearbox_M2J(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_gearbox_M2J(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_rotorencoder(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_rotorencoder(const EOnv* nv, const eOropdescriptor_t* rd);
