@@ -101,10 +101,6 @@ extern eOresult_t eo_nv_hid_SetROP(const EOnv *nv, const void *dat, eOnvUpdate_t
 extern eOresult_t eo_nv_hid_remoteSetROP(const EOnv *nv, const void *dat, eOnvUpdate_t upd, const eOropdescriptor_t* ropdes);
 extern eOresult_t eo_nv_hid_OnSay(const EOnv *nv, const eOropdescriptor_t* ropdes);
 
-//EO_extern_inline eOnvEP8_t eo_nv_hid_id32_extract_ep8(eOnvID32_t id32)
-//{
-//    return((id32>>24)&0xff);
-//}
 
 // - declaration of extern hidden online functions -------------------------------------------------------------------
 // empty-section

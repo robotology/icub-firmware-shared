@@ -161,9 +161,9 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     s_eo_infodispatcher_overflow_init(&s_eo_theinfodispatcher);
     
     
-    s_eo_theinfodispatcher.ropsizeinfostatusbasic = eo_rop_compute_size(eok_ropctrl_basic, eo_ropcode_say, sizeof(eOmn_info_basic_t));
+    s_eo_theinfodispatcher.ropsizeinfostatusbasic = eo_rop_compute_size(eok_ropctrl_basic, eo_ropcode_sig, sizeof(eOmn_info_basic_t));
     // s_eo_theinfodispatcher.ropsizeinfostatusbasic = sizeof(eOrophead_t) + sizeof(eOmn_info_basic_t);
-    s_eo_theinfodispatcher.ropsizeinfostatus = eo_rop_compute_size(eok_ropctrl_basic, eo_ropcode_say, sizeof(eOmn_info_status_t));
+    s_eo_theinfodispatcher.ropsizeinfostatus = eo_rop_compute_size(eok_ropctrl_basic, eo_ropcode_sig, sizeof(eOmn_info_status_t));
     // s_eo_theinfodispatcher.ropsizeinfostatus = sizeof(eOrophead_t) + sizeof(eOmn_info_status_t);
 
     // in here i build the ropstream which i want to send out to the transmitter. i use a single buffer and then i shape it later
@@ -175,7 +175,7 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     s_eo_theinfodispatcher.rophead = (eOrophead_t*)s_eo_theinfodispatcher.ropstream;
     s_eo_theinfodispatcher.ropdata = s_eo_theinfodispatcher.ropstream + sizeof(eOrophead_t);
     
-    // init the rophead to contain a eok_ropctrl_basic and a eo_ropcode_say. 
+    // init the rophead to contain a eok_ropctrl_basic and a eo_ropcode_sig. 
     // the id32 and the size are to be configured each time we send a ropstream. for now are for eOmn_info_basic_t
     s_eo_theinfodispatcher.rophead->ctrl.confinfo   = eo_ropconf_none;
     s_eo_theinfodispatcher.rophead->ctrl.plustime   = 0;
@@ -183,7 +183,7 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     s_eo_theinfodispatcher.rophead->ctrl.rqsttime   = 0;
     s_eo_theinfodispatcher.rophead->ctrl.rqstconf   = 0;
     s_eo_theinfodispatcher.rophead->ctrl.version    = EOK_ROP_VERSION_0;
-    s_eo_theinfodispatcher.rophead->ropc            = eo_ropcode_say;  
+    s_eo_theinfodispatcher.rophead->ropc            = eo_ropcode_sig;  
     s_eo_theinfodispatcher.rophead->id32            = eoprot_ID_get(eoprot_endpoint_management, eoprot_entity_mn_info, 0, eoprot_tag_mn_info_status_basic);
     s_eo_theinfodispatcher.rophead->dsiz            = sizeof(eOmn_info_basic_t);
     
@@ -416,7 +416,7 @@ static eOresult_t s_eo_infodispatcher_transmit(EOtheInfoDispatcher* p, eOmn_info
     
     //evEntityId_t prev = eventviewer_switch_to(ev_ID_first_usrdef+15);
     
-    // when i transmit a say, i want that the nv contains the value, thus ... let me copy the whole status. 
+    // when i transmit a sig, i want that the nv contains the value, thus ... let me copy the whole status. 
     eo_nv_Set(s_eo_theinfodispatcher.nvinfostatus, info, eobool_true, eo_nv_upd_dontdo);    
      
     if(eomn_info_extraformat_none == EOMN_INFO_PROPERTIES_FLAGS_get_extraformat(info->basic.properties.flags))
@@ -465,7 +465,7 @@ static eOresult_t s_eo_infodispatcher_transmit(EOtheInfoDispatcher* p, eOmn_info
     eOropdescriptor_t ropdes = {0};
     memcpy(&ropdes, &eok_ropdesc_basic, sizeof(eOropdescriptor_t));
     
-    ropdes.ropcode  = eo_ropcode_say;
+    ropdes.ropcode  = eo_ropcode_sig;
     ropdes.id32     = id32;
     
     //evEntityId_t prev = eventviewer_switch_to(ev_ID_first_usrdef+15);

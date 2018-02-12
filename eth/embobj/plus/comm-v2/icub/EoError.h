@@ -216,10 +216,12 @@ typedef enum
     eoerror_value_MC_motor_qencoder_phase           = 13,
     
     eoerror_value_MC_generic_error                  = 14,
-    eoerror_value_MC_motor_wrong_state              = 15
+    eoerror_value_MC_motor_wrong_state              = 15,
+    
+    eoerror_value_MC_joint_hard_limit               = 16
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 16 };
+enum { eoerror_value_MC_numberof = 17 };
 
 
 
@@ -344,10 +346,11 @@ typedef enum
     eoerror_value_ETHMON_link_goes_up                   = 0,
     eoerror_value_ETHMON_link_goes_down                 = 1,
     eoerror_value_ETHMON_error_rxcrc                    = 2,
-    eoerror_value_ETHMON_txseqnumbermissing             = 3
+    eoerror_value_ETHMON_txseqnumbermissing             = 3,
+    eoerror_value_ETHMON_juststarted                    = 4
 } eOerror_value_ETHMON_t;
 
-enum { eoerror_value_ETHMON_numberof = 4 };
+enum { eoerror_value_ETHMON_numberof = 5 };
 
 
 /** @typedef    typedef enum eOerror_value_IS_t

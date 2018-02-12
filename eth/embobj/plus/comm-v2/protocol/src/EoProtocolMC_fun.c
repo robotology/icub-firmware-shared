@@ -302,11 +302,11 @@ EO_weak extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv
 EO_weak extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_gearboxratio)
-EO_weak extern void eoprot_fun_INIT_mc_motor_config_gearboxratio(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_gearbox_M2J)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_gearbox_M2J(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_gearboxratio)
-EO_weak extern void eoprot_fun_UPDT_mc_motor_config_gearboxratio(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_gearbox_M2J)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_gearbox_M2J(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_rotorencoder)

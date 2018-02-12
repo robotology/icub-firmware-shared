@@ -62,9 +62,13 @@ extern "C" {
 
 #define ICUBCANPROTO_PER_IS_MSG__DIGITAL_GYROSCOPE                  0x00    
 #define ICUBCANPROTO_PER_IS_MSG__DIGITAL_ACCELEROMETER              0x01
-#define ICUBCANPROTO_PER_IS_MSG__ANALOG_ACCELEROMETER               0x02
+#define ICUBCANPROTO_PER_IS_MSG__ANALOG_ACCELEROMETER               0x02    // obsolete
+#define ICUBCANPROTO_PER_IS_MSG__IMU_TRIPLE                         0x03
+#define ICUBCANPROTO_PER_IS_MSG__IMU_QUATERNION                     0x04
+#define ICUBCANPROTO_PER_IS_MSG__IMU_STATUS                         0x05
 
-#define ICUBCANPROTO_PER_IS_MSG_MAXNUM                              (3)
+
+#define ICUBCANPROTO_PER_IS_MSG_MAXNUM                              (6)
 
 
 

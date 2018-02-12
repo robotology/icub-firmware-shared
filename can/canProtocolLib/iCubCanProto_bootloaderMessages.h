@@ -48,15 +48,16 @@ extern "C" {
 /***************************************************************************/
 // command messages of class ICUBCANPROTO_CLASS_LOADER
 /***************************************************************************/
-#define ICUBCANPROTO_BL_BOARD                 0x00 
-#define ICUBCANPROTO_BL_ADDRESS               0x01 
-#define ICUBCANPROTO_BL_START                 0x02 
-#define ICUBCANPROTO_BL_DATA                  0x03 
-#define ICUBCANPROTO_BL_END                   0x04 
-#define ICUBCANPROTO_BL_ERROR                 0x05 
-#define ICUBCANPROTO_BL_GET_ADDITIONAL_INFO   0x0C 
-#define ICUBCANPROTO_BL_SET_ADDITIONAL_INFO   0x0D 
-#define ICUBCANPROTO_BL_BROADCAST             0xFF 
+#define ICUBCANPROTO_BL_BOARD                   0x00 
+#define ICUBCANPROTO_BL_ADDRESS                 0x01 
+#define ICUBCANPROTO_BL_START                   0x02 
+#define ICUBCANPROTO_BL_DATA                    0x03 
+#define ICUBCANPROTO_BL_END                     0x04 
+#define ICUBCANPROTO_BL_ERROR                   0x05 
+#define ICUBCANPROTO_BL_GET_ADDITIONAL_INFO     0x0C 
+#define ICUBCANPROTO_BL_SET_ADDITIONAL_INFO     0x0D
+#define ICUBCANPROTO_BL_SET_CAN_ADDRESS         0x32    // only in mtb4, strain2 and later boards (bootloader + application)
+#define ICUBCANPROTO_BL_BROADCAST               0xFF 
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 // empty-section

@@ -479,9 +479,9 @@ typedef struct
 
 typedef struct
 {   // 5+1=6
-    eObrd_version_t                     version;
+    eObrd_info_t                        boardtype;
     eObrd_canlocation_t                 canloc;
-} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 6)
+} eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 7)
 
 
 typedef struct
