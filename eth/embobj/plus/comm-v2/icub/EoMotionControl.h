@@ -466,7 +466,8 @@ typedef struct
     float32_t               stiction_up_val;
     float32_t               stiction_down_val;
     int8_t                  scale;
-    uint8_t                 filler[3];
+    uint8_t                 filler;
+    uint16_t                slope_time_ms;
 } eOmc_PIDfl_t;             EO_VERIFYsizeof(eOmc_PIDfl_t, 40)
 
 // the PID currently used is eOmc_PIDfl_t
