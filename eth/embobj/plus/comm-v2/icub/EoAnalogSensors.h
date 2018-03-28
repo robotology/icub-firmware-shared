@@ -91,11 +91,12 @@ typedef enum
 {
     eoas_entity_strain                      = 0,
     eoas_entity_mais                        = 1,
-    eoas_entity_extorque                    = 2,    // it is better to remove it ... nobody will ever use it. maybe in future we change it w/ temperature
-    eoas_entity_inertial                    = 3
+    eoas_entity_temperature                 = 2,    
+    eoas_entity_inertial                    = 3,
+    eoas_entity_inertial3                   = 4
 } eOas_entity_t;
 
-enum { eoas_entities_numberof = 4 };
+enum { eoas_entities_numberof = 5 };
 
 // -- all the possible enum
 
@@ -266,32 +267,35 @@ typedef struct                      // size is: 4+4+40+0 = 48
 
 
 
-// -- the definition of a extorque entity
+// -- the definition of a temperature entity
 
 
-/** @typedef    typedef uint8_t  eOas_extorqueId_t
-    @brief      eOas_extorqueId_t contains the values required to identify a extorque sensor board in robot.
+/** @typedef    typedef uint8_t  eOas_temperatureId_t
+    @brief      eOas_temperatureId_t contains the values required to identify a temperature sensor in robot.
  **/
-typedef uint8_t  eOas_extorqueId_t;
+
+typedef uint8_t  eOas_temperatureId_t;
+
+
+// marco.accame on 28 mar 2018: the temperature can be reported and configured for a number of places: on mtb4 and strain2 boards at different can addresses.
+// the best way to config it the entity is in the same way it is done inertial3 
+typedef struct
+{
+    uint8_t                         tobedone[4];
+} eOas_temperature_config_t;        EO_VERIFYsizeof(eOas_temperature_config_t, 4)
+
 
 typedef struct
 {
-    uint8_t                         jointindex;
-    uint8_t                         filler03[3];
-} eOas_extorque_config_t;           //EO_VERIFYsizeof(eOas_extorque_config_t, 4)
-
-
-typedef struct
-{
-    eOmeas_torque_t                 torquevalue;
-} eOas_extorque_inputs_t;           EO_VERIFYsizeof(eOas_extorque_inputs_t, 4)
+    uint8_t                         tobedone[4];
+} eOas_temperature_status_t;        EO_VERIFYsizeof(eOas_temperature_status_t, 4)
 
 
 typedef struct                      // size is: 4+4+0 = 8
 {
-    eOas_extorque_config_t          config;
-    eOas_extorque_inputs_t          inputs;
-} eOas_extorque_t;                  EO_VERIFYsizeof(eOas_extorque_t, 8)
+    eOas_temperature_config_t       config;
+    eOas_temperature_status_t       status;
+} eOas_temperature_t;               EO_VERIFYsizeof(eOas_temperature_t, 8)
 
 
 
@@ -478,9 +482,9 @@ typedef enum
 // this struct describes a single inertial3 sensor
 typedef struct
 {
-    eObrd_type_t                typeofboard;    // use eObrd_type_t
+    uint8_t                     typeofboard;    // use eObrd_type_t
     eObrd_location_t            on;             // the location of the board
-    eOas_inertial3_type_t       typeofsensor;   // use eOas_inertial3_type_t
+    uint8_t                     typeofsensor;   // use eOas_inertial3_type_t
     uint8_t                     ffu;            // for future use
 } eOas_inertial3_descriptor_t;  EO_VERIFYsizeof(eOas_inertial3_descriptor_t, 4)
 

@@ -436,7 +436,7 @@ typedef enum
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-
+enum { eomn_serv_categories_numberof = 6 };
 
 typedef enum 
 {
@@ -598,8 +598,6 @@ typedef enum
 } eOmn_serv_state_t;
 
 
-enum { eomn_serv_categories_numberof = 5 };
-
 
 typedef enum 
 {
@@ -661,7 +659,7 @@ typedef struct
 typedef struct
 {   // 8 + 32
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
-    uint8_t                                 filler[3];    
+    uint8_t                                 filler[2];    
     eOmn_service_command_result_t           commandresult;
 } eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 40) 
 

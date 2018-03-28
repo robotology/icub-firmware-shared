@@ -254,6 +254,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
     {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    
     {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop. tbd"},
 
     {eoerror_value_CFG_mc_mc4plusmais_ok, "CFG: EOtheMotionController can correctly configure mc4plusmais-based motion. more info will follow"},
@@ -266,15 +267,25 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mais_not_verified_yet, "CFG: EOtheMAIS service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_skin_not_verified_yet, "CFG: EOtheSKIN service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_inertials_not_verified_yet, "CFG: EOtheInertials service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_inertials3_not_verified_yet, "CFG: EOtheInertials3 service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_encoders_not_verified_yet, "CFG: EOtheEncoderReader service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_mc_using_onboard_config, "CFG: EOtheMotionController service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_strain_using_onboard_config, "CFG: EOtheSTRAIN service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_mais_using_onboard_config, "CFG: EOtheMAIS service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_inertials_using_onboard_config, "CFG: EOtheInertials service is using the local default configuration based on its IP address."},
+    {eoerror_value_CFG_inertials3_using_onboard_config, "CFG: EOtheInertials3 service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."},
     
     {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."},    
-    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."}    
+    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+
+    {eoerror_value_CFG_inertials3_failed_unsupportedsensor, "CFG: EOtheInertial3 cannot be configured. some sensors are not supported. in p16 their number."},    
+    {eoerror_value_CFG_inertials3_changed_requestedrate, "CFG: EOtheInertial3 has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+    
+    {eoerror_value_CFG_inertials3_ok, "CFG: EOtheInertial3 can be correctly configured. tbd"},
+    {eoerror_value_CFG_inertials3_failed_toomanyboards, "CFG: EOtheInertial3 cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
+    {eoerror_value_CFG_inertials3_failed_candiscovery, "CFG: EOtheInertial3 cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"}
+
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
