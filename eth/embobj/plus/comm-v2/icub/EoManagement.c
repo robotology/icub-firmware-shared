@@ -77,7 +77,8 @@ static const char * s_mn_servicetype_strings[] =
     "eomn_serv_AS_mais",    
     "eomn_serv_AS_strain",
     "eomn_serv_AS_inertials",
-    "eomn_serv_SK_skin"
+    "eomn_serv_SK_skin",
+    "eomn_serv_AS_inertials3"
 };  EO_VERIFYsizeof(s_mn_servicetype_strings, eomn_serv_types_numberof*sizeof(const char *))   
  
 static const char * s_mn_servicetype_string_unknown = "eomn_serv_UNKNOWN";

@@ -430,6 +430,7 @@ typedef enum
     eomn_serv_category_mais             = 2,
     eomn_serv_category_inertials        = 3,
     eomn_serv_category_skin             = 4,
+    eomn_serv_category_inertials3       = 5,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
@@ -448,26 +449,13 @@ typedef enum
     eomn_serv_AS_strain         = 6,
     eomn_serv_AS_inertials      = 7,
     eomn_serv_SK_skin           = 8,
+    eomn_serv_AS_inertials3     = 9,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 9 };
+enum { eomn_serv_types_numberof = 10 };
 
-
-
-typedef enum
-{
-    eomn_serv_item_none                             = 0,
-    eomn_serv_item_mc_actuator_foc                  = 1,
-    eomn_serv_item_mc_actuator_mc4                  = 2,
-    eomn_serv_item_mc_actuator_pwm                  = 3,
-    eomn_serv_item_as_mais                          = 8,
-    eomn_serv_item_as_strain                        = 9,
-    eomn_serv_item_skin                             = 10,
-    eomn_serv_item_as_inertial                      = 11,
-    eomn_serv_item_canloc                           = 15
-} eOmn_serv_item_type_t;
 
 
 typedef struct
@@ -492,12 +480,23 @@ typedef struct
 } eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108)
 
 
+
+typedef struct
+{   // 24+132=156 
+    // it contains the required versions of fw and canprotocol. we allow up to 4 possible boards: mtb, mtb4, strain2, another one ... size = 6x4 = 24
+    //eObrd_info_t                            boardinfos[4];   
+    eOas_inertial3_setof_boardinfos_t       setofboardinfos;
+    eOas_inertial3_arrayof_descriptors_t    arrayofdescriptor;
+} eOmn_serv_config_data_as_inertial3_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial3_t, 156)
+
+
 typedef union
-{   // max(6, 6, 108)
-    eOmn_serv_config_data_as_mais_t     mais;
-    eOmn_serv_config_data_as_strain_t   strain;
-    eOmn_serv_config_data_as_inertial_t inertial;  
-} eOmn_serv_config_data_as_t;           EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 108)
+{   // max(6, 6, 108, 156)
+    eOmn_serv_config_data_as_mais_t         mais;
+    eOmn_serv_config_data_as_strain_t       strain;
+    eOmn_serv_config_data_as_inertial_t     inertial;  
+    eOmn_serv_config_data_as_inertial3_t    inertial3;
+} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
 
 
 
@@ -562,7 +561,7 @@ typedef union
 } eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 324); 
 
 typedef union                               
-{   // max(108, 324, 24)
+{   // max(156, 324, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   

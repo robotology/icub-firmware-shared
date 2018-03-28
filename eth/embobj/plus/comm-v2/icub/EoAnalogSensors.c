@@ -76,9 +76,17 @@ static const char * s_eoas_sensors_strings[] =
     "eoas_accel_mtb_ext",
     "eoas_gyros_mtb_ext",   
     "eoas_accel_st_lis3x",    
-    "eoas_gyros_st_l3g4200d"
+    "eoas_gyros_st_l3g4200d",
+    "eoas_imu_acc",
+    "eoas_imu_mag",
+    "eoas_imu_gyr",
+    "eoas_imu_eul",
+    "eoas_imu_qua",
+    "eoas_imu_lia",
+    "eoas_imu_grv",
+    "eoas_imu_status",
+    "eoas_temperature"
 };  EO_VERIFYsizeof(s_eoas_sensors_strings, eoas_sensors_numberof*sizeof(const char *));    
-
 
 
 static const char * s_eoas_sensors_string_unknown = "eoas_unknown";
@@ -138,6 +146,97 @@ extern eOas_sensor_t eoas_string2sensor(const char * string)
     }        
     
     return(eoas_unknown);    
+}
+
+enum {in3_mtb4_pos = 0, in3_strain2_pos = 1};
+
+extern eOresult_t eoas_inertial3_setof_boardinfos_clear(eOas_inertial3_setof_boardinfos_t *set)
+{
+    if(NULL == set)
+    {
+        return eores_NOK_generic;
+    }
+    
+    memset(set, 0, sizeof(eOas_inertial3_setof_boardinfos_t));
+    uint8_t i;
+    for(i=0; i<eOas_inertials3_boardinfos_maxnumber; i++)
+    {
+        set->data[i].type = eobrd_none;
+    }
+        
+    return eores_OK;
+}
+
+
+extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_boardinfos_t *set, const eObrd_info_t *brdinfo)
+{
+    if((NULL == brdinfo) || (NULL == set))
+    {
+        return eores_NOK_generic;
+    }
+    
+//    if(eobrd_mtb == brdinfo->type)
+//    {
+//        memcpy(&set->data[in3_mtb_pos], brdinfo, sizeof(eObrd_info_t));
+//        return eores_OK;       
+//    }
+    
+    if(eobrd_mtb4 == brdinfo->type)
+    {
+        memcpy(&set->data[in3_mtb4_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }
+    
+    if(eobrd_strain2 == brdinfo->type)
+    {
+        memcpy(&set->data[in3_strain2_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }    
+
+//    if(eobrd_ems4 == brdinfo->type)
+//    {
+//        memcpy(&set->data[in3_ems4_pos], brdinfo, sizeof(eObrd_info_t));
+//        return eores_OK;       
+//    }
+    
+    return eores_NOK_generic;
+}
+
+
+extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_type_t brdtype)
+{
+    if(NULL == set)
+    {
+        return NULL;
+    }
+    
+    const eObrd_info_t * r = NULL;
+
+    switch(brdtype)
+    {
+        case eobrd_mtb4:
+        {
+            if(eobrd_mtb4 == set->data[in3_mtb4_pos].type)
+            {
+                r = &set->data[in3_mtb4_pos];
+            }
+        } break;
+
+        case eobrd_strain2:
+        {
+            if(eobrd_strain2 == set->data[in3_strain2_pos].type)
+            {
+                r = &set->data[in3_strain2_pos];
+            }
+        } break;
+        
+        default: 
+        {
+            r = NULL;
+        } break;
+    }
+    
+    return r;
 }
 
 

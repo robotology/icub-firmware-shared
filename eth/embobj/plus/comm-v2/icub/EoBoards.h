@@ -140,7 +140,7 @@ typedef struct
 
 typedef struct                  
 {   // size is: 1+1+2+2+0 = 6
-    uint8_t                     type;
+    uint8_t                     type;       // use eObrd_type_t
     eObrd_firmwareversion_t     firmware;
     eObrd_protocolversion_t     protocol;   
 } eObrd_info_t;                 EO_VERIFYsizeof(eObrd_info_t, 6)
