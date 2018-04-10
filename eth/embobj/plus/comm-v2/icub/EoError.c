@@ -253,7 +253,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
-    {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
     
     {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop. tbd"},
 
@@ -284,7 +284,8 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     
     {eoerror_value_CFG_inertials3_ok, "CFG: EOtheInertial3 can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials3_failed_toomanyboards, "CFG: EOtheInertial3 cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
-    {eoerror_value_CFG_inertials3_failed_candiscovery, "CFG: EOtheInertial3 cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"}
+    {eoerror_value_CFG_inertials3_failed_candiscovery, "CFG: EOtheInertial3 cannot be configured. can discovery fails. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_inertials3_failed_generic, "CFG: EOtheInertial3 cannot be configured. generic error. more details in p16 and p64 and in source code"}
 
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
@@ -304,7 +305,8 @@ const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
 const eoerror_valuestring_t eoerror_valuestrings_IS[] =
 {   // very important: fill table with order of eOerror_value_IS_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_IS_arrayofinertialdataoverflow, "IS: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
+    {eoerror_value_IS_arrayofinertialdataoverflow, "IS: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
+    {eoerror_value_IS_unknownsensor, "IS: unknown sensor"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_IS, eoerror_value_IS_numberof*sizeof(const eoerror_valuestring_t)) 
 
 

@@ -512,9 +512,9 @@ typedef struct
     uint8_t     id;             // an id which is shared by transmitter and receiver. it can be a unique number or an index inside the array-of-sensors
     uint8_t     typeofsensor;   // use eOas_inertial3_type_t
     uint8_t     status;
-    uint8_t     ffu;            // maybe we can uses it to expand the timestamp to up of about 256 hours ...
+    uint8_t     seq;            // maybe we can uses it to expand the timestamp to up of about 256 hours ...
     uint32_t    timestamp;      // the time in msec of reception of this data. it is circular in about an hour time
-    int16_t     w;              /**< w value ... used only by eoas_inertial3_imu_qua  */
+    int16_t     w;              /**< w value ... used only by eoas_inertial3_imu_qua */
     int16_t     x;              /**< x value */
     int16_t     y;              /**< y value */
     int16_t     z;              /**< z value */
@@ -573,8 +573,13 @@ extern eOas_sensor_t eoas_string2sensor(const char * string);
 
 extern eOresult_t eoas_inertial3_setof_boardinfos_clear(eOas_inertial3_setof_boardinfos_t *set);
 extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_boardinfos_t *set, const eObrd_info_t *brdinfo); 
-extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_type_t brdtype);
+extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_cantype_t brdtype);
 
+extern uint8_t eoas_inertial3_supportedboards_numberof(void);
+extern eObrd_cantype_t eoas_inertial3_supportedboards_gettype(uint8_t pos);
+
+extern icubCanProto_imu_sensor_t eoas_inertial3_imu_to_canproto(eOas_inertial3_type_t t);
+extern eOas_inertial3_type_t eoas_inertial3_canproto_to_imu(uint8_t v);
 
 
 /** @}

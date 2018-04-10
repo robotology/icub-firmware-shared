@@ -340,11 +340,12 @@ typedef enum
 
     eoerror_value_CFG_inertials3_ok                      = 48,
     eoerror_value_CFG_inertials3_failed_toomanyboards    = 49,
-    eoerror_value_CFG_inertials3_failed_candiscovery     = 50
+    eoerror_value_CFG_inertials3_failed_candiscovery     = 50,
+    eoerror_value_CFG_inertials3_failed_generic          = 51
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 51 };
+enum { eoerror_value_CFG_numberof = 52 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
@@ -369,10 +370,11 @@ enum { eoerror_value_ETHMON_numberof = 5 };
  **/
 typedef enum
 {
-    eoerror_value_IS_arrayofinertialdataoverflow    = 0
+    eoerror_value_IS_arrayofinertialdataoverflow        = 0,
+    eoerror_value_IS_unknownsensor                      = 1
 } eOerror_value_IS_t;
 
-enum { eoerror_value_IS_numberof = 1 };
+enum { eoerror_value_IS_numberof = 2 };
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 

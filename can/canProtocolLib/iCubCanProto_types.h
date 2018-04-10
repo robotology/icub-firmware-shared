@@ -535,6 +535,32 @@ typedef struct
 } icubCanProto_strain_torqueSaturationInfo_t;
 
 
+typedef enum 
+{ 
+    icubCanProto_imu_acc    = 0, 
+    icubCanProto_imu_mag    = 1, 
+    icubCanProto_imu_gyr    = 2, 
+    icubCanProto_imu_eul    = 3, 
+    icubCanProto_imu_qua    = 4, 
+    icubCanProto_imu_lia    = 5, 
+    icubCanProto_imu_grv    = 6, 
+    icubCanProto_imu_status = 15, 
+    icubCanProto_imu_none   = 16 
+} icubCanProto_imu_sensor_t;
+
+typedef struct
+{
+    uint16_t                    enabledsensors; // bitwise or of icubCanProto_imu_sensor_t 
+    uint8_t                     fusionmode;     // so far only 1
+    uint8_t                     ffu[4];         // for future use    
+} icubCanProto_imu_config_t;
+
+typedef struct
+{
+    uint8_t                     on;             // 1 or 0 
+    uint8_t                     period;         // period in ms
+} icubCanProto_imu_transmit_t;
+
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

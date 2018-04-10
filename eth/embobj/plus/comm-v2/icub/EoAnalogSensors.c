@@ -148,7 +148,26 @@ extern eOas_sensor_t eoas_string2sensor(const char * string)
     return(eoas_unknown);    
 }
 
-enum {in3_mtb4_pos = 0, in3_strain2_pos = 1};
+enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2 };
+
+static const eObrd_cantype_t s_eoas_inertial3_supportedboards_types[] = { eobrd_cantype_mtb, eobrd_cantype_mtb4, eobrd_cantype_strain2 };
+
+
+extern uint8_t eoas_inertial3_supportedboards_numberof(void)
+{
+    return sizeof(s_eoas_inertial3_supportedboards_types);
+}
+
+extern eObrd_cantype_t eoas_inertial3_supportedboards_gettype(uint8_t pos)
+{
+    if(pos >= eoas_inertial3_supportedboards_numberof())
+    {
+        return eobrd_cantype_none;
+    }
+    
+    return s_eoas_inertial3_supportedboards_types[pos];
+    
+}
 
 extern eOresult_t eoas_inertial3_setof_boardinfos_clear(eOas_inertial3_setof_boardinfos_t *set)
 {
@@ -161,7 +180,7 @@ extern eOresult_t eoas_inertial3_setof_boardinfos_clear(eOas_inertial3_setof_boa
     uint8_t i;
     for(i=0; i<eOas_inertials3_boardinfos_maxnumber; i++)
     {
-        set->data[i].type = eobrd_none;
+        set->data[i].type = eobrd_cantype_none;
     }
         
     return eores_OK;
@@ -175,35 +194,30 @@ extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_board
         return eores_NOK_generic;
     }
     
-//    if(eobrd_mtb == brdinfo->type)
-//    {
-//        memcpy(&set->data[in3_mtb_pos], brdinfo, sizeof(eObrd_info_t));
-//        return eores_OK;       
-//    }
+    if(eobrd_cantype_mtb == brdinfo->type)
+    {
+        memcpy(&set->data[in3_mtb_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }
     
-    if(eobrd_mtb4 == brdinfo->type)
+    if(eobrd_cantype_mtb4 == brdinfo->type)
     {
         memcpy(&set->data[in3_mtb4_pos], brdinfo, sizeof(eObrd_info_t));
         return eores_OK;       
     }
     
-    if(eobrd_strain2 == brdinfo->type)
+    if(eobrd_cantype_strain2 == brdinfo->type)
     {
         memcpy(&set->data[in3_strain2_pos], brdinfo, sizeof(eObrd_info_t));
         return eores_OK;       
     }    
 
-//    if(eobrd_ems4 == brdinfo->type)
-//    {
-//        memcpy(&set->data[in3_ems4_pos], brdinfo, sizeof(eObrd_info_t));
-//        return eores_OK;       
-//    }
     
     return eores_NOK_generic;
 }
 
 
-extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_type_t brdtype)
+extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_cantype_t brdtype)
 {
     if(NULL == set)
     {
@@ -214,17 +228,26 @@ extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_iner
 
     switch(brdtype)
     {
-        case eobrd_mtb4:
+                
+        case eobrd_cantype_mtb:
         {
-            if(eobrd_mtb4 == set->data[in3_mtb4_pos].type)
+            if(eobrd_cantype_mtb == set->data[in3_mtb_pos].type)
+            {
+                r = &set->data[in3_mtb_pos];
+            }
+        } break;
+        
+        case eobrd_cantype_mtb4:
+        {
+            if(eobrd_cantype_mtb4 == set->data[in3_mtb4_pos].type)
             {
                 r = &set->data[in3_mtb4_pos];
             }
         } break;
 
-        case eobrd_strain2:
+        case eobrd_cantype_strain2:
         {
-            if(eobrd_strain2 == set->data[in3_strain2_pos].type)
+            if(eobrd_cantype_strain2 == set->data[in3_strain2_pos].type)
             {
                 r = &set->data[in3_strain2_pos];
             }
@@ -237,6 +260,52 @@ extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_iner
     }
     
     return r;
+}
+
+extern icubCanProto_imu_sensor_t eoas_inertial3_imu_to_canproto(eOas_inertial3_type_t t)
+{
+    icubCanProto_imu_sensor_t ret = icubCanProto_imu_none;
+    
+    if((t >= 7) && (t <=13))
+    {
+        ret = (icubCanProto_imu_sensor_t) ((uint8_t)t-7);
+    }
+    else if(t == eoas_imu_status)
+    {   
+        ret = icubCanProto_imu_status;
+    }
+  
+    return ret;    
+}
+
+extern eOas_inertial3_type_t eoas_inertial3_canproto_to_imu(uint8_t v)
+{
+    //enum class imuSensor { acc = 0, mag = 1, gyr = 2, eul = 3, qua = 4, lia = 5, grv = 6, status = 15, none = 16 };
+    static const eOas_inertial3_type_t mymap666[7] = 
+    {
+        eoas_inertial3_imu_acc,
+        eoas_inertial3_imu_mag,
+        eoas_inertial3_imu_gyr,
+        eoas_inertial3_imu_eul,
+        eoas_inertial3_imu_qua,
+        eoas_inertial3_imu_lia,
+        eoas_inertial3_imu_grv  
+    };
+    
+    
+    if(v>=7)
+    {
+        if(15 == v)
+        {
+            return eoas_inertial3_imu_status;
+        }
+        else
+        {
+            return eoas_inertial3_unknown;
+        }
+    }
+    
+    return mymap666[v];
 }
 
 
