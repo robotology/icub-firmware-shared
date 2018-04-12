@@ -100,7 +100,7 @@ static const eOas_temperature_t eoprot_as_rom_temperature_defaultvalue = { 0 };
 static const eOas_inertial_t eoprot_as_rom_inertial_defaultvalue = { 0 };
 
 // - default value of a inertial3
-static const eOas_inertial_t eoprot_as_rom_inertial3_defaultvalue = { 0 };
+static const eOas_inertial3_t eoprot_as_rom_inertial3_defaultvalue = { 0 };
 
 // - descriptors for the variables of a strain
 
