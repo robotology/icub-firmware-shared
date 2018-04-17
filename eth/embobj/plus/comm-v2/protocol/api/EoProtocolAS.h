@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 2 };
+enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 3 };
 
 
 enum { eoprot_entities_as_numberof = eoas_entities_numberof };
@@ -152,10 +152,11 @@ typedef enum
 {
     eoprot_tag_as_temperature_wholeitem                                = 0,
     eoprot_tag_as_temperature_config                                   = 1,
-    eoprot_tag_as_temperature_inputs                                   = 2
+    eoprot_tag_as_temperature_status                                   = 2,
+    eoprot_tag_as_temperature_cmmnds_enable                            = 3
 } eOprot_tag_as_temperature_t;
 
-enum { eoprot_tags_as_temperature_numberof = 3 };  // it MUST be equal to the number of tags. 
+enum { eoprot_tags_as_temperature_numberof = 4 };  // it MUST be equal to the number of tags. 
 
 
 /** @typedef    typedef enum eOprot_rwm_as_temperature_t
@@ -166,10 +167,11 @@ typedef enum
 {
     eoprot_rwm_as_temperature_wholeitem                                = eo_nv_rwmode_RO,
     eoprot_rwm_as_temperature_config                                   = eo_nv_rwmode_RW,
-    eoprot_rwm_as_temperature_inputs                                   = eo_nv_rwmode_RW   
+    eoprot_rwm_as_temperature_status                                   = eo_nv_rwmode_RO,
+    eoprot_rwm_as_temperature_cmmnds_enable                            = eo_nv_rwmode_RW  
 } eOprot_rwm_as_temperature_t; 
 
-enum { eoprot_rwms_as_temperature_numberof = 3 };  // it MUST be equal to the number of rw modes. 
+enum { eoprot_rwms_as_temperature_numberof = 4 };  // it MUST be equal to the number of rw modes. 
 
 
 
@@ -222,13 +224,11 @@ typedef enum
 {
     eoprot_tag_as_inertial3_wholeitem                                = 0,
     eoprot_tag_as_inertial3_config                                   = 1,
-    eoprot_tag_as_inertial3_config_datarate                          = 2,
-    eoprot_tag_as_inertial3_config_enabled                           = 3,
-    eoprot_tag_as_inertial3_status                                   = 4,
-    eoprot_tag_as_inertial3_cmmnds_enable                            = 5
+    eoprot_tag_as_inertial3_status                                   = 2,
+    eoprot_tag_as_inertial3_cmmnds_enable                            = 3
 } eOprot_tag_as_inertial3_t;
 
-enum { eoprot_tags_as_inertial3_numberof = 6 };  // it MUST be equal to the number of tags. 
+enum { eoprot_tags_as_inertial3_numberof = 4 };  // it MUST be equal to the number of tags. 
 
 
 /** @typedef    typedef enum eOprot_rwm_as_inertial3_t
@@ -239,13 +239,11 @@ typedef enum
 {
     eoprot_rwm_as_inertial3_wholeitem                                = eo_nv_rwmode_RO,
     eoprot_rwm_as_inertial3_config                                   = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial3_config_datarate                          = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial3_config_enabled                           = eo_nv_rwmode_RW,
     eoprot_rwm_as_inertial3_status                                   = eo_nv_rwmode_RO,
     eoprot_rwm_as_inertial3_cmmnds_enable                            = eo_nv_rwmode_RW    
 } eOprot_rwm_as_inertial3_t; 
 
-enum { eoprot_rwms_as_inertial3_numberof = 6 };  // it MUST be equal to the number of rw modes. 
+enum { eoprot_rwms_as_inertial3_numberof = 4 };  // it MUST be equal to the number of rw modes. 
 
 
 
@@ -335,6 +333,9 @@ extern void eoprot_fun_UPDT_as_temperature_config(const EOnv* nv, const eOropdes
 extern void eoprot_fun_INIT_as_temperature_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_temperature_status(const EOnv* nv, const eOropdescriptor_t* rd);
 
+extern void eoprot_fun_INIT_as_temperature_cmmnds_enable(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_temperature_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
+
 // -- inertial
 
 extern void eoprot_fun_INIT_as_inertial_wholeitem(const EOnv* nv);
@@ -368,17 +369,8 @@ extern void eoprot_fun_UPDT_as_inertial3_wholeitem(const EOnv* nv, const eOropde
 extern void eoprot_fun_INIT_as_inertial3_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_inertial3_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_as_inertial3_config_datarate(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial3_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd);
-
-extern void eoprot_fun_INIT_as_inertial3_config_enabled(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial3_config_enabled(const EOnv* nv, const eOropdescriptor_t* rd);
-
-
-
 extern void eoprot_fun_INIT_as_inertial3_status(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_inertial3_status(const EOnv* nv, const eOropdescriptor_t* rd);
-
 
 extern void eoprot_fun_INIT_as_inertial3_cmmnds_enable(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_inertial3_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);

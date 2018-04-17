@@ -309,6 +309,103 @@ extern eOas_inertial3_type_t eoas_inertial3_canproto_to_imu(uint8_t v)
 }
 
 
+enum { temp_mtb4_pos = 0, temp_strain2_pos = 1 };
+
+static const eObrd_cantype_t s_eoas_temperature_supportedboards_types[] = { eobrd_cantype_mtb4, eobrd_cantype_strain2 };
+
+
+extern uint8_t eoas_temperature_supportedboards_numberof(void)
+{
+    return sizeof(s_eoas_temperature_supportedboards_types);
+}
+
+extern eObrd_cantype_t eoas_temperature_supportedboards_gettype(uint8_t pos)
+{
+    if(pos >= eoas_temperature_supportedboards_numberof())
+    {
+        return eobrd_cantype_none;
+    }
+    
+    return s_eoas_temperature_supportedboards_types[pos];    
+}
+
+extern eOresult_t eoas_temperature_setof_boardinfos_clear(eOas_temperature_setof_boardinfos_t *set)
+{
+    if(NULL == set)
+    {
+        return eores_NOK_generic;
+    }
+    
+    memset(set, 0, sizeof(eOas_temperature_setof_boardinfos_t));
+    uint8_t i;
+    for(i=0; i<eOas_temperature_boardinfos_maxnumber; i++)
+    {
+        set->data[i].type = eobrd_cantype_none;
+    }
+        
+    return eores_OK;
+}
+
+
+extern eOresult_t eoas_temperature_setof_boardinfos_add(eOas_temperature_setof_boardinfos_t *set, const eObrd_info_t *brdinfo)
+{
+    if((NULL == brdinfo) || (NULL == set))
+    {
+        return eores_NOK_generic;
+    }    
+    
+    if(eobrd_cantype_mtb4 == brdinfo->type)
+    {
+        memcpy(&set->data[temp_mtb4_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }
+    
+    if(eobrd_cantype_strain2 == brdinfo->type)
+    {
+        memcpy(&set->data[temp_strain2_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }    
+    
+    return eores_NOK_generic;
+}
+
+
+extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_temperature_setof_boardinfos_t *set, eObrd_cantype_t brdtype)
+{
+    if(NULL == set)
+    {
+        return NULL;
+    }
+    
+    const eObrd_info_t * r = NULL;
+
+    switch(brdtype)
+    {                       
+        case eobrd_cantype_mtb4:
+        {
+            if(eobrd_cantype_mtb4 == set->data[temp_mtb4_pos].type)
+            {
+                r = &set->data[temp_mtb4_pos];
+            }
+        } break;
+
+        case eobrd_cantype_strain2:
+        {
+            if(eobrd_cantype_strain2 == set->data[temp_strain2_pos].type)
+            {
+                r = &set->data[temp_strain2_pos];
+            }
+        } break;
+        
+        default: 
+        {
+            r = NULL;
+        } break;
+    }
+    
+    return r;
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

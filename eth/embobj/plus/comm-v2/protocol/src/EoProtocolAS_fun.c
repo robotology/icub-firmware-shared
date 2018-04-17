@@ -229,6 +229,12 @@ EO_weak extern void eoprot_fun_INIT_as_temperature_status(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_as_temperature_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_temperature_cmmnds_enable)
+EO_weak extern void eoprot_fun_INIT_as_temperature_cmmnds_enable(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_temperature_cmmnds_enable)
+EO_weak extern void eoprot_fun_UPDT_as_temperature_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
 
 // -- inertial 
 
@@ -291,20 +297,6 @@ EO_weak extern void eoprot_fun_INIT_as_inertial3_config(const EOnv* nv) {}
 #if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_config)
 EO_weak extern void eoprot_fun_UPDT_as_inertial3_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
-    
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_config_datarate)
-EO_weak extern void eoprot_fun_INIT_as_inertial3_config_datarate(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_config_datarate)
-EO_weak extern void eoprot_fun_UPDT_as_inertial3_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
-
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_config_enabled)
-EO_weak extern void eoprot_fun_INIT_as_inertial3_config_enabled(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_config_enabled)
-EO_weak extern void eoprot_fun_UPDT_as_inertial3_config_enabled(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif    
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_status)
 EO_weak extern void eoprot_fun_INIT_as_inertial3_status(const EOnv* nv) {}
@@ -312,7 +304,6 @@ EO_weak extern void eoprot_fun_INIT_as_inertial3_status(const EOnv* nv) {}
 #if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_status)
 EO_weak extern void eoprot_fun_UPDT_as_inertial3_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
-
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_cmmnds_enable)
 EO_weak extern void eoprot_fun_INIT_as_inertial3_cmmnds_enable(const EOnv* nv) {}

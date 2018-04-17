@@ -93,9 +93,9 @@ extern "C" {
 #define ICUBCANPROTO_POL_AS_CMD__IMU_CONFIG_SET                 0x34    // tbd
 #define ICUBCANPROTO_POL_AS_CMD__IMU_TRANSMIT                   0x35    // tbd
 // RESERVED: { 0x36, 0x37 } for possible new IMU commands    
-#define ICUBCANPROTO_POL_AS_CMD__TERMOMETER_CONFIG_GET          0x38    // tbd  
-#define ICUBCANPROTO_POL_AS_CMD__TERMOMETER_CONFIG_SET          0x39    // tbd
-#define ICUBCANPROTO_POL_AS_CMD__TERMOMETER_TRANSMIT            0x3A    // tbd
+#define ICUBCANPROTO_POL_AS_CMD__THERMOMETER_CONFIG_GET         0x38    // tbd  
+#define ICUBCANPROTO_POL_AS_CMD__THERMOMETER_CONFIG_SET         0x39    // tbd
+#define ICUBCANPROTO_POL_AS_CMD__THERMOMETER_TRANSMIT           0x3A    // tbd
 // RESERVED: { 0x3B, 0x3C } for possible new THERMOMETER commands 
 // HOLE: [0x3D, ... , 0x4B]. there are 15 free values.
 #define ICUBCANPROTO_POL_SK_CMD__TACT_SETUP                     0x4C    // obsolete. it was used to configure mtb. now are used commands 0x4D and 0x50. 
@@ -122,7 +122,7 @@ extern "C" {
 #define ICUBCANPROTO_PER_AS_MSG__TORQUE_VECTOR                  0xB     // Transmit Force  values f1 f1 f2 f2 f3 f3
 #define ICUBCANPROTO_PER_AS_MSG__HES0TO6                        0xC     // hall effect sensors from 0  to 6  *8bits
 #define ICUBCANPROTO_PER_AS_MSG__HES7TO14                       0xD     // hall effect sensors from 7  to 14  *8bits
-#define ICUBCANPROTO_PER_AS_MSG__TERMOMETER_MEASURE             0xE     // used by strain2 and mtb4 to transmit temperature         
+#define ICUBCANPROTO_PER_AS_MSG__THERMOMETER_MEASURE            0xE     // used by strain2 and mtb4 to transmit temperature         
 
 
 #define ICUBCANPROTO_PER_AS_MSG_MAXNUM                          (16)

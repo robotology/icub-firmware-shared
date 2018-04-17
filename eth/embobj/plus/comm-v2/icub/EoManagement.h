@@ -431,12 +431,13 @@ typedef enum
     eomn_serv_category_inertials        = 3,
     eomn_serv_category_skin             = 4,
     eomn_serv_category_inertials3       = 5,
+    eomn_serv_category_temperatures     = 6,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-enum { eomn_serv_categories_numberof = 6 };
+enum { eomn_serv_categories_numberof = 7 };
 
 typedef enum 
 {
@@ -450,11 +451,12 @@ typedef enum
     eomn_serv_AS_inertials      = 7,
     eomn_serv_SK_skin           = 8,
     eomn_serv_AS_inertials3     = 9,
+    eomn_serv_AS_temperatures   = 10,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 10 };
+enum { eomn_serv_types_numberof = 11 };
 
 
 
@@ -483,17 +485,24 @@ typedef struct
 
 typedef struct
 {   // 24+132=156 
-    // it contains the required versions of fw and canprotocol. we allow up to 4 possible boards: mtb, mtb4, strain2, another one ... size = 6x4 = 24
-    //eObrd_info_t                            boardinfos[4];   
     eOas_inertial3_setof_boardinfos_t       setofboardinfos;
     eOas_inertial3_arrayof_descriptors_t    arrayofdescriptor;
 } eOmn_serv_config_data_as_inertial3_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial3_t, 156)
 
 
+typedef struct
+{   // 12+32=44 
+    eOas_temperature_setof_boardinfos_t       setofboardinfos;
+    eOas_temperature_arrayof_descriptors_t    arrayofdescriptor;
+} eOmn_serv_config_data_as_temperature_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_temperature_t, 44)
+
+
+
 typedef union
-{   // max(6, 6, 108, 156)
+{   // max(6, 6, 44, 108, 156)
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
+    eOmn_serv_config_data_as_temperature_t  temperature;
     eOmn_serv_config_data_as_inertial_t     inertial;  
     eOmn_serv_config_data_as_inertial3_t    inertial3;
 } eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
@@ -659,7 +668,7 @@ typedef struct
 typedef struct
 {   // 8 + 32
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
-    uint8_t                                 filler[2];    
+    uint8_t                                 filler[1];    
     eOmn_service_command_result_t           commandresult;
 } eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 40) 
 
