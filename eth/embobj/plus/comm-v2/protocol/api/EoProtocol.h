@@ -203,9 +203,7 @@ enum { eoprot_endpoints_numberof = 4 }; // it does not count the eoprot_endpoint
 typedef enum
 {
     eoprot_entity_mn_comm                   = eomn_entity_comm,         /**<  */  
-//    eoprot_entity_mn_communication          = eomn_entity_comm,    
     eoprot_entity_mn_appl                   = eomn_entity_appl,         /**<  */
-//    eoprot_entity_mn_application            = eomn_entity_appl,         /**<  */ 
     eoprot_entity_mn_info                   = eomn_entity_info,         /**<  */ 
     eoprot_entity_mn_service                = eomn_entity_service,      /**<  */     
     eoprot_entity_mc_joint                  = eomc_entity_joint,        /**<  */ 
@@ -213,13 +211,14 @@ typedef enum
     eoprot_entity_mc_controller             = eomc_entity_controller,   /**<  */    
     eoprot_entity_as_strain                 = eoas_entity_strain,       /**<  */   
     eoprot_entity_as_mais                   = eoas_entity_mais,         /**<  */            
-    eoprot_entity_as_extorque               = eoas_entity_extorque,     /**<  */  
+    eoprot_entity_as_temperature            = eoas_entity_temperature,  /**<  */  
     eoprot_entity_as_inertial               = eoas_entity_inertial,     /**<  */   
+    eoprot_entity_as_inertial3              = eoas_entity_inertial3,     /**<  */   
     eoprot_entity_sk_skin                   = eosk_entity_skin,         /**<  */
     eoprot_entity_none                      = EOK_uint08dummy
 } eOprot_entity_t;
 
-enum { eoprot_entities_numberof = 12 }; // it does not count the eoprot_entity_none.
+enum { eoprot_entities_numberof = 13 }; // it does not count the eoprot_entity_none.
 
 
 /** @typedef    typedef enum eOprot_index_t
@@ -281,6 +280,7 @@ typedef struct
 
 extern const eOprot_EPcfg_t eoprot_arrayof_stdEPcfg[eoprot_endpoints_numberof];
 extern const eOprot_EPcfg_t eoprot_arrayof_maxEPcfg[eoprot_endpoints_numberof];
+extern const eOprot_EPcfg_t eoprot_arrayof_maxEPcfgOthers[eoprot_endpoints_numberof-1]; // all but management
 
 
 
