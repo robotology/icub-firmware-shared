@@ -456,15 +456,15 @@ typedef struct
 
 typedef struct
 {
-    float32_t               kp;                 /**< proportional gain */
-    float32_t               ki;                 /**< integral gain */
-    float32_t               kd;                 /**< derivative gain */
-    float32_t               kff;
-    float32_t               limitonintegral;    /**< limit of integral term */ 
-    float32_t               limitonoutput;      /**< limit of the output of the pid */
-    float32_t               offset;             /**< the k0 in the pid formula */
-    float32_t               stiction_up_val;
-    float32_t               stiction_down_val;
+    EO_float32_t            kp;                 /**< proportional gain */
+    EO_float32_t            ki;                 /**< integral gain */
+    EO_float32_t            kd;                 /**< derivative gain */
+    EO_float32_t            kff;
+    EO_float32_t            limitonintegral;    /**< limit of integral term */ 
+    EO_float32_t            limitonoutput;      /**< limit of the output of the pid */
+    EO_float32_t            offset;             /**< the k0 in the pid formula */
+    EO_float32_t            stiction_up_val;
+    EO_float32_t            stiction_down_val;
     int8_t                  scale;
     uint8_t                 filler[3];
 } eOmc_PIDfl_t;             EO_VERIFYsizeof(eOmc_PIDfl_t, 40)
@@ -651,9 +651,9 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+12+2+1+1+4+4+4= 
     eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
     uint8_t                     tcfiltertype;               /**< use values from eOmc_torqueControlFilterType_t */
     uint8_t                     jntEncoderType;             /**< use values from eOmc_encoder_t */
-    float32_t                   jntEncTolerance;
-    float32_t                   gearbox_E2J;
-    float32_t                   deadzone;
+    EO_float32_t                jntEncTolerance;
+    EO_float32_t                gearbox_E2J;
+    EO_float32_t                deadzone;
 } eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 184);
 
 
@@ -883,7 +883,7 @@ typedef struct
 typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 80
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
-    float32_t                       gearbox_M2J;                /**< the gearbox reduction ration from motor to joint motor:joint*/
+    EO_float32_t                    gearbox_M2J;                /**< the gearbox reduction ration from motor to joint motor:joint*/
     int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
     eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
     eOmc_current_limits_params_t    currentLimits;              /**< the maximum current in the motor */
@@ -899,7 +899,7 @@ typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 80
     uint8_t                         dummy                 :1;
     uint8_t                         rotorEncoderType;           /**< rotor encoder type */
     uint8_t                         filler;
-    float32_t                       rotEncTolerance;            /**< max number of passable error. It is use to determine a spike */
+    EO_float32_t                    rotEncTolerance;            /**< max number of passable error. It is use to determine a spike */
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
