@@ -90,7 +90,7 @@ extern "C" {
 // armcc version 6.6 does not support __weak anymore
 //    // __attribute__((weak)) is ok for bot compiler v5 and for new version 6
 //    #define EO_weak         __attribute__((weak))
-    #define float32_t       float
+    #define EO_float32_t    float
     #define EO_TAILOR_CODE_FOR_ARM    
     #define EO_READ_PREV_WORD_OF_MALLOC_FOR_SIZEOF_ALLOCATION
     
@@ -108,7 +108,7 @@ extern "C" {
     //#pragma pack(4) 
     #pragma pack(8) 
     #define snprintf        sprintf_s
-    #define float32_t       float
+    #define EO_float32_t    float
     #define __weak 
     #define EO_weak 
     #define EO_TAILOR_CODE_FOR_WINDOWS
@@ -126,7 +126,7 @@ extern "C" {
     #define EO_UINT16_MAX  UINT16_MAX
     #pragma pack(8)
     #define snprintf        snprintf
-    #define float32_t       float
+    #define EO_float32_t    float
     #define EO_weak          __attribute__((weak))
     #define EO_TAILOR_CODE_FOR_LINUX
     #define EO_WARNING(a)   _Pragma(message("EOWARNING-> "##a))
@@ -151,7 +151,7 @@ extern "C" {
     #define EO_INIT(f)
     #pragma pack(8)
     #define snprintf        snprintf
-    #define float32_t       float
+    #define EO_float32_t    float
     #define EO_weak         __attribute__((weak))
 #else
     #error architecture not defined 
