@@ -10,7 +10,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 set(icub_firmware_shared_MAJOR_VERSION 4)
 set(icub_firmware_shared_MINOR_VERSION 0)
-set(icub_firmware_shared_PATCH_VERSION 1)
+set(icub_firmware_shared_PATCH_VERSION 2)
 set(icub_firmware_shared_VERSION ${icub_firmware_shared_MAJOR_VERSION}.${icub_firmware_shared_MINOR_VERSION}.${icub_firmware_shared_PATCH_VERSION})
 
 
