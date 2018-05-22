@@ -97,7 +97,9 @@ extern "C" {
 #define ICUBCANPROTO_POL_AS_CMD__THERMOMETER_CONFIG_SET         0x39    // tbd
 #define ICUBCANPROTO_POL_AS_CMD__THERMOMETER_TRANSMIT           0x3A    // tbd
 // RESERVED: { 0x3B, 0x3C } for possible new THERMOMETER commands 
-// HOLE: [0x3D, ... , 0x4B]. there are 15 free values.
+#define ICUBCANPROTO_POL_AS_CMD__REGULATIONSET_SET              0x3D    // tbd
+#define ICUBCANPROTO_POL_AS_CMD__REGULATIONSET_GET              0x3E    // tbd
+// HOLE: [0x3F, ... , 0x4B]. there are 13 free values.
 #define ICUBCANPROTO_POL_SK_CMD__TACT_SETUP                     0x4C    // obsolete. it was used to configure mtb. now are used commands 0x4D and 0x50. 
 #define ICUBCANPROTO_POL_SK_CMD__SET_BRD_CFG                    0x4D    // used to configure skin data in mtb/mtb4 + its tx rate
 #define ICUBCANPROTO_POL_SK_CMD__TACT_SETUP2                    0x4E    // obsolete
