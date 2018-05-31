@@ -486,13 +486,26 @@ typedef struct
     eObrd_info_t                    data[eOas_inertials3_boardinfos_maxnumber];
 } eOas_inertial3_setof_boardinfos_t; EO_VERIFYsizeof(eOas_inertial3_setof_boardinfos_t, 24)
 
+typedef struct
+{
+    uint8_t gyr :2;
+    uint8_t acc :2;
+    uint8_t mag :2;
+    uint8_t dum :2;
+}eOas_inertial3_calibStatus;
+
+typedef union
+{
+    uint8_t                     general;
+    eOas_inertial3_calibStatus  calib;
+} eOas_inertial3_sensorstatus_t; EO_VERIFYsizeof(eOas_inertial3_sensorstatus_t, 1)
 
 // this struct describes the data acquired by a single intertial sensor
 typedef struct
 {
     uint8_t     id;             // an id which is shared by transmitter and receiver. it can be a unique number or an index inside the array-of-sensors
     uint8_t     typeofsensor;   // use eOas_inertial3_type_t
-    uint8_t     status;
+    eOas_inertial3_sensorstatus_t     status;
     uint8_t     seq;            // maybe we can uses it to expand the timestamp to up of about 256 hours ...
     uint32_t    timestamp;      // the time in msec of reception of this data. it is circular in about an hour time
     int16_t     w;              /**< w value ... used only by eoas_inertial3_imu_qua */
