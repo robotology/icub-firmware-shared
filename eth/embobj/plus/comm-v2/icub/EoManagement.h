@@ -512,10 +512,10 @@ typedef union
 enum { eomn_serv_skin_maxpatches = 4 };
 
 typedef struct
-{   // 5+1+2+2*4*2=24
-    eObrd_version_t                     version;
+{   // 6+1+1+2*4*2=24
+    eObrd_info_t                        boardinfo;
     uint8_t                             numofpatches;
-    uint8_t                             filler[2];    
+    uint8_t                             filler[1];    
     uint16_t                            canmapskin[eomn_serv_skin_maxpatches][eOcanports_number]; 
 } eOmn_serv_config_data_sk_skin_t;      EO_VERIFYsizeof(eOmn_serv_config_data_sk_skin_t, 24)
 
