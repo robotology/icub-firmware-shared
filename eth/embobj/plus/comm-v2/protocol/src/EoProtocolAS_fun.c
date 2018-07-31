@@ -206,29 +206,35 @@ EO_weak extern void eoprot_fun_UPDT_as_mais_status_the15values(const EOnv* nv, c
 #endif
 
 
-// -- extorque
+// -- temperature
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_extorque_wholeitem)
-EO_weak extern void eoprot_fun_INIT_as_extorque_wholeitem(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_temperature_wholeitem)
+EO_weak extern void eoprot_fun_INIT_as_temperature_wholeitem(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_extorque_wholeitem)
-EO_weak extern void eoprot_fun_UPDT_as_extorque_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
-#endif
-
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_extorque_config)
-EO_weak extern void eoprot_fun_INIT_as_extorque_config(const EOnv* nv) {}
-#endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_extorque_config)
-EO_weak extern void eoprot_fun_UPDT_as_extorque_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_temperature_wholeitem)
+EO_weak extern void eoprot_fun_UPDT_as_temperature_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_extorque_inputs)
-EO_weak extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_temperature_config)
+EO_weak extern void eoprot_fun_INIT_as_temperature_config(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_extorque_inputs)
-EO_weak extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_temperature_config)
+EO_weak extern void eoprot_fun_UPDT_as_temperature_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_temperature_status)
+EO_weak extern void eoprot_fun_INIT_as_temperature_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_temperature_status)
+EO_weak extern void eoprot_fun_UPDT_as_temperature_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_temperature_cmmnds_enable)
+EO_weak extern void eoprot_fun_INIT_as_temperature_cmmnds_enable(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_temperature_cmmnds_enable)
+EO_weak extern void eoprot_fun_UPDT_as_temperature_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
 
 // -- inertial 
 
@@ -274,6 +280,37 @@ EO_weak extern void eoprot_fun_INIT_as_inertial_cmmnds_enable(const EOnv* nv) {}
 #if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial_cmmnds_enable)
 EO_weak extern void eoprot_fun_UPDT_as_inertial_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
+      
+    
+// -- inertial3 
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_wholeitem)
+EO_weak extern void eoprot_fun_INIT_as_inertial3_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_wholeitem)
+EO_weak extern void eoprot_fun_UPDT_as_inertial3_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_config)
+EO_weak extern void eoprot_fun_INIT_as_inertial3_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_config)
+EO_weak extern void eoprot_fun_UPDT_as_inertial3_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_status)
+EO_weak extern void eoprot_fun_INIT_as_inertial3_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_status)
+EO_weak extern void eoprot_fun_UPDT_as_inertial3_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_inertial3_cmmnds_enable)
+EO_weak extern void eoprot_fun_INIT_as_inertial3_cmmnds_enable(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_inertial3_cmmnds_enable)
+EO_weak extern void eoprot_fun_UPDT_as_inertial3_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
 
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 

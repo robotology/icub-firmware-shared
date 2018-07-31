@@ -65,13 +65,22 @@ typedef enum
     eoas_accel_mtb_ext          = 3,    
     eoas_gyros_mtb_ext          = 4,    
     eoas_accel_st_lis3x         = 5,    
-    eoas_gyros_st_l3g4200d      = 6,    
+    eoas_gyros_st_l3g4200d      = 6, 
+    eoas_imu_acc                = 7,   
+    eoas_imu_mag                = 8,  
+    eoas_imu_gyr                = 9,
+    eoas_imu_eul                = 10,
+    eoas_imu_qua                = 11,
+    eoas_imu_lia                = 12,
+    eoas_imu_grv                = 13,
+    eoas_imu_status             = 14,
+    eoas_temperature            = 15,
     // add in here eoas_xxxnameetc
     eoas_unknown                = 254,  
     eoas_none                   = 255   
 } eOas_sensor_t;
 
-enum { eoas_sensors_numberof = 7 };
+enum { eoas_sensors_numberof = 16 };
 
 
 /** @typedef    typedef enum eOas_entity_t;
@@ -82,11 +91,12 @@ typedef enum
 {
     eoas_entity_strain                      = 0,
     eoas_entity_mais                        = 1,
-    eoas_entity_extorque                    = 2,
-    eoas_entity_inertial                    = 3
+    eoas_entity_temperature                 = 2,    
+    eoas_entity_inertial                    = 3,
+    eoas_entity_inertial3                   = 4
 } eOas_entity_t;
 
-enum { eoas_entities_numberof = 4 };
+enum { eoas_entities_numberof = 5 };
 
 // -- all the possible enum
 
@@ -257,116 +267,100 @@ typedef struct                      // size is: 4+4+40+0 = 48
 
 
 
-// -- the definition of a extorque entity
+// -- the definition of a temperature entity
 
 
-/** @typedef    typedef uint8_t  eOas_extorqueId_t
-    @brief      eOas_extorqueId_t contains the values required to identify a extorque sensor board in robot.
+/** @typedef    typedef uint8_t  eOas_temperatureId_t
+    @brief      eOas_temperatureId_t contains the values required to identify a temperature sensor in robot.
  **/
-typedef uint8_t  eOas_extorqueId_t;
+
+typedef uint8_t  eOas_temperatureId_t;
+
+
+typedef enum
+{
+    eoas_temperature_t1                     = eoas_temperature,
+    eoas_temperature_unknown                = eoas_unknown,
+    eoas_temperature_none                   = eoas_none
+} eOas_temperature_type_t;
+
+
+
+// this struct describes a single temperature sensor
+typedef struct
+{
+    uint8_t                     typeofboard;    // use eObrd_type_t
+    eObrd_location_t            on;             // the location of the board
+    uint8_t                     typeofsensor;   // use eOas_temperature_type_t
+    uint8_t                     ffu;            // for future use
+} eOas_temperature_descriptor_t;  EO_VERIFYsizeof(eOas_temperature_descriptor_t, 4)
+
+
+// we use this struct to send activate-verify command to the board
+enum { eOas_temperature_descriptors_maxnumber = 7 };
+typedef struct
+{   
+    eOarray_head_t                      head;
+    eOas_temperature_descriptor_t       data[eOas_temperature_descriptors_maxnumber];
+} eOas_temperature_arrayof_descriptors_t; EO_VERIFYsizeof(eOas_temperature_arrayof_descriptors_t, 32)
+
+
+// we use this struct to send activate-verify command to the board
+enum { eOas_temperature_boardinfos_maxnumber = 2 };
+typedef struct
+{   //6*2=12
+    eObrd_info_t                    data[eOas_temperature_boardinfos_maxnumber];
+} eOas_temperature_setof_boardinfos_t; EO_VERIFYsizeof(eOas_temperature_setof_boardinfos_t, 12)
+
+
+// this struct describes the data acquired by a single temperature sensor
+typedef struct
+{
+    uint8_t     id;             // an id which is shared by transmitter and receiver. it can be a unique number or an index inside the array-of-sensors
+    uint8_t     typeofsensor;   // use eOas_temperature_type_t
+    int16_t     value;          // each unit is 0.1 Celsius (maybe move to 0.01 kelvin ...)
+    uint32_t    timestamp;      // the time in msec of reception of this data. it is circular in about an hour 
+} eOas_temperature_data_t;      EO_VERIFYsizeof(eOas_temperature_data_t, 8)
+
+
+// nota di marco.accame: enabled kept at 16 bits so that we can have eOas_temperature_descriptors_maxnumber up to 15.
+typedef struct
+{
+    uint16_t                    datarate;       // it specifies the acquisition rate in seconds with accepted range. 
+    uint16_t                    enabled;        // bitmask of enabled sensors with reference to array-of-sensors
+} eOas_temperature_config_t;    EO_VERIFYsizeof(eOas_temperature_config_t, 4)
+
+// we use this struct to broadcast the status
+enum { eOas_temperature_data_maxnumber = 2 };
+typedef struct
+{   // 4+(8*2) = 68
+    eOarray_head_t                  head;
+    eOas_temperature_data_t         data[eOas_temperature_data_maxnumber];
+} eOas_temperature_arrayof_data_t;  EO_VERIFYsizeof(eOas_temperature_arrayof_data_t, 20)
+
 
 typedef struct
 {
-    uint8_t                         jointindex;
-    uint8_t                         filler03[3];
-} eOas_extorque_config_t;           //EO_VERIFYsizeof(eOas_extorque_config_t, 4)
+    eOas_temperature_arrayof_data_t arrayofdata;    // it is the most recent reading of the temperature sensors which are related to this entity
+} eOas_temperature_status_t;        EO_VERIFYsizeof(eOas_temperature_status_t, 20)
 
 
 typedef struct
 {
-    eOmeas_torque_t                 torquevalue;
-} eOas_extorque_inputs_t;           EO_VERIFYsizeof(eOas_extorque_inputs_t, 4)
+    uint8_t                     enable;         /**< use 0 or 1*/
+    uint8_t                     filler[3];
+} eOas_temperature_commands_t;  EO_VERIFYsizeof(eOas_temperature_commands_t, 4)
 
 
-typedef struct                      // size is: 4+4+0 = 8
+typedef struct                      // size is: 4+20+4 = 28
 {
-    eOas_extorque_config_t          config;
-    eOas_extorque_inputs_t          inputs;
-} eOas_extorque_t;                  EO_VERIFYsizeof(eOas_extorque_t, 8)
-
+    eOas_temperature_config_t       config;
+    eOas_temperature_status_t       status;
+    eOas_temperature_commands_t     cmmnds;
+} eOas_temperature_t;               EO_VERIFYsizeof(eOas_temperature_t, 28)
 
 
 // -- the definition of a inertial sensor
-
-// here are some definitions left because previous implementation of inertials required them. we keep as reference but we should not use them
-
-#if 0
-
-enum { eoas_inertial1_pos_max_numberof = 63 };
-
-enum { eoas_inertial1_pos_offsetleft = 0, eoas_inertial1_pos_offsetright = 24, eoas_inertial1_pos_offsetcentral = 48 };
-
-/** @typedef    typedef enum eoas_inertial1_position_t
-    @brief      contains a unique id for every possible inertial sensor positioned on iCub. So far we can host
-                up to 63 different positions. The actual positions on iCub are documented on http://wiki.icub.org/wiki/Distributed_Inertial_sensing
-                where one must look for the tags 10B12, 10B13 etc. The mapping on CAN for the ETH robot v3 is written aside.
- **/
-typedef enum
-{
-    eoas_inertial1_pos_none                  = 0,
-
-    // left arm
-    eoas_inertial1_pos_l_hand                = 1+eoas_inertial1_pos_offsetleft,       // label 1B7    canloc = (CAN2, 14)
-    eoas_inertial1_pos_l_forearm_1           = 2+eoas_inertial1_pos_offsetleft,       // label 1B8    canloc = (CAN2, 12)
-    eoas_inertial1_pos_l_forearm_2           = 3+eoas_inertial1_pos_offsetleft,       // label 1B9    canloc = (CAN2, 13)
-    eoas_inertial1_pos_l_upper_arm_1         = 4+eoas_inertial1_pos_offsetleft,       // label 1B10   canloc = (CAN2,  9)
-    eoas_inertial1_pos_l_upper_arm_2         = 5+eoas_inertial1_pos_offsetleft,       // label 1B11   canloc = (CAN2, 11)
-    eoas_inertial1_pos_l_upper_arm_3         = 6+eoas_inertial1_pos_offsetleft,       // label 1B12   canloc = (CAN2, 10)
-    eoas_inertial1_pos_l_upper_arm_4         = 7+eoas_inertial1_pos_offsetleft,       // label 1B13   canloc = (CAN2,  8)
-    // left leg
-    eoas_inertial1_pos_l_foot_1              = 8+eoas_inertial1_pos_offsetleft,       // label 10B12  canloc = (CAN2, 13)
-    eoas_inertial1_pos_l_foot_2              = 9+eoas_inertial1_pos_offsetleft,       // label 10B13  canloc = (CAN2, 12)
-    eoas_inertial1_pos_l_lower_leg_1         = 10+eoas_inertial1_pos_offsetleft,      // label 10B8   canloc = (CAN2,  8)
-    eoas_inertial1_pos_l_lower_leg_2         = 11+eoas_inertial1_pos_offsetleft,      // label 10B9   canloc = (CAN2,  9)
-    eoas_inertial1_pos_l_lower_leg_3         = 12+eoas_inertial1_pos_offsetleft,      // label 10B10  canloc = (CAN2, 10)
-    eoas_inertial1_pos_l_lower_leg_4         = 13+eoas_inertial1_pos_offsetleft,      // label 10B11  canloc = (CAN2, 11)
-    eoas_inertial1_pos_l_upper_leg_1         = 14+eoas_inertial1_pos_offsetleft,      // label 10B1   canloc = (CAN1,  1)
-    eoas_inertial1_pos_l_upper_leg_2         = 15+eoas_inertial1_pos_offsetleft,      // label 10B2   canloc = (CAN1,  2)
-    eoas_inertial1_pos_l_upper_leg_3         = 16+eoas_inertial1_pos_offsetleft,      // label 10B3   canloc = (CAN1,  3)
-    eoas_inertial1_pos_l_upper_leg_4         = 17+eoas_inertial1_pos_offsetleft,      // label 10B4   canloc = (CAN1,  4)
-    eoas_inertial1_pos_l_upper_leg_5         = 18+eoas_inertial1_pos_offsetleft,      // label 10B5   canloc = (CAN1,  5)
-    eoas_inertial1_pos_l_upper_leg_6         = 19+eoas_inertial1_pos_offsetleft,      // label 10B6   canloc = (CAN1,  6)
-    eoas_inertial1_pos_l_upper_leg_7         = 20+eoas_inertial1_pos_offsetleft,      // label 10B7   canloc = (CAN1,  7)
-
-    // right arm
-    eoas_inertial1_pos_r_hand                = 1+eoas_inertial1_pos_offsetright,      // label 2B7    canloc = (CAN2, 14)
-    eoas_inertial1_pos_r_forearm_1           = 2+eoas_inertial1_pos_offsetright,      // label 2B8    canloc = (CAN2, 12)
-    eoas_inertial1_pos_r_forearm_2           = 3+eoas_inertial1_pos_offsetright,      // label 2B9    canloc = (CAN2, 13)
-    eoas_inertial1_pos_r_upper_arm_1         = 4+eoas_inertial1_pos_offsetright,      // label 2B10   canloc = (CAN2,  9)
-    eoas_inertial1_pos_r_upper_arm_2         = 5+eoas_inertial1_pos_offsetright,      // label 2B11   canloc = (CAN2, 11)
-    eoas_inertial1_pos_r_upper_arm_3         = 6+eoas_inertial1_pos_offsetright,      // label 2B12   canloc = (CAN2, 10)
-    eoas_inertial1_pos_r_upper_arm_4         = 7+eoas_inertial1_pos_offsetright,      // label 2B13   canloc = (CAN2,  8)
-    // right leg
-    eoas_inertial1_pos_r_foot_1              = 8+eoas_inertial1_pos_offsetright,      // label 11B12  canloc = (CAN2, 13)
-    eoas_inertial1_pos_r_foot_2              = 9+eoas_inertial1_pos_offsetright,      // label 11B13  canloc = (CAN2, 12)
-    eoas_inertial1_pos_r_lower_leg_1         = 10+eoas_inertial1_pos_offsetright,     // label 11B8   canloc = (CAN2,  8)
-    eoas_inertial1_pos_r_lower_leg_2         = 11+eoas_inertial1_pos_offsetright,     // label 11B9   canloc = (CAN2,  9)
-    eoas_inertial1_pos_r_lower_leg_3         = 12+eoas_inertial1_pos_offsetright,     // label 11B10  canloc = (CAN2, 10)
-    eoas_inertial1_pos_r_lower_leg_4         = 13+eoas_inertial1_pos_offsetright,     // label 11B11  canloc = (CAN2, 11)
-    eoas_inertial1_pos_r_upper_leg_1         = 14+eoas_inertial1_pos_offsetright,     // label 11B1   canloc = (CAN1,  1)
-    eoas_inertial1_pos_r_upper_leg_2         = 15+eoas_inertial1_pos_offsetright,     // label 11B2   canloc = (CAN1,  2)
-    eoas_inertial1_pos_r_upper_leg_3         = 16+eoas_inertial1_pos_offsetright,     // label 11B3   canloc = (CAN1,  3)
-    eoas_inertial1_pos_r_upper_leg_4         = 17+eoas_inertial1_pos_offsetright,     // label 11B5   canloc = (CAN1,  5)
-    eoas_inertial1_pos_r_upper_leg_5         = 18+eoas_inertial1_pos_offsetright,     // label 11B4   canloc = (CAN1,  4)
-    eoas_inertial1_pos_r_upper_leg_6         = 19+eoas_inertial1_pos_offsetright,     // label 11B6   canloc = (CAN1,  6)
-    eoas_inertial1_pos_r_upper_leg_7         = 20+eoas_inertial1_pos_offsetright,     // label 11B7   canloc = (CAN1,  7)
-
-    // central parts
-    eoas_inertial1_pos_chest_1               = 1+eoas_inertial1_pos_offsetcentral,    // 9B7
-    eoas_inertial1_pos_chest_2               = 2+eoas_inertial1_pos_offsetcentral,    // 9B8
-    eoas_inertial1_pos_chest_3               = 3+eoas_inertial1_pos_offsetcentral,    // 9B9
-    eoas_inertial1_pos_chest_4               = 4+eoas_inertial1_pos_offsetcentral,    // 9B10
-
-    eoas_inertial1_pos_jolly_1               = 60,
-    eoas_inertial1_pos_jolly_2               = 61,
-    eoas_inertial1_pos_jolly_3               = 62,
-    eoas_inertial1_pos_jolly_4               = 63
-
-} eOas_inertial1_position_t;
-
-
-#endif
-
 
 typedef enum
 {
@@ -438,6 +432,128 @@ typedef struct                      // size is: 16+16+8 = 40
 } eOas_inertial_t;                 EO_VERIFYsizeof(eOas_inertial_t, 40)
 
 
+// -- the definition of a inertial3 sensor
+// inertial3 sensor contains the new inertial sensors generated by a imu, plus the old ones
+
+
+typedef enum
+{
+    // old sensors. i keep them just for future merging of eOas_inertial_type_t into eOas_inertial3_type_t
+    eoas_inertial3_accel_mtb_int            = eoas_accel_mtb_int,
+    eoas_inertial3_accel_mtb_ext            = eoas_accel_mtb_ext,
+    eoas_inertial3_gyros_mtb_ext            = eoas_gyros_mtb_ext,
+    eoas_inertial3_accel_ems_st_lis3x       = eoas_accel_st_lis3x,
+    eoas_inertial3_gyros_ems_st_l3g4200d    = eoas_gyros_st_l3g4200d,
+    // new imu-based sensors
+    eoas_inertial3_imu_acc                  = eoas_imu_acc,     
+    eoas_inertial3_imu_mag                  = eoas_imu_mag,
+    eoas_inertial3_imu_gyr                  = eoas_imu_gyr,
+    eoas_inertial3_imu_eul                  = eoas_imu_eul,
+    eoas_inertial3_imu_qua                  = eoas_imu_qua,
+    eoas_inertial3_imu_lia                  = eoas_imu_lia,
+    eoas_inertial3_imu_grv                  = eoas_imu_grv,
+    eoas_inertial3_imu_status               = eoas_imu_status,
+    
+    eoas_inertial3_unknown                  = eoas_unknown,
+    eoas_inertial3_none                     = eoas_none
+} eOas_inertial3_type_t;
+
+
+
+// this struct describes a single inertial3 sensor
+typedef struct
+{
+    uint8_t                     typeofboard;    // use eObrd_type_t
+    eObrd_location_t            on;             // the location of the board
+    uint8_t                     typeofsensor;   // use eOas_inertial3_type_t
+    uint8_t                     ffu;            // for future use
+} eOas_inertial3_descriptor_t;  EO_VERIFYsizeof(eOas_inertial3_descriptor_t, 4)
+
+
+// we use this struct to send activate-verify command to the board
+enum { eOas_inertials3_descriptors_maxnumber = 32 };
+typedef struct
+{   //4+24*4=100
+    eOarray_head_t                  head;
+    eOas_inertial3_descriptor_t     data[eOas_inertials3_descriptors_maxnumber];
+} eOas_inertial3_arrayof_descriptors_t; EO_VERIFYsizeof(eOas_inertial3_arrayof_descriptors_t, 132)
+
+
+// we use this struct to send activate-verify command to the board
+enum { eOas_inertials3_boardinfos_maxnumber = 4 };
+typedef struct
+{   //6*4=24
+    eObrd_info_t                    data[eOas_inertials3_boardinfos_maxnumber];
+} eOas_inertial3_setof_boardinfos_t; EO_VERIFYsizeof(eOas_inertial3_setof_boardinfos_t, 24)
+
+typedef struct
+{
+    uint8_t gyr :2;
+    uint8_t acc :2;
+    uint8_t mag :2;
+    uint8_t dum :2;
+}eOas_inertial3_calibStatus;
+
+typedef union
+{
+    uint8_t                     general;
+    eOas_inertial3_calibStatus  calib;
+} eOas_inertial3_sensorstatus_t; EO_VERIFYsizeof(eOas_inertial3_sensorstatus_t, 1)
+
+// this struct describes the data acquired by a single intertial sensor
+typedef struct
+{
+    uint8_t     id;             // an id which is shared by transmitter and receiver. it can be a unique number or an index inside the array-of-sensors
+    uint8_t     typeofsensor;   // use eOas_inertial3_type_t
+    eOas_inertial3_sensorstatus_t     status;
+    uint8_t     seq;            // maybe we can uses it to expand the timestamp to up of about 256 hours ...
+    uint32_t    timestamp;      // the time in msec of reception of this data. it is circular in about an hour time
+    int16_t     w;              /**< w value ... used only by eoas_inertial3_imu_qua */
+    int16_t     x;              /**< x value */
+    int16_t     y;              /**< y value */
+    int16_t     z;              /**< z value */
+} eOas_inertial3_data_t;         EO_VERIFYsizeof(eOas_inertial3_data_t, 16)
+
+
+// enabled is 32 bits hence eOas_inertials3_descriptors_maxnumber <= 32.
+typedef struct
+{
+    uint8_t                         datarate;       /**< it specifies the acquisition rate in ms with accepted range [10, 200]. bug: if 250 the mtb emits every 35  */
+    uint8_t                         numberofitemstofillateachtick; // if 0, we fill the entire arrayofdata. else if 1 we fill just arrayofdata[0].
+    uint8_t                         filler[2];
+    uint32_t                        enabled;        // bitmask of enabled sensors with reference to array-of-sensors
+} eOas_inertial3_config_t;          EO_VERIFYsizeof(eOas_inertial3_config_t, 8)
+
+
+enum { eOas_inertials3_data_maxnumber = 4 };
+typedef struct
+{   // 4+(16*4) = 68
+    eOarray_head_t                  head;
+    eOas_inertial3_data_t           data[eOas_inertials3_data_maxnumber];
+} eOas_inertial3_arrayof_data_t;    EO_VERIFYsizeof(eOas_inertial3_arrayof_data_t, 68)
+
+
+typedef struct
+{
+    eOas_inertial3_arrayof_data_t   arrayofdata;   /**< it is the most recent reading of the inertial sensors which are related to this entity */
+} eOas_inertial3_status_t;          EO_VERIFYsizeof(eOas_inertial3_status_t, 68)
+
+
+typedef struct
+{
+    uint8_t                     enable;         /**< use 0 or 1*/
+    uint8_t                     filler[3];
+} eOas_inertial3_commands_t;    EO_VERIFYsizeof(eOas_inertial3_commands_t, 4)
+
+
+typedef struct                      // size is: 8+68+4 = 80
+{
+    eOas_inertial3_config_t        config;
+    eOas_inertial3_status_t        status;
+    eOas_inertial3_commands_t      cmmnds;
+} eOas_inertial3_t;                EO_VERIFYsizeof(eOas_inertial3_t, 80)
+
+
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -449,6 +565,22 @@ extern const char * eoas_sensor2string(eOas_sensor_t sensor);
 
 extern eOas_sensor_t eoas_string2sensor(const char * string);
 
+extern eOresult_t eoas_inertial3_setof_boardinfos_clear(eOas_inertial3_setof_boardinfos_t *set);
+extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_boardinfos_t *set, const eObrd_info_t *brdinfo); 
+extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_cantype_t brdtype);
+
+extern uint8_t eoas_inertial3_supportedboards_numberof(void);
+extern eObrd_cantype_t eoas_inertial3_supportedboards_gettype(uint8_t pos);
+
+extern icubCanProto_imu_sensor_t eoas_inertial3_imu_to_canproto(eOas_inertial3_type_t t);
+extern eOas_inertial3_type_t eoas_inertial3_canproto_to_imu(uint8_t v);
+
+extern eOresult_t eoas_temperature_setof_boardinfos_clear(eOas_temperature_setof_boardinfos_t *set);
+extern eOresult_t eoas_temperature_setof_boardinfos_add(eOas_temperature_setof_boardinfos_t *set, const eObrd_info_t *brdinfo); 
+extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_temperature_setof_boardinfos_t *set, eObrd_cantype_t brdtype);
+
+extern uint8_t eoas_temperature_supportedboards_numberof(void);
+extern eObrd_cantype_t eoas_temperature_supportedboards_gettype(uint8_t pos);
 
 
 /** @}

@@ -93,11 +93,12 @@ typedef enum
     eoerror_category_Config                 = 5,    /**< errors generated specifically by application configuration activity */
     eoerror_category_ETHmonitor             = 6,    /**< errors generated specifically by the ETH monitor */
     eoerror_category_InertialSensor         = 7,
+    eoerror_category_AnalogSensor           = 8,
     // add a new category in here. remember to increment eoerror_category_numberof 
     eoerror_category_dummy                   = EOERROR_CATEGORY_DUMMY   /**< used to express a dummy category. dont count it for eoerror_category_numberof */
 } eOerror_category_t;
 
-enum { eoerror_category_numberof = 8 };
+enum { eoerror_category_numberof = 9 };
 
 
 /** @typedef    typedef uint32_t eOerror_value_t
@@ -322,20 +323,38 @@ typedef enum
     eoerror_value_CFG_mais_not_verified_yet             = 33,
     eoerror_value_CFG_skin_not_verified_yet             = 34,        
     eoerror_value_CFG_inertials_not_verified_yet        = 35,
-    eoerror_value_CFG_encoders_not_verified_yet         = 36,
+    eoerror_value_CFG_inertials3_not_verified_yet       = 36,
+    eoerror_value_CFG_encoders_not_verified_yet         = 37,
 
-    eoerror_value_CFG_mc_using_onboard_config           = 37,
-    eoerror_value_CFG_strain_using_onboard_config       = 38,
-    eoerror_value_CFG_mais_using_onboard_config         = 39,
-    eoerror_value_CFG_inertials_using_onboard_config    = 40,
-    eoerror_value_CFG_skin_using_onboard_config         = 41,
+    eoerror_value_CFG_mc_using_onboard_config           = 38,
+    eoerror_value_CFG_strain_using_onboard_config       = 39,
+    eoerror_value_CFG_mais_using_onboard_config         = 40,
+    eoerror_value_CFG_inertials_using_onboard_config    = 41,
+    eoerror_value_CFG_inertials3_using_onboard_config   = 42,
+    eoerror_value_CFG_skin_using_onboard_config         = 43,
     
-    eoerror_value_CFG_inertials_failed_unsupportedsensor= 42,
-    eoerror_value_CFG_inertials_changed_requestedrate   = 43     
+    eoerror_value_CFG_inertials_failed_unsupportedsensor= 44,
+    eoerror_value_CFG_inertials_changed_requestedrate   = 45,
+    
+    eoerror_value_CFG_inertials3_failed_unsupportedsensor= 46,
+    eoerror_value_CFG_inertials3_changed_requestedrate  = 47,
+
+    eoerror_value_CFG_inertials3_ok                     = 48,
+    eoerror_value_CFG_inertials3_failed_toomanyboards   = 49,
+    eoerror_value_CFG_inertials3_failed_candiscovery    = 50,
+    eoerror_value_CFG_inertials3_failed_generic         = 51,
+    
+    eoerror_value_CFG_temperatures_not_verified_yet      = 52,
+    eoerror_value_CFG_temperatures_ok                    = 53,
+    eoerror_value_CFG_temperatures_failed_toomanyboards  = 54,
+    eoerror_value_CFG_temperatures_failed_candiscovery   = 55,
+    eoerror_value_CFG_temperatures_failed_generic        = 56,
+    eoerror_value_CFG_temperatures_changed_requestedrate = 57,
+    eoerror_value_CFG_temperatures_using_onboard_config  = 58
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 44 };
+enum { eoerror_value_CFG_numberof = 59 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
@@ -360,10 +379,23 @@ enum { eoerror_value_ETHMON_numberof = 5 };
  **/
 typedef enum
 {
-    eoerror_value_IS_arrayofinertialdataoverflow    = 0
+    eoerror_value_IS_arrayofinertialdataoverflow        = 0,
+    eoerror_value_IS_unknownsensor                      = 1
 } eOerror_value_IS_t;
 
-enum { eoerror_value_IS_numberof = 1 };
+enum { eoerror_value_IS_numberof = 2 };
+
+
+/** @typedef    typedef enum eOerror_value_AS_t
+    @brief      it contains the values of the eoerror_category_AnalogSensor category.  
+ **/
+typedef enum
+{
+    eoerror_value_AS_arrayoftemperaturedataoverflow     = 0,
+    eoerror_value_AS_unknownsensor                      = 1
+} eOerror_value_AS_t;
+
+enum { eoerror_value_AS_numberof = 2 };
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 

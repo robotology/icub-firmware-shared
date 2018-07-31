@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 1 };
+enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 3 };
 
 
 enum { eoprot_entities_as_numberof = eoas_entities_numberof };
@@ -141,35 +141,37 @@ enum { eoprot_rwms_as_mais_numberof = 7 };  // it MUST be equal to the number of
 
 
 
-// - entity extorque
+// - entity temperature
 
 
-/** @typedef    typedef enum eOprot_tag_as_extorque_t
-    @brief      It contains the tags for all variables of the extorque entity.
-                See definition of eOas_extorque_t (and its fields) in file EoAnalogSensors.h for explanation of the variables.
+/** @typedef    typedef enum eOprot_tag_as_temperature_t
+    @brief      It contains the tags for all variables of the temperature entity.
+                See definition of eOas_temperature_t (and its fields) in file EoAnalogSensors.h for explanation of the variables.
  **/
 typedef enum
 {
-    eoprot_tag_as_extorque_wholeitem                                = 0,
-    eoprot_tag_as_extorque_config                                   = 1,
-    eoprot_tag_as_extorque_inputs                                   = 2
-} eOprot_tag_as_extorque_t;
+    eoprot_tag_as_temperature_wholeitem                                = 0,
+    eoprot_tag_as_temperature_config                                   = 1,
+    eoprot_tag_as_temperature_status                                   = 2,
+    eoprot_tag_as_temperature_cmmnds_enable                            = 3
+} eOprot_tag_as_temperature_t;
 
-enum { eoprot_tags_as_extorque_numberof = 3 };  // it MUST be equal to the number of tags. 
+enum { eoprot_tags_as_temperature_numberof = 4 };  // it MUST be equal to the number of tags. 
 
 
-/** @typedef    typedef enum eOprot_rwm_as_extorque_t
-    @brief      It contains the rw modes for all variables of the extorque entity. There must be a one-to-one
-                correspondence to the values in eOprot_tag_as_extorque_t.
+/** @typedef    typedef enum eOprot_rwm_as_temperature_t
+    @brief      It contains the rw modes for all variables of the temperature entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_as_temperature_t.
  **/
 typedef enum
 {
-    eoprot_rwm_as_extorque_wholeitem                                = eo_nv_rwmode_RO,
-    eoprot_rwm_as_extorque_config                                   = eo_nv_rwmode_RW,
-    eoprot_rwm_as_extorque_inputs                                   = eo_nv_rwmode_RW   
-} eOprot_rwm_as_extorque_t; 
+    eoprot_rwm_as_temperature_wholeitem                                = eo_nv_rwmode_RO,
+    eoprot_rwm_as_temperature_config                                   = eo_nv_rwmode_RW,
+    eoprot_rwm_as_temperature_status                                   = eo_nv_rwmode_RO,
+    eoprot_rwm_as_temperature_cmmnds_enable                            = eo_nv_rwmode_RW  
+} eOprot_rwm_as_temperature_t; 
 
-enum { eoprot_rwms_as_extorque_numberof = 3 };  // it MUST be equal to the number of rw modes. 
+enum { eoprot_rwms_as_temperature_numberof = 4 };  // it MUST be equal to the number of rw modes. 
 
 
 
@@ -210,6 +212,41 @@ typedef enum
 enum { eoprot_rwms_as_inertial_numberof = 6 };  // it MUST be equal to the number of rw modes. 
 
 
+
+// - entity inertial3
+
+
+/** @typedef    typedef enum eOprot_tag_as_inertial3_t
+    @brief      It contains the tags for all variables of the inertial3 entity.
+                See definition of eOas_inertial3_t (and its fields) in file EoAnalogSensors.h for explanation of the variables.
+ **/
+typedef enum
+{
+    eoprot_tag_as_inertial3_wholeitem                                = 0,
+    eoprot_tag_as_inertial3_config                                   = 1,
+    eoprot_tag_as_inertial3_status                                   = 2,
+    eoprot_tag_as_inertial3_cmmnds_enable                            = 3
+} eOprot_tag_as_inertial3_t;
+
+enum { eoprot_tags_as_inertial3_numberof = 4 };  // it MUST be equal to the number of tags. 
+
+
+/** @typedef    typedef enum eOprot_rwm_as_inertial3_t
+    @brief      It contains the rw modes for all variables of the inertial3 entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_as_inertial3_t.
+ **/
+typedef enum
+{
+    eoprot_rwm_as_inertial3_wholeitem                                = eo_nv_rwmode_RO,
+    eoprot_rwm_as_inertial3_config                                   = eo_nv_rwmode_RW,
+    eoprot_rwm_as_inertial3_status                                   = eo_nv_rwmode_RO,
+    eoprot_rwm_as_inertial3_cmmnds_enable                            = eo_nv_rwmode_RW    
+} eOprot_rwm_as_inertial3_t; 
+
+enum { eoprot_rwms_as_inertial3_numberof = 4 };  // it MUST be equal to the number of rw modes. 
+
+
+
 // - structures implementing the endpoints
 
 /** @typedef    typedef struct eOprot_template_as_t;
@@ -220,8 +257,9 @@ typedef struct                  // 56*1+48*1+8*1 = 112
 {
     eOas_strain_t               strain[1]; 
     eOas_mais_t                 mais[1];
-    eOas_extorque_t             extorque[1];
+    eOas_temperature_t          temperature[1];
     eOas_inertial_t             inertial[1];
+    eOas_inertial3_t            inertial3[1];
 } eOprot_template_as_t;         //EO_VERIFYsizeof(eOprot_template_as_t, 112);
   
   
@@ -284,16 +322,19 @@ extern void eoprot_fun_UPDT_as_mais_status(const EOnv* nv, const eOropdescriptor
 extern void eoprot_fun_INIT_as_mais_status_the15values(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_mais_status_the15values(const EOnv* nv, const eOropdescriptor_t* rd);
 
-// -- extorque
+// -- temperature
 
-extern void eoprot_fun_INIT_as_extorque_wholeitem(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_extorque_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_as_temperature_wholeitem(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_temperature_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_as_extorque_config(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_extorque_config(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_as_temperature_config(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_temperature_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_as_extorque_inputs(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_extorque_inputs(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_as_temperature_status(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_temperature_status(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_temperature_cmmnds_enable(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_temperature_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
 
 // -- inertial
 
@@ -317,6 +358,22 @@ extern void eoprot_fun_UPDT_as_inertial_status(const EOnv* nv, const eOropdescri
 
 extern void eoprot_fun_INIT_as_inertial_cmmnds_enable(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_inertial_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
+
+
+
+// -- inertial3
+
+extern void eoprot_fun_INIT_as_inertial3_wholeitem(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial3_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial3_config(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial3_config(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial3_status(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial3_status(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_inertial3_cmmnds_enable(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_inertial3_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
 
 
 

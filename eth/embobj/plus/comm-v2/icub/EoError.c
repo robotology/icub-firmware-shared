@@ -82,7 +82,8 @@ static const uint32_t s_eoerror_maxvalue_in_category[] =
     eoerror_value_DEB_numberof,
     eoerror_value_CFG_numberof,
     eoerror_value_ETHMON_numberof,
-    eoerror_category_InertialSensor
+    eoerror_category_InertialSensor,
+    eoerror_category_AnalogSensor
 };  EO_VERIFYsizeof(s_eoerror_maxvalue_in_category, eoerror_category_numberof*sizeof(const uint32_t))    
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -253,7 +254,8 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured. tbd"},
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
-    {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. num of patches in p16. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. can discovery fails. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    
     {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop. tbd"},
 
     {eoerror_value_CFG_mc_mc4plusmais_ok, "CFG: EOtheMotionController can correctly configure mc4plusmais-based motion. more info will follow"},
@@ -266,15 +268,33 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mais_not_verified_yet, "CFG: EOtheMAIS service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_skin_not_verified_yet, "CFG: EOtheSKIN service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_inertials_not_verified_yet, "CFG: EOtheInertials service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_inertials3_not_verified_yet, "CFG: EOtheInertials3 service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_encoders_not_verified_yet, "CFG: EOtheEncoderReader service was not verified yet, thus it cannot start."},
     {eoerror_value_CFG_mc_using_onboard_config, "CFG: EOtheMotionController service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_strain_using_onboard_config, "CFG: EOtheSTRAIN service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_mais_using_onboard_config, "CFG: EOtheMAIS service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_inertials_using_onboard_config, "CFG: EOtheInertials service is using the local default configuration based on its IP address."},
+    {eoerror_value_CFG_inertials3_using_onboard_config, "CFG: EOtheInertials3 service is using the local default configuration based on its IP address."},
     {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address."},
     
     {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported. in p16 their number."},    
-    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."}    
+    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+
+    {eoerror_value_CFG_inertials3_failed_unsupportedsensor, "CFG: EOtheInertial3 cannot be configured. some sensors are not supported. in p16 their number."},    
+    {eoerror_value_CFG_inertials3_changed_requestedrate, "CFG: EOtheInertial3 has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+    
+    {eoerror_value_CFG_inertials3_ok, "CFG: EOtheInertial3 can be correctly configured. tbd"},
+    {eoerror_value_CFG_inertials3_failed_toomanyboards, "CFG: EOtheInertial3 cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
+    {eoerror_value_CFG_inertials3_failed_candiscovery, "CFG: EOtheInertial3 cannot be configured. can discovery fails. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_inertials3_failed_generic, "CFG: EOtheInertial3 cannot be configured. generic error. more details in p16 and p64 and in source code"},
+    
+    {eoerror_value_CFG_temperatures_not_verified_yet, "CFG: EOtheTemperatures service was not verified yet, thus it cannot start."},
+    {eoerror_value_CFG_temperatures_ok, "CFG: EOtheTemperatures can be correctly configured. tbd"},
+    {eoerror_value_CFG_temperatures_failed_toomanyboards, "CFG: EOtheTemperatures cannot be configured. too many boards. In p16: number of requested boards in 0xff00, max number in 0x00ff. In p64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."},
+    {eoerror_value_CFG_temperatures_failed_candiscovery, "CFG: EOtheTemperatures cannot be configured. can discovery fails. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
+    {eoerror_value_CFG_temperatures_failed_generic, "CFG: EOtheTemperatures cannot be configured. generic error. more details in p16 and p64 and in source code"},
+    {eoerror_value_CFG_temperatures_changed_requestedrate, "CFG: EOtheTemperatures has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+    {eoerror_value_CFG_temperatures_using_onboard_config, "CFG: EOtheTemperatures service is using the local default configuration based on its IP address."}
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
@@ -283,9 +303,9 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
 {   // very important: fill table with order of eOerror_value_ETHMON_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = P2, 1 = P3, 2 = internal). Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},        
-    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},
-    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = P2, 1 = P3, 2 = internal).  Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running. Number of errors in par64&0xffffffff"},
+    {eoerror_value_ETHMON_link_goes_up,     "ETH monitor: link goes up in port specified by par16 (0 = ETH input (P2/P13/J4) , 1 = ETH output (P3/P12/J5) , 2 = internal). Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},        
+    {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = ETH input (P2/P13/J4) , 1 = ETH output (P3/P12/J5) , 2 = internal).  Application state is most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},
+    {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = ETH input (P2/P13/J4) , 1 = ETH output (P3/P12/J5) , 2 = internal).  Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running. Number of errors in par64&0xffffffff"},
     {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"},
     {eoerror_value_ETHMON_juststarted,      "ETH monitor: just started."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)) 
@@ -293,10 +313,16 @@ const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
 const eoerror_valuestring_t eoerror_valuestrings_IS[] =
 {   // very important: fill table with order of eOerror_value_IS_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_IS_arrayofinertialdataoverflow, "IS: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"}
+    {eoerror_value_IS_arrayofinertialdataoverflow, "IS: cannot store rx can frames of inertial data, thus some inertial readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
+    {eoerror_value_IS_unknownsensor, "IS: unknown sensor"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_IS, eoerror_value_IS_numberof*sizeof(const eoerror_valuestring_t)) 
 
-
+const eoerror_valuestring_t eoerror_valuestrings_AS[] =
+{   // very important: fill table with order of eOerror_value_AS_t
+    //                 in case of holes, use {0, NULL}
+    {eoerror_value_AS_arrayoftemperaturedataoverflow, "AS: cannot store rx can frames of tempeature data, thus some readings will be lost. In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
+    {eoerror_value_AS_unknownsensor, "AS: unknown sensor"}
+};  EO_VERIFYsizeof(eoerror_valuestrings_AS, eoerror_value_AS_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
 const eoerror_valuestring_t * const eoerror_valuestrings[] = 
@@ -309,7 +335,8 @@ const eoerror_valuestring_t * const eoerror_valuestrings[] =
     (const eoerror_valuestring_t *)&eoerror_valuestrings_DEB,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_CFG,
     (const eoerror_valuestring_t *)&eoerror_valuestrings_ETHMON,
-    (const eoerror_valuestring_t *)&eoerror_valuestrings_IS
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_IS,
+    (const eoerror_valuestring_t *)&eoerror_valuestrings_AS
 };  EO_VERIFYsizeof(eoerror_valuestrings, eoerror_category_numberof*sizeof(const eoerror_valuestring_t *))  
 
 
