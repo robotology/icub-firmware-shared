@@ -107,7 +107,7 @@ extern "C" {
     #define EO_INT16_MIN   INT16_MIN
     //#pragma pack(4) 
     #pragma pack(8) 
-    #define snprintf        sprintf_s
+ //   #define snprintf        sprintf_s
     typedef float float32_t;
     #define __weak 
     #define EO_weak 
