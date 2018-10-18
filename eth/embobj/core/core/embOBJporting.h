@@ -106,8 +106,10 @@ extern "C" {
     #define EO_UINT16_MAX  UINT16_MAX    
     #define EO_INT16_MIN   INT16_MIN
     //#pragma pack(4) 
-    #pragma pack(8) 
- //   #define snprintf        sprintf_s
+    #pragma pack(8)
+    #if _MSC_VER < 1900
+    #define snprintf        sprintf_s
+    #endif
     typedef float float32_t;
     #define __weak 
     #define EO_weak 
