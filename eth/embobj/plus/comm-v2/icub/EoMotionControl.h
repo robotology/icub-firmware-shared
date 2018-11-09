@@ -96,6 +96,7 @@ enum {  eomc_ctrlmval_idle          = 0x00,
         eomc_ctrlmval_notConfigured = 0x0B, 
         eomc_ctrlmval_configured    = 0x0C, 
         eomc_ctrlmval_forceIdle     = 0x0D, 
+        eomc_ctrlmval_vel_direct    = 0x0E,    
         eomc_ctrlmval_openloop      = 0x50, 
         eomc_ctrlmval_everything_off= -16,   /*0xf0*/  //to be removed
         eomc_ctrlmval_calib         = -2,    /*0xfe*/
@@ -120,9 +121,11 @@ typedef enum
     eomc_controlmode_cmd_impedance_pos              = eomc_ctrlmval_impedance_pos, //to be removed
     eomc_controlmode_cmd_impedance_vel              = eomc_ctrlmval_impedance_vel, //to be removed
     eomc_controlmode_cmd_current                    = eomc_ctrlmval_current,
+    eomc_controlmode_cmd_vel_direct                 = eomc_ctrlmval_vel_direct,
     eomc_controlmode_cmd_openloop                   = eomc_ctrlmval_openloop, 
     eomc_controlmode_cmd_switch_everything_off      = eomc_ctrlmval_everything_off,    //to be removed   /**< it imposes a zero current on the motor and also turns the pwm off */    
     eomc_controlmode_cmd_mixed                      = eomc_ctrlmval_mixed,
+    eomc_controlmode_cmd_velocity_pos               = eomc_ctrlmval_velocity_pos,
     eomc_controlmode_cmd_direct                     = eomc_ctrlmval_direct, 
 } eOmc_controlmode_command_t;
 
@@ -145,12 +148,11 @@ typedef enum
     eomc_controlmode_impedance_pos              = eomc_ctrlmval_impedance_pos, //to be removed
     eomc_controlmode_impedance_vel              = eomc_ctrlmval_impedance_vel, //to be removed
     eomc_controlmode_current                    = eomc_ctrlmval_current, 
-    eomc_controlmode_velocity_pos               = eomc_ctrlmval_velocity_pos,   /*to be removed*/  /**< The controller is in position, but the controller switches to eomc_controlmode_velocity_pos
-                                                                                    automatically when it receives a velocity set setpoint. 
-                                                                                    In icub can proto there is not differences between velocity and velocity_pos */  
+    eomc_controlmode_vel_direct                 = eomc_ctrlmval_vel_direct,   
     eomc_controlmode_openloop                   = eomc_ctrlmval_openloop,
     eomc_controlmode_calib                      = eomc_ctrlmval_calib,      /**< it means joint is in calibration, without specifing wich type of calibartion joint is using. this value doesn't belong to icub can proto. */ 
     eomc_controlmode_mixed                      = eomc_ctrlmval_mixed,
+    eomc_controlmode_velocity_pos               = eomc_ctrlmval_velocity_pos,  
     eomc_controlmode_direct                     = eomc_ctrlmval_direct,
     eomc_controlmode_hwFault                    = eomc_ctrlmval_hwFault,
     eomc_controlmode_notConfigured              = eomc_ctrlmval_notConfigured,
@@ -652,10 +654,10 @@ typedef uint8_t  eOmc_torqueControlFilterType_t;
  **/
 typedef struct                  // size is: 40+40+40+8+8+12+4+4+12+2+1+1+4+4+4= 184
 {
-    eOmc_PID_t                  pidposition;                /**< the pid for position control */
-    eOmc_PID_t                  pidvelocity;                /**< the pid for velocity control */
+    eOmc_PID_t                  pidtrajectory;              /**< the pid for trajectory control */
+    eOmc_PID_t                  piddirect;                  /**< the pid for direct control */
     eOmc_PID_t                  pidtorque;                  /**< the pid for torque control */
-    eOmeas_position_limits_t    userlimits;              /**< the minimum and maximum position of the joint */
+    eOmeas_position_limits_t    userlimits;                 /**< the minimum and maximum position of the joint */
     eOmeas_position_limits_t    hardwarelimits;
     eOmc_impedance_t            impedance;                  /**< the impedance to use in control of the relevant kind */                 
     eOmeas_velocity_t           maxvelocityofjoint;         /**< the maximum velocity in the joint */
@@ -810,15 +812,16 @@ typedef struct                  // size is:  16+20+4 = 40
 /** @typedef    typedef struct eOmc_joint_status_target_t
     @brief      eOmc_joint_status_target_t contains the targets of a joint
  **/
-typedef struct                  // size is:  4+4+4+4+4+4 = 24
+typedef struct                  // size is:  4+4+4+4+4+4+4 = 28
 {
     eOmeas_position_t           trgt_position;              /**< the target position of the joint */           
     eOmeas_position_t           trgt_positionraw;           /**< the target position raw of the joint */           
     eOmeas_velocity_t           trgt_velocity;              /**< the target velocity of the joint */          
     eOmeas_acceleration_t       trgt_acceleration;          /**< the target acceleration of the joint */       
     eOmeas_torque_t             trgt_torque;                /**< the target torque of the joint */
-    int32_t                     trgt_openloop;              /**< the target openloop of the joint */
-} eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 24) 
+    int32_t                     trgt_pwm;                   /**< the target pwm of the joint */
+    int32_t                     trgt_current;               /**< the target current of the joint */
+} eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 28) 
 
 
 enum{ eOmc_joint_multienc_maxnum = 3};
@@ -836,12 +839,12 @@ typedef struct              //size is = 12
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint
  **/
-typedef struct                  // size is:  40+24+12 = 44
+typedef struct                  // size is:  40+28+12 = 44
 {
     eOmc_joint_status_core_t            core;
     eOmc_joint_status_target_t          target;
     eOmc_joint_status_additionalInfo_t  addinfo;
-} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 76) 
+} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 80) 
 
 
 
@@ -862,13 +865,13 @@ typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 /** @typedef    typedef struct eOmc_joint_t
     @brief      contains the whole joint
  **/
-typedef struct                  // size is 184+76+4+44+0 = 308
+typedef struct                  // size is 184+80+4+44+0 = 312
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 308)
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 312);
 
 
 
@@ -893,9 +896,10 @@ typedef struct
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 80
+typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 120
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
+    eOmc_PID_t                      pidspeed;                   /**< the pid for speed control */
     float32_t                       gearbox_M2J;                /**< the gearbox reduction ration from motor to joint motor:joint*/
     int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
     eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
@@ -916,7 +920,7 @@ typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 80
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 80)
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 120);
 
 
 
@@ -949,11 +953,11 @@ typedef struct                  // size is: 20+4+0 = 24
 /** @typedef    typedef struct eOmc_motor_t
     @brief      contains the whole motor
  **/
-typedef struct                  // size is 80+24+0 = 104
+typedef struct                  // size is 120+24+0 = 144
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 104)
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 144);
  
 
 // -- the definition of a controller containing a given number of joints and motors  
@@ -1257,14 +1261,47 @@ typedef struct
     float   param2;
 } eOmc_jointSet_constraints_t;  EO_VERIFYsizeof(eOmc_jointSet_constraints_t, 12)
 
+//typedef enum
+//{
+//    eomc_pidoutputtype_pwm = 1,
+//    eomc_pidoutputtype_vel = 2,
+//    eomc_pidoutputtype_iqq = 3,
+
+//    eomc_pidoutputtype_unknown = 0
+//} eOmc_pidoutputtype_t;
+
+typedef enum
+{
+  eomc_ctrl_out_type_n_a = 0,
+  eomc_ctrl_out_type_pwm = 1, 
+  eomc_ctrl_out_type_vel = 2,
+  eomc_ctrl_out_type_cur = 3,
+  eomc_ctrl_out_type_off = 4
+} eOmc_ctrl_out_type_t;
 
 typedef struct
-{   //1+ 3+ 12 = 16
+{
+    uint8_t torque_ctrl_out_type : 2;
+    uint8_t postrj_ctrl_out_type : 2;
+    uint8_t veltrj_ctrl_out_type : 2;
+    uint8_t mixtrj_ctrl_out_type : 2;
+    uint8_t posdir_ctrl_out_type : 2;
+    uint8_t veldir_ctrl_out_type : 2;
+    uint8_t pwm_ctrl_out_type : 2;
+    uint8_t cur_ctrl_out_type : 2;
+} eOmc_pid_output_types_t; EO_VERIFYsizeof(eOmc_pid_output_types_t, 2);
+
+typedef struct
+{   //2+ 1+ 1+ 12 = 16
     uint8_t                         candotorquecontrol          : 1;        // use eobool_true / eobool_false
     uint8_t                         usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
     uint8_t                         pidoutputtype               : 3;        // use eOmc_pidoutputtype_t
     uint8_t                         dummy                       : 3;        
-    uint8_t                         filler[3];
+    eOmc_pid_output_types_t         pid_output_types;
+    uint8_t                         filler;
+    
+    //uint8_t usespeedfeedbackfrommotors;
+    //uint8_t filler;
     eOmc_jointSet_constraints_t     constraints;
 } eOmc_jointset_configuration_t; EO_VERIFYsizeof(eOmc_jointset_configuration_t, 16)
 

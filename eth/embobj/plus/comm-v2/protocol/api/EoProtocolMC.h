@@ -72,7 +72,9 @@ typedef enum
     eoprot_tag_mc_joint_wholeitem                                   =  0,
     eoprot_tag_mc_joint_config                                      =  1,
     eoprot_tag_mc_joint_config_pidposition                          =  2,
+    eoprot_tag_mc_joint_config_pidtrajectory                        =  2,
     eoprot_tag_mc_joint_config_pidvelocity                          =  3,
+    eoprot_tag_mc_joint_config_piddirect                            =  3,
     eoprot_tag_mc_joint_config_pidtorque                            =  4,
     eoprot_tag_mc_joint_config_userlimits                           =  5,
     eoprot_tag_mc_joint_config_impedance                            =  6,
@@ -106,8 +108,8 @@ typedef enum
 {
     eoprot_rwm_mc_joint_wholeitem                                   = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_config                                      = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_config_pidposition                          = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_config_pidvelocity                          = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_pidtrajectory                        = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_piddirect                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidtorque                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_userlimits                           = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_impedance                            = eo_nv_rwmode_RW,
@@ -148,11 +150,13 @@ typedef enum
     eoprot_tag_mc_motor_config_rotorencoder                         = 4,
     eoprot_tag_mc_motor_config_pwmlimit                             = 5,
     eoprot_tag_mc_motor_config_temperaturelimit                     = 6,
-    eoprot_tag_mc_motor_status                                      = 7,
-    eoprot_tag_mc_motor_status_basic                                = 8
+    eoprot_tag_mc_motor_config_pidcurrent                           = 7,
+    eoprot_tag_mc_motor_config_pidspeed                             = 8,
+    eoprot_tag_mc_motor_status                                      = 9,
+    eoprot_tag_mc_motor_status_basic                                = 10
 } eOprot_tag_mc_motor_t;
 
-enum { eoprot_tags_mc_motor_numberof = 9 };   // it MUST be equal to the number of tags 
+enum { eoprot_tags_mc_motor_numberof = 11 };   // it MUST be equal to the number of tags 
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_motor_t
@@ -169,11 +173,13 @@ typedef enum
     eoprot_rwm_mc_motor_config_rotorencoder                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_pwmlimit                             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_temperaturelimit                     = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_pidcurrent                           = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_pidspeed                             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_status_basic                                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_motor_t;  
 
-enum { eoprot_rwms_mc_motor_numberof = 9 };   // it MUST be equal to the number of rw modes
+enum { eoprot_rwms_mc_motor_numberof = 11 };   // it MUST be equal to the number of rw modes
 
 
 
@@ -321,6 +327,12 @@ extern void eoprot_fun_UPDT_mc_motor_wholeitem(const EOnv* nv, const eOropdescri
 
 extern void eoprot_fun_INIT_mc_motor_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_pidcurrent(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_pidcurrent(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_pidspeed(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_pidspeed(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd);
