@@ -71,12 +71,15 @@ typedef enum
     eobrd_cantype_mtb4              = ICUBCANPROTO_BOARDTYPE__MTB4,     // 11 
     eobrd_cantype_strain2           = ICUBCANPROTO_BOARDTYPE__STRAIN2,  // 12  
     eobrd_cantype_rfe               = ICUBCANPROTO_BOARDTYPE__RFE,      // 13 (rfe = robot face expression)    
-   
+    eobrd_cantype_sg3               = ICUBCANPROTO_BOARDTYPE__SG3,      // 14 (sg3 = 3 strain gauges)
+    eobrd_cantype_psc               = ICUBCANPROTO_BOARDTYPE__PSC,      // 15 (psc = proximal sensor collector)
+    eobrd_cantype_mtb4w             = ICUBCANPROTO_BOARDTYPE__MTB4W,    // 16 (mtb4 for waseda university)
+
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 14 };
+enum { eobrd_cantype_numberof = 17 };
 
 
 typedef enum
@@ -116,13 +119,16 @@ typedef enum
     eobrd_jog                   = eobrd_cantype_jog,   
     eobrd_mtb4                  = eobrd_cantype_mtb4,
     eobrd_strain2               = eobrd_cantype_strain2,  
-    eobrd_rfe                   = eobrd_cantype_rfe,    
-    
+    eobrd_rfe                   = eobrd_cantype_rfe,
+    eobrd_sg3                   = eobrd_cantype_sg3,
+    eobrd_psc                   = eobrd_cantype_psc,
+    eobrd_mtb4w                 = eobrd_cantype_mtb4w,
+
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 17 };
+enum { eobrd_type_numberof = 20 };
 
 
 typedef struct                  

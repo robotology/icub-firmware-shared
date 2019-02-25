@@ -85,7 +85,10 @@ static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) |
                                                 (0x1LL << eobrd_jog) |
                                                 (0x1LL << eobrd_mtb4) |
                                                 (0x1LL << eobrd_strain2) |
-                                                (0x1LL << eobrd_rfe);
+                                                (0x1LL << eobrd_rfe) |
+                                                (0x1LL << eobrd_sg3) |
+                                                (0x1LL << eobrd_psc) |
+                                                (0x1LL << eobrd_mtb4w);
        
    
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
@@ -109,6 +112,9 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"mtb4", "eobrd_mtb4", eobrd_mtb4},
     {"strain2", "eobrd_strain2", eobrd_strain2},
     {"rfe", "eobrd_rfe", eobrd_rfe},
+    {"sg3", "eobrd_sg3", eobrd_sg3},
+    {"psc", "eobrd_psc", eobrd_psc},
+    {"mtb4w", "eobrd_mtb4w", eobrd_mtb4w},
     
     {"none", "eobrd_none", eobrd_none},
     {"unknown", "eobrd_unknown", eobrd_unknown}
