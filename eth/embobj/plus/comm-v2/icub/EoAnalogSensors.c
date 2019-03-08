@@ -148,14 +148,14 @@ extern eOas_sensor_t eoas_string2sensor(const char * string)
     return(eoas_unknown);    
 }
 
-enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2 };
+enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2, in3_rfe_pos = 3 };
 
-static const eObrd_cantype_t s_eoas_inertial3_supportedboards_types[] = { eobrd_cantype_mtb, eobrd_cantype_mtb4, eobrd_cantype_strain2 };
+static const eObrd_cantype_t s_eoas_inertial3_supportedboards_types[] = { eobrd_cantype_mtb, eobrd_cantype_mtb4, eobrd_cantype_strain2, eobrd_cantype_rfe };
 
 
 extern uint8_t eoas_inertial3_supportedboards_numberof(void)
 {
-    return sizeof(s_eoas_inertial3_supportedboards_types);
+    return sizeof(s_eoas_inertial3_supportedboards_types)/sizeof(eObrd_cantype_t);
 }
 
 extern eObrd_cantype_t eoas_inertial3_supportedboards_gettype(uint8_t pos)
@@ -212,6 +212,11 @@ extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_board
         return eores_OK;       
     }    
 
+    if(eobrd_cantype_rfe == brdinfo->type)
+    {
+        memcpy(&set->data[in3_rfe_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }  
     
     return eores_NOK_generic;
 }
@@ -252,6 +257,14 @@ extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_iner
                 r = &set->data[in3_strain2_pos];
             }
         } break;
+        
+        case eobrd_cantype_rfe:
+        {
+            if(eobrd_cantype_rfe == set->data[in3_rfe_pos].type)
+            {
+                r = &set->data[in3_rfe_pos];
+            }
+        } break;        
         
         default: 
         {
