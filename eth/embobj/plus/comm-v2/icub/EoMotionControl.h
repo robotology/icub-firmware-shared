@@ -654,7 +654,7 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+12+2+1+1+4+4+4= 
     float32_t                   jntEncTolerance;
     float32_t                   gearbox_E2J;
     float32_t                   deadzone;
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 184);
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 184)
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_legacy_t
@@ -855,7 +855,7 @@ typedef struct                  // size is 184+76+4+44+0 = 308
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 308);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 308)
 
 
 
@@ -903,7 +903,7 @@ typedef struct                  // size is: 40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 80
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 80);
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 80)
 
 
 
@@ -940,7 +940,7 @@ typedef struct                  // size is 80+24+0 = 104
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 104);
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 104)
  
 
 // -- the definition of a controller containing a given number of joints and motors  
@@ -1172,9 +1172,9 @@ enum { eomc_jsetconstraints_numberof = 3 };
 
 
 // size is 
-typedef eOq17_14_t eOmc_4x6_matrix_t[4][6]; EO_VERIFYsizeof(eOmc_4x6_matrix_t, 96);
+typedef eOq17_14_t eOmc_4x6_matrix_t[4][6]; EO_VERIFYsizeof(eOmc_4x6_matrix_t, 96)
 
-typedef eOq17_14_t eOmc_4x4_matrix_t[4][4]; EO_VERIFYsizeof(eOmc_4x4_matrix_t, 64);
+typedef eOq17_14_t eOmc_4x4_matrix_t[4][4]; EO_VERIFYsizeof(eOmc_4x4_matrix_t, 64)
 
 typedef enum
 {
@@ -1191,7 +1191,7 @@ typedef struct
     uint8_t                 joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
     eOmc_4x4_matrix_t       joint2motor;
     eOmc_4x4_matrix_t       encoder2joint;    
-} eOmc_4jomo_coupling_OLD_t;    EO_VERIFYsizeof(eOmc_4jomo_coupling_OLD_t, 132);
+} eOmc_4jomo_coupling_OLD_t;    EO_VERIFYsizeof(eOmc_4jomo_coupling_OLD_t, 132)
 
 
 
@@ -1205,7 +1205,7 @@ typedef struct
     uint8_t filler[3];
     float   param1;
     float   param2;
-} eOmc_jointSet_constraints_t;  EO_VERIFYsizeof(eOmc_jointSet_constraints_t, 12);
+} eOmc_jointSet_constraints_t;  EO_VERIFYsizeof(eOmc_jointSet_constraints_t, 12)
 
 
 typedef struct
@@ -1216,7 +1216,7 @@ typedef struct
     uint8_t                         dummy                       : 3;        
     uint8_t                         filler[3];
     eOmc_jointSet_constraints_t     constraints;
-} eOmc_jointset_configuration_t; EO_VERIFYsizeof(eOmc_jointset_configuration_t, 16);
+} eOmc_jointset_configuration_t; EO_VERIFYsizeof(eOmc_jointset_configuration_t, 16)
 
 
 typedef struct
@@ -1226,7 +1226,7 @@ typedef struct
     eOmc_4x4_matrix_t               joint2motor;
     eOmc_4x4_matrix_t               motor2joint; 
     eOmc_4x6_matrix_t               encoder2joint;
-} eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292);
+} eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292)
 //end VALE
 
 

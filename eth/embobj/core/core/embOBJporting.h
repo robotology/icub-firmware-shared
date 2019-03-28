@@ -85,11 +85,12 @@ extern "C" {
 #endif
     
     #pragma pack(8)
-    //#define snprintf        snprintf  
+#if (__ARMCC_VERSION > 6000000)
+    #define EO_weak         __attribute__((weak))
+#else
     #define EO_weak         __weak
-// armcc version 6.6 does not support __weak anymore
-//    // __attribute__((weak)) is ok for bot compiler v5 and for new version 6
-//    #define EO_weak         __attribute__((weak))
+#endif
+    
     typedef float float32_t;
     #define EO_TAILOR_CODE_FOR_ARM    
     #define EO_READ_PREV_WORD_OF_MALLOC_FOR_SIZEOF_ALLOCATION
