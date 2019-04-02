@@ -75,12 +75,13 @@ typedef enum
     eoas_imu_grv                = 13,
     eoas_imu_status             = 14,
     eoas_temperature            = 15,
+    eoas_psc_angle              = 16,
     // add in here eoas_xxxnameetc
     eoas_unknown                = 254,  
     eoas_none                   = 255   
 } eOas_sensor_t;
 
-enum { eoas_sensors_numberof = 16 };
+enum { eoas_sensors_numberof = 17 };
 
 
 /** @typedef    typedef enum eOas_entity_t;
@@ -93,10 +94,12 @@ typedef enum
     eoas_entity_mais                        = 1,
     eoas_entity_temperature                 = 2,    
     eoas_entity_inertial                    = 3,
-    eoas_entity_inertial3                   = 4
+    eoas_entity_inertial3                   = 4,
+    eoas_entity_psc                         = 5
 } eOas_entity_t;
 
-enum { eoas_entities_numberof = 5 };
+enum { eoas_entities_numberof = 6 };
+
 
 // -- all the possible enum
 
@@ -554,6 +557,49 @@ typedef struct                      // size is: 8+68+4 = 80
 } eOas_inertial3_t;                EO_VERIFYsizeof(eOas_inertial3_t, 80)
 
 
+// -- the definition of a psc sensor service
+// a single psc sensor contains an angle expressed in deci-degrees 
+
+
+// this struct describes the data acquired by a single psc sensor
+typedef struct
+{
+    int16_t     value;              // so far the only value. we use int16 which contains a deci-degree.
+} eOas_psc_data_t;                  EO_VERIFYsizeof(eOas_psc_data_t, 2)
+
+typedef struct
+{
+    uint8_t                         datarate;       /**< it specifies the acquisition rate in ms  */
+    uint8_t                         filler[3];
+} eOas_psc_config_t;                EO_VERIFYsizeof(eOas_psc_config_t, 4)
+
+
+enum { eOas_psc_data_maxnumber = 6 };
+typedef struct
+{   // 4+(2*6) = 16
+    eOarray_head_t                  head;
+    eOas_psc_data_t                 data[eOas_psc_data_maxnumber];
+} eOas_psc_arrayof_data_t;          EO_VERIFYsizeof(eOas_psc_arrayof_data_t, 16)
+
+
+typedef struct
+{
+    eOas_psc_arrayof_data_t         arrayofdata;   /**< it is the most recent reading of the inertial sensors which are related to this entity */
+} eOas_psc_status_t;                EO_VERIFYsizeof(eOas_psc_status_t, 16)
+
+
+typedef struct
+{
+    uint8_t                         enable;         /**< use 0 or 1*/
+    uint8_t                         filler[3];
+} eOas_psc_commands_t;              EO_VERIFYsizeof(eOas_psc_commands_t, 4)
+
+typedef struct                      // size is: 4+16+4 = 24
+{
+    eOas_psc_config_t               config;
+    eOas_psc_status_t               status;
+    eOas_psc_commands_t             cmmnds;
+} eOas_psc_t;                       EO_VERIFYsizeof(eOas_psc_t, 24)
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

@@ -312,6 +312,38 @@ EO_weak extern void eoprot_fun_INIT_as_inertial3_cmmnds_enable(const EOnv* nv) {
 EO_weak extern void eoprot_fun_UPDT_as_inertial3_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif    
 
+    
+// -- psc 
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_psc_wholeitem)
+EO_weak extern void eoprot_fun_INIT_as_psc_wholeitem(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_psc_wholeitem)
+EO_weak extern void eoprot_fun_UPDT_as_psc_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_psc_config)
+EO_weak extern void eoprot_fun_INIT_as_psc_config(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_psc_config)
+EO_weak extern void eoprot_fun_UPDT_as_psc_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_psc_status)
+EO_weak extern void eoprot_fun_INIT_as_psc_status(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_psc_status)
+EO_weak extern void eoprot_fun_UPDT_as_psc_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_psc_cmmnds_enable)
+EO_weak extern void eoprot_fun_INIT_as_psc_cmmnds_enable(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_psc_cmmnds_enable)
+EO_weak extern void eoprot_fun_UPDT_as_psc_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
+    
+
 #endif//!defined(EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME)
 
 // --------------------------------------------------------------------------------------------------------------------

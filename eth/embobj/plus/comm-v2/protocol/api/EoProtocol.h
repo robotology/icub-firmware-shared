@@ -213,12 +213,13 @@ typedef enum
     eoprot_entity_as_mais                   = eoas_entity_mais,         /**<  */            
     eoprot_entity_as_temperature            = eoas_entity_temperature,  /**<  */  
     eoprot_entity_as_inertial               = eoas_entity_inertial,     /**<  */   
-    eoprot_entity_as_inertial3              = eoas_entity_inertial3,     /**<  */   
+    eoprot_entity_as_inertial3              = eoas_entity_inertial3,    /**<  */  
+    eoprot_entity_as_psc                    = eoas_entity_psc,          /**<  */    
     eoprot_entity_sk_skin                   = eosk_entity_skin,         /**<  */
     eoprot_entity_none                      = EOK_uint08dummy
 } eOprot_entity_t;
 
-enum { eoprot_entities_numberof = 13 }; // it does not count the eoprot_entity_none.
+enum { eoprot_entities_numberof = 14 }; // it does not count the eoprot_entity_none.
 
 
 /** @typedef    typedef enum eOprot_index_t
@@ -269,11 +270,12 @@ typedef struct
 
 
 enum { eoprot_maxvalueof_entity = 6 }; // must be higher equal than the values inside eOprot_entity_t
+enum { eoprot_entities_maxnumberofsupported = eoprot_maxvalueof_entity+1 }; // it is used to shape data structures
 // it is what is enough to configure an endpoint
 typedef struct                     
 {
-    eOprotEndpoint_t    endpoint;                                       /*< the endpoint */
-    uint8_t             numberofentities[eoprot_maxvalueof_entity+1];   /*< the multiplicity of each entity in position of the entity */
+    eOprotEndpoint_t    endpoint;                                                   /*< the endpoint */
+    uint8_t             numberofentities[eoprot_entities_maxnumberofsupported];     /*< the multiplicity of each entity in position of the entity */
 } eOprot_EPcfg_t;
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------

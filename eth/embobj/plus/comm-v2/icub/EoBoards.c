@@ -186,6 +186,15 @@ static const eOmap_str_str_u08_t s_boards_map_of_portmaiss[] =
 };  EO_VERIFYsizeof(s_boards_map_of_portmaiss, (eobrd_portmaiss_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 
+static const eOmap_str_str_u08_t s_boards_map_of_portpscs[] =
+{
+    {"finger0", "eobrd_portpsc_finger0", eobrd_portpsc_finger0},
+    {"finger1", "eobrd_portpsc_finger1", eobrd_portpsc_finger1},
+    
+    {"none", "eobrd_portpsc_none", eobrd_portpsc_none},
+    {"unknown", "eobrd_portpsc_unknown", eobrd_portpsc_unknown}    
+};  EO_VERIFYsizeof(s_boards_map_of_portpscs, (eobrd_portpscs_numberof+2)*sizeof(eOmap_str_str_u08_t))
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -471,6 +480,33 @@ extern eObrd_portmais_t eoboards_string2portmais(const char * string, eObool_t u
     const uint8_t defvalue = eobrd_portmais_unknown;
     
     return((eObrd_portmais_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
+}
+
+
+extern const char * eoboards_portpsc2string(eObrd_portpsc_t portpsc, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portpscs;
+    const uint8_t size = eobrd_portpscs_numberof+2;
+    const uint8_t value = portpsc;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);   
+
+}
+
+
+extern eObrd_portpsc_t eoboards_string2portpsc(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portpscs;
+    const uint8_t size = eobrd_portpscs_numberof+2;
+    const uint8_t defvalue = eobrd_portpsc_unknown;
+    
+    return((eObrd_portpsc_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
 }
 
 

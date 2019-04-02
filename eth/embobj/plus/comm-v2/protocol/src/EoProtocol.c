@@ -57,6 +57,10 @@
 // - #define with internal scope
 // --------------------------------------------------------------------------------------------------------------------
 
+EO_VERIFYproposition(eoprot_check000, ((eoprot_entities_maxnumberofsupported) >= (eomn_entities_numberof)))
+EO_VERIFYproposition(eoprot_check001, ((eoprot_entities_maxnumberofsupported) >= (eomc_entities_numberof)))
+EO_VERIFYproposition(eoprot_check002, ((eoprot_entities_maxnumberofsupported) >= (eoas_entities_numberof)))
+EO_VERIFYproposition(eoprot_check003, ((eoprot_entities_maxnumberofsupported) >= (eosk_entities_numberof)))
 
 // --------------------------------------------------------------------------------------------------------------------
 // - typedef with internal scope
@@ -128,7 +132,7 @@ const eOprot_EPcfg_t eoprot_arrayof_stdEPcfg[eoprot_endpoints_numberof] =
     }, 
     {
         EO_INIT(.endpoint)          eoprot_endpoint_analogsensors,
-        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 0, 0}
+        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 1, 0}
     },
     {
         EO_INIT(.endpoint)          eoprot_endpoint_skin,
@@ -149,7 +153,7 @@ const eOprot_EPcfg_t eoprot_arrayof_maxEPcfg[eoprot_endpoints_numberof] =
     }, 
     {
         EO_INIT(.endpoint)          eoprot_endpoint_analogsensors,
-        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 0, 0}
+        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 1, 0}
     },
     {
         EO_INIT(.endpoint)          eoprot_endpoint_skin,
@@ -166,7 +170,7 @@ const eOprot_EPcfg_t eoprot_arrayof_maxEPcfgOthers[eoprot_endpoints_numberof-1] 
     }, 
     {
         EO_INIT(.endpoint)          eoprot_endpoint_analogsensors,
-        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 0, 0}
+        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 1, 0}
     },
     {
         EO_INIT(.endpoint)          eoprot_endpoint_skin,
@@ -326,7 +330,7 @@ extern eObool_t eoprot_EPcfg_isvalid(eOprot_EPcfg_t *cfgofep)
         return(eobool_false);
     }
     
-    if(max > eoprot_maxvalueof_entity+1)
+    if(max > eoprot_entities_maxnumberofsupported)
     {   // have too many entities in this endpoint, and my data structure dont manage them
         return(eobool_false);
     }

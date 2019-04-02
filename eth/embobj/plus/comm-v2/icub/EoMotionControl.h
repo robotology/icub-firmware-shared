@@ -1069,12 +1069,13 @@ typedef enum
     eomc_enc_spichainof2    = 7,  
     eomc_enc_spichainof3    = 8,    
     eomc_enc_amo            = 9, 
+    eomc_enc_psc            = 10,
     
     eomc_enc_none           = 0,
     eomc_enc_unknown        = 255    
 } eOmc_encoder_t;
 
-enum { eomc_encoders_numberof = 9 };
+enum { eomc_encoders_numberof = 10 };
 enum { eomc_encoders_maxnumberofcomponents = 3 };
 
 
@@ -1092,7 +1093,7 @@ enum { eomc_positions_numberof = 2 };
 typedef struct
 {
     uint8_t     type;           // use eOmc_encoder_t
-    uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t 
+    uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t or eObrd_portpsc_t
     uint8_t     pos  : 3;       // use eOmc_position_t
 } eOmc_encoder_descriptor_t;   EO_VERIFYsizeof(eOmc_encoder_descriptor_t, 2)    
 
@@ -1113,36 +1114,6 @@ typedef struct
 } eOmc_arrayof_4jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_4jomodescriptors_t, 24)
 
 
-typedef enum
-{
-    eomc_ctrlboard_DONTCARE                 = 16,
-    eomc_ctrlboard_NO_CONTROL               = 0,
-    eomc_ctrlboard_ANKLE                    = 1,  
-    eomc_ctrlboard_UPPERLEG                 = 2,  
-    eomc_ctrlboard_WAIST                    = 3,  
-    eomc_ctrlboard_SHOULDER                 = 4,  
-    // V3
-    eomc_ctrlboard_HEAD_neckpitch_neckroll  = 5,   
-    eomc_ctrlboard_HEAD_neckyaw_eyes        = 6, 
-    eomc_ctrlboard_FACE_eyelids_jaw         = 7, 
-    eomc_ctrlboard_4jointsNotCoupled        = 8, 
-    eomc_ctrlboard_HAND_thumb               = 9,  
-    eomc_ctrlboard_HAND_2                   = 10,
-    eomc_ctrlboard_FOREARM                  = 11, 
-    // CER
-    eomc_ctrlboard_CER_LOWER_ARM            = 12, 
-    eomc_ctrlboard_CER_HAND                 = 14, 
-    eomc_ctrlboard_CER_WAIST                = 15, 
-    eomc_ctrlboard_CER_UPPER_ARM            = 17, 
-    eomc_ctrlboard_CER_BASE                 = 21, 
-    eomc_ctrlboard_CER_NECK                 = 22, 
-    
-    eomc_ctrlboard_none                     = 254,
-    eomc_ctrlboard_unknown                  = 255 
-    
-} eOmc_ctrlboard_t; // this enum was defined as eOeomc_ctrlboard_t in EOmcController.h
-
-enum { eomc_ctrlboards_numberof = 19 };
 
 
 typedef enum
@@ -1159,12 +1130,48 @@ enum { eomc_pidoutputtypes_numberof = 3 };
 
 
 typedef enum
-{
-    eomc_jsetconstraint_none    = 0,
-    eomc_jsetconstraint_cerhand = 1,
-    eomc_jsetconstraint_trifid  = 2,
+{   // at most use eOmc_stopswitch_fifteen, as we must encode it inside a nibble.
+    eomc_stopswitch_one = 0,
+    eomc_stopswitch_two = 1,
+    eomc_stopswitch_three = 2,
+    eomc_stopswitch_four = 3,
+    eomc_stopswitch_five = 4,
+    eomc_stopswitch_six = 5,
+    eomc_stopswitch_seven = 6,
+    eomc_stopswitch_eight = 7,
+    eomc_stopswitch_nine = 8,
+    eomc_stopswitch_ten = 9,
+    eomc_stopswitch_eleven = 10,
+    eomc_stopswitch_twelve = 11,
+    eomc_stopswitch_thirteen = 12,
+    eomc_stopswitch_fourteen = 13,
+    eomc_stopswitch_fifteen = 14,
     
-    eomc_jsetconstraint_unknown   = 255
+    eomc_stopswitch_none = 15,
+} eOmc_stopswitch_t;
+
+enum { eomc_stopswitch_numberof = 15 };
+
+// it holds two eOmc_stopswitch_t values; one low and another high
+typedef uint8_t eomc_stopswitches_t;
+
+extern void eomc_stopswitch_set(eomc_stopswitches_t *value, const eOmc_stopswitch_t low, const eOmc_stopswitch_t high);
+extern eOmc_stopswitch_t eomc_stopswitch_getlow(const eomc_stopswitches_t value);
+extern eOmc_stopswitch_t eomc_stopswitch_gethigh(const eomc_stopswitches_t value);
+
+typedef struct
+{
+    eomc_stopswitches_t switches[4];
+} eOmc_4jomo_stopswitches_t;
+
+
+typedef enum
+{
+    eomc_jsetconstraint_none        = 0,
+    eomc_jsetconstraint_cerhand     = 1,
+    eomc_jsetconstraint_trifid      = 2,
+    
+    eomc_jsetconstraint_unknown     = 255
 } eOmc_jsetconstraint_t;
 
 
@@ -1277,8 +1284,6 @@ extern const char * eomc_position2string(eOmc_position_t position, eObool_t usec
 extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecompactstring);
 
 
-extern const char * eomc_controllerboard2string(eOmc_ctrlboard_t ctrlboard, eObool_t usecompactstring);
-extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring);
 
 
 extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t usecompactstring);
