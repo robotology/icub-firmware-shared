@@ -1113,7 +1113,36 @@ typedef struct
     eOmc_jomo_descriptor_t              data[4];
 } eOmc_arrayof_4jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_4jomodescriptors_t, 24)
 
+typedef enum
+{
+    eomc_ctrlboard_DONTCARE                 = 16,
+    eomc_ctrlboard_NO_CONTROL               = 0,
+    eomc_ctrlboard_ANKLE                    = 1,  
+    eomc_ctrlboard_UPPERLEG                 = 2,  
+    eomc_ctrlboard_WAIST                    = 3,  
+    eomc_ctrlboard_SHOULDER                 = 4,  
+    // V3
+    eomc_ctrlboard_HEAD_neckpitch_neckroll  = 5,   
+    eomc_ctrlboard_HEAD_neckyaw_eyes        = 6, 
+    eomc_ctrlboard_FACE_eyelids_jaw         = 7, 
+    eomc_ctrlboard_4jointsNotCoupled        = 8, 
+    eomc_ctrlboard_HAND_thumb               = 9,  
+    eomc_ctrlboard_HAND_2                   = 10,
+    eomc_ctrlboard_FOREARM                  = 11, 
+    // CER
+    eomc_ctrlboard_CER_LOWER_ARM            = 12, 
+    eomc_ctrlboard_CER_HAND                 = 14, 
+    eomc_ctrlboard_CER_WAIST                = 15, 
+    eomc_ctrlboard_CER_UPPER_ARM            = 17, 
+    eomc_ctrlboard_CER_BASE                 = 21, 
+    eomc_ctrlboard_CER_NECK                 = 22, 
+    
+    eomc_ctrlboard_none                     = 254,
+    eomc_ctrlboard_unknown                  = 255 
+    
+} eOmc_ctrlboard_t; // this enum was defined as eOeomc_ctrlboard_t in EOmcController.h
 
+enum { eomc_ctrlboards_numberof = 19 };
 
 
 typedef enum

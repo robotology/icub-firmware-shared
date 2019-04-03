@@ -107,7 +107,31 @@ static const eOmap_str_str_u08_t s_eomc_map_of_positions[] =
 };  EO_VERIFYsizeof(s_eomc_map_of_positions, (eomc_positions_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
-
+static const eOmap_str_str_u08_t s_eomc_map_of_ctrlboards[] =
+{    
+    {"DONTCARE", "eomc_ctrlboard_DONTCARE", eomc_ctrlboard_DONTCARE},
+    {"NO_CONTROL", "eomc_ctrlboard_NO_CONTROL", eomc_ctrlboard_NO_CONTROL},
+    {"ANKLE", "eomc_ctrlboard_ANKLE", eomc_ctrlboard_ANKLE},
+    {"UPPERLEG", "eomc_ctrlboard_UPPERLEG", eomc_ctrlboard_UPPERLEG},
+    {"WAIST", "eomc_ctrlboard_WAIST", eomc_ctrlboard_WAIST},
+    {"SHOULDER", "eomc_ctrlboard_SHOULDER", eomc_ctrlboard_SHOULDER},
+    {"HEAD_neckpitch_neckroll", "eomc_ctrlboard_HEAD_neckpitch_neckroll", eomc_ctrlboard_HEAD_neckpitch_neckroll},
+    {"HEAD_neckyaw_eyes", "eomc_ctrlboard_HEAD_neckyaw_eyes", eomc_ctrlboard_HEAD_neckyaw_eyes},
+    {"FACE_eyelids_jaw", "eomc_ctrlboard_FACE_eyelids_jaw", eomc_ctrlboard_FACE_eyelids_jaw},
+    {"4jointsNotCoupled", "eomc_ctrlboard_4jointsNotCoupled", eomc_ctrlboard_4jointsNotCoupled},
+    {"HAND_thumb", "eomc_ctrlboard_HAND_thumb", eomc_ctrlboard_HAND_thumb},
+    {"HAND_2", "eomc_ctrlboard_HAND_2", eomc_ctrlboard_HAND_2},
+    {"FOREARM", "eomc_ctrlboard_FOREARM", eomc_ctrlboard_FOREARM},
+    {"CER_LOWER_ARM", "eomc_ctrlboard_CER_LOWER_ARM", eomc_ctrlboard_CER_LOWER_ARM},
+    {"CER_HAND", "eomc_ctrlboard_CER_HAND", eomc_ctrlboard_CER_HAND},
+    {"CER_WAIST", "eomc_ctrlboard_CER_WAIST", eomc_ctrlboard_CER_WAIST},
+    {"CER_UPPER_ARM", "eomc_ctrlboard_CER_UPPER_ARM", eomc_ctrlboard_CER_UPPER_ARM},
+    {"CER_BASE", "eomc_ctrlboard_CER_BASE", eomc_ctrlboard_CER_BASE},
+    {"CER_NECK", "eomc_ctrlboard_CER_NECK", eomc_ctrlboard_CER_NECK},
+    
+    {"none", "eomc_ctrlboard_none", eomc_ctrlboard_none},
+    {"unknown", "eomc_ctrlboard_unknown", eomc_ctrlboard_unknown}
+};  EO_VERIFYsizeof(s_eomc_map_of_ctrlboards, (eomc_ctrlboards_numberof+2)*sizeof(eOmap_str_str_u08_t));
 
 
 static const eOmap_str_str_u08_t s_eomc_map_of_mc4broadcasts[] =
@@ -269,7 +293,30 @@ extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
     return(ret);
 }
 
+extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_ctrlboards;
+    const uint8_t size = eomc_ctrlboards_numberof+2;
+    const uint8_t defvalue = eomc_ctrlboard_unknown;
+    
+    return((eOmc_ctrlboard_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
 
+
+extern const char * eomc_controllerboard2string(eOmc_ctrlboard_t ctrlboard, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_ctrlboards;
+    const uint8_t size = eomc_ctrlboards_numberof+2;
+    const uint8_t value = ctrlboard;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);       
+}
 
 
 extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring)
