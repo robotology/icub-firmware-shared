@@ -1313,7 +1313,8 @@ extern const char * eomc_position2string(eOmc_position_t position, eObool_t usec
 extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecompactstring);
 
 
-
+extern const char * eomc_controllerboard2string(eOmc_ctrlboard_t ctrlboard, eObool_t usecompactstring);
+extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring);
 
 extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t usecompactstring);
 extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring);
