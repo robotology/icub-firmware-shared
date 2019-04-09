@@ -192,7 +192,7 @@ enum { eoprot_tags_mn_service_numberof = 3 };  // it MUST be equal to the number
 
 
 /** @typedef    typedef enum eOprot_rwm_mn_service_t
-    @brief      It contains the rw modes for all variables of the comm entity. There must be a one-to-one
+    @brief      It contains the rw modes for all variables of the service entity. There must be a one-to-one
                 correspondence to the values in eOprot_tag_mn_service_t.
  **/
 typedef enum
