@@ -105,9 +105,9 @@ extern "C" {
 #define ICUBCANPROTO_POL_SK_CMD__TACT_SETUP2                    0x4E    // obsolete
 #define ICUBCANPROTO_POL_SK_CMD__ACC_GYRO_SETUP                 0x4F    // used by mtb to config acc-gyro + its tx rate (mtb4 still supports it, but please use ICUBCANPROTO_POL_AS_CMD__IMU_CONFIG_SET)
 #define ICUBCANPROTO_POL_SK_CMD__SET_TRIANG_CFG                 0x50    // used to configure skin data in mtb/mtb4
-#define ICUBCANPROTO_POL_SK_CMD__POS_CONFIG_GET                 0x51    // used to configure position reading in the psc board
-#define ICUBCANPROTO_POL_SK_CMD__POS_CONFIG_SET                 0x52    // used to read back configuration of position reading in the psc board
-#define ICUBCANPROTO_POL_SK_CMD__POS_POS_TRANSMIT               0x53    // used to start/stop position reading in the psc board with a specified frequency
+#define ICUBCANPROTO_POL_AS_CMD__POS_CONFIG_GET                 0x51    // used to configure position reading in the psc board
+#define ICUBCANPROTO_POL_AS_CMD__POS_CONFIG_SET                 0x52    // used to read back configuration of position reading in the psc board
+#define ICUBCANPROTO_POL_AS_CMD__POS_TRANSMIT                   0x53    // used to start/stop position reading in the psc board with a specified frequency
 
 // HOLE: [0x54, ... , 0xFD]. there are 170 free values.
 
@@ -118,9 +118,6 @@ extern "C" {
 /***************************************************************************/
 // command messages of class ICUBCANPROTO_CLASS_PERIODIC_ANALOGSENSOR 
 /***************************************************************************/
-
-//#define ICUBCANPROTO_PER_AS_MSG__DIGITAL_GYROSCOPE              0x0     // NOT USED: placeholder for possible inertial gyros message status in class 3
-//#define ICUBCANPROTO_PER_AS_MSG__DIGITAL_ACCELEROMETER          0x1     // NOT USED: placeholder for possible inertial accel message status in class 3
 
 #define ICUBCANPROTO_PER_AS_MSG__USERDEF                        0x0     // used by a specific board / application for userdef purposes (e.g., debug). dont use in a final system
 #define ICUBCANPROTO_PER_AS_MSG__POS                            0x1     // used to broadcast position values in a general way. used by psc.
