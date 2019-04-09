@@ -171,10 +171,11 @@ typedef enum
     eoerror_value_SYS_canservices_board_wrongprotversion    = 54,
     eoerror_value_SYS_canservices_board_notfound            = 55,
     eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56,
-    eoerror_value_SYS_canservices_boards_lostcontact        = 57
+    eoerror_value_SYS_canservices_boards_lostcontact        = 57,
+    eoerror_value_SYS_canservices_boards_retrievedcontact   = 58
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 58 };
+enum { eoerror_value_SYS_numberof = 59 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
@@ -350,11 +351,23 @@ typedef enum
     eoerror_value_CFG_temperatures_failed_candiscovery   = 55,
     eoerror_value_CFG_temperatures_failed_generic        = 56,
     eoerror_value_CFG_temperatures_changed_requestedrate = 57,
-    eoerror_value_CFG_temperatures_using_onboard_config  = 58
+    eoerror_value_CFG_temperatures_using_onboard_config  = 58,
+    
+    eoerror_value_CFG_psc_ok                            = 59,
+    eoerror_value_CFG_psc_failed_candiscovery           = 60,
+    eoerror_value_CFG_psc_failed_verify_because_active  = 61,
+    eoerror_value_CFG_psc_not_verified_yet              = 62,
+    eoerror_value_CFG_psc_using_onboard_config          = 63,
+    eoerror_value_CFG_psc_changed_requestedrate         = 64,
+    
+    
+    eoerror_value_CFG_mc_mc2pluspsc_ok                  = 65,
+    eoerror_value_CFG_mc_mc2pluspsc_failed_encoders_verify = 66, 
+    eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs = 67
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 59 };
+enum { eoerror_value_CFG_numberof = 68 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
