@@ -432,6 +432,7 @@ typedef enum
     eomn_serv_category_skin             = 4,
     eomn_serv_category_inertials3       = 5,
     eomn_serv_category_temperatures     = 6,
+    eomn_serv_category_psc              = 7,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
@@ -503,7 +504,7 @@ typedef struct
 typedef struct
 {   // 5+3=8
     eObrd_version_t                     version;
-    eObrd_canlocation_t                 canloc[3];
+    eOas_psc_canLocationsInfo_t         boardInfo;
 } eOmn_serv_config_data_as_psc_t;       EO_VERIFYsizeof(eOmn_serv_config_data_as_psc_t, 8)
 
 typedef union

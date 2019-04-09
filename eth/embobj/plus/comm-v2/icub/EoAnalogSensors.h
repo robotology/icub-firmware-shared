@@ -558,9 +558,14 @@ typedef struct                      // size is: 8+68+4 = 80
 
 
 // -- the definition of a psc sensor service
+
+enum { eOas_psc_boards_maxnumber = 3 };
+typedef struct
+{
+    eObrd_canlocation_t                 canloc[eOas_psc_boards_maxnumber];
+} eOas_psc_canLocationsInfo_t;
+
 // a single psc sensor contains an angle expressed in deci-degrees 
-
-
 // this struct describes the data acquired by a single psc sensor
 typedef struct
 {
