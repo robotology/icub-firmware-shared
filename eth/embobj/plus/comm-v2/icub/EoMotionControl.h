@@ -215,6 +215,7 @@ typedef enum
     eomc_calibration_type10_abs_hard_stop           = 10,   // cannot change 
     eomc_calibration_type11_cer_hands               = 11,   // cannot change
     eomc_calibration_type12_absolute_sensor         = 12,   // cannot change  //substitutes type 3
+    eomc_calibration_type13_cer_hands_2             = 13,   // cannot change
     eomc_calibration_typeMixed                      = 254,  // cannot change 
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
@@ -429,6 +430,17 @@ typedef struct
     int32_t                     calibrationDelta;
 } eOmc_calibrator_params_type12_absolute_sensor_t;
 
+/** @typedef    typedef struct eOmc_calibrator_params_type13_cer_hands_2_t
+    @brief      contains the params in case of eOmc_calibrator_params_type13_cer_hands_2
+ **/
+typedef struct  
+{
+    int32_t                     rawValueAtZeroPos0;
+    int32_t                     rawValueAtZeroPos1;
+    int32_t                     rawValueAtZeroPos2;
+    int32_t                     rawValueAtZeroPos3;
+} eOmc_calibrator_params_type13_cer_hands_2_t;
+
 // -- all the possible data holding structures used in a joint
 
 
@@ -529,7 +541,8 @@ typedef struct                  // size is 1+3+4*4 = 20
         eOmc_calibrator_params_type9_tripod_external_hard_stop_t    type9;
         eOmc_calibrator_params_type10_abs_hard_stop_t               type10;
         eOmc_calibrator_params_type11_cer_hands_t                   type11; 
-        eOmc_calibrator_params_type12_absolute_sensor_t                   type12;        
+        eOmc_calibrator_params_type12_absolute_sensor_t             type12;
+        eOmc_calibrator_params_type13_cer_hands_2_t                 type13;
     } params;                                                       /**< the params of the calibrator */   
 } eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 28)
 
@@ -1076,7 +1089,7 @@ typedef enum
 } eOmc_encoder_t;
 
 enum { eomc_encoders_numberof = 10 };
-enum { eomc_encoders_maxnumberofcomponents = 3 };
+enum { eomc_encoders_maxnumberofcomponents = 4 };
 
 
 typedef enum
@@ -1199,12 +1212,13 @@ typedef enum
     eomc_jsetconstraint_none        = 0,
     eomc_jsetconstraint_cerhand     = 1,
     eomc_jsetconstraint_trifid      = 2,
+    eomc_jsetconstraint_cerhand2    = 3,
     
     eomc_jsetconstraint_unknown     = 255
 } eOmc_jsetconstraint_t;
 
 
-enum { eomc_jsetconstraints_numberof = 3 };
+enum { eomc_jsetconstraints_numberof = 4 };
 
 
 // size is 

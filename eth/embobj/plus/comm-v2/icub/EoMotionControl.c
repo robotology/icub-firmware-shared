@@ -163,6 +163,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
     {"none", "eomc_jsetconstraint_none", eomc_jsetconstraint_none},
     {"cerhand", "eomc_jsetconstraint_cerhand", eomc_jsetconstraint_cerhand},
     {"trifid", "eomc_jsetconstraint_trifid", eomc_jsetconstraint_trifid},
+    {"trifid", "eomc_jsetconstraint_cerhand2", eomc_jsetconstraint_cerhand2},
 
     {"unknown", "eomc_jsetconstraint_unknown", eomc_jsetconstraint_unknown}
 };  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof + 1)*sizeof(eOmap_str_str_u08_t));
@@ -284,6 +285,11 @@ extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
             ret = 3;
         } break;
 
+        case eomc_enc_psc:
+        {
+            ret = 4;
+        } break;
+        
         default:
         {
             ret = 0;
