@@ -215,6 +215,7 @@ typedef enum
     eomc_calibration_type10_abs_hard_stop           = 10,   // cannot change 
     eomc_calibration_type11_cer_hands               = 11,   // cannot change
     eomc_calibration_type12_absolute_sensor         = 12,   // cannot change  //substitutes type 3
+    eomc_calibration_type13_cer_hands_2             = 13,   // cannot change
     eomc_calibration_typeMixed                      = 254,  // cannot change 
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
@@ -429,6 +430,17 @@ typedef struct
     int32_t                     calibrationDelta;
 } eOmc_calibrator_params_type12_absolute_sensor_t;
 
+/** @typedef    typedef struct eOmc_calibrator_params_type13_cer_hands_2_t
+    @brief      contains the params in case of eOmc_calibrator_params_type13_cer_hands_2
+ **/
+typedef struct  
+{
+    int32_t                     rawValueAtZeroPos0;
+    int32_t                     rawValueAtZeroPos1;
+    int32_t                     rawValueAtZeroPos2;
+    int32_t                     rawValueAtZeroPos3;
+} eOmc_calibrator_params_type13_cer_hands_2_t;
+
 // -- all the possible data holding structures used in a joint
 
 
@@ -529,7 +541,8 @@ typedef struct                  // size is 1+3+4*4 = 20
         eOmc_calibrator_params_type9_tripod_external_hard_stop_t    type9;
         eOmc_calibrator_params_type10_abs_hard_stop_t               type10;
         eOmc_calibrator_params_type11_cer_hands_t                   type11; 
-        eOmc_calibrator_params_type12_absolute_sensor_t                   type12;        
+        eOmc_calibrator_params_type12_absolute_sensor_t             type12;
+        eOmc_calibrator_params_type13_cer_hands_2_t                 type13;
     } params;                                                       /**< the params of the calibrator */   
 } eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 28)
 
@@ -1069,13 +1082,14 @@ typedef enum
     eomc_enc_spichainof2    = 7,  
     eomc_enc_spichainof3    = 8,    
     eomc_enc_amo            = 9, 
+    eomc_enc_psc            = 10,
     
     eomc_enc_none           = 0,
     eomc_enc_unknown        = 255    
 } eOmc_encoder_t;
 
-enum { eomc_encoders_numberof = 9 };
-enum { eomc_encoders_maxnumberofcomponents = 3 };
+enum { eomc_encoders_numberof = 10 };
+enum { eomc_encoders_maxnumberofcomponents = 4 };
 
 
 typedef enum
@@ -1092,7 +1106,7 @@ enum { eomc_positions_numberof = 2 };
 typedef struct
 {
     uint8_t     type;           // use eOmc_encoder_t
-    uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t 
+    uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t or eObrd_portpsc_t
     uint8_t     pos  : 3;       // use eOmc_position_t
 } eOmc_encoder_descriptor_t;   EO_VERIFYsizeof(eOmc_encoder_descriptor_t, 2)    
 
@@ -1111,7 +1125,6 @@ typedef struct
     eOarray_head_t                      head;
     eOmc_jomo_descriptor_t              data[4];
 } eOmc_arrayof_4jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_4jomodescriptors_t, 24)
-
 
 typedef enum
 {
@@ -1159,16 +1172,53 @@ enum { eomc_pidoutputtypes_numberof = 3 };
 
 
 typedef enum
-{
-    eomc_jsetconstraint_none    = 0,
-    eomc_jsetconstraint_cerhand = 1,
-    eomc_jsetconstraint_trifid  = 2,
+{   // at most use eOmc_stopswitch_fifteen, as we must encode it inside a nibble.
+    eomc_stopswitch_one = 0,
+    eomc_stopswitch_two = 1,
+    eomc_stopswitch_three = 2,
+    eomc_stopswitch_four = 3,
+    eomc_stopswitch_five = 4,
+    eomc_stopswitch_six = 5,
+    eomc_stopswitch_seven = 6,
+    eomc_stopswitch_eight = 7,
+    eomc_stopswitch_nine = 8,
+    eomc_stopswitch_ten = 9,
+    eomc_stopswitch_eleven = 10,
+    eomc_stopswitch_twelve = 11,
+    eomc_stopswitch_thirteen = 12,
+    eomc_stopswitch_fourteen = 13,
+    eomc_stopswitch_fifteen = 14,
     
-    eomc_jsetconstraint_unknown   = 255
+    eomc_stopswitch_none = 15,
+} eOmc_stopswitch_t;
+
+enum { eomc_stopswitch_numberof = 15 };
+
+// it holds two eOmc_stopswitch_t values; one low and another high
+typedef uint8_t eomc_stopswitches_t;
+
+extern void eomc_stopswitch_set(eomc_stopswitches_t *value, const eOmc_stopswitch_t low, const eOmc_stopswitch_t high);
+extern eOmc_stopswitch_t eomc_stopswitch_getlow(const eomc_stopswitches_t value);
+extern eOmc_stopswitch_t eomc_stopswitch_gethigh(const eomc_stopswitches_t value);
+
+typedef struct
+{
+    eomc_stopswitches_t switches[4];
+} eOmc_4jomo_stopswitches_t;
+
+
+typedef enum
+{
+    eomc_jsetconstraint_none        = 0,
+    eomc_jsetconstraint_cerhand     = 1,
+    eomc_jsetconstraint_trifid      = 2,
+    eomc_jsetconstraint_cerhand2    = 3,
+    
+    eomc_jsetconstraint_unknown     = 255
 } eOmc_jsetconstraint_t;
 
 
-enum { eomc_jsetconstraints_numberof = 3 };
+enum { eomc_jsetconstraints_numberof = 4 };
 
 
 // size is 
@@ -1279,7 +1329,6 @@ extern eOmc_position_t eomc_string2position(const char * string, eObool_t usecom
 
 extern const char * eomc_controllerboard2string(eOmc_ctrlboard_t ctrlboard, eObool_t usecompactstring);
 extern eOmc_ctrlboard_t eomc_string2controllerboard(const char * string, eObool_t usecompactstring);
-
 
 extern const char * eomc_mc4broadcast2string(eOmc_mc4broadcast_t mode, eObool_t usecompactstring);
 extern eOmc_mc4broadcast_t eomc_string2mc4broadcast(const char * string, eObool_t usecompactstring);

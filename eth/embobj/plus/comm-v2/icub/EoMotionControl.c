@@ -90,6 +90,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_encoders[] =
     {"spichainof2", "eomc_enc_spichainof2", eomc_enc_spichainof2},
     {"spichainof3", "eomc_enc_spichainof3", eomc_enc_spichainof3},    
     {"amo", "eomc_enc_amo", eomc_enc_amo},
+    {"psc", "eomc_enc_psc", eomc_enc_psc},
 
     {"none", "eomc_enc_none", eomc_enc_none},
     {"unknown", "eomc_enc_unknown", eomc_enc_unknown}
@@ -162,6 +163,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
     {"none", "eomc_jsetconstraint_none", eomc_jsetconstraint_none},
     {"cerhand", "eomc_jsetconstraint_cerhand", eomc_jsetconstraint_cerhand},
     {"trifid", "eomc_jsetconstraint_trifid", eomc_jsetconstraint_trifid},
+    {"cerhand2", "eomc_jsetconstraint_cerhand2", eomc_jsetconstraint_cerhand2},
 
     {"unknown", "eomc_jsetconstraint_unknown", eomc_jsetconstraint_unknown}
 };  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof + 1)*sizeof(eOmap_str_str_u08_t));
@@ -283,6 +285,11 @@ extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
             ret = 3;
         } break;
 
+        case eomc_enc_psc:
+        {
+            ret = 4;
+        } break;
+        
         default:
         {
             ret = 0;
@@ -396,6 +403,24 @@ extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstra
 
 
 
+
+extern void eomc_stopswitch_set(eomc_stopswitches_t *value, const eOmc_stopswitch_t low, const eOmc_stopswitch_t high)
+{
+    if(NULL != value)
+    {
+        *value = (low & 0xf) | ((high & 0xf) << 4);
+    }
+}
+
+extern eOmc_stopswitch_t eomc_stopswitch_getlow(const eomc_stopswitches_t value)
+{
+    return (eOmc_stopswitch_t)(value & 0xf);
+}
+
+extern eOmc_stopswitch_t eomc_stopswitch_gethigh(const eomc_stopswitches_t value)
+{
+    return (eOmc_stopswitch_t)((value >> 4) & 0xf);
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
