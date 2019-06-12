@@ -158,7 +158,8 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_board_wrongprotversion, "SYS: the board on the specified CAN bus / adr has incompatible fw protocol version. In par16 there is required prot, in par64 there is detected type, fw and prot version."},
     {eoerror_value_SYS_canservices_board_notfound, "SYS: the board on the specified CAN bus / adr was not found during the discovery phase. In par16 there is the board type"},
     {eoerror_value_SYS_transceiver_rxinvalidframe_error, "SYS: the board has detected an invalid ropframe in reception."},
-    {eoerror_value_SYS_canservices_boards_lostcontact, "SYS: a service has detected that some CAN boards are not broacasting anymore. In par16 the type of boards, in par64 LS 32 bits the bit mask of lost board (CAN1 in MS 16 bits and CAN2 in LS 16 bits)"}
+    {eoerror_value_SYS_canservices_boards_lostcontact, "SYS: a service has detected that some CAN boards are not broacasting anymore. In par16 the type of boards, in par64 LS 32 bits the bit mask of lost board (CAN1 in MS 16 bits and CAN2 in LS 16 bits)"},
+    {eoerror_value_SYS_canservices_boards_retrievedcontact, "SYS: a service has recovered some CAN boards that were not broacasting anymore. In par16 the type of boards)"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
@@ -294,7 +295,19 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_temperatures_failed_candiscovery, "CFG: EOtheTemperatures cannot be configured. can discovery fails. in p64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"},
     {eoerror_value_CFG_temperatures_failed_generic, "CFG: EOtheTemperatures cannot be configured. generic error. more details in p16 and p64 and in source code"},
     {eoerror_value_CFG_temperatures_changed_requestedrate, "CFG: EOtheTemperatures has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
-    {eoerror_value_CFG_temperatures_using_onboard_config, "CFG: EOtheTemperatures service is using the local default configuration based on its IP address."}
+    {eoerror_value_CFG_temperatures_using_onboard_config, "CFG: EOtheTemperatures service is using the local default configuration based on its IP address."},
+    
+    {eoerror_value_CFG_psc_ok, "CFG: EOthePSC can be correctly configured. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_psc_failed_candiscovery, "CFG: EOthePSC cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_psc_failed_verify_because_active, "CFG: EOthePSC cannot be configured. it was already activated with different configuration."},
+    {eoerror_value_CFG_psc_not_verified_yet, "CFG: EOthePSC service was not verified yet, thus it cannot start."},  
+    {eoerror_value_CFG_psc_using_onboard_config, "CFG: EOthePSC service is using the local default configuration based on its IP address."},    
+    {eoerror_value_CFG_psc_changed_requestedrate, "CFG: EOthePSC has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+    
+    {eoerror_value_CFG_mc_mc2pluspsc_ok, "CFG: EOtheMotionController can correctly configure mc2pluspsc-based motion. more info will follow"},
+    {eoerror_value_CFG_mc_mc2pluspsc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc2pluspsc. see other messages for more details"},
+    {eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs, "CFG: EOtheMotionController cannot be configured. verification of pscs for mc2pluspsc fails. see other messages for more details"}
+    
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 

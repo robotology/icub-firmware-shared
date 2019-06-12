@@ -105,41 +105,6 @@ typedef struct              // size is 4+24*10 = 244
     uint8_t                 data[eosk_capacity_arrayof_skincandata*sizeof(eOsk_candata_t)];      
 } EOarray_of_skincandata_t; EO_VERIFYsizeof(EOarray_of_skincandata_t, 244)
 
-//typedef struct              // size is 4+10*16+0 = 164
-//{
-//    eOarray_head_t          head;
-//    uint8_t                 data[10*sizeof(eOutil_canframe_t)];
-//} EOarray_of_10canframes;   //EO_VERIFYsizeof(EOarray_of_10canframes, 164)
-
-
-//typedef struct              // size is 4+24*16+0 = 388
-//{
-//    eOarray_head_t          head;
-//    uint8_t                 data[24*sizeof(eOutil_canframe_t)];
-//} EOarray_of_24canframes;   //EO_VERIFYsizeof(EOarray_of_24canframes, 388)
-
-
-///** @typedef    typedef struct eOsk_array_data_t
-//    @brief      eOsk_array_data_t contains up to 10 can frames as received by hal placed in an EOarray object
-//    @warning    This struct must be of fixed size and multiple of 4.
-// **/
-//typedef struct                  // size is: 164+4+0 = 168 
-//{
-//    EOarray_of_10canframes  array;
-//    uint8_t                 filler04[4];
-//} eOsk_array_data_t;        //EO_VERIFYsizeof(eOsk_array_data_t, 168)
-
-
-///** @typedef    typedef struct eOsk_array_largedata_t
-//    @brief      eOsk_array_largedata_t contains up to 24 can frames as received by hal placed in an EOarray object
-//    @warning    This struct must be of fixed size and multiple of 8.
-// **/
-//typedef struct                  // size is: 388+4+0 = 392 
-//{
-//    EOarray_of_24canframes  array;
-//    uint8_t                 filler04[4];
-//} eOsk_array_largedata_t;   //EO_VERIFYsizeof(eOsk_array_largedata_t, 392)
-
 
 // -- the definition of a skin entity 
 
@@ -182,19 +147,17 @@ typedef struct
 
 typedef struct                      
 {
-    uint8_t                     boardaddr;
-    uint8_t                     idstart;
-    uint8_t                     idend;
-    uint8_t                     filler01;
+    uint16_t                    candestination[2];  // if = {0xffff, 0xffff} the cfg is sent to all boards in the entity. else to those sin the bitmap, even if not in the entity         
+    uint8_t                     idstart;            // first triangle
+    uint8_t                     idend;              // last triangle
+    uint8_t                     filler[6];
     eOsk_triangle_config_t      cfg;
-} eOsk_cmd_trianglesCfg_t;      EO_VERIFYsizeof(eOsk_cmd_trianglesCfg_t, 8)
+} eOsk_cmd_trianglesCfg_t;      EO_VERIFYsizeof(eOsk_cmd_trianglesCfg_t, 16)
 
 
 typedef struct                      
 {
-    uint8_t                     addrstart;
-    uint8_t                     addrend;
-    uint8_t                     filler[2];
+    uint16_t                    candestination[2];  // if = {0xffff, 0xffff} the cfg is sent to all boards in the entity. else to those sin the bitmap, even if not in the entity
     eOsk_board_config_t         cfg;
 } eOsk_cmd_boardsCfg_t;         EO_VERIFYsizeof(eOsk_cmd_boardsCfg_t, 8)
 
@@ -202,7 +165,7 @@ typedef struct
 {
     eOsk_cmd_boardsCfg_t        boardscfg;
     eOsk_cmd_trianglesCfg_t     trianglescfg;
-} eOsk_command_t;               EO_VERIFYsizeof(eOsk_command_t, 16)
+} eOsk_command_t;               EO_VERIFYsizeof(eOsk_command_t, 24)
 
 
 typedef struct                  // size is: 124+4+0 = 128  or 94+2 = 96                  
@@ -212,12 +175,12 @@ typedef struct                  // size is: 124+4+0 = 128  or 94+2 = 96
 } eOsk_status_t;                EO_VERIFYsizeof(eOsk_status_t, 248)
 
 
-typedef struct                  // size is: 8+248+16 = 272 
+typedef struct                  // size is: 8+248+24 = 272 
 {
     eOsk_config_t               config; 
     eOsk_status_t               status;
     eOsk_command_t              cmmnds;    
-} eOsk_skin_t;                  EO_VERIFYsizeof(eOsk_skin_t, 272)
+} eOsk_skin_t;                  EO_VERIFYsizeof(eOsk_skin_t, 280)
 
 
 

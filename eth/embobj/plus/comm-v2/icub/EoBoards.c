@@ -84,7 +84,11 @@ static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) |
                                                 (0x1LL << eobrd_6sg) |
                                                 (0x1LL << eobrd_jog) |
                                                 (0x1LL << eobrd_mtb4) |
-                                                (0x1LL << eobrd_strain2);
+                                                (0x1LL << eobrd_strain2) |
+                                                (0x1LL << eobrd_rfe) |
+                                                (0x1LL << eobrd_sg3) |
+                                                (0x1LL << eobrd_psc) |
+                                                (0x1LL << eobrd_mtb4w);
        
    
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
@@ -107,6 +111,10 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"jog", "eobrd_jog", eobrd_jog},
     {"mtb4", "eobrd_mtb4", eobrd_mtb4},
     {"strain2", "eobrd_strain2", eobrd_strain2},
+    {"rfe", "eobrd_rfe", eobrd_rfe},
+    {"sg3", "eobrd_sg3", eobrd_sg3},
+    {"psc", "eobrd_psc", eobrd_psc},
+    {"mtb4w", "eobrd_mtb4w", eobrd_mtb4w},
     
     {"none", "eobrd_none", eobrd_none},
     {"unknown", "eobrd_unknown", eobrd_unknown}
@@ -177,6 +185,15 @@ static const eOmap_str_str_u08_t s_boards_map_of_portmaiss[] =
     {"unknown", "eobrd_portmais_unknown", eobrd_portmais_unknown}    
 };  EO_VERIFYsizeof(s_boards_map_of_portmaiss, (eobrd_portmaiss_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
+
+static const eOmap_str_str_u08_t s_boards_map_of_portpscs[] =
+{
+    {"finger0", "eobrd_portpsc_finger0", eobrd_portpsc_finger0},
+    {"finger1", "eobrd_portpsc_finger1", eobrd_portpsc_finger1},
+    
+    {"none", "eobrd_portpsc_none", eobrd_portpsc_none},
+    {"unknown", "eobrd_portpsc_unknown", eobrd_portpsc_unknown}    
+};  EO_VERIFYsizeof(s_boards_map_of_portpscs, (eobrd_portpscs_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -463,6 +480,33 @@ extern eObrd_portmais_t eoboards_string2portmais(const char * string, eObool_t u
     const uint8_t defvalue = eobrd_portmais_unknown;
     
     return((eObrd_portmais_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
+}
+
+
+extern const char * eoboards_portpsc2string(eObrd_portpsc_t portpsc, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portpscs;
+    const uint8_t size = eobrd_portpscs_numberof+2;
+    const uint8_t value = portpsc;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);   
+
+}
+
+
+extern eObrd_portpsc_t eoboards_string2portpsc(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_portpscs;
+    const uint8_t size = eobrd_portpscs_numberof+2;
+    const uint8_t defvalue = eobrd_portpsc_unknown;
+    
+    return((eObrd_portpsc_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
 }
 
 

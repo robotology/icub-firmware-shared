@@ -69,13 +69,17 @@ typedef enum
     eobrd_cantype_6sg               = ICUBCANPROTO_BOARDTYPE__6SG,      // 9, not used
     eobrd_cantype_jog               = ICUBCANPROTO_BOARDTYPE__JOG,      // 10, not used 
     eobrd_cantype_mtb4              = ICUBCANPROTO_BOARDTYPE__MTB4,     // 11 
-    eobrd_cantype_strain2           = ICUBCANPROTO_BOARDTYPE__STRAIN2,  // 12     
-   
+    eobrd_cantype_strain2           = ICUBCANPROTO_BOARDTYPE__STRAIN2,  // 12  
+    eobrd_cantype_rfe               = ICUBCANPROTO_BOARDTYPE__RFE,      // 13 (rfe = robot face expression)    
+    eobrd_cantype_sg3               = ICUBCANPROTO_BOARDTYPE__SG3,      // 14 (sg3 = 3 strain gauges)
+    eobrd_cantype_psc               = ICUBCANPROTO_BOARDTYPE__PSC,      // 15 (psc = proximal sensor collector)
+    eobrd_cantype_mtb4w             = ICUBCANPROTO_BOARDTYPE__MTB4W,    // 16 (mtb4 for waseda university)
+
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 13 };
+enum { eobrd_cantype_numberof = 17 };
 
 
 typedef enum
@@ -114,13 +118,17 @@ typedef enum
     eobrd_6sg                   = eobrd_cantype_6sg,        
     eobrd_jog                   = eobrd_cantype_jog,   
     eobrd_mtb4                  = eobrd_cantype_mtb4,
-    eobrd_strain2               = eobrd_cantype_strain2,    
-    
+    eobrd_strain2               = eobrd_cantype_strain2,  
+    eobrd_rfe                   = eobrd_cantype_rfe,
+    eobrd_sg3                   = eobrd_cantype_sg3,
+    eobrd_psc                   = eobrd_cantype_psc,
+    eobrd_mtb4w                 = eobrd_cantype_mtb4w,
+
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 16 };
+enum { eobrd_type_numberof = 20 };
 
 
 typedef struct                  
@@ -323,6 +331,18 @@ typedef enum
 } eObrd_portmais_t;
 
 enum { eobrd_portmaiss_numberof = 7 };
+
+
+typedef enum
+{
+    eobrd_portpsc_finger0           = 0,
+    eobrd_portpsc_finger1           = 1,
+
+    eobrd_portpsc_none              = 31,    // as ... eobrd_port_none
+    eobrd_portpsc_unknown           = 30     // as ... eobrd_port_unknown
+} eObrd_portpsc_t;
+
+enum { eobrd_portpscs_numberof = 2 };
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -360,8 +380,10 @@ extern eObrd_connector_t eoboards_port2connector(eObrd_port_t port, eObrd_type_t
 extern const char * eoboards_portmais2string(eObrd_portmais_t portmais, eObool_t usecompactstring);
 extern eObrd_portmais_t eoboards_string2portmais(const char * string, eObool_t usecompactstring);
 
-    
+extern const char * eoboards_portpsc2string(eObrd_portpsc_t portpsc, eObool_t usecompactstring);
+extern eObrd_portpsc_t eoboards_string2portpsc(const char * string, eObool_t usecompactstring);
 
+    
 /** @}            
     end of group eo_cevcwervcrev5555  
  **/

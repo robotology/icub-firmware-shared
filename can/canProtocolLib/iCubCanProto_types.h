@@ -70,6 +70,10 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__JOG     10
 #define ICUBCANPROTO_BOARDTYPE__MTB4    11
 #define ICUBCANPROTO_BOARDTYPE__STRAIN2 12
+#define ICUBCANPROTO_BOARDTYPE__RFE     13
+#define ICUBCANPROTO_BOARDTYPE__SG3     14
+#define ICUBCANPROTO_BOARDTYPE__PSC     15
+#define ICUBCANPROTO_BOARDTYPE__MTB4W   16
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
 
 // skin types
@@ -99,6 +103,10 @@ typedef enum
     icubCanProto_boardType__jog     = ICUBCANPROTO_BOARDTYPE__JOG,
     icubCanProto_boardType__mtb4    = ICUBCANPROTO_BOARDTYPE__MTB4,
     icubCanProto_boardType__strain2 = ICUBCANPROTO_BOARDTYPE__STRAIN2,
+    icubCanProto_boardType__rfe     = ICUBCANPROTO_BOARDTYPE__RFE,
+    icubCanProto_boardType__sg3     = ICUBCANPROTO_BOARDTYPE__SG3,
+    icubCanProto_boardType__psc     = ICUBCANPROTO_BOARDTYPE__PSC,
+    icubCanProto_boardType__mtb4w   = ICUBCANPROTO_BOARDTYPE__MTB4W,
     icubCanProto_boardType__unknown = ICUBCANPROTO_BOARDTYPE__UNKNOWN
 } icubCanProto_boardType_t;
 
@@ -576,6 +584,70 @@ typedef struct
 {
     uint8_t                     periodsec;         // period in seconds. if 0 we stop
 } icubCanProto_thermo_transmit_t;
+
+
+
+// data structures for ICUBCANPROTO_POL_AS_CMD__POS_CONFIG. See the document TSD-ICUBUNIT-canprotocol-sensorboards for explanations
+
+typedef enum 
+{ 
+    icubCanProto_pos_decideg    = 0,    // it is an angle expressed in 0.1 degrees and contained inside a int16_t 
+    icubCanProto_pos_unkwown    = 255 
+} icubCanProto_pos_sensor_t;
+
+typedef enum 
+{ 
+    icubCanProto_pos_rot_none       = 0, 
+    icubCanProto_pos_rot_plus180    = 1, 
+    icubCanProto_pos_rot_plus090    = 2,
+    icubCanProto_pos_rot_minus090   = 3
+} icubCanProto_pos_rot_t;
+
+typedef struct
+{   // three bytes long. we have exactly two icubCanProto_decideg_setting_t inside a POS_CONFIG
+    uint8_t                     enabled : 1;            // if 0 the board does not use this sensor          
+    uint8_t                     invertdirection : 1;    // if 1 the board applies a minus sign to the measure
+    uint8_t                     rotation : 2;           // use icubCanProto_pos_rot_t to apply a rotation of the angle 
+    uint8_t                     label : 4;              // a label used to identify the measure amongst many
+    int16_t                     zero;                   // the zero reference expressed in decidegrees        
+} icubCanProto_decideg_setting_t;
+
+typedef union
+{
+    icubCanProto_decideg_setting_t  decideg[2];
+    uint8_t                         unknown[6];
+} icubCanProto_pos_setting_t;
+
+typedef struct
+{   
+    icubCanProto_pos_sensor_t   type;               
+    icubCanProto_pos_setting_t  setting;
+} icubCanProto_POS_CONFIG_t;
+
+typedef struct
+{
+    uint8_t                     rate;         // period in ms. if 0 we stop
+} icubCanProto_POS_TRANSMIT_t;
+
+typedef struct
+{   // seven bytes long. 
+    uint8_t                     label : 4;
+    uint8_t                     numberof : 4;
+    int16_t                     values[2];
+    uint8_t                     dummy[2];   
+} icubCanProto_decideg_content_t;
+
+typedef union
+{
+    icubCanProto_decideg_content_t  decideg;
+    uint8_t                         unknown[6];
+} icubCanProto_pos_content_t;
+
+typedef struct
+{
+    icubCanProto_pos_sensor_t   type;
+    icubCanProto_pos_content_t  content;
+} icubCanProto_POS_MEASURE_t;
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
