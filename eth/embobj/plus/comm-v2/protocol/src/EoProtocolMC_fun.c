@@ -149,6 +149,20 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_config_pidtorque(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mc_joint_config_pidtorque(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_pidcurrent)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_pidcurrent(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_pidcurrent)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_pidcurrent(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+    
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_motor_config_pidspeed)
+EO_weak extern void eoprot_fun_INIT_mc_motor_config_pidspeed(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_motor_config_pidspeed)
+EO_weak extern void eoprot_fun_UPDT_mc_motor_config_pidspeed(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif
+    
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_userlimits)
 EO_weak extern void eoprot_fun_INIT_mc_joint_config_userlimits(const EOnv* nv) {}
 #endif
