@@ -34,15 +34,18 @@
 
 #include "EOMDiagnosticRopMsg.h"
 #include "EOMDiagnosticUdpHeader.h"
-#include "EOMDiagnosticUdpHeader.h"
+#include "EOMDiagnosticUdpFooter.h"
 
 class EOMDiagnosticUdpMsg
 {
 	public:
+		constexpr static uint16_t bodyNumber_{10};
+		constexpr static uint16_t	udpPacketDataSize_{EOMDiagnosticUdpHeader::getSize()+EOMDiagnosticRopMsg::getSize()*bodyNumber_+EOMDiagnosticUdpFooter::getSize()};
+		
 		struct Info
 		{
 			EOMDiagnosticUdpHeader* header_;
-			std::array<EOMDiagnosticRopMsg,1> body_;
+			std::array<EOMDiagnosticRopMsg,bodyNumber_> body_;
 			EOMDiagnosticUdpHeader* footer_;
 		};
 		
