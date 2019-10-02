@@ -30,6 +30,8 @@
 #include "EoCommon.h"
 
 #include <limits>
+#include <cstring>
+#include <iostream>
 
 class EOMDiagnosticUdpHeader
 {
@@ -42,22 +44,28 @@ class EOMDiagnosticUdpHeader
 			uint64_t sequenceNum_{0};
 			uint64_t ageOfFrame_{0};
 		};EO_VERIFYsizeof(Info, 24)
-		
+	
 		EOMDiagnosticUdpHeader(const Info& data):data_(data)
 		{
 		};
+
+		EOMDiagnosticUdpHeader(const std::array<uint8_t,sizeof(Info)>& data)
+		{
+			std::memcpy(&data_,data.data(),sizeof(Info));
+		}
+
 		EOMDiagnosticUdpHeader(){};
 			
 		uint8_t* data() const
 		{
 				return (uint8_t*)(&data_); 
 		}
-			
+
 		constexpr static uint16_t getSize()
 		{
 				return sizeof(Info);
 		}
-		
+
 		void updateHeader(uint16_t sizeOfBody,uint16_t numberOfRops,uint64_t ageOfFrame)
 		{
 			increaseSequenceNumber();
@@ -66,10 +74,19 @@ class EOMDiagnosticUdpHeader
 			data_.ageOfFrame_=ageOfFrame;
 			data_.sequenceNum_=sequenceNumber_;
 		}
+
+		void dump() const
+		{
+			std::cout<<"startCode"<<data_.startCode_<<std::endl;
+			std::cout<<"ageOfFrame"<<data_.sizeOfBody_<<std::endl;
+			std::cout<<"numberOfRops"<<data_.numberOfRops_<<std::endl;
+			std::cout<<"sequenceNum"<<data_.sequenceNum_<<std::endl;
+			std::cout<<"ageOfFrame"<<data_.ageOfFrame_<<std::endl;
+		};
 		
 	private:
 		Info data_;	
-	  inline static uint64_t sequenceNumber_{0};
+	  	inline static uint64_t sequenceNumber_{0};
 		
 		void increaseSequenceNumber()
 		{

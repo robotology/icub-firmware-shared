@@ -25,6 +25,8 @@
 #include <array>
 #include <sstream>
 #include <iostream>
+#include <iterator>
+#include <cstring>
 
 
 /** 
