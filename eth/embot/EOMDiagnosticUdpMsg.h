@@ -58,7 +58,7 @@ class EOMDiagnosticUdpMsg
 		}
 		constexpr static uint16_t getSize()
 		{
-				return sizeof(Info);
+				return udpPacketDataSize_;
 		}			
 		
 	private:

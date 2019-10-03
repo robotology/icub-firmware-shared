@@ -61,6 +61,7 @@ class EOMDiagnosticRopMsg
 			
 		uint8_t* data() const;	
 		void rawdump() const;
+		void dump() const;
 
 	private:
 		Info data_;	
@@ -96,6 +97,21 @@ inline void EOMDiagnosticRopMsg::rawdump() const
 	std::copy(tmp->begin(),tmp->end(),std::ostream_iterator<int>(ss," "));
 	std::cout<<std::hex<<ss.str()<<std::endl;
 }
+
+inline void EOMDiagnosticRopMsg::dump() const
+	{
+		std::cout<<"------ROP"<<std::endl;
+		std::cout<<"code:"<<data_.code_<<" ";
+		std::cout<<"param1:"<<data_.param1_<<" ";
+		std::cout<<"param2:"<<data_.param2_<<" ";
+		std::cout<<"param3:"<<data_.param3_<<" ";
+		std::cout<<"param4:"<<data_.param4_<<" ";
+		std::cout<<"param5:"<<data_.param5_<<" ";		
+		std::cout<<"dummy1:"<<data_.dummy1_<<" ";		
+		std::cout<<"dummy2:"<<data_.dummy2_<<" ";		
+		std::cout<<"param6:"<<data_.param6_<<" ";		
+		std::cout<<std::endl;
+};
 
 #endif  // include-guard
 

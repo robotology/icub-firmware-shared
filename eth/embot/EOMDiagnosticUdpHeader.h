@@ -77,11 +77,12 @@ class EOMDiagnosticUdpHeader
 
 		void dump() const
 		{
-			std::cout<<"startCode"<<data_.startCode_<<std::endl;
-			std::cout<<"ageOfFrame"<<data_.sizeOfBody_<<std::endl;
-			std::cout<<"numberOfRops"<<data_.numberOfRops_<<std::endl;
-			std::cout<<"sequenceNum"<<data_.sequenceNum_<<std::endl;
-			std::cout<<"ageOfFrame"<<data_.ageOfFrame_<<std::endl;
+			std::cout<<"------HEADER"<<std::endl;
+			std::cout<<"ageOfFrame:"<<data_.sizeOfBody_<<" ";
+			std::cout<<"numberOfRops:"<<data_.numberOfRops_<<" ";
+			std::cout<<"sequenceNum:"<<data_.sequenceNum_<<" ";
+			std::cout<<"ageOfFrame:"<<data_.ageOfFrame_<<" ";
+			std::cout<<std::endl;
 		};
 		
 	private:

@@ -40,15 +40,25 @@ class EOMDiagnosticUdpFooter
 		
 		EOMDiagnosticUdpFooter(const Info& data):data_(data){};
 		EOMDiagnosticUdpFooter(){};
+		EOMDiagnosticUdpFooter(const std::array<uint8_t,sizeof(Info)>& data)
+		{
+			std::memcpy(&data_,data.data(),sizeof(Info));
+		}
 			
 		uint8_t* data() const
 		{
-				return (uint8_t*)(&data_); 
+			return (uint8_t*)(&data_); 
 		}
 		constexpr static uint16_t getSize()
 		{
-				return sizeof(Info);
-		}			
+			return sizeof(Info);
+		}		
+
+		void dump() const
+		{
+			std::cout<<"------FOOTER"<<std::endl;
+			std::cout<<"data:"<<data_.data_<<std::endl;	
+		};	
 		
 	private:
 		Info data_;	
