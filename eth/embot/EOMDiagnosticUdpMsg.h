@@ -38,8 +38,10 @@
 
 class EOMDiagnosticUdpMsg
 {
-	private:
+	public:
 		constexpr static uint16_t bodyNumber_{10};
+	
+	private:	
 		constexpr static uint16_t	udpPacketDataSize_{EOMDiagnosticUdpHeader::getSize()+EOMDiagnosticRopMsg::getSize()*bodyNumber_+EOMDiagnosticUdpFooter::getSize()};
 				
 		EOMDiagnosticUdpHeader header_;
