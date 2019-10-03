@@ -38,32 +38,94 @@
 
 class EOMDiagnosticUdpMsg
 {
-	public:
+	private:
 		constexpr static uint16_t bodyNumber_{10};
 		constexpr static uint16_t	udpPacketDataSize_{EOMDiagnosticUdpHeader::getSize()+EOMDiagnosticRopMsg::getSize()*bodyNumber_+EOMDiagnosticUdpFooter::getSize()};
+				
+		EOMDiagnosticUdpHeader header_;
+		EOMDiagnosticUdpFooter footer_;
+		std::array<EOMDiagnosticRopMsg,bodyNumber_> body_;
+		uint8_t currentBodySize_{0};
+	
+	public:	
+		std::array<uint8_t,udpPacketDataSize_>	udpPacketData_;
 		
-		struct Info
-		{
-			EOMDiagnosticUdpHeader* header_;
-			std::array<EOMDiagnosticRopMsg,bodyNumber_> body_;
-			EOMDiagnosticUdpHeader* footer_;
-		};
-		
-		EOMDiagnosticUdpMsg(const Info& data):data_(data){};
-		EOMDiagnosticUdpMsg(){};
-			
-		uint8_t* data() const
-		{
-				return (uint8_t*)(&data_); 
-		}
+		EOMDiagnosticUdpMsg(){};	
+
+		bool addRop(const EOMDiagnosticRopMsg& msg);
+		uint8_t* data() const;
+		bool createUdpPacketData();
+		void resetMsg();
+
 		constexpr static uint16_t getSize()
 		{
 				return udpPacketDataSize_;
-		}			
+		}				
 		
 	private:
-		Info data_;	
+		bool createUdpHeader()
+		{
+			std::memcpy(udpPacketData_.data(),header_.data(),EOMDiagnosticUdpHeader::getSize());
+			return true;
+		}
+					
+		bool createUdpFooter()
+		{
+			uint16_t currentFooterAddress=currentBodySize_*EOMDiagnosticRopMsg::getSize()+EOMDiagnosticUdpHeader::getSize();
+			std::memcpy(udpPacketData_.data()+currentFooterAddress,footer_.data(),EOMDiagnosticUdpFooter::getSize());
+			return true;	
+		}
+
+		bool createUdpBody()
+		{
+			//TODO mutex
+			uint16_t currentROPStartAddress=EOMDiagnosticUdpHeader::getSize();
+			for(int index=0;index<currentBodySize_;++index)
+			{
+				currentROPStartAddress=currentROPStartAddress+index*EOMDiagnosticRopMsg::getSize();
+				int tmp=EOMDiagnosticRopMsg::getSize();
+				tmp=sizeof(EOMDiagnosticRopMsg::Info);
+				std::memcpy(udpPacketData_.data()+currentROPStartAddress,body_[index].data(),EOMDiagnosticRopMsg::getSize());
+			}	
+			return true;	
+		}
 };
+
+
+	inline bool EOMDiagnosticUdpMsg::addRop(const EOMDiagnosticRopMsg& msg)
+	{
+		if(currentBodySize_>bodyNumber_)
+			return false;
+		body_[currentBodySize_]=msg;
+		++currentBodySize_;
+		return true;
+	};
+
+	inline uint8_t* EOMDiagnosticUdpMsg::data() const
+	{
+			return nullptr;//(uint8_t*)(&data_); 
+	}	
+
+	inline bool EOMDiagnosticUdpMsg::createUdpPacketData()
+	{
+		if(currentBodySize_==0)
+			return false;//Nothing to transmit
+
+		header_.updateHeader(currentBodySize_*EOMDiagnosticRopMsg::getSize(),currentBodySize_,0);
+		
+		createUdpHeader();
+		createUdpBody();
+		createUdpFooter();
+
+		return true;
+	}
+
+	inline void EOMDiagnosticUdpMsg::resetMsg()
+	{
+		currentBodySize_=0;
+		udpPacketData_.fill(0);
+	}
+
 
 #endif  // include-guard
 
