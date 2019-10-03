@@ -85,8 +85,6 @@ class EOMDiagnosticUdpMsg
 			for(int index=0;index<currentBodySize_;++index)
 			{
 				currentROPStartAddress=currentROPStartAddress+index*EOMDiagnosticRopMsg::getSize();
-				int tmp=EOMDiagnosticRopMsg::getSize();
-				tmp=sizeof(EOMDiagnosticRopMsg::Info);
 				std::memcpy(udpPacketData_.data()+currentROPStartAddress,body_[index].data(),EOMDiagnosticRopMsg::getSize());
 			}	
 			return true;	
