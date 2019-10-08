@@ -16,7 +16,6 @@
  * Public License for more details
 */
 
-
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EOMDIGNOSTICUDPMSG_H_
 #define _EOMDIGNOSTICUDPMSG_H_
@@ -27,10 +26,11 @@
 	@date       09/2019
  **/
 
-
 #include "EoCommon.h"
 
 #include <array>
+#include <algorithm>
+#include <iterator>
 
 #include "EOMDiagnosticRopMsg.h"
 #include "EOMDiagnosticUdpHeader.h"
@@ -38,96 +38,133 @@
 
 class EOMDiagnosticUdpMsg
 {
-	public:
-		constexpr static uint16_t bodyNumber_{10};
-	
-	private:	
-		constexpr static uint16_t	udpPacketDataSize_{EOMDiagnosticUdpHeader::getSize()+EOMDiagnosticRopMsg::getSize()*bodyNumber_+EOMDiagnosticUdpFooter::getSize()};
-				
-		EOMDiagnosticUdpHeader header_;
-		EOMDiagnosticUdpFooter footer_;
-		std::array<EOMDiagnosticRopMsg,bodyNumber_> body_;
-		uint8_t currentBodySize_{0};
-	
-	public:	
-		std::array<uint8_t,udpPacketDataSize_>	udpPacketData_;
-		
-		EOMDiagnosticUdpMsg(){};	
+public:
+	constexpr static uint16_t bodyNumber_{10};
+	constexpr static uint16_t getSize()
+	{
+		return udpPacketDataSize_;
+	}
 
-		bool addRop(const EOMDiagnosticRopMsg& msg);
-		uint8_t* data() const;
-		bool createUdpPacketData();
-		void resetMsg();
+private:
+	constexpr static uint16_t udpPacketDataSize_{EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * bodyNumber_ + EOMDiagnosticUdpFooter::getSize()};
 
-		constexpr static uint16_t getSize()
-		{
-				return udpPacketDataSize_;
-		}				
-		
-	private:
-		bool createUdpHeader()
-		{
-			std::memcpy(udpPacketData_.data(),header_.data(),EOMDiagnosticUdpHeader::getSize());
-			return true;
-		}
-					
-		bool createUdpFooter()
-		{
-			uint16_t currentFooterAddress=currentBodySize_*EOMDiagnosticRopMsg::getSize()+EOMDiagnosticUdpHeader::getSize();
-			std::memcpy(udpPacketData_.data()+currentFooterAddress,footer_.data(),EOMDiagnosticUdpFooter::getSize());
-			return true;	
-		}
+	EOMDiagnosticUdpHeader header_;
+	EOMDiagnosticUdpFooter footer_;
+	std::array<EOMDiagnosticRopMsg, bodyNumber_> body_;
+	uint8_t currentBodySize_{0};
 
-		bool createUdpBody()
+public:
+	std::array<uint8_t, udpPacketDataSize_> udpPacketData_;
+
+	EOMDiagnosticUdpMsg(){};
+
+	bool addRop(const EOMDiagnosticRopMsg &msg);
+	uint8_t *data() const;
+	bool createUdpPacketData();
+	bool parse(const std::array<uint8_t, udpPacketDataSize_> &rxData);
+	bool parse(uint8_t *data, uint16_t size);
+
+	void resetMsg();
+
+private:
+	bool createUdpHeader()
+	{
+		std::memcpy(udpPacketData_.data(), header_.data(), EOMDiagnosticUdpHeader::getSize());
+		return true;
+	}
+
+	bool createUdpFooter()
+	{
+		uint16_t currentFooterAddress = currentBodySize_ * EOMDiagnosticRopMsg::getSize() + EOMDiagnosticUdpHeader::getSize();
+		std::memcpy(udpPacketData_.data() + currentFooterAddress, footer_.data(), EOMDiagnosticUdpFooter::getSize());
+		return true;
+	}
+
+	bool createUdpBody()
+	{
+		//TODO mutex
+		uint16_t currentROPStartAddress = EOMDiagnosticUdpHeader::getSize();
+		for (int index = 0; index < currentBodySize_; ++index)
 		{
-			//TODO mutex
-			uint16_t currentROPStartAddress=EOMDiagnosticUdpHeader::getSize();
-			for(int index=0;index<currentBodySize_;++index)
-			{
-				currentROPStartAddress=currentROPStartAddress+index*EOMDiagnosticRopMsg::getSize();
-				std::memcpy(udpPacketData_.data()+currentROPStartAddress,body_[index].data(),EOMDiagnosticRopMsg::getSize());
-			}	
-			return true;	
+			currentROPStartAddress = currentROPStartAddress + index * EOMDiagnosticRopMsg::getSize();
+			std::memcpy(udpPacketData_.data() + currentROPStartAddress, body_[index].data(), EOMDiagnosticRopMsg::getSize());
 		}
+		return true;
+	}
 };
 
+inline bool EOMDiagnosticUdpMsg::addRop(const EOMDiagnosticRopMsg &msg)
+{
+	if (currentBodySize_ > bodyNumber_)
+		return false;
+	body_[currentBodySize_] = msg;
+	++currentBodySize_;
+	return true;
+};
+inline uint8_t *EOMDiagnosticUdpMsg::data() const
+{
+	return nullptr; //(uint8_t*)(&data_);
+}
+inline bool EOMDiagnosticUdpMsg::createUdpPacketData()
+{
+	if (currentBodySize_ == 0)
+		return false; //Nothing to transmit
 
-	inline bool EOMDiagnosticUdpMsg::addRop(const EOMDiagnosticRopMsg& msg)
+	header_.updateHeader(currentBodySize_ * EOMDiagnosticRopMsg::getSize(), currentBodySize_, 0);
+
+	createUdpHeader();
+	createUdpBody();
+	createUdpFooter();
+
+	return true;
+}
+inline void EOMDiagnosticUdpMsg::resetMsg()
+{
+	currentBodySize_ = 0;
+	udpPacketData_.fill(0);
+}
+inline bool EOMDiagnosticUdpMsg::parse(const std::array<uint8_t, EOMDiagnosticUdpMsg::getSize()> &rxData)
+{
+	std::array<uint8_t, EOMDiagnosticUdpHeader::getSize()> headerData;
+	std::copy(rxData.begin(), rxData.begin() + EOMDiagnosticUdpHeader::getSize(), headerData.begin());
+	EOMDiagnosticUdpHeader header(headerData);
+	header_ = header;
+
+	for (size_t index = 0; index < EOMDiagnosticUdpMsg::bodyNumber_; ++index)
 	{
-		if(currentBodySize_>bodyNumber_)
-			return false;
-		body_[currentBodySize_]=msg;
-		++currentBodySize_;
-		return true;
-	};
+		std::array<uint8_t, EOMDiagnosticRopMsg::getSize()> ropData;
+		std::copy(rxData.begin() + EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * index, rxData.begin() + EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * (index + 1), ropData.begin());
 
-	inline uint8_t* EOMDiagnosticUdpMsg::data() const
-	{
-			return nullptr;//(uint8_t*)(&data_); 
-	}	
-
-	inline bool EOMDiagnosticUdpMsg::createUdpPacketData()
-	{
-		if(currentBodySize_==0)
-			return false;//Nothing to transmit
-
-		header_.updateHeader(currentBodySize_*EOMDiagnosticRopMsg::getSize(),currentBodySize_,0);
-		
-		createUdpHeader();
-		createUdpBody();
-		createUdpFooter();
-
-		return true;
+		EOMDiagnosticRopMsg rop(ropData);
+		body_[currentBodySize_] = rop;
+		currentBodySize_++;
 	}
 
-	inline void EOMDiagnosticUdpMsg::resetMsg()
+	unsigned int startFooter = EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * EOMDiagnosticUdpMsg::bodyNumber_;
+	std::array<uint8_t, EOMDiagnosticUdpFooter::getSize()> footerData;
+	std::copy(rxData.begin() + startFooter, rxData.begin() + startFooter + EOMDiagnosticUdpFooter::getSize(), footerData.begin());
+	EOMDiagnosticUdpFooter footer(footerData);
+	footer_ = footer;
+	return true;
+}
+
+inline bool EOMDiagnosticUdpMsg::parse(uint8_t *data, uint16_t size)
+{
+	if (size != udpPacketDataSize_)
 	{
-		currentBodySize_=0;
-		udpPacketData_.fill(0);
+		//TODO error
+		return false;
 	}
 
+	std::array<uint8_t, udpPacketDataSize_> out;
+	for (int index = 0; index < udpPacketDataSize_; ++index)
+	{
+		out[index] = data[index];
+	}
 
-#endif  // include-guard
+	return parse(out);
+}
 
+#endif // include-guard
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
