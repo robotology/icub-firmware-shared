@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 iCub Facility - Istituto Italiano di Tecnologia
+ * Copyright (C) 2019 iCub Facility - Istituto Italiano di Tecnologia
  * Author:  Luca Tricerri
  * email:   luca.tricerri@iit.it
  * website: www.robotcub.org

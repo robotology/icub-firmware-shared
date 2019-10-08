@@ -16,53 +16,19 @@
  * Public License for more details
 */
 
-
 // - include guard ----------------------------------------------------------------------------------------------------
-#ifndef _EOMDIGNOSTICUDPFOOTER_H_
-#define _EOMDIGNOSTICUDPFOOTER_H_
+#ifndef _MSGDESCRIPTION_H_
+#define _MSGDESCRIPTION_H_
 
-/** @file     EOMDiagnosticUdpFooter.h
-	@brief      This header file implements public interface to the EMS diagnostic UDP footer.
- 	@author     luca.tricerri@iit.it
-	@date       09/2019
- **/
-
-
-#include "EoCommon.h"
-
-class EOMDiagnosticUdpFooter
+namespace RopCode
 {
-	public:
-		struct Info
-		{
-			uint32_t data_{0};
-		};EO_VERIFYsizeof(Info, 4)
-		
-		EOMDiagnosticUdpFooter(const Info& data):data_(data){};
-		EOMDiagnosticUdpFooter(){};
-		EOMDiagnosticUdpFooter(const std::array<uint8_t,sizeof(Info)>& data)
-		{
-			std::memcpy(&data_,data.data(),sizeof(Info));
-		}
-			
-		uint8_t* data() const
-		{
-			return (uint8_t*)(&data_); 
-		}
-		constexpr static uint16_t getSize()
-		{
-			return sizeof(Info);
-		}		
-
-		void dump() const
-		{
-			std::cout<<"------FOOTER"<<std::endl;
-			std::cout<<"data:"<<data_.data_<<std::endl;	
-		};	
-		
-	private:
-		Info data_;	
-};
+    enum RopCode : uint16_t
+    {
+        startlog,
+        stoplog,
+        ethlog,
+    };
+}
 
 #endif  // include-guard
 
