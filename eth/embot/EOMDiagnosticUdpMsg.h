@@ -70,9 +70,9 @@ public:
 	void resetMsg();
 	void dump();
 
-private:
-	std::array<uint8_t, udpPacketDataSize_> udpPacketData_;
 
+	std::array<uint8_t, udpPacketDataSize_> udpPacketData_;
+private:
 	bool createUdpHeader();
 	bool createUdpFooter();
 	bool createUdpBody();
@@ -108,6 +108,7 @@ inline void EOMDiagnosticUdpMsg::resetMsg()
 {
 	currentBodySize_ = 0;
 	udpPacketData_.fill(0);
+	//TODO delete ROP
 }
 inline bool EOMDiagnosticUdpMsg::parse(const std::array<uint8_t, EOMDiagnosticUdpMsg::getSize()> &rxData)
 {
@@ -168,9 +169,9 @@ inline bool EOMDiagnosticUdpMsg::createUdpBody()
 {
 	//TODO mutex
 	uint16_t currentROPStartAddress = EOMDiagnosticUdpHeader::getSize();
-	for (int index = 0; index < EOMDiagnosticRopMsg::getSize(); ++index)
+	for (int index = 0; index < EOMDiagnosticUdpMsg::getRopNumber(); ++index)
 	{
-		currentROPStartAddress = currentROPStartAddress + index * EOMDiagnosticRopMsg::getSize();
+		currentROPStartAddress = EOMDiagnosticUdpHeader::getSize() + index * EOMDiagnosticRopMsg::getSize();
 		std::memcpy(udpPacketData_.data() + currentROPStartAddress, body_[index].data(), EOMDiagnosticRopMsg::getSize());
 	}
 	return true;
