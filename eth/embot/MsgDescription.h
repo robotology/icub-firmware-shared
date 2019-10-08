@@ -24,6 +24,7 @@ namespace RopCode
 {
     enum RopCode : uint16_t
     {
+				empty,
         startlog,
         stoplog,
         ethlog,

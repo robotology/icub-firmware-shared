@@ -57,11 +57,12 @@ private:
 	EOMDiagnosticUdpHeader header_;
 	EOMDiagnosticUdpFooter footer_;
 	std::array<EOMDiagnosticRopMsg, ropNumber_> body_;
-	uint8_t currentBodySize_{0};
+	uint16_t currentRopNumber_{0};
 
 public:
 	EOMDiagnosticUdpMsg(){};
 
+	bool getRop(EOMDiagnosticRopMsg &msg,uint8_t pos);
 	bool addRop(const EOMDiagnosticRopMsg &msg);
 	bool createUdpPacketData(std::array<uint8_t, udpPacketDataSize_>& udpMsg);//fill udpPacketData_
 	bool parse(const std::array<uint8_t, udpPacketDataSize_> &rxData);//fill header,footer,body
@@ -69,33 +70,44 @@ public:
 
 	void resetMsg();
 	void dump();
+	uint8_t getCurrentRopNumber(){return currentRopNumber_;}
 
-
-	std::array<uint8_t, udpPacketDataSize_> udpPacketData_;
 private:
+	std::array<uint8_t, udpPacketDataSize_> udpPacketData_;
 	bool createUdpHeader();
 	bool createUdpFooter();
 	bool createUdpBody();
 };
 
+inline bool EOMDiagnosticUdpMsg::getRop(EOMDiagnosticRopMsg &msg,uint8_t pos)
+{
+	if(pos>=getRopNumber())
+	{
+		//TODO error
+		return false;
+	}
+	msg=body_[pos];
+	return true;
+}
+
 inline bool EOMDiagnosticUdpMsg::addRop(const EOMDiagnosticRopMsg &msg)
 {
-	if (currentBodySize_ > getRopNumber())
+	if (currentRopNumber_ > getRopNumber())
 	{
 		//TO do error
 		return false;		
 	}
 		
-	body_[currentBodySize_] = msg;
-	++currentBodySize_;
+	body_[currentRopNumber_] = msg;
+	++currentRopNumber_;
 	return true;
 };
 inline bool EOMDiagnosticUdpMsg::createUdpPacketData(std::array<uint8_t, udpPacketDataSize_>& udpMsg)
 {
-	if (currentBodySize_ == 0)
-		return false; //Nothing to transmit
+	if (currentRopNumber_ == 0)
+		return false; //Nothing to create
 
-	header_.updateHeader(currentBodySize_ * EOMDiagnosticRopMsg::getSize(), currentBodySize_, 0);
+	header_.updateHeader(currentRopNumber_ * EOMDiagnosticRopMsg::getSize(), currentRopNumber_, 0);
 
 	createUdpHeader();
 	createUdpBody();
@@ -106,7 +118,7 @@ inline bool EOMDiagnosticUdpMsg::createUdpPacketData(std::array<uint8_t, udpPack
 }
 inline void EOMDiagnosticUdpMsg::resetMsg()
 {
-	currentBodySize_ = 0;
+	currentRopNumber_ = 0;
 	udpPacketData_.fill(0);
 	//TODO delete ROP
 }
@@ -123,8 +135,8 @@ inline bool EOMDiagnosticUdpMsg::parse(const std::array<uint8_t, EOMDiagnosticUd
 		std::copy(rxData.begin() + EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * index, rxData.begin() + EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * (index + 1), ropData.begin());
 
 		EOMDiagnosticRopMsg rop(ropData);
-		body_[currentBodySize_] = rop;
-		currentBodySize_++;
+		body_[currentRopNumber_] = rop;
+		currentRopNumber_++;
 	}
 
 	unsigned int startFooter = EOMDiagnosticUdpHeader::getSize() + EOMDiagnosticRopMsg::getSize() * EOMDiagnosticUdpMsg::getRopNumber();
@@ -160,7 +172,7 @@ inline bool EOMDiagnosticUdpMsg::createUdpHeader()
 
 inline bool EOMDiagnosticUdpMsg::createUdpFooter()
 {
-	uint16_t currentFooterAddress = currentBodySize_ * EOMDiagnosticRopMsg::getSize() + EOMDiagnosticUdpHeader::getSize();
+	uint16_t currentFooterAddress = currentRopNumber_ * EOMDiagnosticRopMsg::getSize() + EOMDiagnosticUdpHeader::getSize();
 	std::memcpy(udpPacketData_.data() + currentFooterAddress, footer_.data(), EOMDiagnosticUdpFooter::getSize());
 	return true;
 }
@@ -168,11 +180,11 @@ inline bool EOMDiagnosticUdpMsg::createUdpFooter()
 inline bool EOMDiagnosticUdpMsg::createUdpBody()
 {
 	//TODO mutex
-	uint16_t currentROPStartAddress = EOMDiagnosticUdpHeader::getSize();
+	uint16_t currentROPAddress{0};
 	for (int index = 0; index < EOMDiagnosticUdpMsg::getRopNumber(); ++index)
 	{
-		currentROPStartAddress = EOMDiagnosticUdpHeader::getSize() + index * EOMDiagnosticRopMsg::getSize();
-		std::memcpy(udpPacketData_.data() + currentROPStartAddress, body_[index].data(), EOMDiagnosticRopMsg::getSize());
+		currentROPAddress = EOMDiagnosticUdpHeader::getSize() + index * EOMDiagnosticRopMsg::getSize();
+		std::memcpy(udpPacketData_.data() + currentROPAddress, body_[index].data(), EOMDiagnosticRopMsg::getSize());
 	}
 	return true;
 }

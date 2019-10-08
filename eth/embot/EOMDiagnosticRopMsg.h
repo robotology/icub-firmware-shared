@@ -21,6 +21,7 @@
 #define _EOMDIGNOSTICROPMSG_H_
 
 #include "EoCommon.h"
+#include "MsgDescription.h"
 
 #include <array>
 #include <sstream>
@@ -41,7 +42,7 @@ class EOMDiagnosticRopMsg
 	public:
 		struct Info
 		{
-			uint16_t code_{0};
+			uint16_t code_{RopCode::empty};
 			uint16_t param1_{0};
 			uint16_t param2_{0};
 			uint16_t param3_{0};
@@ -62,10 +63,16 @@ class EOMDiagnosticRopMsg
 		uint8_t* data() const;	
 		void rawdump() const;
 		void dump() const;
+		RopCode::RopCode getCode();
 
 	private:
 		Info data_;	
 };
+
+inline RopCode::RopCode EOMDiagnosticRopMsg::getCode()
+{
+	return static_cast<RopCode::RopCode>(data_.code_);
+}
 
 inline EOMDiagnosticRopMsg::EOMDiagnosticRopMsg(void* data,uint8_t size)
 {
