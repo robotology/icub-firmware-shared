@@ -42,8 +42,8 @@ class EOMDiagnosticRopMsg
 	public:
 		struct Info
 		{
-			uint16_t code_{RopCode::empty};
-			uint16_t param1_{0};
+			uint16_t code_{(uint16_t)DiagnosticRopCode::empty};
+			uint16_t severity_{0};
 			uint16_t param2_{0};
 			uint16_t param3_{0};
 			uint16_t param4_{0};
@@ -63,15 +63,21 @@ class EOMDiagnosticRopMsg
 		uint8_t* data() const;	
 		void rawdump() const;
 		void dump() const;
-		RopCode::RopCode getCode();
+		DiagnosticRopCode getCode();
+		DiagnosticRopSeverity getSeverity();
 
 	private:
 		Info data_;	
 };
 
-inline RopCode::RopCode EOMDiagnosticRopMsg::getCode()
+inline DiagnosticRopCode EOMDiagnosticRopMsg::getCode()
 {
-	return static_cast<RopCode::RopCode>(data_.code_);
+	return (DiagnosticRopCode)(data_.code_);
+}
+
+inline DiagnosticRopSeverity EOMDiagnosticRopMsg::getSeverity()
+{
+	return static_cast<DiagnosticRopSeverity>(data_.severity_);
 }
 
 inline EOMDiagnosticRopMsg::EOMDiagnosticRopMsg(void* data,uint8_t size)
@@ -109,7 +115,7 @@ inline void EOMDiagnosticRopMsg::dump() const
 	{
 		std::cout<<"------ROP"<<std::endl;
 		std::cout<<"code:"<<data_.code_<<" ";
-		std::cout<<"param1:"<<data_.param1_<<" ";
+		std::cout<<"severity:"<<data_.severity_<<" ";
 		std::cout<<"param2:"<<data_.param2_<<" ";
 		std::cout<<"param3:"<<data_.param3_<<" ";
 		std::cout<<"param4:"<<data_.param4_<<" ";
