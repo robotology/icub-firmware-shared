@@ -56,7 +56,7 @@ class EOMDiagnosticUdpFooter
 
 		void dump() const
 		{
-			std::cout<<"------FOOTER"<<std::endl;
+			std::cout<<"------FOOTER--";
 			std::cout<<"data:"<<data_.data_<<std::endl;	
 		};	
 		

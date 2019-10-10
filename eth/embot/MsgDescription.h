@@ -25,13 +25,19 @@
     enum class DiagnosticRopCode : uint16_t
     {
             empty=0,
+            dummy,
             startlog,
             stoplog,
             ethlog,
             diag,
     };
 		
-		static const std::set<DiagnosticRopCode> ropCode{DiagnosticRopCode::empty,DiagnosticRopCode::startlog,DiagnosticRopCode::stoplog,DiagnosticRopCode::ethlog,DiagnosticRopCode::diag};
+		static const std::set<DiagnosticRopCode> ropCode{DiagnosticRopCode::empty,
+                                                                DiagnosticRopCode::dummy,
+                                                                DiagnosticRopCode::startlog,
+                                                                DiagnosticRopCode::stoplog,
+                                                                DiagnosticRopCode::ethlog,
+                                                                DiagnosticRopCode::diag};
 		
 
     enum class DiagnosticRopSeverity : uint16_t

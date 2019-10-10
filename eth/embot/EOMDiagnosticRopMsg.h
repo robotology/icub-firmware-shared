@@ -113,7 +113,7 @@ inline void EOMDiagnosticRopMsg::rawdump() const
 
 inline void EOMDiagnosticRopMsg::dump() const
 	{
-		std::cout<<"------ROP"<<std::endl;
+		std::cout<<"------ROP-----";
 		std::cout<<"code:"<<data_.code_<<" ";
 		std::cout<<"severity:"<<data_.severity_<<" ";
 		std::cout<<"param2:"<<data_.param2_<<" ";
