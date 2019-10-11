@@ -16,7 +16,6 @@
  * Public License for more details
 */
 
-
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EOMDIGNOSTICUDPFOOTER_H_
 #define _EOMDIGNOSTICUDPFOOTER_H_
@@ -27,44 +26,48 @@
 	@date       09/2019
  **/
 
-
 #include "EoCommon.h"
 
 class EOMDiagnosticUdpFooter
 {
-	public:
-		struct Info
-		{
-			uint32_t data_{0};
-		};EO_VERIFYsizeof(Info, 4)
-		
-		EOMDiagnosticUdpFooter(const Info& data):data_(data){};
-		EOMDiagnosticUdpFooter(){};
-		EOMDiagnosticUdpFooter(const std::array<uint8_t,sizeof(Info)>& data)
-		{
-			std::memcpy(&data_,data.data(),sizeof(Info));
-		}
-			
-		uint8_t* data() const
-		{
-			return (uint8_t*)(&data_); 
-		}
-		constexpr static uint16_t getSize()
-		{
-			return sizeof(Info);
-		}		
+public:
+    struct Info
+    {
+        uint32_t data_{0};
+    };
+    EO_VERIFYsizeof(Info, 4)
 
-		void dump() const
-		{
-			std::cout<<"------FOOTER--";
-			std::cout<<"data:"<<data_.data_<<std::endl;	
-		};	
-		
-	private:
-		Info data_;	
+        EOMDiagnosticUdpFooter(const Info &data) : data_(data){};
+    EOMDiagnosticUdpFooter(){};
+    EOMDiagnosticUdpFooter(const std::array<uint8_t, sizeof(Info)> &data)
+    {
+        std::memcpy(&data_, data.data(), sizeof(Info));
+    }
+
+    uint8_t *data() const
+    {
+        return (uint8_t *)(&data_);
+    }
+    constexpr static uint16_t getSize()
+    {
+        return sizeof(Info);
+    }
+
+    void dump() const
+    {
+        std::cout << "------FOOTER--";
+        std::cout << "data:" << data_.data_ << std::endl;
+    };
+
+    void reset()
+    {
+        data_ = (const struct Info){0};
+    }
+
+private:
+    Info data_;
 };
 
-#endif  // include-guard
-
+#endif // include-guard
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------

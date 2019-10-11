@@ -20,49 +20,31 @@
 #ifndef _MSGDESCRIPTION_H_
 #define _MSGDESCRIPTION_H_
 
-#include <set>
+#include <map>
+#include <string>
 
-    enum class DiagnosticRopCode : uint16_t
-    {
-            empty=0,
-            dummy,
-            startlog,
-            stoplog,
-            ethlog,
-            diag,
-    };
-		
-		static const std::set<DiagnosticRopCode> ropCode{DiagnosticRopCode::empty,
-                                                                DiagnosticRopCode::dummy,
-                                                                DiagnosticRopCode::startlog,
-                                                                DiagnosticRopCode::stoplog,
-                                                                DiagnosticRopCode::ethlog,
-                                                                DiagnosticRopCode::diag};
-		
+enum class DiagnosticRopCode : uint16_t
+{
+    empty = 0,
+    startlog,
+    stoplog,
+    ethlog,
+    diag,
+    forceflush,
+    unforceflush,
+};
 
-    enum class DiagnosticRopSeverity : uint16_t
-    {
-            empty=0,
-            debug,
-            trace,
-            info,
-            warning,
-            error,
-            critical
-    };
-
-		static const std::set<DiagnosticRopSeverity> ropSeverity{
-																														DiagnosticRopSeverity::empty,
-																														DiagnosticRopSeverity::debug,
-																														DiagnosticRopSeverity::trace,
-																														DiagnosticRopSeverity::info,
-																														DiagnosticRopSeverity::warning,
-																														DiagnosticRopSeverity::error,
-																														DiagnosticRopSeverity::critical
-																														};
-		
-
-#endif  // include-guard
-
+enum class DiagnosticRopSeverity : uint16_t
+{
+    empty = 0,
+    debug,
+    trace,
+    info,
+    warning,
+    error,
+    critical
+};
+                                                                                   
+#endif // include-guard DiagnosticRopSeverity::error,
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------

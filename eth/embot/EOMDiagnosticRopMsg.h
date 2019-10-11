@@ -29,7 +29,6 @@
 #include <iterator>
 #include <cstring>
 
-
 /** 
   @file       EOMDiagnosticRopMsg.h
 	@brief      This header file implements public interface to the EMS diagnostic message.
@@ -39,94 +38,103 @@
 
 class EOMDiagnosticRopMsg
 {
-	public:
-		struct Info
-		{
-			uint16_t code_{(uint16_t)DiagnosticRopCode::empty};
-			uint16_t severity_{0};
-			uint16_t param2_{0};
-			uint16_t param3_{0};
-			uint16_t param4_{0};
-			uint16_t param5_{0};
-			uint16_t dummy1_{0};
-			uint16_t dummy2_{0};
-			uint64_t param6_{0};
-		}; EO_VERIFYsizeof(Info, 24)
-		
-		constexpr static uint16_t getSize(){return sizeof(Info);}
-		
-		EOMDiagnosticRopMsg(void* data,uint8_t size);
-		EOMDiagnosticRopMsg(const std::array<uint8_t,sizeof(Info)>& data);
-		EOMDiagnosticRopMsg(const Info& data):data_(data){};
-		EOMDiagnosticRopMsg(){};
-			
-		uint8_t* data() const;	
-		void rawdump() const;
-		void dump() const;
-		DiagnosticRopCode getCode();
-		DiagnosticRopSeverity getSeverity();
+public:
+    struct Info
+    {
+        uint16_t code_{(uint16_t)DiagnosticRopCode::empty};
+        uint16_t severity_{(uint16_t)DiagnosticRopSeverity::empty};
+        uint16_t param2_{0};
+        uint16_t param3_{0};
+        uint16_t param4_{0};
+        uint16_t param5_{0};
+        uint16_t dummy1_{0};
+        uint16_t dummy2_{0};
+        uint64_t param6_{0};
+    };
+    EO_VERIFYsizeof(Info, 24)
 
-	private:
-		Info data_;	
+        constexpr static uint16_t getSize()
+    {
+        return sizeof(Info);
+    }
+
+    EOMDiagnosticRopMsg(void *data, uint8_t size);
+    EOMDiagnosticRopMsg(const std::array<uint8_t, sizeof(Info)> &data);
+    EOMDiagnosticRopMsg(const Info &data) : data_(data){};
+    EOMDiagnosticRopMsg(){};
+
+    uint8_t *data() const;
+    void rawdump() const;
+    void dump() const;
+    void reset();
+    DiagnosticRopCode getCode();
+    DiagnosticRopSeverity getSeverity();
+
+private:
+    Info data_;
 };
+
+inline void EOMDiagnosticRopMsg::reset()
+{
+    data_ = (const struct Info){0};
+}
 
 inline DiagnosticRopCode EOMDiagnosticRopMsg::getCode()
 {
-	return (DiagnosticRopCode)(data_.code_);
+    return (DiagnosticRopCode)(data_.code_);
 }
 
 inline DiagnosticRopSeverity EOMDiagnosticRopMsg::getSeverity()
 {
-	return static_cast<DiagnosticRopSeverity>(data_.severity_);
+    return static_cast<DiagnosticRopSeverity>(data_.severity_);
 }
 
-inline EOMDiagnosticRopMsg::EOMDiagnosticRopMsg(void* data,uint8_t size)
+inline EOMDiagnosticRopMsg::EOMDiagnosticRopMsg(void *data, uint8_t size)
 {
-	if(size>sizeof(Info))
-	{
-		//TODO
-		return;
-	}
-		
-	std::memcpy(&data_,data,sizeof(Info));
+    if (size > sizeof(Info))
+    {
+        //TODO
+        return;
+    }
+
+    std::memcpy(&data_, data, sizeof(Info));
 }
 
-inline EOMDiagnosticRopMsg::EOMDiagnosticRopMsg(const std::array<uint8_t,sizeof(Info)>& data)
+inline EOMDiagnosticRopMsg::EOMDiagnosticRopMsg(const std::array<uint8_t, sizeof(Info)> &data)
 {
-	std::memcpy(&data_,data.data(),sizeof(Info));
+    std::memcpy(&data_, data.data(), sizeof(Info));
 }
 
-inline uint8_t* EOMDiagnosticRopMsg::data() const
+inline uint8_t *EOMDiagnosticRopMsg::data() const
 {
-	return (uint8_t*)(&data_); 
+    return (uint8_t *)(&data_);
 }
 
 inline void EOMDiagnosticRopMsg::rawdump() const
 {
-	std::stringstream ss;
-	std::array<uint8_t,getSize()>* tmp;
-	tmp=(std::array<uint8_t,getSize()>*)&data_;
-	
-	std::copy(tmp->begin(),tmp->end(),std::ostream_iterator<int>(ss," "));
-	std::cout<<std::hex<<ss.str()<<std::endl;
+    std::stringstream ss;
+    std::array<uint8_t, getSize()> *tmp;
+    tmp = (std::array<uint8_t, getSize()> *)&data_;
+
+    std::copy(tmp->begin(), tmp->end(), std::ostream_iterator<int>(ss, " "));
+    std::cout << std::hex << ss.str() << std::endl;
 }
 
 inline void EOMDiagnosticRopMsg::dump() const
-	{
-		std::cout<<"------ROP-----";
-		std::cout<<"code:"<<data_.code_<<" ";
-		std::cout<<"severity:"<<data_.severity_<<" ";
-		std::cout<<"param2:"<<data_.param2_<<" ";
-		std::cout<<"param3:"<<data_.param3_<<" ";
-		std::cout<<"param4:"<<data_.param4_<<" ";
-		std::cout<<"param5:"<<data_.param5_<<" ";		
-		std::cout<<"dummy1:"<<data_.dummy1_<<" ";		
-		std::cout<<"dummy2:"<<data_.dummy2_<<" ";		
-		std::cout<<"param6:"<<data_.param6_<<" ";		
-		std::cout<<std::endl;
+{
+    std::cout << "------ROP";
+    std::cout << "code:" << data_.code_ << " ";
+    std::cout << "severity:" << data_.severity_ << " ";
+    std::cout << "param2:" << data_.param2_ << " ";
+    std::cout << "param3:" << data_.param3_ << " ";
+    std::cout << "param4:" << data_.param4_ << " ";
+    std::cout << "param5:" << data_.param5_ << " ";
+    std::cout << "dummy1:" << data_.dummy1_ << " ";
+    std::cout << "dummy2:" << data_.dummy2_ << " ";
+    std::cout << "param6:" << data_.param6_ << " ";
+    std::cout << std::endl;
 };
 
-#endif  // include-guard
-
+#endif // include-guard
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------

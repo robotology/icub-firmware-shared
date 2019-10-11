@@ -16,7 +16,6 @@
  * Public License for more details
 */
 
-
 // - include guard ----------------------------------------------------------------------------------------------------
 #ifndef _EOMDIGNOSTICUDPHEADER_H_
 #define _EOMDIGNOSTICUDPHEADER_H_
@@ -35,70 +34,73 @@
 
 class EOMDiagnosticUdpHeader
 {
-	public:
-		struct Info
-		{
-			uint32_t startCode_{33};
-			uint16_t sizeOfBody_{0};
-			uint16_t numberOfRops_{0};
-			uint64_t sequenceNum_{0};
-			uint64_t ageOfFrame_{0};
-		};EO_VERIFYsizeof(Info, 24)
-	
-		EOMDiagnosticUdpHeader(const Info& data):data_(data)
-		{
-		};
+public:
+    struct Info
+    {
+        uint32_t startCode_{33};
+        uint16_t sizeOfBody_{0};
+        uint16_t numberOfRops_{0};
+        uint64_t sequenceNum_{0};
+        uint64_t ageOfFrame_{0};
+    };
+    EO_VERIFYsizeof(Info, 24)
 
-		EOMDiagnosticUdpHeader(const std::array<uint8_t,sizeof(Info)>& data)
-		{
-			std::memcpy(&data_,data.data(),sizeof(Info));
-		}
+        EOMDiagnosticUdpHeader(const Info &data) : data_(data){};
 
-		EOMDiagnosticUdpHeader(){};
-			
-		uint8_t* data() const
-		{
-				return (uint8_t*)(&data_); 
-		}
+    EOMDiagnosticUdpHeader(const std::array<uint8_t, sizeof(Info)> &data)
+    {
+        std::memcpy(&data_, data.data(), sizeof(Info));
+    }
 
-		constexpr static uint16_t getSize()
-		{
-				return sizeof(Info);
-		}
+    EOMDiagnosticUdpHeader(){};
 
-		void updateHeader(uint16_t sizeOfBody,uint16_t numberOfRops,uint64_t ageOfFrame)
-		{
-			increaseSequenceNumber();
-			data_.sizeOfBody_=sizeOfBody;
-			data_.numberOfRops_=numberOfRops;
-			data_.ageOfFrame_=ageOfFrame;
-			data_.sequenceNum_=sequenceNumber_;
-		}
+    uint8_t *data() const
+    {
+        return (uint8_t *)(&data_);
+    }
 
-		void dump() const
-		{
-			std::cout<<"------HEADER--";
-			std::cout<<"ageOfFrame:"<<data_.sizeOfBody_<<" ";
-			std::cout<<"numberOfRops:"<<data_.numberOfRops_<<" ";
-			std::cout<<"sequenceNum:"<<data_.sequenceNum_<<" ";
-			std::cout<<"ageOfFrame:"<<data_.ageOfFrame_<<" ";
-			std::cout<<std::endl;
-		};
-		
-	private:
-		Info data_;	
-	  	inline static uint64_t sequenceNumber_{0};
-		
-		void increaseSequenceNumber()
-		{
-			if(sequenceNumber_>std::numeric_limits<uint64_t>::max())
-				sequenceNumber_=0;
-			else
-				sequenceNumber_++;
-		}
+    constexpr static uint16_t getSize()
+    {
+        return sizeof(Info);
+    }
+
+    void updateHeader(uint16_t sizeOfBody, uint16_t numberOfRops, uint64_t ageOfFrame)
+    {
+        increaseSequenceNumber();
+        data_.sizeOfBody_ = sizeOfBody;
+        data_.numberOfRops_ = numberOfRops;
+        data_.ageOfFrame_ = ageOfFrame;
+        data_.sequenceNum_ = sequenceNumber_;
+    }
+
+    void dump() const
+    {
+        std::cout << "------HEADER--";
+        std::cout << "ageOfFrame:" << data_.sizeOfBody_ << " ";
+        std::cout << "numberOfRops:" << data_.numberOfRops_ << " ";
+        std::cout << "sequenceNum:" << data_.sequenceNum_ << " ";
+        std::cout << "ageOfFrame:" << data_.ageOfFrame_ << " ";
+        std::cout << std::endl;
+    };
+
+    void reset()
+    {
+        data_ = (const struct Info){0};
+    }
+
+private:
+    Info data_;
+    inline static uint64_t sequenceNumber_{0};
+
+    void increaseSequenceNumber()
+    {
+        if (sequenceNumber_ > std::numeric_limits<uint64_t>::max())
+            sequenceNumber_ = 0;
+        else
+            sequenceNumber_++;
+    }
 };
 
-#endif  // include-guard
-
+#endif // include-guard
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
