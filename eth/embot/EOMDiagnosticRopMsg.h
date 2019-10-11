@@ -48,9 +48,9 @@ public:
         uint16_t param3_{0};
         uint16_t param4_{0};
         uint16_t param5_{0};
-        uint16_t dummy1_{0};
-        uint16_t dummy2_{0};
-        uint64_t param6_{0};
+        uint16_t param6_{0};
+        uint16_t param7_{0};
+        uint64_t time_{0};
     };
     EO_VERIFYsizeof(Info, 24)
 
@@ -142,6 +142,9 @@ inline void EOMDiagnosticRopMsg::dump(const std::map<DiagnosticRopSeverity,std::
         if(ropString->find((DiagnosticRopString)data_.param2_)!=ropString->end())
             stringStr=ropString->at((DiagnosticRopString)data_.param2_);        
     }
+
+    if((DiagnosticRopCode)data_.code_==DiagnosticRopCode::empty)
+        return;
     
     std::cout << "------ROP";
     std::cout << "code:" <<std::left <<std::setw (15)<<codeStr << " ";
@@ -150,9 +153,9 @@ inline void EOMDiagnosticRopMsg::dump(const std::map<DiagnosticRopSeverity,std::
     std::cout << "param3:" << data_.param3_ << " ";
     std::cout << "param4:" << data_.param4_ << " ";
     std::cout << "param5:" << data_.param5_ << " ";
-    std::cout << "dummy1:" << data_.dummy1_ << " ";
-    std::cout << "dummy2:" << data_.dummy2_ << " ";
     std::cout << "param6:" << data_.param6_ << " ";
+    std::cout << "param7:" << data_.param7_ << " ";
+    std::cout << "time:" << data_.time_ << " ";
     std::cout << std::endl;
 };
 
