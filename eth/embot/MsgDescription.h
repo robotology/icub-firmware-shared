@@ -44,7 +44,14 @@ enum class DiagnosticRopSeverity : uint16_t
     error,
     critical
 };
-                                                                                   
+
+enum class DiagnosticRopString : uint16_t
+{
+    empty = 0,
+    ethdown,
+    ethup,
+};  
+
 #endif // include-guard DiagnosticRopSeverity::error,
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------

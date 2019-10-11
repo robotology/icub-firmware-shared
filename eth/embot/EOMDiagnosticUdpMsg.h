@@ -69,7 +69,7 @@ public:
     bool parse(uint8_t *data, uint16_t size);                                  //fill header,footer,body
 
     void reset();
-    void dump() const;
+    void dump(const std::map<DiagnosticRopSeverity,std::string>* ropSeverity,const std::map<DiagnosticRopCode,std::string>* ropCode,const std::map<DiagnosticRopString,std::string>* ropString) const;
     uint8_t getCurrentRopNumber() { return currentRopNumber_; }
 
 private:
@@ -196,12 +196,12 @@ inline bool EOMDiagnosticUdpMsg::createUdpBody()
     return true;
 }
 
-inline void EOMDiagnosticUdpMsg::dump() const
+inline void EOMDiagnosticUdpMsg::dump(const std::map<DiagnosticRopSeverity,std::string>* ropSeverity,const std::map<DiagnosticRopCode,std::string>* ropCode,const std::map<DiagnosticRopString,std::string>* ropString) const
 {
     header_.dump();
     for (auto currentRop : body_)
     {
-        currentRop.dump();
+        currentRop.dump(ropSeverity,ropCode,ropString);
     };
     footer_.dump();
 }

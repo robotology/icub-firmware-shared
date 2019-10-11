@@ -28,6 +28,7 @@
 #include <iostream>
 #include <iterator>
 #include <cstring>
+#include <iomanip>
 
 /** 
   @file       EOMDiagnosticRopMsg.h
@@ -65,7 +66,7 @@ public:
 
     uint8_t *data() const;
     void rawdump() const;
-    void dump() const;
+    void dump(const std::map<DiagnosticRopSeverity,std::string>* ,const std::map<DiagnosticRopCode,std::string>* ,const std::map<DiagnosticRopString,std::string>* ) const;
     void reset();
     DiagnosticRopCode getCode();
     DiagnosticRopSeverity getSeverity();
@@ -120,12 +121,32 @@ inline void EOMDiagnosticRopMsg::rawdump() const
     std::cout << std::hex << ss.str() << std::endl;
 }
 
-inline void EOMDiagnosticRopMsg::dump() const
+inline void EOMDiagnosticRopMsg::dump(const std::map<DiagnosticRopSeverity,std::string>* ropSeverity,const std::map<DiagnosticRopCode,std::string>* ropCode,const std::map<DiagnosticRopString,std::string>* ropString) const
 {
+    std::string codeStr{"unknown"};
+    if(ropCode)
+    {
+        if(ropCode->find((DiagnosticRopCode)data_.code_)!=ropCode->end())
+            codeStr=ropCode->at((DiagnosticRopCode)data_.code_);
+    }      
+    std::string severityStr{"unknown"};
+    if(ropSeverity)
+    {
+        if(ropSeverity->find((DiagnosticRopSeverity)data_.severity_)!=ropSeverity->end())
+            severityStr=ropSeverity->at((DiagnosticRopSeverity)data_.severity_);    
+    }
+        
+    std::string stringStr{"unknown"};
+    if(ropString)
+    {
+        if(ropString->find((DiagnosticRopString)data_.param2_)!=ropString->end())
+            stringStr=ropString->at((DiagnosticRopString)data_.param2_);        
+    }
+    
     std::cout << "------ROP";
-    std::cout << "code:" << data_.code_ << " ";
-    std::cout << "severity:" << data_.severity_ << " ";
-    std::cout << "param2:" << data_.param2_ << " ";
+    std::cout << "code:" <<std::left <<std::setw (15)<<codeStr << " ";
+    std::cout << "severity:" <<std::left<<std::setw (15)<<severityStr << " ";
+    std::cout << "param2:" <<std::left<<std::setw (15)<<stringStr << " ";
     std::cout << "param3:" << data_.param3_ << " ";
     std::cout << "param4:" << data_.param4_ << " ";
     std::cout << "param5:" << data_.param5_ << " ";

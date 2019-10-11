@@ -39,6 +39,12 @@ const std::map<DiagnosticRopSeverity,std::string> ropSeverity={
                                                 {DiagnosticRopSeverity::error,"error"},
                                                 {DiagnosticRopSeverity::critical,"critical"}};
 
+const std::map<DiagnosticRopString,std::string> ropString={
+                                                {DiagnosticRopString::empty,"empty"},
+                                                {DiagnosticRopString::ethdown,"link goes down"},
+                                                {DiagnosticRopString::ethup,"link goes up"}
+                                                };                                                
+
                                                 
 #endif
 
