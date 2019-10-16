@@ -52,7 +52,8 @@ enum class DiagnosticRopString : uint16_t
     ethup,
     juststarted,
     txseqnumbermissing,
-    rxcrc
+    rxcrc,
+    wrongcommand
 };  
 
 #endif // include-guard DiagnosticRopSeverity::error,
