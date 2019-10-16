@@ -50,6 +50,9 @@ enum class DiagnosticRopString : uint16_t
     empty = 0,
     ethdown,
     ethup,
+    juststarted,
+    txseqnumbermissing,
+    rxcrc
 };  
 
 #endif // include-guard DiagnosticRopSeverity::error,
