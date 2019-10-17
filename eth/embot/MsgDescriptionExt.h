@@ -42,9 +42,12 @@ const std::map<DiagnosticRopSeverity,std::string> ropSeverity={
 const std::map<DiagnosticRopString,std::string> ropString={
                                                 {DiagnosticRopString::empty,"empty"},
                                                 {DiagnosticRopString::ethdown,"link goes down"},
-                                                {DiagnosticRopString::ethup,"link goes up"}
+                                                {DiagnosticRopString::ethup,"link goes up"},
+                                                {DiagnosticRopString::juststarted,"eth just started"},
+                                                {DiagnosticRopString::txseqnumbermissing,"tx sequence number missing"},
+                                                {DiagnosticRopString::rxcrc,"rx crc"},
+                                                {DiagnosticRopString::wrongcommand,"wrong command"}
                                                 };                                                
-
                                                 
 #endif
 
