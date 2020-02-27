@@ -5,7 +5,7 @@
 if(WITH_EMBOBJ)
   add_library(embobj INTERFACE)
   add_library(${PROJECT_NAME}::${LIBRARY_TARGET_NAME} ALIAS embobj)
-  target_include_directories(canProtocolLib INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj>
+  target_include_directories(embobj INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj>
                                                       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj>)
   
   
