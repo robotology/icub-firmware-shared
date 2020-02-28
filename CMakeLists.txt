@@ -38,9 +38,12 @@ feature_summary(WHAT ENABLED_FEATURES
                      DISABLED_FEATURES)
 
 add_library(${PROJECT_NAME} INTERFACE)
-target_link_libraries(${PROJECT_NAME} PUBLIC INTERFACE canProtocolLib
-                                                       embobj)
 
+
+target_include_directories(${PROJECT_NAME} PUBLIC INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/can/canProtocolLib>
+                                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/eth/embobj>
+                                                            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/can/canProtocolLib>
+                                                            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/eth/embobj>)
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}
         COMPONENT ${PROJECT_NAME}
@@ -49,7 +52,6 @@ install_basic_package_files(${PROJECT_NAME}
                             VERSION ${${PROJECT_NAME}_VERSION}
                             COMPATIBILITY AnyNewerVersion
                             VARS_PREFIX ${PROJECT_NAME}
-                            DEPENDENCIES canProtocolLib;embobj
                             NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
 # # icub_firmware_shared-targets.cmake (build tree)
