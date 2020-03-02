@@ -207,13 +207,28 @@ if(WITH_EMBOBJ)
   
   add_library(${PROJECT_NAME}::${LIBRARY_TARGET_NAME} ALIAS ${LIBRARY_TARGET_NAME})
   
-  target_include_directories(${LIBRARY_TARGET_NAME} INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
+  target_include_directories(${LIBRARY_TARGET_NAME} INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/core>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/exec/yarp>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/icub>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/opcprot>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/api>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/cfg>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/src>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/transport>"
+                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/utils>")
   install(TARGETS ${LIBRARY_TARGET_NAME}
           EXPORT  ${PROJECT_NAME})
-  
-  install(FILES ${${LIBRARY_TARGET_NAME}_HDR}
-          DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_TARGET_NAME}")
+  install(DIRECTORY embobj
+            DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
   install(DIRECTORY robotconfig
           DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
 endif()
