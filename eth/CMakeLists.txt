@@ -227,7 +227,11 @@ if(WITH_EMBOBJ)
                                                               "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/transport>"
                                                               "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/utils>")
   install(TARGETS ${LIBRARY_TARGET_NAME}
-          EXPORT  ${PROJECT_NAME})
+          EXPORT ${LIBRARY_TARGET_NAME}
+          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_TARGET_NAME})
   install(DIRECTORY embobj
             DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
   install(DIRECTORY robotconfig
