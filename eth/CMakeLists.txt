@@ -205,9 +205,9 @@ if(WITH_EMBOBJ)
 
 
   add_library(${LIBRARY_TARGET_NAME} SHARED ${${LIBRARY_TARGET_NAME}_HDR} ${${LIBRARY_TARGET_NAME}_SRC})
-  
   add_library(${PROJECT_NAME}::${LIBRARY_TARGET_NAME} ALIAS ${LIBRARY_TARGET_NAME})
-  
+
+  target_include_directories(${LIBRARY_TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR/can/canProtocolLib)
   target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub>"
