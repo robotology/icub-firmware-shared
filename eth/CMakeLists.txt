@@ -204,7 +204,7 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser_hid.h)
 
 
-  add_library(${LIBRARY_TARGET_NAME} ${${LIBRARY_TARGET_NAME}_HDR} ${${LIBRARY_TARGET_NAME}_SRC})
+  add_library(${LIBRARY_TARGET_NAME} SHARED ${${LIBRARY_TARGET_NAME}_HDR} ${${LIBRARY_TARGET_NAME}_SRC})
   
   add_library(${PROJECT_NAME}::${LIBRARY_TARGET_NAME} ALIAS ${LIBRARY_TARGET_NAME})
   
@@ -217,15 +217,15 @@ if(WITH_EMBOBJ)
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/core>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/exec/yarp>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/icub>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/opcprot>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/api>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/cfg>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/src>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/transport>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/utils>")
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/core>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/exec/yarp>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/icub>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/opcprot>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/api>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/cfg>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/src>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/transport>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/utils>")
   install(TARGETS ${LIBRARY_TARGET_NAME}
           EXPORT ${LIBRARY_TARGET_NAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
