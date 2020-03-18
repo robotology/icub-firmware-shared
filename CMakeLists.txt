@@ -32,6 +32,7 @@ option(WITH_EMBOBJ "Enable embobj" ON)
 add_feature_info(embobj WITH_EMBOBJ "EmbObj Library.")
 
 add_subdirectory(can)
+add_subdirectory(embot)
 add_subdirectory(eth)
 
 feature_summary(WHAT ENABLED_FEATURES
