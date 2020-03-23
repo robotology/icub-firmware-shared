@@ -215,6 +215,7 @@ extern eOresult_t eo_packet_Full_Clear(EOpacket *p, uint8_t val);
  **/
 extern eOresult_t eo_packet_Capacity_Get(EOpacket *p, uint16_t *capacity);
 
+extern uint16_t eo_packet_Size_Get(EOpacket *p);
 
 /** @fn         extern uint16_t eo_packet_Payload_Pad(EOpacket *p, uint16_t finalsize, uint8_t val)
     @brief      Append the value @e val to end of packet so that its final size becomes @e finalsize
