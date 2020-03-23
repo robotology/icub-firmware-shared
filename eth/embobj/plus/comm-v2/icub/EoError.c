@@ -320,7 +320,8 @@ const eoerror_valuestring_t eoerror_valuestrings_ETHMON[] =
     {eoerror_value_ETHMON_link_goes_down,   "ETH monitor: link goes down in port specified by par16 (0 = ETH input (P2/P13/J4) , 1 = ETH output (P3/P12/J5) , 2 = internal).  Application state is most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running."},
     {eoerror_value_ETHMON_error_rxcrc,      "ETH monitor: detected RX CRC error in port specified by par16 (0 = ETH input (P2/P13/J4) , 1 = ETH output (P3/P12/J5) , 2 = internal).  Application state is in most significant nibble of par64: 0 -> N/A, 1 -> idle, 3 -> running. Number of errors in par64&0xffffffff"},
     {eoerror_value_ETHMON_txseqnumbermissing, "ETH monitor: the board low level ETH detected a missing ropframe w/ expected sequence number in par64 and number of detected in par16"},
-    {eoerror_value_ETHMON_juststarted,      "ETH monitor: just started."}
+    {eoerror_value_ETHMON_juststarted,      "ETH monitor: just started."},
+    {eoerror_value_ETHMON_justverified, "ETH monitor: just verified, no news"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_ETHMON, eoerror_value_ETHMON_numberof*sizeof(const eoerror_valuestring_t)) 
 
 const eoerror_valuestring_t eoerror_valuestrings_IS[] =

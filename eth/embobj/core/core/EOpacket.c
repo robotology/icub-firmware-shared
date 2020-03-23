@@ -381,6 +381,16 @@ extern eOresult_t eo_packet_Capacity_Get(EOpacket *p, uint16_t *capacity)
     return(eores_OK);
 }
 
+extern uint16_t eo_packet_Size_Get(EOpacket *p)
+{
+    if(NULL == p) 
+    {
+        return(0);
+    }
+
+    return p->size;    
+}
+
 extern uint16_t eo_packet_Payload_Pad(EOpacket *p, uint16_t finalsize, uint8_t val)
 {
     if(NULL == p) 
