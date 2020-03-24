@@ -72,7 +72,7 @@ typedef enum
 typedef struct EOaction_hid EOaction;
 
 
-enum { EOaction_sizeof = 16 };
+enum { EOaction_sizeof = 32 };
 typedef uint8_t EOaction_strg[EOaction_sizeof];
 
     

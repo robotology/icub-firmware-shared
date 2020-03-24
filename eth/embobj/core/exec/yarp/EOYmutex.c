@@ -29,8 +29,14 @@
 #include "EOVmutex_hid.h"
 
 
+#if defined(EMBOBJ_dontuseexternalincludes)
+extern void* ace_mutex_new(void);
+extern int8_t ace_mutex_take(void* m, uint32_t tout_usec);
+extern int8_t ace_mutex_release(void* m);
+extern void ace_mutex_delete(void* m);
+#else
 #include <FeatureInterface.h>   // to see the acemutex_* functions
-
+#endif
 
 // --------------------------------------------------------------------------------------------------------------------
 // - declaration of extern public interface
