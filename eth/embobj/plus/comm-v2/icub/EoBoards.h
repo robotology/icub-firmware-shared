@@ -42,7 +42,7 @@ extern "C" {
 // - external dependencies --------------------------------------------------------------------------------------------
 
 #include "EoCommon.h"
-#include "iCubCanProto_types.h"    
+#include "iCubCanProto_types.h"
 
 
 // - public #define  --------------------------------------------------------------------------------------------------

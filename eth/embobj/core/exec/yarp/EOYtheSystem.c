@@ -31,7 +31,15 @@
 #include "math.h"
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
+
+#if defined(EMBOBJ_dontuseexternalincludes)
+extern double feat_yarp_time_now(void);
+#else
 #include "FeatureInterface.h"
+#endif
+
+#else
+
 #endif
 
 
@@ -164,7 +172,7 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
 
     // initialise y-environment
     
-#if     defined(EOY_SYS_USE_FEATURE_INTERFACE) 
+#if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
     s_eoy_system.start = feat_yarp_time_now();
 #else
 
@@ -246,8 +254,10 @@ static eOabstime_t s_eoy_sys_abstime_get(void)
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
     double delta = feat_yarp_time_now() - s_eoy_system.start;
+
     delta *= (1e6);
     time = (eOabstime_t)floor(delta);
+
 
 #else//defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
