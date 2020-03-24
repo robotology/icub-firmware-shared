@@ -7,14 +7,26 @@ if(TRUE) #FIXME set a proper option
 
   set(${LIBRARY_TARGET_NAME}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core.cpp
                                  ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core_binary.cpp
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core_utils.cpp
                                  ${CMAKE_CURRENT_SOURCE_DIR}/tools/embot_tools.cpp
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core_utils.cpp)
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_rop.cpp
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_ropframe.cpp
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_diagnostic_Node.cpp
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_diagnostic_Host.cpp
+  )
 
 
   set(${LIBRARY_TARGET_NAME}_HDR  ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core.h
                                   ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core_binary.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core_utils.h
                                   ${CMAKE_CURRENT_SOURCE_DIR}/tools/embot_tools.h
-                                  ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core_utils.h )
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_diagnostic.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_rop.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_ropframe.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_diagnostic_Node.h
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/prot/eth/embot_prot_eth_diagnostic_Host.h
+  )
 
 
   add_library(${LIBRARY_TARGET_NAME} SHARED ${${LIBRARY_TARGET_NAME}_HDR} ${${LIBRARY_TARGET_NAME}_SRC})
@@ -23,8 +35,11 @@ if(TRUE) #FIXME set a proper option
 
   target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/core>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tools>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/prot/eth>"
                                                               "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/core>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/tools>")
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/tools>"
+                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/prot/eth>"
+                             )
   install(TARGETS ${LIBRARY_TARGET_NAME}
           EXPORT ${LIBRARY_TARGET_NAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

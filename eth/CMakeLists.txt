@@ -15,15 +15,15 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOfifo.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOfifoWord.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOlist.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONmutex.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtask.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheCallbackManager.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheSystem.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheTimerManager.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONmutex.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtask.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheCallbackManager.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheSystem.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheTimerManager.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOpacket.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOsm.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheErrorManager.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheLEDpulser.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheLEDpulser.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheMemoryPool.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtimer.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOumlsm.c
@@ -36,13 +36,13 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp/EOYmutex.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp/EOYtheSystem.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoAnalogSensors.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp/FeatureInterface.extract.cpp
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp/FeatureInterface.extract.cpp
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoBoards.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoError.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoManagement.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoMotionControl.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoUpdaterProtocol.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot/OPCprotocolManager.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot/OPCprotocolManager.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolAS_fun.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolAS_rom.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocol.c
@@ -50,32 +50,34 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMC_fun.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMC_rom.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_fun.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_fun.new.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_fun.new.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_rom.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_rom.new.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_rom.new.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolSK_fun.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolSK_rom.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOdeviceTransceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOhostTransceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOnv.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOnvsetBRDbuilder.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOnvSet.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOprotocolConfigurator.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOproxy.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOproxy.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOreceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOrop.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOropframe.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheBOARDtransceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheFormer.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheInfoDispatcher.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheInfoDispatcher.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheParser.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtransceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtransmitter.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eODeb_eoProtoParser.c
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser.c)
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eODeb_eoProtoParser.c
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser.c
+  )
   
+
   set(${LIBRARY_TARGET_NAME}_HDR ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/embOBJporting.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOaction.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOaction_hid.h
@@ -96,24 +98,24 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOfifoWord_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOlist.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOlist_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONmutex.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONmutex_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtask.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtask_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheCallbackManager.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheCallbackManager_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheSystem.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheSystem_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheTimerManager.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheTimerManager_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONmutex.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONmutex_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtask.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtask_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheCallbackManager.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheCallbackManager_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheSystem.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheSystem_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheTimerManager.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EONtheTimerManager_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOpacket.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOpacket_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOsm.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOsm_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheErrorManager.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheErrorManager_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheLEDpulser.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheLEDpulser_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheLEDpulser.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheLEDpulser_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheMemoryPool.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtheMemoryPool_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOtimer.h
@@ -146,26 +148,26 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoSkin.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoUpdaterProtocol.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub/EoUtilities.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot/OPCprotocolManager.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot/OPCprotocolManager_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot/OPCprotocolManager.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot/OPCprotocolManager_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api/EoProtocolAS.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api/EoProtocol.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api/EoProtocolMC.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api/EoProtocolMN.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api/EoProtocolSK.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolAS_overridden_fun.template.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolMC_overridden_fun.template.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolMN_overridden_fun.template.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolSK_overridden_fun.template.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolAS_overridden_fun.template.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolMC_overridden_fun.template.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolMN_overridden_fun.template.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg/EoProtocolSK_overridden_fun.template.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolAS_rom.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolEPs.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMC_rom.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolMN_rom.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolSK_rom.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOdeviceTransceiver.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOdeviceTransceiver_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOhostTransceiver.h
@@ -190,24 +192,28 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheBOARDtransceiver_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheFormer.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheFormer_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheInfoDispatcher.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheInfoDispatcher_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheInfoDispatcher.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheInfoDispatcher_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheParser.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtheParser_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtransceiver.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtransceiver_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtransmitter.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOtransmitter_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eODeb_eoProtoParser.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eODeb_eoProtoParser_hid.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser_hid.h)
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eODeb_eoProtoParser.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eODeb_eoProtoParser_hid.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser.h
+#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils/eOtheEthLowLevelParser_hid.h
+#                                 ${CMAKE_SOURCE_DIR/can/canProtocolLib/iCubCanProto_types.h}
+  )
 
 
   add_library(${LIBRARY_TARGET_NAME} SHARED ${${LIBRARY_TARGET_NAME}_HDR} ${${LIBRARY_TARGET_NAME}_SRC})
   add_library(${PROJECT_NAME}::${LIBRARY_TARGET_NAME} ALIAS ${LIBRARY_TARGET_NAME})
 
-  target_include_directories(${LIBRARY_TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR/can/canProtocolLib)
+  target_compile_definitions(embobj PUBLIC -DEOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME -DEMBOBJ_dontuseexternalincludes)
+
+  target_include_directories(${LIBRARY_TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/can/canProtocolLib)
   target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub>"
