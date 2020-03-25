@@ -28,6 +28,9 @@ set(icub_firmware_shared_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/icub-firmware-s
 option(WITH_CANPROTOCOLLIB "Enable canProtocolLib" ON)
 add_feature_info(canProtocolLib WITH_CANPROTOCOLLIB "Can Protocol Library.")
 
+option(WITH_EMBOT "Enable embot" ON)
+add_feature_info(embot WITH_EMBOT "Embot Library.")
+
 option(WITH_EMBOBJ "Enable embobj" ON)
 add_feature_info(embobj WITH_EMBOBJ "EmbObj Library.")
 

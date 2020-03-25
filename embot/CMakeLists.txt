@@ -2,7 +2,7 @@
 # Authors: Nicolo Genesio <nicolo.genesio@iit.it>
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
 
-if(TRUE) #FIXME set a proper option
+if(WITH_EMBOT)
   set(LIBRARY_TARGET_NAME embot)
 
   set(${LIBRARY_TARGET_NAME}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/core/embot_core.cpp
