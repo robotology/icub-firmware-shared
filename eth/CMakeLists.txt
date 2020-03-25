@@ -56,14 +56,14 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolSK_fun.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolSK_rom.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent.c
-#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.c
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOdeviceTransceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOhostTransceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOnv.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOnvsetBRDbuilder.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOnvSet.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOprotocolConfigurator.c
-#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOproxy.c
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOproxy.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOreceiver.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOrop.c
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOropframe.c
@@ -166,7 +166,7 @@ if(WITH_EMBOBJ)
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src/EoProtocolSK_rom.h
 #                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent.h
 #                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOagent_hid.h
-#                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.h
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager.h
 #                                ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOconfirmationManager_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOdeviceTransceiver.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport/EOdeviceTransceiver_hid.h
