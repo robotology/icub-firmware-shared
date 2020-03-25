@@ -36,16 +36,18 @@ if(WITH_EMBOT)
   target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/core>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tools>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/prot/eth>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/core>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/tools>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/prot/eth>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/core>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/tools>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/prot/eth>"
                              )
+  set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES VERSION  ${${PROJECT_NAME}_VERSION}
+                                                          PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}")
   install(TARGETS ${LIBRARY_TARGET_NAME}
-          EXPORT ${LIBRARY_TARGET_NAME}
+          EXPORT ${PROJECT_NAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
           LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
           ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-          PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_TARGET_NAME})
+          PUBLIC_HEADER DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME})
 
 
 endif()

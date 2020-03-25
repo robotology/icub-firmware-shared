@@ -213,33 +213,38 @@ if(WITH_EMBOBJ)
 
   target_compile_definitions(embobj PUBLIC -DEOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME -DEMBOBJ_dontuseexternalincludes)
 
-  target_include_directories(${LIBRARY_TARGET_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/can/canProtocolLib)
-  target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/exec/yarp>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/icub>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/opcprot>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/api>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/cfg>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/protocol/src>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/comm-v2/transport>"
-                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/embobj/plus/utils>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/core>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/core/exec/yarp>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/icub>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/opcprot>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/api>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/cfg>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/protocol/src>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/comm-v2/transport>"
-                                                              "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/embobj/plus/utils>")
+  target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${PROJECT_NAME}::canProtocolLib)
+
+  target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/core/core>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/core/exec/yarp>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/icub>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/opcprot>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/api>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/cfg>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/src>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/transport>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/utils>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/core/core>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/core/exec/yarp>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/icub>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/opcprot>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/api>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/cfg>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/src>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/transport>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/utils>")
+  set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES VERSION  ${${PROJECT_NAME}_VERSION})
+                                                          # PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}") #TODO as below
   install(TARGETS ${LIBRARY_TARGET_NAME}
-          EXPORT ${LIBRARY_TARGET_NAME}
+          EXPORT ${PROJECT_NAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
           LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-          PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_TARGET_NAME})
+          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+          # PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_TARGET_NAME}) #TODO this is more correct for me but it implies a lot of changes.
   install(DIRECTORY embobj
-            DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
+          DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR}
+          FILES_MATCHING
+          PATTERN "*.h") #TODO check if we need only the header
   install(DIRECTORY robotconfig
-          DESTINATION ${icub_firmware_shared_INCLUDE_DIR})
+          DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR})
 endif()

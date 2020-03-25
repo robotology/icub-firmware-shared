@@ -18,11 +18,12 @@ if(WITH_CANPROTOCOLLIB)
   
   add_library(${PROJECT_NAME}::${LIBRARY_TARGET_NAME} ALIAS ${LIBRARY_TARGET_NAME})
   
-  target_include_directories(${LIBRARY_TARGET_NAME} INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/canProtocolLib>"
-                                                              "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
+  target_include_directories(${LIBRARY_TARGET_NAME} INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}>")
+
+  set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}")
+
   install(TARGETS ${LIBRARY_TARGET_NAME}
-          EXPORT  ${PROJECT_NAME})
-  
-  install(FILES ${${LIBRARY_TARGET_NAME}_HDR}
-          DESTINATION ${icub_firmware_shared_INCLUDE_DIR}/${LIBRARY_TARGET_NAME})
+          EXPORT  ${PROJECT_NAME}
+          PUBLIC_HEADER DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME})
 endif()
