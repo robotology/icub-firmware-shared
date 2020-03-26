@@ -21,7 +21,7 @@ if(WITH_CANPROTOCOLLIB)
   target_include_directories(${LIBRARY_TARGET_NAME} INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}>"
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}>")
 
-  if(${CMAKE_VERSION} VERSION_LESS "3.17.0")
+  if(${CMAKE_VERSION} VERSION_LESS "3.15.0")
     install(TARGETS ${LIBRARY_TARGET_NAME}
             EXPORT  ${PROJECT_NAME})
     install(DIRECTORY canProtocolLib
