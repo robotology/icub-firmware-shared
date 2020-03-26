@@ -21,9 +21,17 @@ if(WITH_CANPROTOCOLLIB)
   target_include_directories(${LIBRARY_TARGET_NAME} INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}>"
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}>")
 
-  set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}")
+  if(${CMAKE_VERSION} VERSION_LESS "3.17.0")
+    install(TARGETS ${LIBRARY_TARGET_NAME}
+            EXPORT  ${PROJECT_NAME})
+    install(DIRECTORY canProtocolLib
+            DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR})
+  else()
+    set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}")
 
-  install(TARGETS ${LIBRARY_TARGET_NAME}
-          EXPORT  ${PROJECT_NAME}
-          PUBLIC_HEADER DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME})
+    install(TARGETS ${LIBRARY_TARGET_NAME}
+            EXPORT  ${PROJECT_NAME}
+            PUBLIC_HEADER DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME})
+  endif()
+
 endif()
