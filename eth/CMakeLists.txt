@@ -234,13 +234,13 @@ if(WITH_EMBOBJ)
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/transport>"
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/utils>")
   set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES VERSION  ${${PROJECT_NAME}_VERSION})
-                                                          # PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}") #TODO as below
+
   install(TARGETS ${LIBRARY_TARGET_NAME}
           EXPORT ${PROJECT_NAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
           LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
           ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-          # PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_TARGET_NAME}) #TODO this is more correct for me but it implies a lot of changes.
+
   install(DIRECTORY embobj
           DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR}
           FILES_MATCHING
