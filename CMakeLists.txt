@@ -19,6 +19,7 @@ include(InstallBasicPackageFiles)
 
 set(icub_firmware_shared_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
 
+### Options
 option(WITH_CANPROTOCOLLIB "Enable canProtocolLib" ON)
 add_feature_info(canProtocolLib WITH_CANPROTOCOLLIB "Can Protocol Library.")
 
@@ -27,6 +28,9 @@ add_feature_info(embot WITH_EMBOT "Embot Library.")
 
 option(WITH_EMBOBJ "Enable embobj" ON)
 add_feature_info(embobj WITH_EMBOBJ "EmbObj Library.")
+
+# Shared/Dynamic or Static library?
+option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" ON)
 
 add_subdirectory(can)
 add_subdirectory(embot)
