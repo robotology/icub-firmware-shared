@@ -40,6 +40,9 @@ namespace embot { namespace prot { namespace eth {
             if(nullptr != s) { std::snprintf(s, size, "%d.%d.%d.%d", v>>24, (v>>16)&0xff, (v>>8)&0xff, (v)&0xff); }
             return s;
         }
+        std::string to_string() const {
+            return std::string(std::to_string(v>>24) + "." + std::to_string((v>>16)&0xff) + "." + std::to_string((v>>8)&0xff) + "." + std::to_string((v)&0xff));
+        }
     };
 
     using Endpoint = std::uint8_t;
