@@ -42,6 +42,8 @@ if(WITH_EMBOT)
                              )
   set_target_properties(${LIBRARY_TARGET_NAME} PROPERTIES VERSION  ${${PROJECT_NAME}_VERSION}
                                                           PUBLIC_HEADER "${${LIBRARY_TARGET_NAME}_HDR}")
+
+  target_compile_features(${LIBRARY_TARGET_NAME} PUBLIC cxx_std_14)
   install(TARGETS ${LIBRARY_TARGET_NAME}
           EXPORT ${PROJECT_NAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
