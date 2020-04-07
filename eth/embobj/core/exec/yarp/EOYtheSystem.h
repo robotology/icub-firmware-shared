@@ -57,8 +57,7 @@ extern "C" {
 // empty-section
   
 
-// - declaration of public user-defined types ------------------------------------------------------------------------- 
-
+// - declaration of public user-defined types -------------------------------------------------------------------------
 
 /** @typedef    typedef struct eOysystem_cfg_t
     @brief      eOysystem_cfg_t contains ...
@@ -82,7 +81,7 @@ typedef struct EOYtheSystem_hid EOYtheSystem;
  **/
 typedef void EOYtheSystemDerived;
 
-
+static double (*yarp_time_now_func_ptr)() = NULL;
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -113,6 +112,7 @@ typedef void EOYtheSystemDerived;
     @wa
  
  **/
+
 extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg, 
                                          const eOmempool_cfg_t *mpoolcfg, 
                                          const eOerrman_cfg_t *errmancfg);

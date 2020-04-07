@@ -33,7 +33,6 @@
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
 #if defined(EMBOBJ_dontuseexternalincludes)
-extern double feat_yarp_time_now(void);
 #else
 #include "FeatureInterface.h"
 #endif
@@ -173,7 +172,7 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
     // initialise y-environment
     
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
-    s_eoy_system.start = feat_yarp_time_now();
+    s_eoy_system.start = yarp_time_now_func_ptr();
 #else
 
 #if   defined(EO_TAILOR_CODE_FOR_LINUX)
@@ -253,7 +252,7 @@ static eOabstime_t s_eoy_sys_abstime_get(void)
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
-    double delta = feat_yarp_time_now() - s_eoy_system.start;
+    double delta = yarp_time_now_func_ptr() - s_eoy_system.start;
 
     delta *= (1e6);
     time = (eOabstime_t)floor(delta);
@@ -289,7 +288,7 @@ static eOnanotime_t s_eoy_sys_nanotime_get(void)
     eOnanotime_t nanotime = 0;
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
-    double delta = feat_yarp_time_now() - s_eoy_system.start;
+    double delta = yarp_time_now_func_ptr() - s_eoy_system.start;
     delta *= 1e9;
     nanotime = (eOnanotime_t)floor(delta);
 #endif
