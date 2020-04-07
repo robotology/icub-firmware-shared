@@ -20,6 +20,11 @@
 #ifndef _EOYMUTEX_H_
 #define _EOYMUTEX_H_
 
+static void* (*ace_mutex_new_func_ptr)(void)=NULL;
+static int8_t (*ace_mutex_take_func_ptr)(void*, uint32_t)=NULL;
+static int8_t (*ace_mutex_release_func_ptr)(void*)=NULL;
+static void (*ace_mutex_delete_func_ptr)(void*)=NULL;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

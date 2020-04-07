@@ -30,10 +30,6 @@
 
 
 #if defined(EMBOBJ_dontuseexternalincludes)
-extern void* ace_mutex_new(void);
-extern int8_t ace_mutex_take(void* m, uint32_t tout_usec);
-extern int8_t ace_mutex_release(void* m);
-extern void ace_mutex_delete(void* m);
 #else
 #include <FeatureInterface.h>   // to see the acemutex_* functions
 #endif
@@ -107,7 +103,7 @@ extern EOYmutex* eoy_mutex_New(void)
     eov_mutex_hid_SetVTABLE(retptr->mutex, s_eoy_mutex_take, s_eoy_mutex_release, s_eoy_mutex_delete); 
     
     // i get a new yarp mutex
-    retptr->acemutex = ace_mutex_new();
+    retptr->acemutex = ace_mutex_new_func_ptr();
 
     // need to check because yarp may return NULL
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != retptr->acemutex), s_eobj_ownname, "eoy_mutex_New(): ace cannot give a mutex", &eo_errman_DescrRuntimeErrorLocal);
@@ -178,7 +174,7 @@ static eOresult_t s_eoy_mutex_take(void *p, eOreltime_t tout)
     EOYmutex *m = (EOYmutex *)p;
     // p it is never NULL because the base function calls checks it before calling this function, then ace will
     // check m->acemutex vs NULL
-    return((eOresult_t)ace_mutex_take(m->acemutex, tout));
+    return((eOresult_t)ace_mutex_take_func_ptr(m->acemutex, tout));
 }
 
 
@@ -187,7 +183,7 @@ static eOresult_t s_eoy_mutex_release(void *p)
     EOYmutex *m = (EOYmutex *)p;
     // p it is never NULL because the base function calls checks it before calling this function, then ace will
     // check m->acemutex vs NULL
-    return((eOresult_t)ace_mutex_release(m->acemutex));
+    return((eOresult_t)ace_mutex_release_func_ptr(m->acemutex));
 }
 
 static eOresult_t s_eoy_mutex_delete(void *p) 
