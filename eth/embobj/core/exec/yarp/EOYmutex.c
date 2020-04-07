@@ -21,6 +21,7 @@
 // - external dependencies
 // --------------------------------------------------------------------------------------------------------------------
 
+#include <assert.h>
 #include "stdlib.h"
 #include "EoCommon.h"
 #include "string.h"
@@ -103,6 +104,7 @@ extern EOYmutex* eoy_mutex_New(void)
     eov_mutex_hid_SetVTABLE(retptr->mutex, s_eoy_mutex_take, s_eoy_mutex_release, s_eoy_mutex_delete); 
     
     // i get a new yarp mutex
+    assert(ace_mutex_new_func_ptr != NULL);
     retptr->acemutex = ace_mutex_new_func_ptr();
 
     // need to check because yarp may return NULL
@@ -174,6 +176,7 @@ static eOresult_t s_eoy_mutex_take(void *p, eOreltime_t tout)
     EOYmutex *m = (EOYmutex *)p;
     // p it is never NULL because the base function calls checks it before calling this function, then ace will
     // check m->acemutex vs NULL
+    assert(ace_mutex_take_func_ptr != NULL);
     return((eOresult_t)ace_mutex_take_func_ptr(m->acemutex, tout));
 }
 
@@ -183,6 +186,7 @@ static eOresult_t s_eoy_mutex_release(void *p)
     EOYmutex *m = (EOYmutex *)p;
     // p it is never NULL because the base function calls checks it before calling this function, then ace will
     // check m->acemutex vs NULL
+    assert(ace_mutex_release_func_ptr != NULL);
     return((eOresult_t)ace_mutex_release_func_ptr(m->acemutex));
 }
 

@@ -24,6 +24,7 @@
 #define EOY_SYS_USE_FEATURE_INTERFACE
 
 
+#include <assert.h>
 #include "stdlib.h"
 #include "EoCommon.h"
 #include "string.h"
@@ -172,6 +173,7 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
     // initialise y-environment
     
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
+    assert(yarp_time_now_func_ptr != NULL);
     s_eoy_system.start = yarp_time_now_func_ptr();
 #else
 
@@ -252,6 +254,7 @@ static eOabstime_t s_eoy_sys_abstime_get(void)
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
+    assert(yarp_time_now_func_ptr != NULL);
     double delta = yarp_time_now_func_ptr() - s_eoy_system.start;
 
     delta *= (1e6);
@@ -288,6 +291,7 @@ static eOnanotime_t s_eoy_sys_nanotime_get(void)
     eOnanotime_t nanotime = 0;
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
+    assert(yarp_time_now_func_ptr != NULL);
     double delta = yarp_time_now_func_ptr() - s_eoy_system.start;
     delta *= 1e9;
     nanotime = (eOnanotime_t)floor(delta);
