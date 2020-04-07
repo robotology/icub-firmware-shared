@@ -78,7 +78,8 @@ if(WITH_EMBOBJ)
   )
   
 
-  set(${LIBRARY_TARGET_NAME}_HDR ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/embOBJporting.h
+  set(${LIBRARY_TARGET_NAME}_HDR ${CMAKE_CURRENT_SOURCE_DIR}/embobj/conf/api.h
+                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/embOBJporting.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOaction.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOaction_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOarray.h
@@ -213,9 +214,14 @@ if(WITH_EMBOBJ)
 
   target_compile_definitions(embobj PUBLIC -DEOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME -DEMBOBJ_dontuseexternalincludes)
 
+  if(BUILD_SHARED_LIBS)
+   target_compile_definitions(embobj PUBLIC EMBOBJ_DLL)
+  endif()
+
   target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${PROJECT_NAME}::canProtocolLib)
 
-  target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/core/core>"
+  target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/conf>"
+                                                              "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/core/core>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/core/exec/yarp>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/icub>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/opcprot>"
@@ -224,6 +230,7 @@ if(WITH_EMBOBJ)
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/protocol/src>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/transport>"
                                                               "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/plus/utils>"
+                                                              "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/conf>"
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/core/core>"
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/core/exec/yarp>"
                                                               "$<INSTALL_INTERFACE:${icub_firmware_shared_INSTALL_INCLUDE_DIR}/${LIBRARY_TARGET_NAME}/plus/comm-v2/icub>"
