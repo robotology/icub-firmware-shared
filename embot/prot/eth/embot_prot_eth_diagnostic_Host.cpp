@@ -94,6 +94,41 @@ struct embot::prot::eth::diagnostic::Host::Impl
 //        return true;
 //    }        
 
+    bool accept(const embot::prot::eth::IPv4 &ipv4, const embot::core::Data &ropframedata, embot::prot::eth::rop::fpOnROPext onrop ,void* orig)
+    {
+        if(!initted)
+        {
+            return false;
+        }
+
+        if(!ropframedata.isvalid())
+        {
+            return false;
+        }
+
+        // load data into the ropframe
+        _ropframeparser->load(ropframedata);        
+
+        // check validity
+        if(false == _ropframeparser->isvalid())
+        {
+            _ropframeparser->unload();
+            return false;
+        }
+
+        // check sequence number ... from each ip address, so ... maybe a map. but not in here
+        
+        uint64_t rxsequencenumber = _ropframeparser->getSequenceNumber();
+        
+        // and parse
+        uint16_t numberofprocessed = 0;
+        if(nullptr == onrop || orig==nullptr)
+        {
+            return false;
+        }
+        bool r = _ropframeparser->parse(ipv4, onrop, numberofprocessed,orig);        
+        return r;
+    }
 
     bool accept(const embot::prot::eth::IPv4 &ipv4, const embot::core::Data &ropframedata, embot::prot::eth::rop::fpOnROP onrop = nullptr)
     {
@@ -172,7 +207,10 @@ bool embot::prot::eth::diagnostic::Host::accept(const embot::prot::eth::IPv4 &ip
     return pImpl->accept(ipv4, ropframedata, onrop);
 }
 
-    
+bool embot::prot::eth::diagnostic::Host::accept(const embot::prot::eth::IPv4 &ipv4, const embot::core::Data &ropframedata, embot::prot::eth::rop::fpOnROPext onrop ,void* orig)
+{
+    return pImpl->accept(ipv4, ropframedata, onrop,orig);
+}
 
 // - end-of-file (leave a blank line after)----------------------------------------------------------------------------
 

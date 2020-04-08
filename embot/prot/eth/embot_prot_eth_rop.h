@@ -206,7 +206,8 @@ namespace embot { namespace prot {  namespace eth { namespace rop {
         bool load(embot::core::Data &stream, uint16_t &consumed);
     };
     
-    using fpOnROP = bool (*)(const embot::prot::eth::IPv4 &ipv4, const embot::prot::eth::rop::Descriptor &rop);
+    using fpOnROPext = bool (*)(const embot::prot::eth::IPv4 &ipv4, const embot::prot::eth::rop::Descriptor &rop,void*);
+    using fpOnROP =    bool (*)(const embot::prot::eth::IPv4 &ipv4, const embot::prot::eth::rop::Descriptor &rop);
              
 
     class Stream 

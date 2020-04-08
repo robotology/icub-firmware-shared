@@ -14,6 +14,8 @@
 #include "embot_core.h"
 #include "embot_core_utils.h"
 #include "embot_prot_eth_rop.h"
+#include <functional>
+
 
 namespace embot { namespace prot { namespace eth { namespace diagnostic {
            
@@ -38,6 +40,7 @@ namespace embot { namespace prot { namespace eth { namespace diagnostic {
 
         bool init(const Config &config);
         bool initted() const;
+        bool accept(const embot::prot::eth::IPv4 &ipv4, const embot::core::Data &ropframedata, embot::prot::eth::rop::fpOnROPext onrop ,void* orig);  
         bool accept(const embot::prot::eth::IPv4 &ipv4, const embot::core::Data &ropframedata, embot::prot::eth::rop::fpOnROP onrop = nullptr);  
     
     private:    
