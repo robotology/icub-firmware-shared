@@ -14,7 +14,6 @@
 #include "embot_core.h"
 #include "embot_core_utils.h"
 #include "embot_prot_eth_rop.h"
-#include <functional>
 
 
 namespace embot { namespace prot { namespace eth { namespace diagnostic {
