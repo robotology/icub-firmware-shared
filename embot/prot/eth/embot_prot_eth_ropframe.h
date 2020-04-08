@@ -145,6 +145,7 @@ namespace embot { namespace prot {  namespace eth { namespace ropframe {
         uint16_t sizeofROPS() const;
         embot::core::Time getTime() const;
         uint64_t getSequenceNumber() const;           
+        bool parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROPext onrop,  uint16_t &numberofprocessed,void* orig); 
         bool parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROP onrop, uint16_t &numberofprocessed);        
                        
     private:    

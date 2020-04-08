@@ -298,6 +298,40 @@ struct coreImpl
         return ref2header->get_seq();         
     }
 
+    bool parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROPext onrop, uint16_t &numberofprocessed,void* orig)
+    {
+        numberofprocessed = 0;
+
+        if(nullptr == onrop)
+        {
+            return false;
+        }
+
+        if(nullptr == ref2header)
+        {
+            return false;
+        }
+
+        size_t nbytes = 0;
+        embot::prot::eth::rop::Descriptor des{};
+        uint8_t *body = ref2body;
+        uint16_t avail = ref2header->sizeofbody; 
+        for(auto i=0; i<ref2header->numberofrops; i++)
+        {
+            uint16_t consumed = 0;
+            embot::core::Data stream(body, avail);
+            if(false == des.load(stream, consumed))
+            {
+                break;
+            }
+            
+            numberofprocessed += consumed;
+            body += consumed;            
+            onrop(ipv4, des,orig);
+        }
+
+        return true;        
+    } 
 
     bool parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROP onrop, uint16_t &numberofprocessed)
     {
@@ -382,6 +416,11 @@ bool embot::prot::eth::ropframe::Parser::unload()
 bool embot::prot::eth::ropframe::Parser::parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROP onrop, uint16_t &numberofprocessed)
 {
     return pImpl->parse(ipv4, onrop, numberofprocessed);
+}
+
+bool embot::prot::eth::ropframe::Parser::parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROPext onrop,  uint16_t &numberofprocessed,void* orig)
+{
+    return pImpl->parse(ipv4, onrop, numberofprocessed,orig);
 }
 
 uint64_t  embot::prot::eth::ropframe::Parser::getSequenceNumber() const
@@ -582,6 +621,11 @@ bool embot::prot::eth::ropframe::ROPframe::format()
 bool embot::prot::eth::ropframe::ROPframe::parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROP onrop, uint16_t &numberofprocessed)
 {
     return pImpl->parse(ipv4, onrop, numberofprocessed);
+}
+
+bool embot::prot::eth::ropframe::ROPframe::parse(const embot::prot::eth::IPv4 &ipv4, embot::prot::eth::rop::fpOnROPext onrop,  uint16_t &numberofprocessed,void* orig);
+{
+    return pImpl->parse(ipv4, onrop, numberofprocessed,orig);
 }
 
 uint64_t  embot::prot::eth::ropframe::ROPframe::getSequenceNumber() const
