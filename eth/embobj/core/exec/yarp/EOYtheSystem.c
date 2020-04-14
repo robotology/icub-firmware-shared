@@ -24,6 +24,7 @@
 #define EOY_SYS_USE_FEATURE_INTERFACE
 
 
+#include <assert.h>
 #include "stdlib.h"
 #include "EoCommon.h"
 #include "string.h"
@@ -33,7 +34,6 @@
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
 #if defined(EMBOBJ_dontuseexternalincludes)
-extern double feat_yarp_time_now(void);
 #else
 #include "FeatureInterface.h"
 #endif
@@ -116,6 +116,12 @@ static int s_timeval_subtract(struct timespec *_result, struct timespec *_x, str
 #endif
 #endif
 
+static double s_dummy_timeget() { static uint64_t t = 0; return ++t * 0.01; }
+static void * s_dummy_mtx_new() { static uint8_t d = 0; return &d; }
+static int8_t s_dummy_mtx_take(void *p, uint32_t t) { return 0; }
+static int8_t s_dummy_mtx_release(void *p) { return 0; }
+static void s_dummy_mtx_delete(void *p) { }
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -125,14 +131,23 @@ static const char s_eobj_ownname[] = "EOYtheSystem";
 
 static const eOysystem_cfg_t s_eoy_sys_defaultconfig = 
 {
-    EO_INIT(nothing)        0
+    EO_INIT(.timeget)        s_dummy_timeget,
+    EO_INIT(.mutexcfg)
+    {
+        EO_INIT(.fp_new)        s_dummy_mtx_new,
+        EO_INIT(.fp_take)       s_dummy_mtx_take,
+        EO_INIT(.fp_release)    s_dummy_mtx_release,
+        EO_INIT(.fp_delete)     s_dummy_mtx_delete
+    }
 };
 
 static EOYtheSystem s_eoy_system = 
 {
-    EO_INIT(thevsys)        NULL,               
-    EO_INIT(user_init_fn)   NULL,
-    EO_INIT(.start)         0
+    EO_INIT(.thevsys)           NULL,
+
+    EO_INIT(.config)            {0},
+    EO_INIT(.user_init_fn)      NULL,
+    EO_INIT(.start)             0
 };
 
 #if     !defined(EOY_SYS_USE_FEATURE_INTERFACE)
@@ -160,7 +175,35 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
     {
         syscfg = &s_eoy_sys_defaultconfig;
     }
-   
+
+    memmove(&s_eoy_system.config, syscfg, sizeof(s_eoy_system.config));
+    // check vs NULL and correct problems beforehands
+    if(NULL == s_eoy_system.config.timeget)
+    {
+        s_eoy_system.config.timeget = s_dummy_timeget;
+    }
+
+    if(NULL == s_eoy_system.config.mutexcfg.fp_new)
+    {
+        s_eoy_system.config.mutexcfg.fp_new = s_dummy_mtx_new;
+    }
+
+    if(NULL == s_eoy_system.config.mutexcfg.fp_take)
+    {
+        s_eoy_system.config.mutexcfg.fp_take = s_dummy_mtx_take;
+    }
+
+    if(NULL == s_eoy_system.config.mutexcfg.fp_release)
+    {
+        s_eoy_system.config.mutexcfg.fp_release = s_dummy_mtx_release;
+    }
+
+    if(NULL == s_eoy_system.config.mutexcfg.fp_delete)
+    {
+        s_eoy_system.config.mutexcfg.fp_delete = s_dummy_mtx_delete;
+    }
+
+
     // mempool and error manager initialised inside here.
     s_eoy_system.thevsys = eov_sys_hid_Initialise(mpoolcfg,
                                                   errmancfg,        // error man 
@@ -173,7 +216,7 @@ extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg,
     // initialise y-environment
     
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
-    s_eoy_system.start = feat_yarp_time_now();
+    s_eoy_system.start = s_eoy_system.config.timeget();
 #else
 
 #if   defined(EO_TAILOR_CODE_FOR_LINUX)
@@ -215,7 +258,11 @@ extern eOabstime_t eoy_sys_abstime_get(EOYtheSystem *p)
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------
-// empty-section
+
+extern const eOysystem_mutex_cfg_t * eoy_sys_hid_mutex_cfg_get(EOYtheSystem *p)
+{
+    return &s_eoy_system.config.mutexcfg;
+}
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -253,7 +300,7 @@ static eOabstime_t s_eoy_sys_abstime_get(void)
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
 
-    double delta = feat_yarp_time_now() - s_eoy_system.start;
+    double delta = s_eoy_system.config.timeget() - s_eoy_system.start;
 
     delta *= (1e6);
     time = (eOabstime_t)floor(delta);
@@ -289,7 +336,7 @@ static eOnanotime_t s_eoy_sys_nanotime_get(void)
     eOnanotime_t nanotime = 0;
 
 #if     defined(EOY_SYS_USE_FEATURE_INTERFACE)
-    double delta = feat_yarp_time_now() - s_eoy_system.start;
+    double delta = s_eoy_system.config.timeget() - s_eoy_system.start;
     delta *= 1e9;
     nanotime = (eOnanotime_t)floor(delta);
 #endif

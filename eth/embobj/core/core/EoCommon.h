@@ -466,7 +466,9 @@ typedef     eOresult_t  (*eOres_fp_uint8_uint8_voidp_uint16_t)      (uint8_t, ui
 typedef     int8_t      (*eOint8_fp_uint8_cvoidp_t)                 (uint8_t, const void*);
 typedef     int8_t      (*eOint8_fp_uint8_t)                        (uint8_t);
 typedef     eObool_t    (*eObool_fp_uint32_t)                       (uint32_t);
-
+typedef     double      (*eOdouble_fp_void_t)                       (void);
+typedef     int8_t      (*eOint8_fp_voidp_uint32_t)                 (void*, uint32_t);
+typedef     int8_t      (*eOint8_fp_voidp)                          (void*);
 
 
 

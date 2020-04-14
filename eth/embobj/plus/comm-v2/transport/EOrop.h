@@ -158,9 +158,9 @@ typedef void (*eOvoid_fp_cnvp_cropdesp_t)                   (const EOnv*, const 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOropctrl_t eok_ropctrl_basic; // no time, no sign, no conf request, no time request, ... nothing
+extern EMBOBJ_API const eOropctrl_t eok_ropctrl_basic; // no time, no sign, no conf request, no time request, ... nothing
 
-extern const eOropdescriptor_t eok_ropdesc_basic; // no time, no sign, no conf request, no time request, ... nothing
+extern EMBOBJ_API const eOropdescriptor_t eok_ropdesc_basic; // no time, no sign, no conf request, no time request, ... nothing
 
 // - declaration of extern public functions ---------------------------------------------------------------------------
  

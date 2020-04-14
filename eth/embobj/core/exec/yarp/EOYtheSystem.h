@@ -57,15 +57,23 @@ extern "C" {
 // empty-section
   
 
-// - declaration of public user-defined types ------------------------------------------------------------------------- 
+// - declaration of public user-defined types -------------------------------------------------------------------------
 
+typedef struct
+{
+    eOvoidp_fp_void_t           fp_new;
+    eOint8_fp_voidp_uint32_t    fp_take;
+    eOint8_fp_voidp             fp_release;
+    eOvoid_fp_voidp_t           fp_delete;
+} eOysystem_mutex_cfg_t;
 
 /** @typedef    typedef struct eOysystem_cfg_t
     @brief      eOysystem_cfg_t contains ...
  **/  
 typedef struct
 {
-    uint32_t                    nothing;
+    eOdouble_fp_void_t      timeget;
+    eOysystem_mutex_cfg_t   mutexcfg;
 } eOysystem_cfg_t;
 
 
@@ -81,7 +89,6 @@ typedef struct EOYtheSystem_hid EOYtheSystem;
     @brief      EOYtheSystemDerived is used to implement polymorphism in the objects derived from EOYtheSystem
  **/
 typedef void EOYtheSystemDerived;
-
 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -113,6 +120,7 @@ typedef void EOYtheSystemDerived;
     @wa
  
  **/
+
 extern EOYtheSystem * eoy_sys_Initialise(const eOysystem_cfg_t *syscfg, 
                                          const eOmempool_cfg_t *mpoolcfg, 
                                          const eOerrman_cfg_t *errmancfg);

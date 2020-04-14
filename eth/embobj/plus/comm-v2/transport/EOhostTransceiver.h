@@ -91,7 +91,7 @@ typedef struct EOhostTransceiver_hid EOhostTransceiver;
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 
-extern const eOhosttransceiver_cfg_t eo_hosttransceiver_cfg_default; // = { ... };
+extern EMBOBJ_API const eOhosttransceiver_cfg_t eo_hosttransceiver_cfg_default; // = { ... };
 
 
 // - declaration of extern public functions ---------------------------------------------------------------------------

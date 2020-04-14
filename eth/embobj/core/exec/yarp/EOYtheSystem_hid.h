@@ -62,6 +62,7 @@ struct EOYtheSystem_hid
     // base object
     EOVtheSystem                *thevsys;
 
+    eOysystem_cfg_t             config;
     eOvoid_fp_void_t            user_init_fn;
     double                      start;      // using yarp time, which is storead as a double at its maximum resolution (sec and usec)
 }; 
@@ -70,6 +71,7 @@ struct EOYtheSystem_hid
 // - declaration of extern hidden functions ---------------------------------------------------------------------------
 
 
+extern const eOysystem_mutex_cfg_t * eoy_sys_hid_mutex_cfg_get(EOYtheSystem *p);
 
 
 

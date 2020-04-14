@@ -213,6 +213,10 @@ if(WITH_EMBOBJ)
 
   target_compile_definitions(embobj PUBLIC -DEOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME -DEMBOBJ_dontuseexternalincludes)
 
+  if(BUILD_SHARED_LIBS)
+   target_compile_definitions(embobj PUBLIC EMBOBJ_DLL)
+  endif()
+
   target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${PROJECT_NAME}::canProtocolLib)
 
   target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY_TARGET_NAME}/core/core>"
