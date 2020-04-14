@@ -78,8 +78,7 @@ if(WITH_EMBOBJ)
   )
   
 
-  set(${LIBRARY_TARGET_NAME}_HDR ${CMAKE_CURRENT_SOURCE_DIR}/embobj/conf/api.h
-                                 ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/embOBJporting.h
+  set(${LIBRARY_TARGET_NAME}_HDR ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/embOBJporting.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOaction.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOaction_hid.h
                                  ${CMAKE_CURRENT_SOURCE_DIR}/embobj/core/core/EOarray.h
