@@ -43,7 +43,6 @@ extern "C" {
 #include "EOtransceiver.h"
 #include "EOVmutex.h"
 #include "EOropframe.h"
-#include "api.h"
 
 
 

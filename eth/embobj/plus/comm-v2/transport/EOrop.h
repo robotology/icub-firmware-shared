@@ -43,7 +43,6 @@ extern "C" {
 
 #include "EoCommon.h"
 #include "EOnv.h"
-#include "api.h"
 
 
 // - public #define  --------------------------------------------------------------------------------------------------

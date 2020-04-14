@@ -45,7 +45,6 @@ extern "C" {
 #include "EOconstvector.h"
 #include "EOVmutex.h"
 #include "EoProtocol.h"
-#include "api.h"
 
 // - public #define  --------------------------------------------------------------------------------------------------
 // empty-section
