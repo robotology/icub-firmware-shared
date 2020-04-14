@@ -59,12 +59,21 @@ extern "C" {
 
 // - declaration of public user-defined types -------------------------------------------------------------------------
 
+typedef struct
+{
+    eOvoidp_fp_void_t           fp_new;
+    eOint8_fp_voidp_uint32_t    fp_take;
+    eOint8_fp_voidp             fp_release;
+    eOvoid_fp_voidp_t           fp_delete;
+} eOysystem_mutex_cfg_t;
+
 /** @typedef    typedef struct eOysystem_cfg_t
     @brief      eOysystem_cfg_t contains ...
  **/  
 typedef struct
 {
-    uint32_t                    nothing;
+    eOdouble_fp_void_t      timeget;
+    eOysystem_mutex_cfg_t   mutexcfg;
 } eOysystem_cfg_t;
 
 
@@ -81,7 +90,6 @@ typedef struct EOYtheSystem_hid EOYtheSystem;
  **/
 typedef void EOYtheSystemDerived;
 
-static double (*yarp_time_now_func_ptr)() = NULL;
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

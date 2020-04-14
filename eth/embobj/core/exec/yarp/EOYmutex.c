@@ -29,6 +29,7 @@
 #include "EOtheErrorManager.h"
 #include "EOVmutex_hid.h"
 
+#include "EOYtheSystem_hid.h"
 
 #if defined(EMBOBJ_dontuseexternalincludes)
 #else
@@ -102,10 +103,9 @@ extern EOYmutex* eoy_mutex_New(void)
 
     // init its vtable
     eov_mutex_hid_SetVTABLE(retptr->mutex, s_eoy_mutex_take, s_eoy_mutex_release, s_eoy_mutex_delete); 
-    
+
     // i get a new yarp mutex
-    assert(ace_mutex_new_func_ptr != NULL);
-    retptr->acemutex = ace_mutex_new_func_ptr();
+    retptr->acemutex = eoy_sys_hid_mutex_cfg_get(eoy_sys_GetHandle())->fp_new(); // guaranteed to be non-NULL fptr
 
     // need to check because yarp may return NULL
     eo_errman_Assert(eo_errman_GetHandle(), (NULL != retptr->acemutex), s_eobj_ownname, "eoy_mutex_New(): ace cannot give a mutex", &eo_errman_DescrRuntimeErrorLocal);
@@ -126,8 +126,7 @@ extern void eoy_mutex_Delete(EOYmutex *m)
         return;
     }
     
-    //#warning -> marco.accame: must uncomment the following but only after ace_mutex_delete() is implemented
-    //ace_mutex_delete(m->acemutex);
+    eoy_sys_hid_mutex_cfg_get(eoy_sys_GetHandle())->fp_delete(m->acemutex); // guaranteed to be non-NULL fptr
     
     eov_mutex_hid_Delete(m->mutex);
     
@@ -175,9 +174,11 @@ static eOresult_t s_eoy_mutex_take(void *p, eOreltime_t tout)
 {
     EOYmutex *m = (EOYmutex *)p;
     // p it is never NULL because the base function calls checks it before calling this function, then ace will
-    // check m->acemutex vs NULL
-    assert(ace_mutex_take_func_ptr != NULL);
-    return((eOresult_t)ace_mutex_take_func_ptr(m->acemutex, tout));
+    if(NULL == m->acemutex)
+    {
+        return eores_NOK_nullpointer;
+    }
+    return eoy_sys_hid_mutex_cfg_get(eoy_sys_GetHandle())->fp_take(m->acemutex, tout); // guaranteed to be non-NULL fptr
 }
 
 
@@ -185,9 +186,11 @@ static eOresult_t s_eoy_mutex_release(void *p)
 {
     EOYmutex *m = (EOYmutex *)p;
     // p it is never NULL because the base function calls checks it before calling this function, then ace will
-    // check m->acemutex vs NULL
-    assert(ace_mutex_release_func_ptr != NULL);
-    return((eOresult_t)ace_mutex_release_func_ptr(m->acemutex));
+    if(NULL == m->acemutex)
+    {
+        return eores_NOK_nullpointer;
+    }
+    return eoy_sys_hid_mutex_cfg_get(eoy_sys_GetHandle())->fp_release(m->acemutex); // guaranteed to be non-NULL fptr
 }
 
 static eOresult_t s_eoy_mutex_delete(void *p) 
