@@ -308,18 +308,19 @@ typedef struct                      // size is 1+7 = 8 bytes
 {
     eOenum08_t                      go2state;       /**< use eOmn_appl_state_t */
     uint8_t                         filler07[7];
-} eOmn_appl_cmmnds_t;               //EO_VERIFYsizeof(eOmn_appl_cmmnds_t, 8)
+    eOabstime_t                     timeset;
+} eOmn_appl_cmmnds_t;               EO_VERIFYsizeof(eOmn_appl_cmmnds_t, 16)
 
 
 /** @typedef    typedef struct eOmn_appl_t;
     @brief      used to represent the application with config, status, commands
  **/
-typedef struct                      // size is 8+32+8 = 48 bytes
+typedef struct                      // size is 16+32+16 = 48 bytes
 {
     eOmn_appl_config_t              config;
     eOmn_appl_status_t              status;
     eOmn_appl_cmmnds_t              cmmnds;
-} eOmn_appl_t;                      //EO_VERIFYsizeof(eOmn_appl_t, 48)
+} eOmn_appl_t;                      EO_VERIFYsizeof(eOmn_appl_t, 64)
 
 
 // -- the definition of info entity

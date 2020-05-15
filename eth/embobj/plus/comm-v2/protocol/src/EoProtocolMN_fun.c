@@ -207,6 +207,12 @@ EO_weak extern void eoprot_fun_INIT_mn_appl_cmmnds_go2state(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_mn_appl_cmmnds_go2state(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
+#if !defined(OVERRIDE_eoprot_fun_INIT_mn_appl_cmmnds_timeset)
+EO_weak extern void eoprot_fun_INIT_mn_appl_cmmnds_timeset(const EOnv* nv) {}
+#endif
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mn_appl_cmmnds_timeset)
+EO_weak extern void eoprot_fun_UPDT_mn_appl_cmmnds_timeset(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#endif    
     
 // -- info
     
