@@ -304,6 +304,20 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_go2state =
 #endif
 };
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mn_rom_descriptor_appl_cmmnds_timeset =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mn_rom_appl_defaultvalue.cmmnds.timeset),
+    EO_INIT(.rwmode)    eoprot_rwm_mn_appl_cmmnds_timeset,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mn_rom_appl_defaultvalue.cmmnds.timeset,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mn_appl_cmmnds_timeset,
+    EO_INIT(.update)    eoprot_fun_UPDT_mn_appl_cmmnds_timeset
+#endif
+};
 
 // - descriptors for the variables of a info
 
@@ -470,7 +484,8 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mn_rom_appl_descriptors[] =
     &eoprot_mn_rom_descriptor_appl_config,
     &eoprot_mn_rom_descriptor_appl_config_txratedivider,
     &eoprot_mn_rom_descriptor_appl_status,
-    &eoprot_mn_rom_descriptor_appl_cmmnds_go2state     
+    &eoprot_mn_rom_descriptor_appl_cmmnds_go2state,
+    &eoprot_mn_rom_descriptor_appl_cmmnds_timeset   
 };  EO_VERIFYsizeof(s_eoprot_mn_rom_appl_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mn_appl_numberof))
 
 
@@ -559,7 +574,8 @@ static const char * const s_eoprot_mn_strings_tags_appl[] =
     "eoprot_tag_mn_appl_config",
     "eoprot_tag_mn_appl_config_txratedivider",
     "eoprot_tag_mn_appl_status",
-    "eoprot_tag_mn_appl_cmmnds_go2state"
+    "eoprot_tag_mn_appl_cmmnds_go2state",
+    "eoprot_tag_mn_appl_cmmnds_timeset"
 };  EO_VERIFYsizeof(s_eoprot_mn_strings_tags_appl, eoprot_tags_mn_appl_numberof*sizeof(const char*)) 
 
 
