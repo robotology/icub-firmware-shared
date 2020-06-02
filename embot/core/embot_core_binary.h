@@ -95,6 +95,12 @@ namespace embot { namespace core { namespace binary { namespace bit {
 
 namespace embot { namespace core { namespace binary { namespace mask {
     
+//    template<typename T>
+//    constexpr void place(T &dst, const T val, const uint8_t shift, const uint8_t msk)
+//    {
+//        dst |= (msk << shift);
+//    }    
+    
     // it creates a mask which as `1` value in positions specified by posofonbits
     template<typename M, typename T>
     constexpr M generate(const std::initializer_list<T> &posofonbits)
@@ -142,6 +148,17 @@ namespace embot { namespace core { namespace binary { namespace mask {
         return (1 << static_cast<M>(t));
     } 
       
+    template<typename M>
+    constexpr M place(const M value, const uint8_t shift, const M msk)
+    {
+        return ((value & msk) << shift);
+    } 
+    
+    template<typename M>
+    constexpr M extract(const M value, const uint8_t shift, const M msk)
+    {
+        return ((value >> shift) && msk);
+    }
     
 } } } } // namespace embot { namespace core { namespace binary { namespace mask
 
