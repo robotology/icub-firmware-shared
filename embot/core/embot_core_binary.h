@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <cstring>
 #include <initializer_list>
+#include <climits>
 
 #include "embot_core.h"
 
@@ -101,7 +102,7 @@ namespace embot { namespace core { namespace binary { namespace mask {
 //        dst |= (msk << shift);
 //    }    
     
-    // it creates a mask which as `1` value in positions specified by posofonbits
+    // it creates a mask which has `1` value in positions specified by posofonbits
     template<typename M, typename T>
     constexpr M generate(const std::initializer_list<T> &posofonbits)
     {
@@ -109,7 +110,7 @@ namespace embot { namespace core { namespace binary { namespace mask {
         for(auto a : posofonbits) embot::core::binary::bit::set(mask, a);
         return mask;
     } 
-         
+             
     // it forces to 1 the bits in value which are selected by msk (where msk has bits of value 1). the other bits of value stay unchanged.
     template<typename T>
     constexpr void set(T &value, const T msk, const uint8_t shift = 0)
@@ -149,16 +150,22 @@ namespace embot { namespace core { namespace binary { namespace mask {
     } 
       
     template<typename M>
-    constexpr M place(const M value, const uint8_t shift, const M msk)
+    constexpr M place(const M value, const M msk, const uint8_t shift = 0)
     {
         return ((value & msk) << shift);
     } 
     
     template<typename M>
-    constexpr M extract(const M value, const uint8_t shift, const M msk)
+    constexpr M extract(const M value, const M msk, const uint8_t shift = 0)
     {
-        return ((value >> shift) && msk);
+        return ((value >> shift) & msk);
     }
+    
+    template<typename M>
+    constexpr M ones(const uint8_t num)
+    {
+        return static_cast<M>(-(num != 0)) & (static_cast<M>(-1) >> ((sizeof(M) * CHAR_BIT) - num));
+    }        
     
 } } } } // namespace embot { namespace core { namespace binary { namespace mask
 
