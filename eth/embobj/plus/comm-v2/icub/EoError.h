@@ -172,10 +172,11 @@ typedef enum
     eoerror_value_SYS_canservices_board_notfound            = 55,
     eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56,
     eoerror_value_SYS_canservices_boards_lostcontact        = 57,
-    eoerror_value_SYS_canservices_boards_retrievedcontact   = 58
+    eoerror_value_SYS_canservices_boards_retrievedcontact   = 58,
+    eoerror_value_SYS_applicationstarting                   = 59
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 59 };
+enum { eoerror_value_SYS_numberof = 60 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
