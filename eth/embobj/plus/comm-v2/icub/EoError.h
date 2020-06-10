@@ -173,7 +173,7 @@ typedef enum
     eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56,
     eoerror_value_SYS_canservices_boards_lostcontact        = 57,
     eoerror_value_SYS_canservices_boards_retrievedcontact   = 58,
-    eoerror_value_SYS_applicationstarting                   = 59
+    eoerror_value_SYS_bootstrapping                         = 59
 } eOerror_value_SYS_t;
 
 enum { eoerror_value_SYS_numberof = 60 };
