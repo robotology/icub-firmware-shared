@@ -42,6 +42,12 @@ namespace embot { namespace core {
     
     bool init(const Config &config)
     {
+        
+        if(true == initialised())
+        {
+            return true;
+        }
+        
         if(false == config.isvalid())
         {
             return false;
@@ -66,7 +72,19 @@ namespace embot { namespace core {
     embot::core::Time now()
     {
         return s_timenow();
-    }        
+    } 
+
+    void delay(embot::core::relTime t)
+    {
+        embot::core::Time end = now() + t;
+        for(;;)
+        {
+            if(now() >= end)
+            {
+                return;
+            }
+        }
+    }    
     
 }} // namespace embot { namespace core {
 

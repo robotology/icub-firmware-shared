@@ -172,7 +172,8 @@ namespace embot { namespace core {
     bool init(const Config &config);
 
     embot::core::Time now();
-     
+    
+    void delay(embot::core::relTime t);     
     
 }} // namespace embot { namespace core {
 
