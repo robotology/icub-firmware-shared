@@ -36,7 +36,9 @@ So far, the repository `icub-firmware-shared` is used to compile only on the pc1
     
 At this point a run of `ccmake ../` in `icub-main` build folder will be able to find the suitable dependencies for `icub-firmware-shared`.
     
-    
-    
-    
-    
+## Maintainers
+This repository is maintained by:
+
+| | |
+|:---:|:---:|
+| [<img src="https://github.com/marcoaccame.png" width="40">](https://github.com/marcoaccame) | [@marcoaccame](https://github.com/marcoaccame) |
