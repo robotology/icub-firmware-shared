@@ -34,6 +34,7 @@ namespace embot { namespace core {
     
     static bool s_initted = false;    
     static embot::core::fpGetU64 s_timenow = s_faketimenow;
+    static embot::core::fpPrint s_print = nullptr;
            
     bool initialised() 
     {
@@ -63,6 +64,8 @@ namespace embot { namespace core {
             s_timenow = config.timeconfig.get;
         }
         
+        s_print = config.printconfig.fpprint;
+        
         s_initted = true;
         
         return true;
@@ -84,7 +87,16 @@ namespace embot { namespace core {
                 return;
             }
         }
-    }    
+    } 
+
+    int print(const std::string &str)
+    {
+        if(nullptr == s_print)
+        {
+            return 0;
+        }
+        return s_print(str);
+    }        
     
 }} // namespace embot { namespace core {
 

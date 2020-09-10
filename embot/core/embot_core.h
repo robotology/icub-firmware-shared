@@ -95,6 +95,7 @@ namespace embot { namespace core {
     using fpI08ParU32   = std::int8_t (*)(std::uint32_t);
     using fpWorker      = void (*)(void);
     using fpCaller      = void (*)(void *);
+    using fpPrint       = int (*)(const std::string &str);
     
     // useful converter for enum class
     template<typename E>         // see C++14 [Meyers, pag. 73]
@@ -155,14 +156,25 @@ namespace embot { namespace core {
         constexpr TimeConfig() = default;
         constexpr TimeConfig(embot::core::fpWorker _init, embot::core::fpGetU64 _get) : init(_init), get(_get) {}
         bool isvalid() const { if(nullptr != get) { return true; } else { return false; } }
-    };    
+    };  
+
+
+    struct PrintConfig
+    {
+        fpPrint fpprint {nullptr};
+        
+        PrintConfig() = default;
+        constexpr PrintConfig(fpPrint p) : fpprint(p) {}
+        bool isvalid() const { if(nullptr != fpprint) { return true; } else { return false; } }
+    };        
     
     struct Config
     {         
-        TimeConfig timeconfig {};         
+        TimeConfig timeconfig {}; 
+        PrintConfig printconfig {};           
         
         constexpr Config() = default;
-        constexpr Config(const TimeConfig &tc) : timeconfig(tc.init, tc.get) {}
+        constexpr Config(const TimeConfig &tc, const PrintConfig &pc = nullptr) : timeconfig(tc.init, tc.get), printconfig(pc) {}
         bool isvalid() const { return timeconfig.isvalid(); }
     }; 
        
@@ -173,7 +185,9 @@ namespace embot { namespace core {
 
     embot::core::Time now();
     
-    void delay(embot::core::relTime t);     
+    void delay(embot::core::relTime t);
+
+    int print(const std::string &str);
     
 }} // namespace embot { namespace core {
 
