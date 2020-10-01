@@ -37,6 +37,7 @@ extern "C" {
 
 #include "EOVtask.h"
 #include "EOtheMemoryPool.h"
+#include "EOtheErrorManager.h"
 
 
 

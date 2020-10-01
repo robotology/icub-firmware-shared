@@ -26,22 +26,22 @@ namespace embot { namespace prot { namespace eth {
         uint32_t v {0};
         IPv4() = default;
         constexpr IPv4(uint32_t i) : v(i) {}
-        constexpr IPv4(uint8_t a, uint8_t b, uint8_t c, uint8_t d) : v((a<<24)|(b<<16)|(c<<8)|(d)) {}
+        constexpr IPv4(uint8_t a, uint8_t b, uint8_t c, uint8_t d) : v((d<<24)|(c<<16)|(b<<8)|(a)) {}
         constexpr IPv4(const char *str) { 
             v = 0;
             if(nullptr == str) { return; }
             uint8_t a{0}; uint8_t b{0}; uint8_t c{0}; uint8_t d{0}; 
             if(4 == std::sscanf(str, "%hhi.%hhi.%hhi.%hhi", &a, &b, &c, &d)) 
             {
-                v = ((a<<24)|(b<<16)|(c<<8)|(d)); 
+                v = ((d<<24)|(c<<16)|(b<<8)|(a)); 
             }    
         }
         constexpr char * tostring(char *s, size_t size) const { 
-            if(nullptr != s) { std::snprintf(s, size, "%d.%d.%d.%d", v>>24, (v>>16)&0xff, (v>>8)&0xff, (v)&0xff); }
+            if(nullptr != s) { std::snprintf(s, size, "%d.%d.%d.%d", (v)&0xff, (v>>8)&0xff, (v>>16)&0xff, v>>24); }
             return s;
         }
         std::string to_string() const {
-            return std::string(std::to_string(v>>24) + "." + std::to_string((v>>16)&0xff) + "." + std::to_string((v>>8)&0xff) + "." + std::to_string((v)&0xff));
+            return std::string(std::to_string((v)&0xff) + "." + std::to_string((v>>8)&0xff) + "." + std::to_string((v>>16)&0xff) + "." + std::to_string(v>>24));
         }
     };
 
