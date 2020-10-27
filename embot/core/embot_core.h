@@ -184,8 +184,8 @@ namespace embot { namespace core {
     bool init(const Config &config);
 
     embot::core::Time now();
-    
-    void delay(embot::core::relTime t);
+        
+    void wait(embot::core::relTime t);
 
     int print(const std::string &str);
     

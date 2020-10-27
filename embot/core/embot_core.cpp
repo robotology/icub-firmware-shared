@@ -76,8 +76,8 @@ namespace embot { namespace core {
     {
         return s_timenow();
     } 
-
-    void delay(embot::core::relTime t)
+    
+    void wait(embot::core::relTime t)
     {
         embot::core::Time end = now() + t;
         for(;;)
@@ -87,7 +87,7 @@ namespace embot { namespace core {
                 return;
             }
         }
-    } 
+    }
 
     int print(const std::string &str)
     {
