@@ -307,8 +307,17 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     
     {eoerror_value_CFG_mc_mc2pluspsc_ok, "CFG: EOtheMotionController can correctly configure mc2pluspsc-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc2pluspsc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc2pluspsc. see other messages for more details"},
-    {eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs, "CFG: EOtheMotionController cannot be configured. verification of pscs for mc2pluspsc fails. see other messages for more details"}
+    {eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs, "CFG: EOtheMotionController cannot be configured. verification of pscs for mc2pluspsc fails. see other messages for more details"},
     
+    {eoerror_value_CFG_inertials_failed_notsupported, "CFG: EOtheInertials cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_inertials3_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_temperatures_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_mais_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_strain_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_skin_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_psc_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_mc_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_encoders_failed_notsupported, "CFG: EOtheEncoderReader cannot be configured. This board does not support this service."}
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
