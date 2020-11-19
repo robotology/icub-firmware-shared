@@ -282,22 +282,18 @@ typedef enum
     eoerror_value_CFG_skin_ok                           = 5,
     eoerror_value_CFG_skin_failed_toomanyboards         = 6,
     eoerror_value_CFG_skin_failed_candiscovery          = 7,
-    
-    
+       
     eoerror_value_CFG_strain_ok                         = 8,
     eoerror_value_CFG_strain_failed_candiscovery        = 9,
-
 
     eoerror_value_CFG_mais_ok                           = 10,
     eoerror_value_CFG_mais_failed_candiscovery          = 11,
     eoerror_value_CFG_mais_failed_verify_because_active = 12,
-    
-    
+       
     eoerror_value_CFG_mc_foc_ok                         = 13,
     eoerror_value_CFG_mc_foc_failed_candiscovery_of_foc = 14,
     eoerror_value_CFG_mc_foc_failed_encoders_verify     = 15,
-    
-    
+        
     eoerror_value_CFG_mc_mc4_ok                         = 16,
     eoerror_value_CFG_mc_mc4_failed_candiscovery_of_mc4 = 17,
     eoerror_value_CFG_mc_mc4_failed_mais_verify         = 18,
@@ -307,7 +303,6 @@ typedef enum
     
     eoerror_value_CFG_encoders_ok                       = 21,
     eoerror_value_CFG_encoders_failed_verify            = 22,
-
 
     eoerror_value_CFG_inertials_ok                      = 23,
     eoerror_value_CFG_inertials_failed_toomanyboards    = 24,
@@ -364,11 +359,20 @@ typedef enum
     
     eoerror_value_CFG_mc_mc2pluspsc_ok                  = 65,
     eoerror_value_CFG_mc_mc2pluspsc_failed_encoders_verify = 66, 
-    eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs = 67
+    eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs = 67,
     
+    eoerror_value_CFG_inertials_failed_notsupported = 68,
+    eoerror_value_CFG_inertials3_failed_notsupported = 69,
+    eoerror_value_CFG_temperatures_failed_notsupported = 70,
+    eoerror_value_CFG_mais_failed_notsupported = 71,
+    eoerror_value_CFG_strain_failed_notsupported = 72,
+    eoerror_value_CFG_skin_failed_notsupported = 73,
+    eoerror_value_CFG_psc_failed_notsupported = 74,
+    eoerror_value_CFG_mc_failed_notsupported = 75,
+    eoerror_value_CFG_encoders_failed_notsupported = 76
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 68 };
+enum { eoerror_value_CFG_numberof = 77 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
