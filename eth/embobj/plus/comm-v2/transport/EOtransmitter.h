@@ -137,6 +137,8 @@ extern eOresult_t eo_transmitter_NumberofOutROPs(EOtransmitter *p, uint16_t *num
  **/
 extern eOresult_t eo_transmitter_outpacket_Prepare(EOtransmitter *p, uint16_t *numberofrops, eOtransmitter_ropsnumber_t *ropsnum);
 
+extern eOresult_t eo_transmitter_outpacket_SetRemoteAddress(EOtransmitter *p, eOipv4addr_t remaddr, eOipv4port_t remport);
+
 
 /** @fn         extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outpkt)
     @brief      returns a pointer to the out packet. it is well formed only if eo_transmitter_outpacket_Prepare() 
