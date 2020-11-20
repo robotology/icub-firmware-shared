@@ -1185,6 +1185,26 @@ extern eOresult_t eo_transmitter_TXdecimation_Set(EOtransmitter *p, uint8_t repl
     return(eores_NOK_nullpointer);       
 }
 
+extern eOresult_t eo_transmitter_outpacket_SetRemoteAddress(EOtransmitter *p, eOipv4addr_t remaddr, eOipv4port_t remport)
+{
+    if(NULL == p) 
+    {
+        return(eores_NOK_generic);
+    }
+    eOipv4addr_t ra = 0;
+    eOipv4port_t rp = 0;
+    eo_packet_Addressing_Get(p->txpacket, &ra, &rp);
+        
+    if((ra != remaddr) || (rp != remport))
+    {
+        p->ipv4addr = remaddr;
+        p->ipv4port = remport;
+        eo_packet_Addressing_Set(p->txpacket, remaddr, remport);
+    }
+    
+    return(eores_OK);
+}
+
 extern eOresult_t eo_transmitter_outpacket_Get(EOtransmitter *p, EOpacket **outpkt)
 {
     uint16_t size;

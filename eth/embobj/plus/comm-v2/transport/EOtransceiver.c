@@ -314,15 +314,18 @@ extern eOresult_t eo_transceiver_Receive(EOtransceiver *p, EOpacket *pkt, uint16
     
     // remember: we process a packet only if the source ipaddress is the same as in p->cfg.remipv4addr. the source port can be any.
     eo_packet_Addressing_Get(pkt, &remaddr, &remport);
-    if(remaddr != p->cfg.remipv4addr)
-    {
-        return(eores_NOK_generic);
-    }
+    
+    eo_transmitter_outpacket_SetRemoteAddress(p->transmitter, remaddr,  remport);
+    
+//    if(remaddr != p->cfg.remipv4addr)
+//    {
+//        return(eores_NOK_generic);
+//    }
     
     if(eores_OK != (res = eo_receiver_Process(p->receiver, pkt, numberofrops, &thereisareply, txtime)))
     {
         return(res);
-    }  
+    }      
 
     if(eobool_true == thereisareply)
     {
