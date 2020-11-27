@@ -434,12 +434,13 @@ typedef enum
     eomn_serv_category_inertials3       = 5,
     eomn_serv_category_temperatures     = 6,
     eomn_serv_category_psc              = 7,
+    eomn_serv_category_pos              = 8,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-enum { eomn_serv_categories_numberof = 8 };
+enum { eomn_serv_categories_numberof = 9 };
 
 typedef enum 
 {
@@ -457,11 +458,14 @@ typedef enum
     eomn_serv_MC_mc2plus        = 11,
     eomn_serv_MC_mc2pluspsc     = 12,
     eomn_serv_AS_psc            = 13,
+    eomn_serv_AS_pos            = 14,
+    eomn_serv_MC_mc4plusfaps    = 15,
+    eomn_serv_MC_mc4pluspmc     = 16,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 14 };
+enum { eomn_serv_types_numberof = 17 };
 
 
 
@@ -508,14 +512,23 @@ typedef struct
     eOas_psc_canLocationsInfo_t         boardInfo;
 } eOmn_serv_config_data_as_psc_t;       EO_VERIFYsizeof(eOmn_serv_config_data_as_psc_t, 8)
 
+
+typedef struct
+{   
+    eObrd_version_t                     version;
+    eOas_pos_canLocationsInfo_t         boardInfo;
+} eOmn_serv_config_data_as_pos_t;       EO_VERIFYsizeof(eOmn_serv_config_data_as_pos_t, 6)
+
+
 typedef union
-{   // max(6, 6, 44, 108, 156, 8)
+{   // max(6, 6, 44, 108, 156, 8, 6)
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;
     eOmn_serv_config_data_as_inertial_t     inertial;  
     eOmn_serv_config_data_as_inertial3_t    inertial3;
     eOmn_serv_config_data_as_psc_t          psc;
+    eOmn_serv_config_data_as_pos_t          pos;
 } eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
 
 
@@ -691,20 +704,21 @@ typedef struct
 
 
 typedef struct
-{   // 8 + 32
-    uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t  
+{   // 32 + 32
+    uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
+    uint8_t                                 filler[7];    
     eOmn_service_command_result_t           commandresult;
-} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 40) 
+} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 48) 
 
 
 /** @typedef    typedef struct eOmn_service_t;
     @brief      used to represent the info with config, status
  **/
 typedef struct                      
-{   // 40+332=372    
+{   // 48+336=372    
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
-} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 376)  
+} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 384)  
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------

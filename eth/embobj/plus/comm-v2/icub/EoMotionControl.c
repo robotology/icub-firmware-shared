@@ -91,6 +91,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_encoders[] =
     {"spichainof3", "eomc_enc_spichainof3", eomc_enc_spichainof3},    
     {"amo", "eomc_enc_amo", eomc_enc_amo},
     {"psc", "eomc_enc_psc", eomc_enc_psc},
+    {"pos", "eomc_enc_pos", eomc_enc_pos},
 
     {"none", "eomc_enc_none", eomc_enc_none},
     {"unknown", "eomc_enc_unknown", eomc_enc_unknown}

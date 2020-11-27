@@ -105,6 +105,9 @@ static const eOas_inertial3_t eoprot_as_rom_inertial3_defaultvalue = { 0 };
 // - default value of a psc
 static const eOas_psc_t eoprot_as_rom_psc_defaultvalue = { 0 };
 
+// - default value of a pos
+static const eOas_psc_t eoprot_as_rom_pos_defaultvalue = { 0 };
+
 // - descriptors for the variables of a strain
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_wholeitem =
@@ -592,7 +595,69 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_psc_cmmnds_enable =
 #endif
 };
 
+// - descriptors for the variables of a pos
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_pos_wholeitem =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_pos_defaultvalue),
+    EO_INIT(.rwmode)    eoprot_rwm_as_pos_wholeitem,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_pos_defaultvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_pos_wholeitem,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_pos_wholeitem
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_pos_config =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_pos_defaultvalue.config),
+    EO_INIT(.rwmode)    eoprot_rwm_as_pos_config,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_pos_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_pos_config,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_pos_config
+#endif
+};
+
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_pos_status =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_pos_defaultvalue.status),
+    EO_INIT(.rwmode)    eoprot_rwm_as_pos_status,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_pos_defaultvalue.status,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_pos_status,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_pos_status
+#endif
+};
+
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_pos_cmmnds_enable =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_pos_defaultvalue.cmmnds.enable),
+    EO_INIT(.rwmode)    eoprot_rwm_as_pos_cmmnds_enable,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_pos_defaultvalue.cmmnds.enable,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_pos_cmmnds_enable,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_pos_cmmnds_enable
+#endif
+};
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -663,6 +728,14 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_psc_descriptors[] =
     &eoprot_as_rom_descriptor_psc_cmmnds_enable
 };  EO_VERIFYsizeof(s_eoprot_as_rom_psc_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_psc_numberof))
 
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_pos_descriptors[] =
+{   // here are eoprot_tags_as_inertial_numberof descriptors for the inertial entity
+    &eoprot_as_rom_descriptor_pos_wholeitem,
+    &eoprot_as_rom_descriptor_pos_config,
+    &eoprot_as_rom_descriptor_pos_status,
+    &eoprot_as_rom_descriptor_pos_cmmnds_enable
+};  EO_VERIFYsizeof(s_eoprot_as_rom_pos_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_pos_numberof))
+
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_strain_descriptors,
@@ -670,7 +743,8 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] =
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_temperature_descriptors, 
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_inertial_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_inertial3_descriptors,
-    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_psc_descriptors
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_psc_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_pos_descriptors
 };  EO_VERIFYsizeof(eoprot_as_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_as_numberof))
 
 
@@ -683,7 +757,8 @@ const uint8_t eoprot_as_rom_tags_numberof[] =
     eoprot_tags_as_temperature_numberof,
     eoprot_tags_as_inertial_numberof,
     eoprot_tags_as_inertial3_numberof,
-    eoprot_tags_as_psc_numberof
+    eoprot_tags_as_psc_numberof,
+    eoprot_tags_as_pos_numberof
 };  EO_VERIFYsizeof(eoprot_as_rom_tags_numberof, eoprot_entities_as_numberof*sizeof(uint8_t)) 
 
 const uint16_t eoprot_as_rom_entities_sizeof[] = 
@@ -693,7 +768,8 @@ const uint16_t eoprot_as_rom_entities_sizeof[] =
     sizeof(eOas_temperature_t),
     sizeof(eOas_inertial_t),
     sizeof(eOas_inertial3_t),
-    sizeof(eOas_psc_t)
+    sizeof(eOas_psc_t),
+    sizeof(eOas_pos_t)
 };  EO_VERIFYsizeof(eoprot_as_rom_entities_sizeof, eoprot_entities_as_numberof*sizeof(uint16_t)) 
 
 const void* const eoprot_as_rom_entities_defval[] = 
@@ -703,7 +779,8 @@ const void* const eoprot_as_rom_entities_defval[] =
     (const void*)&eoprot_as_rom_temperature_defaultvalue,
     (const void*)&eoprot_as_rom_inertial_defaultvalue,
     (const void*)&eoprot_as_rom_inertial3_defaultvalue,
-    (const void*)&eoprot_as_rom_psc_defaultvalue
+    (const void*)&eoprot_as_rom_psc_defaultvalue,
+    (const void*)&eoprot_as_rom_pos_defaultvalue
 };  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(const void*)) 
 
 
@@ -716,7 +793,8 @@ const char * const eoprot_as_strings_entity[] =
     "eoprot_entity_as_temperature",
     "eoprot_entity_as_inertial",
     "eoprot_entity_as_inertial3",
-    "eoprot_entity_as_psc"
+    "eoprot_entity_as_psc",
+    "eoprot_entity_as_pos"
 };  EO_VERIFYsizeof(eoprot_as_strings_entity, eoprot_entities_as_numberof*sizeof(const char*)) 
 
 
@@ -775,6 +853,14 @@ static const char * const s_eoprot_as_strings_tags_psc[] =
     "eoprot_tag_as_psc_cmmnds_enable"
 };  EO_VERIFYsizeof(s_eoprot_as_strings_tags_psc, eoprot_tags_as_psc_numberof*sizeof(const char*))
 
+static const char * const s_eoprot_as_strings_tags_pos[] =
+{
+    "eoprot_tag_as_pos_wholeitem",
+    "eoprot_tag_as_pos_config",
+    "eoprot_tag_as_pos_status",
+    "eoprot_tag_as_pos_cmmnds_enable"
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_pos, eoprot_tags_as_pos_numberof*sizeof(const char*))
+
 const char ** const eoprot_as_strings_tags[] =
 {
     (const char**)&s_eoprot_as_strings_tags_strain,   
@@ -782,7 +868,8 @@ const char ** const eoprot_as_strings_tags[] =
     (const char**)&s_eoprot_as_strings_tags_temperature,
     (const char**)&s_eoprot_as_strings_tags_inertial,
     (const char**)&s_eoprot_as_strings_tags_inertial3,
-    (const char**)&s_eoprot_as_strings_tags_psc
+    (const char**)&s_eoprot_as_strings_tags_psc,
+    (const char**)&s_eoprot_as_strings_tags_pos
 };  EO_VERIFYsizeof(eoprot_as_strings_tags, eoprot_entities_as_numberof*sizeof(const char**)) 
 
 
