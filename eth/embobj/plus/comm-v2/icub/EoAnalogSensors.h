@@ -76,12 +76,13 @@ typedef enum
     eoas_imu_status             = 14,
     eoas_temperature            = 15,
     eoas_psc_angle              = 16,
+    eoas_pos_angle              = 17,
     // add in here eoas_xxxnameetc
     eoas_unknown                = 254,  
     eoas_none                   = 255   
 } eOas_sensor_t;
 
-enum { eoas_sensors_numberof = 17 };
+enum { eoas_sensors_numberof = 18 };
 
 
 /** @typedef    typedef enum eOas_entity_t;
@@ -95,10 +96,11 @@ typedef enum
     eoas_entity_temperature                 = 2,    
     eoas_entity_inertial                    = 3,
     eoas_entity_inertial3                   = 4,
-    eoas_entity_psc                         = 5
+    eoas_entity_psc                         = 5,
+    eoas_entity_pos                         = 6
 } eOas_entity_t;
 
-enum { eoas_entities_numberof = 6 };
+enum { eoas_entities_numberof = 7 };
 
 
 // -- all the possible enum
@@ -589,7 +591,7 @@ typedef struct
 
 typedef struct
 {
-    eOas_psc_arrayof_data_t         arrayofdata;   /**< it is the most recent reading of the inertial sensors which are related to this entity */
+    eOas_psc_arrayof_data_t         arrayofdata;   /**< it is the most recent reading which are related to this entity */
 } eOas_psc_status_t;                EO_VERIFYsizeof(eOas_psc_status_t, 16)
 
 
@@ -605,6 +607,69 @@ typedef struct                      // size is: 4+16+4 = 24
     eOas_psc_status_t               status;
     eOas_psc_commands_t             cmmnds;
 } eOas_psc_t;                       EO_VERIFYsizeof(eOas_psc_t, 24)
+
+
+// -- the definition of a pos sensor service
+
+// we use this struct to send activate-verify command to the board
+//enum { eOas_pos_boardinfos_maxnumber = 4 };
+//typedef struct
+//{   //6*4=24
+//    eObrd_info_t                    data[eOas_pos_boardinfos_maxnumber];
+//} eOas_pos_setof_boardinfos_t; EO_VERIFYsizeof(eOas_pos_setof_boardinfos_t, 24)
+
+//enum { eOas_pos_boards_maxnumber = 3 };
+//typedef struct
+//{
+//    eObrd_canproperties_t           canprop[eOas_pos_boards_maxnumber];
+//} eOas_pos_canPropertiesInfo_t;
+
+enum { eOas_pos_boards_maxnumber = 1 };
+typedef struct
+{
+    eObrd_canlocation_t                 canloc[eOas_pos_boards_maxnumber];
+} eOas_pos_canLocationsInfo_t;
+
+// a single pos sensor contains an angle expressed in deci-degrees 
+// this struct describes the data acquired by a single pos sensor
+typedef struct
+{
+    int16_t     value;              // so far the only value. we use int16 which contains a deci-degree.
+} eOas_pos_data_t;                  EO_VERIFYsizeof(eOas_pos_data_t, 2)
+
+typedef struct
+{
+    uint8_t                         datarate;       /**< it specifies the acquisition rate in ms  */
+    uint8_t                         filler[3];
+} eOas_pos_config_t;                EO_VERIFYsizeof(eOas_pos_config_t, 4)
+
+
+enum { eOas_pos_data_maxnumber = 14 };
+typedef struct
+{   // 4+(2*14) = 32
+    eOarray_head_t                  head;
+    eOas_pos_data_t                 data[eOas_pos_data_maxnumber];
+} eOas_pos_arrayof_data_t;          EO_VERIFYsizeof(eOas_pos_arrayof_data_t, 32)
+
+
+typedef struct
+{
+    eOas_pos_arrayof_data_t         arrayofdata;   /**< it is the most recent reading which are related to this entity */
+} eOas_pos_status_t;                EO_VERIFYsizeof(eOas_pos_status_t, 32)
+
+
+typedef struct
+{
+    uint8_t                         enable;         /**< use 0 or 1*/
+    uint8_t                         filler[3];
+} eOas_pos_commands_t;              EO_VERIFYsizeof(eOas_pos_commands_t, 4)
+
+typedef struct                      // size is: 4+32+4 = 40
+{
+    eOas_pos_config_t               config;
+    eOas_pos_status_t               status;
+    eOas_pos_commands_t             cmmnds;
+} eOas_pos_t;                       EO_VERIFYsizeof(eOas_pos_t, 40)
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

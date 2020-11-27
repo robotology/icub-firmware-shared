@@ -369,10 +369,19 @@ typedef enum
     eoerror_value_CFG_skin_failed_notsupported = 73,
     eoerror_value_CFG_psc_failed_notsupported = 74,
     eoerror_value_CFG_mc_failed_notsupported = 75,
-    eoerror_value_CFG_encoders_failed_notsupported = 76
+    eoerror_value_CFG_encoders_failed_notsupported = 76,
+    
+    eoerror_value_CFG_pos_ok                            = 77,
+    eoerror_value_CFG_pos_failed_candiscovery           = 78,
+    eoerror_value_CFG_pos_failed_verify_because_active  = 79,
+    eoerror_value_CFG_pos_not_verified_yet              = 80,
+    eoerror_value_CFG_pos_using_onboard_config          = 81,
+    eoerror_value_CFG_pos_changed_requestedrate         = 82,
+    eoerror_value_CFG_pos_failed_notsupported           = 83
+    
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 77 };
+enum { eoerror_value_CFG_numberof = 84 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

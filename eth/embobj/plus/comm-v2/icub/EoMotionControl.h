@@ -1087,12 +1087,13 @@ typedef enum
     eomc_enc_spichainof3    = 8,    
     eomc_enc_amo            = 9, 
     eomc_enc_psc            = 10,
+    eomc_enc_pos            = 11,
     
     eomc_enc_none           = 0,
     eomc_enc_unknown        = 255    
 } eOmc_encoder_t;
 
-enum { eomc_encoders_numberof = 10 };
+enum { eomc_encoders_numberof = 11 };
 enum { eomc_encoders_maxnumberofcomponents = 4 };
 
 

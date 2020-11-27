@@ -311,13 +311,22 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     
     {eoerror_value_CFG_inertials_failed_notsupported, "CFG: EOtheInertials cannot be configured. This board does not support this service."},
     {eoerror_value_CFG_inertials3_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_temperatures_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_mais_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_strain_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_skin_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_psc_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_mc_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service."},
-    {eoerror_value_CFG_encoders_failed_notsupported, "CFG: EOtheEncoderReader cannot be configured. This board does not support this service."}
+    {eoerror_value_CFG_temperatures_failed_notsupported, "CFG: EOtheTemperatures cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_mais_failed_notsupported, "CFG: EOtheMAIS cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_strain_failed_notsupported, "CFG: EOtheSTRAIN cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_skin_failed_notsupported, "CFG: EOtheSKIN cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_psc_failed_notsupported, "CFG: EOthePSC cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_mc_failed_notsupported, "CFG: EOtheMotionController cannot be configured. This board does not support this service."},
+    {eoerror_value_CFG_encoders_failed_notsupported, "CFG: EOtheEncoderReader cannot be configured. This board does not support this service."},
+    
+    {eoerror_value_CFG_pos_ok, "CFG: EOthePOS can be correctly configured. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_pos_failed_candiscovery, "CFG: EOthePOS cannot be configured. can discovery fails. can address in p16, prot and vers in p64 lower 32 bits"},
+    {eoerror_value_CFG_pos_failed_verify_because_active, "CFG: EOthePOS cannot be configured. it was already activated with different configuration."},
+    {eoerror_value_CFG_pos_not_verified_yet, "CFG: EOthePOS service was not verified yet, thus it cannot start."},  
+    {eoerror_value_CFG_pos_using_onboard_config, "CFG: EOthePOS service is using the local default configuration based on its IP address."},    
+    {eoerror_value_CFG_pos_changed_requestedrate, "CFG: EOthePOS has changed the requested rate. in p16 the requested (MSB) and the assigned (LSB)."},
+    {eoerror_value_CFG_pos_failed_notsupported, "CFG: EOthePOS cannot be configured. This board does not support this service."},
+    
     
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
