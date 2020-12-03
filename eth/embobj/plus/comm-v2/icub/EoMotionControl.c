@@ -291,6 +291,11 @@ extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
             ret = 4;
         } break;
         
+        case eomc_enc_pos:
+        {
+            ret = 1;
+        } break;        
+        
         default:
         {
             ret = 0;
