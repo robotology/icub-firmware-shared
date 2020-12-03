@@ -377,11 +377,15 @@ typedef enum
     eoerror_value_CFG_pos_not_verified_yet              = 80,
     eoerror_value_CFG_pos_using_onboard_config          = 81,
     eoerror_value_CFG_pos_changed_requestedrate         = 82,
-    eoerror_value_CFG_pos_failed_notsupported           = 83
+    eoerror_value_CFG_pos_failed_notsupported           = 83,
+    
+    eoerror_value_CFG_mc_mc4plusfaps_ok                 = 84,
+    eoerror_value_CFG_mc_mc4plusfaps_failed_encoders_verify = 85, 
+    eoerror_value_CFG_mc_mc4plusfaps_failed_candiscovery_of_pmc = 86,    
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 84 };
+enum { eoerror_value_CFG_numberof = 87 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
