@@ -592,21 +592,31 @@ typedef struct
 } eOmn_serv_config_data_mc_mc2plus_t;       EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc2plus_t, 316)
 
 typedef struct
-{   // 8+24+292=324
+{   // 8+24+292+4=328
     eOmn_serv_config_data_as_psc_t          psc;
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;
     eOmc_4jomo_stopswitches_t               jomostopswitches;    
 } eOmn_serv_config_data_mc_mc2pluspsc_t;    EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc2pluspsc_t, 328)
 
+
+typedef struct
+{   // 6+2+24+292=324
+    eOmn_serv_config_data_as_pos_t          pos;
+    uint8_t                                 filler[2];
+    eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
+    eOmc_4jomo_coupling_t                   jomocoupling;
+} eOmn_serv_config_data_mc_mc4plusfaps_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusfaps_t, 324)
+
 typedef union                               
-{   // max(324, 28, 316, 324)
+{   // max(324, 28, 316, 328, 324)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
     eOmn_serv_config_data_mc_mc4plusmais_t  mc4plusmais_based;
     eOmn_serv_config_data_mc_mc2plus_t      mc2plus;
     eOmn_serv_config_data_mc_mc2pluspsc_t   mc2pluspsc;
+    eOmn_serv_config_data_mc_mc4plusfaps_t  mc4plusfaps;
 } eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 328) 
 
 typedef union                               
