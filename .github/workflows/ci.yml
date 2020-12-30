@@ -69,7 +69,7 @@ jobs:
       if: matrix.os == 'macOS-latest'
       run: |
         # Workaround for https://github.com/actions/virtual-environments/issues/1811#issuecomment-718475660
-        brew unlink python@3.8
+        #brew unlink python@3.8
         brew update
         brew upgrade
         brew install cmake pkg-config git
