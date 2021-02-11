@@ -227,22 +227,26 @@ typedef enum
 {
     eobrd_caninsideindex_first          = 0,
     eobrd_caninsideindex_second         = 1,
-    eobrd_caninsideindex_none           = 2
+    eobrd_caninsideindex_third          = 2,
+    eobrd_caninsideindex_fourth         = 3,
+
+    eobrd_caninsideindex_none           = 7
 } eObrd_caninsideindex_t;
 
 
 /** @typedef    typedef struct eObrd_canlocation_t
     @brief      tells the can location of a can board or of an entity (joint or motor or strain etc.) mapped into a can board.
                 the location of the board uses port and addr. the location of an entity of motioncontrol (joint, motor) 
-                uses also insideindex. all other entities dont need insideindex. when insideindex is not used, use value
-                of eobrd_caninsideindex_none for it.
- **/ 
+                uses also insideindex. all other entities dont need insideindex. when insideindex is not used, use value of eobrd_caninsideindex_none for it.
+                about insideindex: legacy mc-boards sucha as the mc4can use only values eobrd_caninsideindex_first and eobrd_caninsideindex_second. 
+                in jan 2021, however extra values eobrd_caninsideindex_third ... eobrd_caninsideindex_fourth were added. for the case of the pmc board which 
+                manages three joints.
+ **/  
 typedef struct
 {
     uint8_t port : 1;               /**< use eOcanport_t */
     uint8_t addr : 4;               /**< use 0->14 */ 
-    uint8_t insideindex : 2;        /**< use eObrd_caninsideindex_t*/
-    uint8_t dummy : 1;              /**< unused ... but it could specify board or entity */
+    uint8_t insideindex : 3;        /**< use eObrd_caninsideindex_t*/
 } eObrd_canlocation_t;
 
 
@@ -349,16 +353,19 @@ enum { eobrd_portpscs_numberof = 2 };
 
 typedef enum
 {
-    eobrd_portpos_hand_thumb        = 0,
-    eobrd_portpos_hand_index        = 1,
-    eobrd_portpos_hand_medium       = 2,
-    eobrd_portpos_hand_pinky        = 3,
-
-    eobrd_portpos_none              = 31,    // as ... eobrd_port_none
-    eobrd_portpos_unknown           = 30     // as ... eobrd_port_unknown
+    eobrd_portpos_hand_thumb            = 0,
+    eobrd_portpos_hand_index            = 1,
+    eobrd_portpos_hand_medium           = 2,
+    eobrd_portpos_hand_pinky            = 3,
+    eobrd_portpos_hand_thumbmetacarpus  = 4,
+    eobrd_portpos_hand_thumbrotation    = 5,
+    eobrd_portpos_hand_indexadduction   = 6,
+    
+    eobrd_portpos_none                  = 31,    // as ... eobrd_port_none
+    eobrd_portpos_unknown               = 30     // as ... eobrd_port_unknown
 } eObrd_portpos_t;
 
-enum { eobrd_portposs_numberof = 4 };
+enum { eobrd_portposs_numberof = 7 };
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

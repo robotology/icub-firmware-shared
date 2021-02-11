@@ -204,10 +204,14 @@ static const eOmap_str_str_u08_t s_boards_map_of_portposs[] =
     {"hand_index", "eobrd_portpos_hand_index", eobrd_portpos_hand_index},
     {"hand_medium", "eobrd_portpos_hand_medium", eobrd_portpos_hand_medium},
     {"hand_pinky", "eobrd_portpos_hand_pinky", eobrd_portpos_hand_pinky},
+    {"hand_thumbmetacarpus", "eobrd_portpos_hand_thumbmetacarpus", eobrd_portpos_hand_thumbmetacarpus},
+    {"hand_thumbrotation", "eobrd_portpos_hand_thumbrotation", eobrd_portpos_hand_thumbrotation},
+    {"hand_indexadduction", "eobrd_portpos_hand_indexadduction", eobrd_portpos_hand_indexadduction},
     
     {"none", "eobrd_portpos_none", eobrd_portpos_none},
     {"unknown", "eobrd_portpos_unknown", eobrd_portpos_unknown}    
 };  EO_VERIFYsizeof(s_boards_map_of_portposs, (eobrd_portposs_numberof+2)*sizeof(eOmap_str_str_u08_t))
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables

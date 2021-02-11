@@ -1018,12 +1018,13 @@ typedef enum
 {
     eomc_act_foc        = 1,
     eomc_act_mc4        = 2,
-    eomc_act_pwm        = 3,    
+    eomc_act_pwm        = 3,
+    eomc_act_pmc        = 4,    
     eomc_act_none       = 0,
     eomc_act_unknown    = 255    
 } eOmc_actuator_t;
 
-enum { eomc_actuators_numberof = 3 };
+enum { eomc_actuators_numberof = 4 };
 
 
 typedef struct
@@ -1037,6 +1038,11 @@ typedef struct
     eObrd_canlocation_t         canloc;
 } eOmc_actuator_descriptor_mc4_t;
 
+
+typedef struct
+{
+    eObrd_canlocation_t         canloc;
+} eOmc_actuator_descriptor_pmc_t;
 
 typedef struct
 {
@@ -1059,6 +1065,7 @@ typedef union
     eOmc_actuator_descriptor_foc_t      foc;
     eOmc_actuator_descriptor_mc4_t      mc4;
     eOmc_actuator_descriptor_pwm_t      pwm;
+    eOmc_actuator_descriptor_pmc_t      pmc;
     eOmc_actuator_descriptor_none_t     none;
 } eOmc_actuator_descriptor_t; EO_VERIFYsizeof(eOmc_actuator_descriptor_t, 1)   
 
@@ -1124,12 +1131,24 @@ typedef struct                  // 1+2+2=5
     eOmc_encoder_descriptor_t      encoder2;
 } eOmc_jomo_descriptor_t; EO_VERIFYsizeof(eOmc_jomo_descriptor_t, 5)
 
+
+// pointer to this type can be safely casted to EOconstarray* or EOarray*
 // we typically host not more than 4 joint-motor couples
 typedef struct                          
 {   // 4+4*5=24
     eOarray_head_t                      head;
     eOmc_jomo_descriptor_t              data[4];
 } eOmc_arrayof_4jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_4jomodescriptors_t, 24)
+
+
+// pointer to this type can be safely casted to EOconstarray* or EOarray*
+// but sometimes we need 7 joint-motor couples
+typedef struct                          
+{   // 4+7*5=39
+    eOarray_head_t                      head;
+    eOmc_jomo_descriptor_t              data[7];
+} eOmc_arrayof_7jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_7jomodescriptors_t, 39)
+
 
 typedef enum
 {
@@ -1317,6 +1336,24 @@ typedef struct
 } eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292)
 //end VALE
 
+typedef struct                          
+{   // 4+7*16=116
+    eOarray_head_t                      head;
+    eOmc_jointset_configuration_t       data[7];
+} eOmc_arrayof_7jointsetconfig_t;       EO_VERIFYsizeof(eOmc_arrayof_7jointsetconfig_t, 116)
+
+
+typedef eOq17_14_t eOmc_7x7_matrix_t[7][7]; EO_VERIFYsizeof(eOmc_7x7_matrix_t, 196)
+
+typedef struct
+{   // 7 + 1 + 112 + 196 + 196 + 196 = 708
+    uint8_t                         joint2set[7];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
+    uint8_t                         dummy;
+    eOmc_jointset_configuration_t   jsetcfg[7];
+    eOmc_7x7_matrix_t               joint2motor;
+    eOmc_7x7_matrix_t               motor2joint; 
+    eOmc_7x7_matrix_t               encoder2joint;
+} eOmc_7jomo_coupling_t; EO_VERIFYsizeof(eOmc_7jomo_coupling_t, 708)
 
 typedef struct
 {
