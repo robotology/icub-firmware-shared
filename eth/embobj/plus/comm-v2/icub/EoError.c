@@ -192,8 +192,9 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_qencoder_phase,  "MC: 2FOC quadrature encoder phase broken. The motor encoder is not counting even if the motor is moving, please check motor encoder cables. In par64 0xFF is the mask of raw encoder value. par16 = ID of joint."},
     {eoerror_value_MC_generic_error,         "MC: generic motor error (see 64 bit mask parameter)."},
     {eoerror_value_MC_motor_wrong_state,     "MC: 2FOC wrong state. The 2FOC motor controller is in a control state different from required by the EMS. In par64 0xF0 is the mask of requested state, 0x0F is the mask of actual state. par16 = ID of joint."},
-    {eoerror_value_MC_joint_hard_limit,      "MC: hard limit reached. The joint position is outside its hardware boundaries. par16 = ID of joint."}
-    
+    {eoerror_value_MC_joint_hard_limit,      "MC: hard limit reached. The joint position is outside its hardware boundaries. par16 = ID of joint."},
+    {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset."}
+
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
