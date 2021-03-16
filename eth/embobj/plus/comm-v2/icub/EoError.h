@@ -221,10 +221,11 @@ typedef enum
     eoerror_value_MC_generic_error                  = 14,
     eoerror_value_MC_motor_wrong_state              = 15,
     
-    eoerror_value_MC_joint_hard_limit               = 16
+    eoerror_value_MC_joint_hard_limit               = 16,
+    eoerror_value_MC_motor_qencoder_phase_disappeared   = 17
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 17 };
+enum { eoerror_value_MC_numberof = 18 };
 
 
 
