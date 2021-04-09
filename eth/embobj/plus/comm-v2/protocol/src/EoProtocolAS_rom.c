@@ -106,7 +106,7 @@ static const eOas_inertial3_t eoprot_as_rom_inertial3_defaultvalue = { 0 };
 static const eOas_psc_t eoprot_as_rom_psc_defaultvalue = { 0 };
 
 // - default value of a pos
-static const eOas_psc_t eoprot_as_rom_pos_defaultvalue = { 0 };
+static const eOas_pos_t eoprot_as_rom_pos_defaultvalue = { 0 };
 
 // - descriptors for the variables of a strain
 
