@@ -227,10 +227,9 @@ typedef enum
 {
     eobrd_caninsideindex_first          = 0,
     eobrd_caninsideindex_second         = 1,
-    eobrd_caninsideindex_third          = 2,
-    eobrd_caninsideindex_fourth         = 3,
-
-    eobrd_caninsideindex_none           = 7
+    eobrd_caninsideindex_none           = 2,  
+    eobrd_caninsideindex_third          = 3, // in case we need a third 
+    eobrd_caninsideindex_fourth         = 4  // or a fourth one
 } eObrd_caninsideindex_t;
 
 
@@ -238,7 +237,7 @@ typedef enum
     @brief      tells the can location of a can board or of an entity (joint or motor or strain etc.) mapped into a can board.
                 the location of the board uses port and addr. the location of an entity of motioncontrol (joint, motor) 
                 uses also insideindex. all other entities dont need insideindex. when insideindex is not used, use value of eobrd_caninsideindex_none for it.
-                about insideindex: legacy mc-boards sucha as the mc4can use only values eobrd_caninsideindex_first and eobrd_caninsideindex_second. 
+                about insideindex: legacy mc-boards such as the mc4can use only values eobrd_caninsideindex_first and eobrd_caninsideindex_second. 
                 in jan 2021, however extra values eobrd_caninsideindex_third ... eobrd_caninsideindex_fourth were added. for the case of the pmc board which 
                 manages three joints.
  **/  
