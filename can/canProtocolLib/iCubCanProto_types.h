@@ -593,8 +593,9 @@ typedef struct
 
 typedef enum 
 { 
-    icubCanProto_pos_decideg    = 0,    // it is an angle expressed in 0.1 degrees and contained inside a int16_t 
-    icubCanProto_pos_unkwown    = 255 
+    icubCanProto_pos_decideg            = 0,    // it is an angle expressed in 0.1 degrees and contained inside a int16_t 
+    icubCanProto_pos_decimillimeter     = 1,    // it is a linear displacement expressed in 0.1 mm and contained inside a int16_t [+/- 3276 mm]
+    icubCanProto_pos_unkwown            = 255 
 } icubCanProto_pos_sensor_t;
 
 typedef enum 

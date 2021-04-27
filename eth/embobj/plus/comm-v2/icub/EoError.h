@@ -383,10 +383,14 @@ typedef enum
     eoerror_value_CFG_mc_mc4plusfaps_ok                 = 84,
     eoerror_value_CFG_mc_mc4plusfaps_failed_encoders_verify = 85, 
     eoerror_value_CFG_mc_mc4plusfaps_failed_candiscovery_of_pmc = 86,    
+
+    eoerror_value_CFG_mc_mc4pluspmc_ok                 = 87,
+    eoerror_value_CFG_mc_mc4pluspmc_failed_encoders_verify = 88, 
+    eoerror_value_CFG_mc_mc4pluspmc_failed_candiscovery_of_pmc = 89,  
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 87 };
+enum { eoerror_value_CFG_numberof = 90 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

@@ -608,8 +608,18 @@ typedef struct
     eOmc_4jomo_coupling_t                   jomocoupling;
 } eOmn_serv_config_data_mc_mc4plusfaps_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusfaps_t, 324)
 
+// we have 4 dc joints moved by the mc4plus + 3 joints moved by pmc. all of them are independent
+typedef struct
+{   // 6 + 2 + 39 + 1 + 116 = 164
+    eOmn_serv_config_data_as_pos_t          pos;
+    uint8_t                                 filler[2];
+    eOmc_arrayof_7jomodescriptors_t         arrayof7jomodescriptors;  
+    uint8_t                                 dummy[1];
+    eOmc_arrayof_7jointsetconfig_t          arrayof7jointsets;
+} eOmn_serv_config_data_mc_mc4pluspmc_t;    EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4pluspmc_t, 164)
+
 typedef union                               
-{   // max(324, 28, 316, 328, 324)
+{   // max(324, 28, 316, 328, 324, 47)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
@@ -617,6 +627,7 @@ typedef union
     eOmn_serv_config_data_mc_mc2plus_t      mc2plus;
     eOmn_serv_config_data_mc_mc2pluspsc_t   mc2pluspsc;
     eOmn_serv_config_data_mc_mc4plusfaps_t  mc4plusfaps;
+    eOmn_serv_config_data_mc_mc4pluspmc_t   mc4pluspmc;
 } eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 328) 
 
 typedef union                               
