@@ -92,6 +92,15 @@ static const char * s_mn_servicetype_string_unknown = "eomn_serv_UNKNOWN";
 static const char * s_mn_servicetype_string_none = "eomn_serv_NONE";
 
 
+static const char * s_mn_servicediagnmode_strings[] =
+{
+    "eomn_serv_diagn_mode_NONE",
+    "eomn_serv_diagn_mode_UNKNOWN",
+    "eomn_serv_diagn_mode_MC_AMO",
+    "eomn_serv_diagn_mode_MC_ENC"
+};  EO_VERIFYsizeof(s_mn_servicediagnmode_strings, eomn_serv_diagn_mode_numberof*sizeof(const char *))   
+ 
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -142,6 +151,39 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
     }        
     
     return(eomn_serv_UNKNOWN);    
+}
+
+
+extern const char * eomn_servicediagnmode2string(eOmn_serv_diagn_mode_t diagnmode)
+{
+    const char * ret = s_mn_servicediagnmode_strings[eOmn_serv_diagn_mode_UNKNOWN];
+    
+    if(diagnmode < eomn_serv_diagn_mode_numberof)
+    {
+        return(s_mn_servicediagnmode_strings[diagnmode]);
+    }
+
+    return(ret);
+}
+
+extern eOmn_serv_diagn_mode_t eomn_string2servicediagnmode(const char * string)
+{     
+    uint8_t i = 0;   
+    
+    if(NULL == string)
+    {
+        return(eOmn_serv_diagn_mode_UNKNOWN);
+    }
+      
+    for(i=0; i<eomn_serv_diagn_mode_numberof; i++)
+    {
+        if(0 == strcmp(string, s_mn_servicediagnmode_strings[i]))
+        {
+            return((eOmn_serv_diagn_mode_t)(i+0));
+        }
+    }       
+    
+    return(eOmn_serv_diagn_mode_UNKNOWN);    
 }
 
 
