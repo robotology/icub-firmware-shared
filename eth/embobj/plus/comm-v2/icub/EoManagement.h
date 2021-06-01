@@ -770,7 +770,7 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string);
 
 extern const char * eomn_servicediagnmode2string(eOmn_serv_diagn_mode_t diagmode);
 
-extern eOmn_serv_diagn_mode_t eomn_string2serviceservicediagnmode(const char * string);
+extern eOmn_serv_diagn_mode_t eomn_string2servicediagnmode(const char * string);
 
 /** @}            
     end of group eo_management  
