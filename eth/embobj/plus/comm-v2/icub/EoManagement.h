@@ -478,6 +478,12 @@ typedef enum
 enum { eomn_serv_diagn_mode_numberof = 4 };
 
 typedef struct
+{
+    uint8_t     mode;   // use eOmn_serv_diagn_mode_t
+    uint16_t    par16;    
+} eOmn_serv_diagn_cfg_t;
+
+typedef struct
 {   // 5+1=6
     eObrd_version_t                     version;
     eObrd_canlocation_t                 canloc;
@@ -651,7 +657,7 @@ typedef struct
 {   // 1+3+324=328
     uint8_t                                 type;               // use eOmn_serv_type_t to identify what kind of service it is
     uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
-    uint16_t                                diagnosticsparam;
+    uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
 } eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 332) 
 
