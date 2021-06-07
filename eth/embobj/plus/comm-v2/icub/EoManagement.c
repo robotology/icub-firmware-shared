@@ -156,7 +156,7 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
 
 extern const char * eomn_servicediagnmode2string(eOmn_serv_diagn_mode_t diagnmode)
 {
-    const char * ret = s_mn_servicediagnmode_strings[eOmn_serv_diagn_mode_UNKNOWN];
+    const char * ret = s_mn_servicediagnmode_strings[eomn_serv_diagn_mode_UNKNOWN];
     
     if(diagnmode < eomn_serv_diagn_mode_numberof)
     {
@@ -172,7 +172,7 @@ extern eOmn_serv_diagn_mode_t eomn_string2servicediagnmode(const char * string)
     
     if(NULL == string)
     {
-        return(eOmn_serv_diagn_mode_UNKNOWN);
+        return(eomn_serv_diagn_mode_UNKNOWN);
     }
       
     for(i=0; i<eomn_serv_diagn_mode_numberof; i++)
@@ -183,7 +183,7 @@ extern eOmn_serv_diagn_mode_t eomn_string2servicediagnmode(const char * string)
         }
     }       
     
-    return(eOmn_serv_diagn_mode_UNKNOWN);    
+    return(eomn_serv_diagn_mode_UNKNOWN);    
 }
 
 
