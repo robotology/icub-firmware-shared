@@ -467,7 +467,21 @@ typedef enum
 
 enum { eomn_serv_types_numberof = 17 };
 
+typedef enum
+{
+    eomn_serv_diagn_mode_NONE       = 0, // put in here for backwards compatibility ...
+    eomn_serv_diagn_mode_UNKNOWN    = 1,
+    eomn_serv_diagn_mode_MC_AMO     = 2,
+    eomn_serv_diagn_mode_MC_ENC     = 3
+} eOmn_serv_diagn_mode_t;
 
+enum { eomn_serv_diagn_mode_numberof = 4 };
+
+typedef struct
+{
+    uint8_t     mode;   // use eOmn_serv_diagn_mode_t
+    uint16_t    par16;    
+} eOmn_serv_diagn_cfg_t;
 
 typedef struct
 {   // 5+1=6
@@ -641,8 +655,9 @@ typedef union
 
 typedef struct                              
 {   // 1+3+324=328
-    uint8_t                                 type;           // use eOmn_serv_type_t to identify what kind of service it is
-    uint8_t                                 filler[3];
+    uint8_t                                 type;               // use eOmn_serv_type_t to identify what kind of service it is
+    uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
+    uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
 } eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 332) 
 
@@ -753,6 +768,9 @@ extern const char * eomn_servicetype2string(eOmn_serv_type_t service);
 extern eOmn_serv_type_t eomn_string2servicetype(const char * string);
 
 
+extern const char * eomn_servicediagnmode2string(eOmn_serv_diagn_mode_t diagmode);
+
+extern eOmn_serv_diagn_mode_t eomn_string2servicediagnmode(const char * string);
 
 /** @}            
     end of group eo_management  
