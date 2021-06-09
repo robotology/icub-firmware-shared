@@ -97,7 +97,8 @@ static const char * s_mn_servicediagnmode_strings[] =
     "eomn_serv_diagn_mode_NONE",
     "eomn_serv_diagn_mode_UNKNOWN",
     "eomn_serv_diagn_mode_MC_AMO",
-    "eomn_serv_diagn_mode_MC_ENC"
+    "eomn_serv_diagn_mode_MC_ENC",
+    "eomn_serv_diagn_mode_MC_AMOyarp"
 };  EO_VERIFYsizeof(s_mn_servicediagnmode_strings, eomn_serv_diagn_mode_numberof*sizeof(const char *))   
  
 

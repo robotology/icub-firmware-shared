@@ -472,10 +472,11 @@ typedef enum
     eomn_serv_diagn_mode_NONE       = 0, // put in here for backwards compatibility ...
     eomn_serv_diagn_mode_UNKNOWN    = 1,
     eomn_serv_diagn_mode_MC_AMO     = 2,
-    eomn_serv_diagn_mode_MC_ENC     = 3
+    eomn_serv_diagn_mode_MC_ENC     = 3,
+    eomn_serv_diagn_mode_MC_AMOyarp = 4
 } eOmn_serv_diagn_mode_t;
 
-enum { eomn_serv_diagn_mode_numberof = 4 };
+enum { eomn_serv_diagn_mode_numberof = 5 };
 
 typedef struct
 {
