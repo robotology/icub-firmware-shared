@@ -839,12 +839,13 @@ typedef struct              //size is = 12
 /** @typedef    typedef struct eOmc_joint_status_t
     @brief      eOmc_joint_status_t contains the status of a joint
  **/
-typedef struct                  // size is:  40+28+12 = 44
+typedef struct                  // size is:  40+28+12+16 = 96
 {
     eOmc_joint_status_core_t            core;
     eOmc_joint_status_target_t          target;
     eOmc_joint_status_additionalInfo_t  addinfo;
-} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 80) 
+    uint8_t                             debug[16];
+} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 96) 
 
 
 
@@ -865,13 +866,13 @@ typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 /** @typedef    typedef struct eOmc_joint_t
     @brief      contains the whole joint
  **/
-typedef struct                  // size is 184+80+4+44+0 = 312
+typedef struct                  // size is 184+96+4+44+0 = 312
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 312);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 328);
 
 
 

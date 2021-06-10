@@ -378,6 +378,22 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_addinfo_mu
 };
 
 
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_status_debug =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.status.debug),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_status_debug,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.status.debug,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_status_debug,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_status_debug
+#endif
+};
+
+
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_inputs =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.inputs),
@@ -715,6 +731,7 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
     &eoprot_mc_rom_descriptor_joint_status_core_modes_interactionmodestatus,
     &eoprot_mc_rom_descriptor_joint_status_core_modes_ismotiondone,
     &eoprot_mc_rom_descriptor_joint_status_addinfo_multienc,
+    &eoprot_mc_rom_descriptor_joint_status_debug,
     &eoprot_mc_rom_descriptor_joint_inputs,
     &eoprot_mc_rom_descriptor_joint_inputs_externallymeasuredtorque,
     &eoprot_mc_rom_descriptor_joint_cmmnds_calibration,
@@ -811,6 +828,7 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
     "eoprot_tag_mc_joint_status_core_modes_interactionmodestatus",
     "eoprot_tag_mc_joint_status_core_modes_ismotiondone",
     "eoprot_tag_mc_joint_status_addinfo_multienc",
+    "eoprot_tag_mc_joint_status_debug",
     "eoprot_tag_mc_joint_inputs",
     "eoprot_tag_mc_joint_inputs_externallymeasuredtorque",
     "eoprot_tag_mc_joint_cmmnds_calibration",
