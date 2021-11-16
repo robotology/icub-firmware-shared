@@ -83,6 +83,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_actuators[] =
 static const eOmap_str_str_u08_t s_eomc_map_of_encoders[] =
 {    
     {"aea", "eomc_enc_aea",eomc_enc_aea},
+    {"aea3", "eomc_enc_aea3", eomc_enc_aea3},
     {"roie", "eomc_enc_roie",eomc_enc_roie},
     {"absanalog", "eomc_enc_absanalog", eomc_enc_absanalog},    
     {"mais", "eomc_enc_mais", eomc_enc_mais},
@@ -267,6 +268,7 @@ extern uint8_t eomc_encoder_get_numberofcomponents(eOmc_encoder_t encoder)
     switch(encoder)
     {        
         case eomc_enc_aea:
+        case eomc_enc_aea3:
         case eomc_enc_roie:
         case eomc_enc_absanalog:
         case eomc_enc_mais:    
