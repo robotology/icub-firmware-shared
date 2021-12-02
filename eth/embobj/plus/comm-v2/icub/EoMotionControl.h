@@ -223,6 +223,16 @@ typedef enum
 } eOmc_calibration_type_t;
 
 
+/** @typedef    typedef enum eOmc_faultmode_t
+    @brief      contains the possible fault modes for a joint. 
+ **/
+typedef enum
+{
+    eomc_fault_none = 0,
+    eomc_fault_first = 1,
+    eomc_fault_last = 2
+} eOmc_faultmode_t;
+enum { eomc_fault_numbersof = 3 };
 
 // -- all the possible data service structures
 
@@ -794,7 +804,7 @@ typedef struct                  //size is 1+1+1+1 = 4
     eOenum08_t                  controlmodestatus;          /**< use eOmc_controlmode_t. */
     eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
     eObool_t                    ismotiondone;               /**< simply eobool_true or eobool_false */                      
-    uint8_t                     filler[1];    
+    uint8_t                     filler[1];
 } eOmc_joint_status_modes_t;
 
 
@@ -946,7 +956,7 @@ typedef struct                  // size is: 4+4+4+2+2+2+2 = 20
 typedef struct                  // size is: 20+4+0 = 24
 {   
     eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */   
-    uint8_t                     filler[4];    
+    uint32_t                    fault_state_mask;       /**< bit mask where each bit represent a motor fault state */   
 } eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 24)
 
 
