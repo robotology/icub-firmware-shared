@@ -118,7 +118,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"psc", "eobrd_psc", eobrd_psc},
     {"mtb4w", "eobrd_mtb4w", eobrd_mtb4w},
     {"pmc", "eobrd_pmc", eobrd_pmc},
-    {"amcbldc", "eobrd_amcbldc", eobrd_pmc},
+    {"amcbldc", "eobrd_amcbldc", eobrd_amcbldc},
     
     {"none", "eobrd_none", eobrd_none},
     {"unknown", "eobrd_unknown", eobrd_unknown}
