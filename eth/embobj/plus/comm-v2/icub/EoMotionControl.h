@@ -804,7 +804,7 @@ typedef struct                  //size is 1+1+1+1 = 4
     eOenum08_t                  controlmodestatus;          /**< use eOmc_controlmode_t. */
     eOenum08_t                  interactionmodestatus;      /**< use values from eOmc_interactionmode_t */
     eObool_t                    ismotiondone;               /**< simply eobool_true or eobool_false */                      
-    uint8_t                     fault_state;
+    uint8_t                     fault_state_mask;
 } eOmc_joint_status_modes_t;
 
 
@@ -956,7 +956,7 @@ typedef struct                  // size is: 4+4+4+2+2+2+2 = 20
 typedef struct                  // size is: 20+4+0 = 24
 {   
     eOmc_motor_status_basic_t   basic;                  /**< the basic status of a motor */   
-    uint32_t                    mc_fault_state;            /**< represents the motion controller fault state */   
+    uint32_t                    fault_state_mask;            /**< represents the motion controller fault state */   
 } eOmc_motor_status_t;          EO_VERIFYsizeof(eOmc_motor_status_t, 24)
 
 
