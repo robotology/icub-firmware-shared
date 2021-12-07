@@ -222,18 +222,6 @@ typedef enum
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
 
-
-/** @typedef    typedef enum eOmc_faultmode_t
-    @brief      contains the possible fault modes for a joint. 
- **/
-typedef enum
-{
-    eomc_fault_none = 0,
-    eomc_fault_first = 1,
-    eomc_fault_last = 2
-} eOmc_faultmode_t;
-enum { eomc_fault_numbersof = 3 };
-
 // -- all the possible data service structures
 
 
