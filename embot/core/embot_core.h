@@ -105,6 +105,7 @@ namespace embot { namespace core {
     }   
              
     // it represents a function call with a generic argument
+    // note that we can construct it using a lambda:  {[](void *p){ /*use p*/ }, arg}
     struct Callback
     {
         fpCaller call {nullptr};
@@ -118,30 +119,45 @@ namespace embot { namespace core {
         void execute() const { if(true == isvalid()) { call(arg); } }
     };
 
-    // it holds generic data plus its capacity
+    // it is a holder of data, either mutable or constexpr
+    // we dont want to change what is inside pointer unless basic initialization
     struct Data
     {    
         void * pointer {nullptr};
         size_t capacity {0};
         
-        Data() = default;
-        constexpr Data(void *p, const size_t s) : pointer(p), capacity(s) {}
+        constexpr Data() = default;
+        constexpr Data(void *p, size_t s) : pointer(p), capacity(s) {} 
+        constexpr Data(const void *p, size_t s) : pointer(const_cast<void*>(p)), capacity(s) {} 
                     
         void load(void *littleendianmemory, const size_t s) { pointer = littleendianmemory; capacity = s; }
+        
         void clear() { pointer = nullptr; capacity = 0; }
-        bool isvalid() const { if((nullptr != pointer) && (0 != capacity)){ return true; } else { return false; } } 
-      
-        std::uint8_t  * getU08ptr() const { return reinterpret_cast<std::uint8_t*>(pointer); }  
-        std::uint16_t * getU16ptr() const { return reinterpret_cast<std::uint16_t*>(pointer); } 
-        std::uint32_t * getU32ptr() const { return reinterpret_cast<std::uint32_t*>(pointer); } 
-        std::uint64_t * getU64ptr() const { return reinterpret_cast<std::uint64_t*>(pointer); } 
         
-        std::uint8_t  getU08val(size_t pos) const { if(isvalid() && (pos < capacity)) { return getU08ptr()[pos]; } else { return 0; } }      
-        std::uint16_t getU16val(size_t pos) const { if(isvalid() && ((2*pos) < capacity)) { return getU16ptr()[pos]; } else { return 0; } }
-        std::uint32_t getU32val(size_t pos) const { if(isvalid() && ((4*pos) < capacity)) { return getU32ptr()[pos]; } else { return 0; } }       
-        std::uint64_t getU64val(size_t pos) const { if(isvalid() && ((8*pos) < capacity)) { return getU64ptr()[pos]; } else { return 0; } }
+        bool isvalid() const { return (nullptr != pointer) && (0 != capacity); }
         
-        void * getVOIDptr(size_t offset = 0) const { if(isvalid() && (offset < capacity)) { std::uint8_t *d = getU08ptr(); return &d[offset]; } else { return nullptr;} }      
+        size_t copyfrom(void *littleendianmemory, const size_t s)
+        {
+           if((!isvalid()) || (nullptr == littleendianmemory) || (0 == s))
+           {
+                return 0;
+           }  
+           size_t n = std::min(s, capacity);
+           std::memmove(pointer, littleendianmemory, n);
+           return n;
+        }
+        
+        size_t copyfrom(const Data &other)
+        {
+           if((!isvalid()) || (!other.isvalid()))
+           {
+                return 0;
+           }  
+           
+           size_t n = std::min(other.capacity, capacity);
+           std::memmove(pointer, other.pointer, n);
+           return n;
+        }
     };    
 
     
