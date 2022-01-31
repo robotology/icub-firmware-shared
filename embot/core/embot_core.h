@@ -127,7 +127,6 @@ namespace embot { namespace core {
         size_t capacity {0};
         
         constexpr Data() = default;
-        constexpr Data(void *p, size_t s) : pointer(p), capacity(s) {} 
         constexpr Data(const void *p, size_t s) : pointer(const_cast<void*>(p)), capacity(s) {} 
                     
         void load(void *littleendianmemory, const size_t s) { pointer = littleendianmemory; capacity = s; }
@@ -158,6 +157,8 @@ namespace embot { namespace core {
            std::memmove(pointer, other.pointer, n);
            return n;
         }
+        
+        std::uint8_t * getU08ptr() const { return reinterpret_cast<std::uint8_t*>(pointer); }
     };    
 
     
