@@ -127,7 +127,7 @@ namespace embot { namespace core {
         size_t capacity {0};
         
         constexpr Data() = default;
-        constexpr Data(const void *p, size_t s) : pointer(const_cast<void*>(p)), capacity(s) {} 
+        constexpr Data(void *p, size_t s) : pointer(p), capacity(s) {} 
                     
         void load(void *littleendianmemory, const size_t s) { pointer = littleendianmemory; capacity = s; }
         
