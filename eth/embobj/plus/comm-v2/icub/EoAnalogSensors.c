@@ -447,7 +447,7 @@ extern eObool_t eoas_ft_isboardvalid(eObrd_cantype_t boardtype)
 {
     for(uint8_t n=0; n<eoas_ft_supportedboards_numberof(); n++)
     {
-        if(s_eoas_ft_supportedboards_types == boardtype)
+        if(boardtype == s_eoas_ft_supportedboards_types[n])
         {
             return eobool_true;
         }

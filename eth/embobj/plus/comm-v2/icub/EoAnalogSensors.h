@@ -705,9 +705,9 @@ enum { eoas_ft_6axis = 6 };
 typedef struct
 {
     eOenum08_t              mode;           // use eOas_ft_mode_t                                 
-    uint8_t                 datarate;       // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
+    uint8_t                 ftdatarate;     // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
     uint8_t                 calibrationset; // can be calibration set 0, 1, 2
-    uint8_t                 filler01[1];    // maybe in future sepcifies unit time for datarate (0 -> ms, 1 -> 100 us, 2 -> 10 ms, 3 -> 100 ms) 
+    uint8_t                 tempdatarate;   // in seconds 
 } eOas_ft_config_t;         EO_VERIFYsizeof(eOas_ft_config_t, 4)
 
 
