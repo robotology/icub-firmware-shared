@@ -435,12 +435,13 @@ typedef enum
     eomn_serv_category_temperatures     = 6,
     eomn_serv_category_psc              = 7,
     eomn_serv_category_pos              = 8,
+    eomn_serv_category_ft               = 9,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-enum { eomn_serv_categories_numberof = 9 };
+enum { eomn_serv_categories_numberof = 10 };
 
 typedef enum 
 {
@@ -461,11 +462,12 @@ typedef enum
     eomn_serv_AS_pos            = 14,
     eomn_serv_MC_mc4plusfaps    = 15,
     eomn_serv_MC_mc4pluspmc     = 16,
+    eomn_serv_AS_ft             = 17,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 17 };
+enum { eomn_serv_types_numberof = 18 };
 
 typedef enum
 {
@@ -535,8 +537,14 @@ typedef struct
 } eOmn_serv_config_data_as_pos_t;       EO_VERIFYsizeof(eOmn_serv_config_data_as_pos_t, 6)
 
 
+typedef struct
+{   // 36  
+    eOas_ft_arrayof_sensors_t           arrayofsensors;
+} eOmn_serv_config_data_as_ft_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_ft_t, 36)
+
+
 typedef union
-{   // max(6, 6, 44, 108, 156, 8, 6)
+{   // max(6, 6, 44, 108, 156, 8, 6, 36)
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;
@@ -544,6 +552,7 @@ typedef union
     eOmn_serv_config_data_as_inertial3_t    inertial3;
     eOmn_serv_config_data_as_psc_t          psc;
     eOmn_serv_config_data_as_pos_t          pos;
+    eOmn_serv_config_data_as_ft_t           ft;
 } eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
 
 
@@ -743,7 +752,7 @@ typedef struct
 typedef struct
 {   // 32 + 32
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
-    uint8_t                                 filler[7];    
+    uint8_t                                 filler[6];    
     eOmn_service_command_result_t           commandresult;
 } eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 48) 
 

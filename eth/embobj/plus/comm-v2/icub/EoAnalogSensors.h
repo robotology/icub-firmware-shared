@@ -77,12 +77,13 @@ typedef enum
     eoas_temperature            = 15,
     eoas_psc_angle              = 16,
     eoas_pos_angle              = 17,
+    eoas_ft                     = 18,
     // add in here eoas_xxxnameetc
     eoas_unknown                = 254,  
     eoas_none                   = 255   
 } eOas_sensor_t;
 
-enum { eoas_sensors_numberof = 18 };
+enum { eoas_sensors_numberof = 19 };
 
 
 /** @typedef    typedef enum eOas_entity_t;
@@ -97,10 +98,11 @@ typedef enum
     eoas_entity_inertial                    = 3,
     eoas_entity_inertial3                   = 4,
     eoas_entity_psc                         = 5,
-    eoas_entity_pos                         = 6
+    eoas_entity_pos                         = 6,
+    eoas_entity_ft                          = 7
 } eOas_entity_t;
 
-enum { eoas_entities_numberof = 7 };
+enum { eoas_entities_numberof = 8 };
 
 
 // -- all the possible enum
@@ -497,7 +499,7 @@ typedef struct
     uint8_t acc :2;
     uint8_t mag :2;
     uint8_t dum :2;
-}eOas_inertial3_calibStatus;
+} eOas_inertial3_calibStatus;
 
 typedef union
 {
@@ -671,6 +673,79 @@ typedef struct                      // size is: 4+32+4 = 40
     eOas_pos_commands_t             cmmnds;
 } eOas_pos_t;                       EO_VERIFYsizeof(eOas_pos_t, 40)
 
+
+
+// -- the definition of a FT entity
+
+
+enum { eOas_ft_sensors_maxnumber = 4 };
+
+
+
+
+typedef struct
+{
+    eObrd_info_t boardinfo;
+    eObrd_canlocation_t canloc;
+    uint8_t ffu;
+} eOas_ft_sensordescriptor_t; EO_VERIFYsizeof(eOas_ft_sensordescriptor_t, 8)
+
+
+typedef struct
+{
+    eOarray_head_t              head;
+    eOas_ft_sensordescriptor_t  data[eOas_ft_sensors_maxnumber];
+} eOas_ft_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_ft_arrayof_sensors_t, 36)
+
+
+typedef enum { eoas_ft_mode_raw = 0, eoas_ft_mode_calibrated = 1 } eOas_ft_mode_t;
+
+enum { eoas_ft_6axis = 6 };
+
+typedef struct
+{
+    eOenum08_t              mode;           // use eOas_ft_mode_t                                 
+    uint8_t                 datarate;       // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
+    uint8_t                 calibrationset; // can be calibration set 0, 1, 2
+    uint8_t                 filler01[1];    // maybe in future sepcifies unit time for datarate (0 -> ms, 1 -> 100 us, 2 -> 10 ms, 3 -> 100 ms) 
+} eOas_ft_config_t;         EO_VERIFYsizeof(eOas_ft_config_t, 4)
+
+
+typedef struct
+{
+    uint8_t                 enable;         /**< use 0 or 1*/
+    uint8_t                 filler[3];
+} eOas_ft_commands_t;       EO_VERIFYsizeof(eOas_ft_commands_t, 4)
+
+
+typedef struct
+{
+    eOabstime_t             age;          // timeoflife in usec. better using this because yarp may ask the board to have its time
+    uint32_t                info;         // ffu ... used-calib-set, saturated info, calib/notcalib, candata-not-heard-of-since-ms-ago, ... boh it is worth using extra 8 bytes?
+    uint16_t                ffu;
+    eOmeas_temperature_t    temperature;  // in steps of 0.1 celsius degree (pos and neg).
+    float32_t               values[eoas_ft_6axis];    // they may be [f, t] or also the 6 adc values or also ... see info.    
+} eOas_ft_timedvalue_t;     EO_VERIFYsizeof(eOas_ft_timedvalue_t, 40)
+
+
+typedef struct    
+{   // 40 + 12 + 4 = 56
+    eOas_ft_timedvalue_t    timedvalue;
+    uint16_t                fullscale[eoas_ft_6axis];
+    uint8_t                 mode;       // calibrated, not calibrated, may it be useful ????  
+    uint8_t                 filler[3];    
+} eOas_ft_status_t;         EO_VERIFYsizeof(eOas_ft_status_t, 56)
+
+
+typedef struct
+{
+    // size is: 4 + 4 + 56 = 64
+    eOas_ft_config_t        config;
+    eOas_ft_commands_t      cmmnds;
+    eOas_ft_status_t        status;
+} eOas_ft_t; EO_VERIFYsizeof(eOas_ft_t, 64)
+
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 
@@ -697,6 +772,11 @@ extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_te
 
 extern uint8_t eoas_temperature_supportedboards_numberof(void);
 extern eObrd_cantype_t eoas_temperature_supportedboards_gettype(uint8_t pos);
+
+
+extern uint8_t eoas_ft_supportedboards_numberof(void);
+extern eObrd_cantype_t eoas_ft_supportedboards_gettype(uint8_t pos);
+extern eObool_t eoas_ft_isboardvalid(eObrd_cantype_t boardtype);
 
 
 /** @}

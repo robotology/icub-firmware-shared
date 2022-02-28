@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 5 };
+enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 6 };
 
 
 enum { eoprot_entities_as_numberof = eoas_entities_numberof };
@@ -312,6 +312,41 @@ typedef enum
 enum { eoprot_rwms_as_pos_numberof = 4 };  // it MUST be equal to the number of rw modes. 
 
 
+// - entity ft
+
+
+/** @typedef    typedef enum eOprot_tag_as_ft_t
+    @brief      It contains the tags for all variables of the ft entity.
+                See definition of eOas_ft_t (and its fields) in file EoAnalogSensors.h for explanation of the variables.
+ **/
+typedef enum
+{
+    eoprot_tag_as_ft_config                                        = 0,
+    eoprot_tag_as_ft_cmmnds_enable                                 = 1,
+    eoprot_tag_as_ft_status                                        = 2,
+    eoprot_tag_as_ft_status_timedvalue                             = 3,
+    eoprot_tag_as_ft_status_fullscale                              = 4
+} eOprot_tag_as_ft_t;
+
+enum { eoprot_tags_as_ft_numberof = 5 };  // it MUST be equal to the number of tags. 
+
+
+/** @typedef    typedef enum eOprot_rwm_as_ft_t
+    @brief      It contains the rw modes for all variables of the ft entity. There must be a one-to-one
+                correspondence to the values in eOprot_tag_as_ft_t.
+ **/
+typedef enum
+{
+    eoprot_rwm_as_ft_config                                        = eo_nv_rwmode_RW,
+    eoprot_rwm_as_ft_cmmnds_enable                                 = eo_nv_rwmode_RW,
+    eoprot_rwm_as_ft_status                                        = eo_nv_rwmode_RO,
+    eoprot_rwm_as_ft_status_timedvalue                             = eo_nv_rwmode_RO,
+    eoprot_rwm_as_ft_status_fullscale                              = eo_nv_rwmode_RO    
+} eOprot_rwm_as_ft_t; 
+
+enum { eoprot_rwms_as_ft_numberof = 5 };  // it MUST be equal to the number of rw modes. 
+
+
 
 // - structures implementing the endpoints
 
@@ -328,6 +363,7 @@ typedef struct                  // 56*1+48*1+8*1 = 112
     eOas_inertial3_t            inertial3[1];
     eOas_psc_t                  psc[1];
     eOas_pos_t                  pos[1];
+    eOas_ft_t                   ft[1];
 } eOprot_template_as_t;         //EO_VERIFYsizeof(eOprot_template_as_t, 112);
   
   
@@ -472,6 +508,22 @@ extern void eoprot_fun_UPDT_as_pos_status(const EOnv* nv, const eOropdescriptor_
 extern void eoprot_fun_INIT_as_pos_cmmnds_enable(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_pos_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
 
+// -- ft
+
+extern void eoprot_fun_INIT_as_ft_config(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_ft_config(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_ft_cmmnds_enable(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_ft_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_ft_status(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_ft_status(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_ft_status_fullscale(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_ft_status_fullscale(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_as_ft_status_timedvalue(const EOnv* nv);
+extern void eoprot_fun_UPDT_as_ft_status_timedvalue(const EOnv* nv, const eOropdescriptor_t* rd);
 
 /** @}            
     end of group eo_EoProtocolAS  

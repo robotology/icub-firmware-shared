@@ -334,8 +334,15 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
  
     {eoerror_value_CFG_mc_mc4pluspmc_ok, "CFG: EOtheMotionController can correctly configure mc4pluspmc-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4pluspmc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc4pluspmc. see other messages for more details"},
-    {eoerror_value_CFG_mc_mc4pluspmc_failed_candiscovery_of_pmc, "CFG: EOtheMotionController cannot be configured. verification of pos for mc4pluspmc fails. see other messages for more details"}    
+    {eoerror_value_CFG_mc_mc4pluspmc_failed_candiscovery_of_pmc, "CFG: EOtheMotionController cannot be configured. verification of pos for mc4pluspmc fails. see other messages for more details"},    
 
+    {eoerror_value_CFG_ft_ok, "CFG: theFTservice is OK"},
+    {eoerror_value_CFG_ft_failed_candiscovery, "CFG: theFTservice failed CAN discovery"},
+    {eoerror_value_CFG_ft_not_verified_yet, "CFG: theFTservice is not verified yet"},
+    {eoerror_value_CFG_ft_using_onboard_config, "CFG: theFTservice is using onboard config"},
+    {eoerror_value_CFG_ft_failed_notsupported, "CFG: theFTservice is not supported"},
+    {eoerror_value_CFG_ft_failed_fullscales, "CFG: theFTservice cannot get fullscales"}
+        
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
 

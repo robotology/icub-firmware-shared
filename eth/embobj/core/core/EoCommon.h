@@ -174,6 +174,14 @@ typedef uint32_t    eOreltime_t;
 typedef uint64_t    eOabstime_t; 
 
 
+/** @typedef    typedef uint32_t eOabstime_ms_t
+    @brief      eOabstime_ms_t contains the time expressed in milli-seconds in a much longer range. It can be used
+                instead of eOabstime_t when we want to save memory (4B vs 8B) but ... at a lower resolution (ms vs us) 
+                at a lower duration (4294967 sec ~= 49 days)
+ **/
+typedef uint32_t    eOabstime_ms_t; 
+
+
 /** @typedef    typedef struct eOnanotime_t
     @brief      eOnanotime_t contains the time expressed at its finest resolution: nanoseconds.
                 It is used for both relative and absolute time when a finer resultion is needed.
