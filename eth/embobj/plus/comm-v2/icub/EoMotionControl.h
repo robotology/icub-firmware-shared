@@ -468,10 +468,10 @@ typedef struct
 
 typedef struct
 {
-    float32_t               viscous_up_val;
-    float32_t               viscous_down_val;
-    float32_t               coulomb_up_val;
-    float32_t               coulomb_down_val;
+    float32_t               viscous_pos_val;
+    float32_t               viscous_neg_val;
+    float32_t               coulomb_pos_val;
+    float32_t               coulomb_neg_val;
 } eOmc_FrictionParams_t;    EO_VERIFYsizeof(eOmc_FrictionParams_t, 16)
 
 typedef struct
