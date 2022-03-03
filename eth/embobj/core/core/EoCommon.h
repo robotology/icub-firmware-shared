@@ -477,6 +477,7 @@ typedef     eObool_t    (*eObool_fp_uint32_t)                       (uint32_t);
 typedef     double      (*eOdouble_fp_void_t)                       (void);
 typedef     int8_t      (*eOint8_fp_voidp_uint32_t)                 (void*, uint32_t);
 typedef     int8_t      (*eOint8_fp_voidp)                          (void*);
+typedef     int         (*eOint_fp_constcharp)                      (const char*);
 
 
 
