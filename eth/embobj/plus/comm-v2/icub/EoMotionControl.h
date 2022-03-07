@@ -468,11 +468,19 @@ typedef struct
 
 typedef struct
 {
+    float32_t               viscous_pos_val;
+    float32_t               viscous_neg_val;
+    float32_t               coulomb_pos_val;
+    float32_t               coulomb_neg_val;
+} eOmc_FrictionParams_t;    EO_VERIFYsizeof(eOmc_FrictionParams_t, 16)
+
+typedef struct
+{
     float32_t               kp;                 /**< proportional gain */
     float32_t               ki;                 /**< integral gain */
     float32_t               kd;                 /**< derivative gain */
     float32_t               kff;
-    float32_t               limitonintegral;    /**< limit of integral term */ 
+    float32_t               limitonintegral;    /**< limit of integral term */
     float32_t               limitonoutput;      /**< limit of the output of the pid */
     float32_t               offset;             /**< the k0 in the pid formula */
     float32_t               stiction_up_val;
@@ -611,12 +619,13 @@ typedef struct              // size is 1+3+8+0 = 12
 
 typedef struct
 {
-    float       bemf_value;
-    float       ktau_value;
-    int8_t      bemf_scale;
-    int8_t      ktau_scale;
-    int8_t      filler02[2];
-} eOmc_motor_params_t;  EO_VERIFYsizeof(eOmc_motor_params_t, 12)
+    float                   bemf_value;
+    float                   ktau_value;
+    eOmc_FrictionParams_t   friction;
+    int8_t                  bemf_scale;
+    int8_t                  ktau_scale;
+    int8_t                  filler02[2];
+} eOmc_motor_params_t;  EO_VERIFYsizeof(eOmc_motor_params_t, 28)
 
 // -- all the possible data holding structures used in a motor
 
@@ -650,7 +659,7 @@ typedef uint8_t  eOmc_torqueControlFilterType_t;
 /** @typedef    typedef struct eOmc_joint_config_t
     @brief      eOmc_joint_config_t contains the values required to configure a joint
  **/
-typedef struct                  // size is: 40+40+40+8+8+12+4+4+12+2+1+1+4+4+4= 184
+typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4= 200
 {
     eOmc_PID_t                  pidtrajectory;              /**< the pid for trajectory control */
     eOmc_PID_t                  piddirect;                  /**< the pid for direct control */
@@ -667,7 +676,7 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+12+2+1+1+4+4+4= 
     float32_t                   jntEncTolerance;
     float32_t                   gearbox_E2J;
     float32_t                   deadzone;
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 184)
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 200)
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_legacy_t
@@ -864,13 +873,13 @@ typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 /** @typedef    typedef struct eOmc_joint_t
     @brief      contains the whole joint
  **/
-typedef struct                  // size is 184+96+4+44+0 = 312
+typedef struct                  // size is 200+96+4+44+0 = 344
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 328);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 344);
 
 
 

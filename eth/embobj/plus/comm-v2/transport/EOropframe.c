@@ -496,7 +496,10 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
     // we have eo_ropframe_sizeforZEROrops+1 - eo_ropframe_sizeforZEROrops - 8 = -7 ...
     remaining = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
     if(remaining < ((int32_t)streamsize))
-    {   // not enough space in ...
+    {   // not enough space in ropframe reply
+        char msg[64] = "";
+        snprintf(msg, sizeof(msg), "Not enough space in ropframe reply:  %d, %d, %d, %d, %d, %d", p->capacity, p->size, p->framedata->header.ropsnumberof, p->framedata->header.ropsnumberof, remaining, streamsize);
+        eo_errman_Trace(eo_errman_GetHandle(), msg, NULL);
         return(eores_NOK_generic);
     }
   
