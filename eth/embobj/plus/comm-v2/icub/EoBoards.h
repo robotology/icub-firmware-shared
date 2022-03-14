@@ -382,8 +382,8 @@ enum { eobrd_reportmodes_numberof = 4 };
 
 typedef struct
 {
-    uint8_t         mode;               // use eObrd_canmonitor_reportmode_t
     uint8_t         checkrate;          // in ms: rate of check of presence of the boards. if 0 we dont do any check
+    uint8_t         reportmode;         // use eObrd_canmonitor_reportmode_t
     uint16_t        periodicreportrate; // in ms: rate of reporting of presence or absence. if 0 we dont do any periodic report
 } eObrd_canmonitor_cfg_t; EO_VERIFYsizeof(eObrd_canmonitor_cfg_t, 4) 
     
