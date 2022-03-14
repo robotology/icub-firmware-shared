@@ -46,6 +46,7 @@ extern "C" {
 #include "EoCommon.h"
 #include "EOarray.h"
 #include "EOrop.h"
+#include "EoBoards.h"
 
 #include "EoAnalogSensors.h"
 #include "EoMotionControl.h"
@@ -538,13 +539,14 @@ typedef struct
 
 
 typedef struct
-{   // 36  
+{   // 4 + 36  
+    eObrd_canmonitor_cfg_t              canmonitorconfig;
     eOas_ft_arrayof_sensors_t           arrayofsensors;
-} eOmn_serv_config_data_as_ft_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_ft_t, 36)
+} eOmn_serv_config_data_as_ft_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_ft_t, 40)
 
 
 typedef union
-{   // max(6, 6, 44, 108, 156, 8, 6, 36)
+{   // max(6, 6, 44, 108, 156, 8, 6, 40)
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;

@@ -171,15 +171,17 @@ typedef enum
     eoerror_value_SYS_canservices_board_wrongprotversion    = 54,
     eoerror_value_SYS_canservices_board_notfound            = 55,
     eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56,
-    eoerror_value_SYS_canservices_boards_regularcontact     = 57,
-    eoerror_value_SYS_canservices_boards_lostcontact        = 58,
-    eoerror_value_SYS_canservices_boards_stillnocontact     = 59,
-    eoerror_value_SYS_canservices_boards_retrievedcontact   = 60,
-    eoerror_value_SYS_bootstrapping                         = 61,
+    eoerror_value_SYS_canservices_boards_lostcontact        = 57,
+    eoerror_value_SYS_canservices_boards_retrievedcontact   = 58,
+    eoerror_value_SYS_bootstrapping                         = 59,    
+    eoerror_value_SYS_canservices_monitor_regularcontact    = 60,
+    eoerror_value_SYS_canservices_monitor_lostcontact       = 61,
+    eoerror_value_SYS_canservices_monitor_stillnocontact    = 62,
+    eoerror_value_SYS_canservices_monitor_retrievedcontact  = 63
     
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 62 };
+enum { eoerror_value_SYS_numberof = 64 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
