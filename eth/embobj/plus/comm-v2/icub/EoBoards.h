@@ -382,9 +382,9 @@ enum { eobrd_reportmodes_numberof = 4 };
 
 typedef struct
 {
-    uint8_t         checkrate;          // in ms: rate of check of presence of the boards. if 0 we dont do any check
+    uint8_t         periodofcheck;      // in ms: period of check of presence of the boards. if 0 we dont do any check
     uint8_t         reportmode;         // use eObrd_canmonitor_reportmode_t
-    uint16_t        periodicreportrate; // in ms: rate of reporting of presence or absence. if 0 we dont do any periodic report
+    uint16_t        periodofreport;     // in ms: period of reporting of presence or absence. if 0 we dont do any periodic report
 } eObrd_canmonitor_cfg_t; EO_VERIFYsizeof(eObrd_canmonitor_cfg_t, 4) 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
