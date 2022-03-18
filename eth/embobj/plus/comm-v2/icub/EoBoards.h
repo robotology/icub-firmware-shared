@@ -366,6 +366,26 @@ typedef enum
 } eObrd_portpos_t;
 
 enum { eobrd_portposs_numberof = 7 };
+
+
+typedef enum
+{
+    eobrd_canmonitor_reportmode_NEVER       = 0, // we never report
+    eobrd_canmonitor_reportmode_justLOSTjustFOUND = 1, // report only once if boards disappears (or reappers)
+    eobrd_canmonitor_reportmode_justLOSTjustFOUNDstillLOST = 2,
+    eobrd_canmonitor_reportmode_ALL         = 3, // report changes but also period state (all present or still missing) 
+    eobrd_canmonitor_reportmode_none        = 31,    
+    eobrd_canmonitor_reportmode_unknown     = 30    
+} eObrd_canmonitor_reportmode_t;
+
+enum { eobrd_reportmodes_numberof = 4 };
+
+typedef struct
+{
+    uint8_t         periodofcheck;      // in ms: period of check of presence of the boards. if 0 we dont do any check
+    uint8_t         reportmode;         // use eObrd_canmonitor_reportmode_t
+    uint16_t        periodofreport;     // in ms: period of reporting of presence or absence. if 0 we dont do any periodic report
+} eObrd_canmonitor_cfg_t; EO_VERIFYsizeof(eObrd_canmonitor_cfg_t, 4) 
     
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -409,7 +429,9 @@ extern eObrd_portpsc_t eoboards_string2portpsc(const char * string, eObool_t use
 extern const char * eoboards_portpos2string(eObrd_portpos_t portpos, eObool_t usecompactstring);
 extern eObrd_portpos_t eoboards_string2portpos(const char * string, eObool_t usecompactstring);
 
-    
+extern const char * eoboards_reportmode2string(eObrd_canmonitor_reportmode_t mode, eObool_t usecompactstring);
+extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * string, eObool_t usecompactstring);
+
 /** @}            
     end of group eo_cevcwervcrev5555  
  **/

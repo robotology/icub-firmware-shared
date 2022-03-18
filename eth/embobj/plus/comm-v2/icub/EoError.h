@@ -173,10 +173,15 @@ typedef enum
     eoerror_value_SYS_transceiver_rxinvalidframe_error      = 56,
     eoerror_value_SYS_canservices_boards_lostcontact        = 57,
     eoerror_value_SYS_canservices_boards_retrievedcontact   = 58,
-    eoerror_value_SYS_bootstrapping                         = 59
+    eoerror_value_SYS_bootstrapping                         = 59,    
+    eoerror_value_SYS_canservices_monitor_regularcontact    = 60,
+    eoerror_value_SYS_canservices_monitor_lostcontact       = 61,
+    eoerror_value_SYS_canservices_monitor_stillnocontact    = 62,
+    eoerror_value_SYS_canservices_monitor_retrievedcontact  = 63
+    
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 60 };
+enum { eoerror_value_SYS_numberof = 64 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
@@ -386,11 +391,18 @@ typedef enum
 
     eoerror_value_CFG_mc_mc4pluspmc_ok                 = 87,
     eoerror_value_CFG_mc_mc4pluspmc_failed_encoders_verify = 88, 
-    eoerror_value_CFG_mc_mc4pluspmc_failed_candiscovery_of_pmc = 89,  
+    eoerror_value_CFG_mc_mc4pluspmc_failed_candiscovery_of_pmc = 89, 
+
+    eoerror_value_CFG_ft_ok                             = 90,
+    eoerror_value_CFG_ft_failed_candiscovery            = 91,
+    eoerror_value_CFG_ft_not_verified_yet               = 92,
+    eoerror_value_CFG_ft_using_onboard_config           = 93,
+    eoerror_value_CFG_ft_failed_notsupported            = 94,
+    eoerror_value_CFG_ft_failed_fullscales              = 95
     
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 90 };
+enum { eoerror_value_CFG_numberof = 96 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

@@ -215,6 +215,18 @@ static const eOmap_str_str_u08_t s_boards_map_of_portposs[] =
 };  EO_VERIFYsizeof(s_boards_map_of_portposs, (eobrd_portposs_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 
+static const eOmap_str_str_u08_t s_boards_map_of_reportmodes[] =
+{
+    {"NEVER", "eobrd_canmonitor_reportmode_NEVER", eobrd_canmonitor_reportmode_NEVER},
+    {"justLOSTjustFOUND", "eobrd_canmonitor_reportmode_justLOSTjustFOUND", eobrd_canmonitor_reportmode_justLOSTjustFOUND},
+    {"justLOSTjustFOUNDstillLOST", "eobrd_canmonitor_reportmode_justLOSTjustFOUNDstillLOST", eobrd_canmonitor_reportmode_justLOSTjustFOUNDstillLOST},
+    {"ALL", "eobrd_canmonitor_reportmode_ALL", eobrd_canmonitor_reportmode_ALL},
+
+    {"none", "eobrd_canmonitor_reportmode_none", eobrd_canmonitor_reportmode_none},
+    {"unknown", "eobrd_canmonitor_reportmode_unknown", eobrd_canmonitor_reportmode_unknown}    
+};  EO_VERIFYsizeof(s_boards_map_of_reportmodes, (eobrd_reportmodes_numberof+2)*sizeof(eOmap_str_str_u08_t))
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -550,6 +562,31 @@ extern eObrd_portpos_t eoboards_string2portpos(const char * string, eObool_t use
     const uint8_t defvalue = eobrd_portpos_unknown;
     
     return((eObrd_portpos_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
+}
+
+extern const char * eoboards_reportmode2string(eObrd_canmonitor_reportmode_t mode, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_reportmodes;
+    const uint8_t size = eobrd_reportmodes_numberof+2;
+    const uint8_t value = mode;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }
+    
+    return(str);   
+}
+
+
+extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_reportmodes;
+    const uint8_t size = eobrd_portposs_numberof+2;
+    const uint8_t defvalue = eobrd_portpos_unknown;
+    
+    return((eObrd_canmonitor_reportmode_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
 }
 
 
