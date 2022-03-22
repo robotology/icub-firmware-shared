@@ -583,8 +583,8 @@ extern const char * eoboards_reportmode2string(eObrd_canmonitor_reportmode_t mod
 extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * string, eObool_t usecompactstring)
 {
     const eOmap_str_str_u08_t * map = s_boards_map_of_reportmodes;
-    const uint8_t size = eobrd_portposs_numberof+2;
-    const uint8_t defvalue = eobrd_portpos_unknown;
+    const uint8_t size = eobrd_reportmodes_numberof+2;
+    const uint8_t defvalue = eobrd_canmonitor_reportmode_unknown;
     
     return((eObrd_canmonitor_reportmode_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
 }
