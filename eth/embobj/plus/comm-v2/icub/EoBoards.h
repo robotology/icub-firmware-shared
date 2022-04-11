@@ -88,12 +88,13 @@ typedef enum
     eobrd_ethtype_ems4              = 32,      
     eobrd_ethtype_mc4plus           = 33,     
     eobrd_ethtype_mc2plus           = 34,   
-   
+    eobrd_ethtype_amc               = 35,
+    
     eobrd_ethtype_none              = 254, 	
     eobrd_ethtype_unknown           = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN 
 } eObrd_ethtype_t;
 
-enum { eobrd_ethtype_numberof = 3 };
+enum { eobrd_ethtype_numberof = 4 };
 
 
 // use eoboards_is_can() / eoboards_is_eth() to check if the eObrd_type_t belongs also to eObrd_cantype_t / eObrd_ethtype_t group.
@@ -105,7 +106,8 @@ typedef enum
     eobrd_ems4                  = eobrd_ethtype_ems4,       // associated string is: "eobrd_ems4"
     eobrd_mc4plus               = eobrd_ethtype_mc4plus,    // etc ... the string is equal to the enum
     eobrd_mc2plus               = eobrd_ethtype_mc2plus,     
-        
+    eobrd_amc                   = eobrd_ethtype_amc,
+    
     eobrd_mc4                   = eobrd_cantype_mc4,        
     eobrd_mtb                   = eobrd_cantype_mtb,        
     eobrd_strain                = eobrd_cantype_strain,     
@@ -131,7 +133,7 @@ typedef enum
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 22 };
+enum { eobrd_type_numberof = 23 };
 
 
 typedef struct                  
