@@ -11,6 +11,7 @@ on:
   # * is a special character in YAML so you have to quote this string
   # Execute a "nightly" build at 2 AM UTC 
   - cron:  '0 2 * * *'
+  workflow_dispatch:
     
 jobs:
   build:
@@ -69,10 +70,8 @@ jobs:
       if: matrix.os == 'macOS-latest'
       run: |
         brew update
-        # Workaround for https://github.com/robotology/robotology-superbuild/issues/565
-        brew upgrade  python@3.9 || brew link --overwrite python@3.9
         brew upgrade
-        brew install cmake pkg-config git
+        brew install cmake pkg-config
     - name: Source-based Dependencies [Windows] 
       if: matrix.os == 'windows-latest'
       shell: bash
