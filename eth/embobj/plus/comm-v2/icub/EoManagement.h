@@ -464,6 +464,7 @@ typedef enum
     eomn_serv_MC_mc4plusfaps    = 15,
     eomn_serv_MC_mc4pluspmc     = 16,
     eomn_serv_AS_ft             = 17,
+    eomn_serv_AS_canbattery     = 18,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
