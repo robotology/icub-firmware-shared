@@ -679,9 +679,7 @@ typedef struct                      // size is: 4+32+4 = 40
 
 
 enum { eOas_ft_sensors_maxnumber = 4 };
-
-
-
+enum { eOas_canbattery_sensors_maxnumber = 1 };
 
 typedef struct
 {
@@ -696,6 +694,18 @@ typedef struct
     eOarray_head_t              head;
     eOas_ft_sensordescriptor_t  data[eOas_ft_sensors_maxnumber];
 } eOas_ft_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_ft_arrayof_sensors_t, 36)
+
+typedef struct
+{
+    eObrd_info_t boardinfo;//6
+    eObrd_canlocation_t canloc;//8
+} eOas_canbattery_sensordescriptor_t; EO_VERIFYsizeof(eOas_canbattery_sensordescriptor_t, 7)
+
+typedef struct
+{
+    eOarray_head_t              head;//4
+    eOas_canbattery_sensordescriptor_t  data[eOas_canbattery_sensors_maxnumber];
+} eOas_canbattery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_canbattery_arrayof_sensors_t, 11)
 
 
 typedef enum { eoas_ft_mode_raw = 0, eoas_ft_mode_calibrated = 1 } eOas_ft_mode_t;
@@ -746,6 +756,43 @@ typedef struct
 } eOas_ft_t; EO_VERIFYsizeof(eOas_ft_t, 64)
 
 
+typedef struct
+{
+    uint8_t                 period;           // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
+} eOas_canbattery_config_t;         EO_VERIFYsizeof(eOas_canbattery_config_t, 1)
+
+
+typedef struct
+{
+    uint8_t                 enable;         /**< use 0 or 1*/
+    uint8_t                 filler[3];
+} eOas_canbattery_commands_t;       EO_VERIFYsizeof(eOas_canbattery_commands_t, 4)
+
+
+typedef struct
+{
+    eOabstime_t             age;          // timeoflife in usec. better using this because yarp may ask the board to have its time
+    int16_t                 temperature;  // in steps of 0.1 celsius degree (pos and neg).
+    float32_t               voltage;  
+    float32_t               current;  
+} eOas_canbattery_timedvalue_t;     EO_VERIFYsizeof(eOas_canbattery_timedvalue_t, 24)
+
+
+typedef struct    
+{   // 40 + 12 + 4 = 56
+    eOas_canbattery_timedvalue_t    timedvalue;
+} eOas_canbattery_status_t;         EO_VERIFYsizeof(eOas_canbattery_status_t, 24)
+
+
+typedef struct
+{
+    // size is: 4 + 4 + 56 = 64
+    eOas_canbattery_config_t        config;
+    eOas_canbattery_commands_t      cmmnds;
+    eOas_canbattery_status_t        status;
+} eOas_canbattery_t; EO_VERIFYsizeof(eOas_canbattery_t, 32)
+//char (*luca)[sizeof( eOas_canbattery_t )] = 1;
+
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
 
@@ -777,6 +824,9 @@ extern eObrd_cantype_t eoas_temperature_supportedboards_gettype(uint8_t pos);
 extern uint8_t eoas_ft_supportedboards_numberof(void);
 extern eObrd_cantype_t eoas_ft_supportedboards_gettype(uint8_t pos);
 extern eObool_t eoas_ft_isboardvalid(eObrd_cantype_t boardtype);
+extern uint8_t eoas_canbattery_supportedboards_numberof(void);
+extern eObrd_cantype_t eoas_canbattery_supportedboards_gettype(uint8_t pos);
+extern eObool_t eoas_canbattery_isboardvalid(eObrd_cantype_t boardtype);
 
 
 /** @}

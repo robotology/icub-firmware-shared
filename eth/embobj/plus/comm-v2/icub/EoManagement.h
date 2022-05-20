@@ -545,6 +545,10 @@ typedef struct
     eOas_ft_arrayof_sensors_t           arrayofsensors;
 } eOmn_serv_config_data_as_ft_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_ft_t, 40)
 
+typedef struct
+{
+    eOas_canbattery_arrayof_sensors_t           arrayofsensors;
+} eOmn_serv_config_data_as_canbattery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_canbattery_t, 11)
 
 typedef union
 {   // max(6, 6, 44, 108, 156, 8, 6, 40)

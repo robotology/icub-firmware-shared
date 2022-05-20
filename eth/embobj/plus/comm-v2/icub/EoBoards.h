@@ -76,6 +76,7 @@ typedef enum
     eobrd_cantype_mtb4w             = ICUBCANPROTO_BOARDTYPE__MTB4W,    // 16 (mtb4 for waseda university)
     eobrd_cantype_pmc               = ICUBCANPROTO_BOARDTYPE__PMC,      // 17 (pmc = piezo motor control)
     eobrd_cantype_amcbldc           = ICUBCANPROTO_BOARDTYPE__AMCBLDC,  // 18 (amcbldc)
+    eobrd_cantype_canbattery        = ICUBCANPROTO_BOARDTYPE__CANBATTERY,  // 19
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
@@ -128,12 +129,13 @@ typedef enum
     eobrd_mtb4w                 = eobrd_cantype_mtb4w,
     eobrd_pmc                   = eobrd_cantype_pmc,
     eobrd_amcbldc               = eobrd_cantype_amcbldc,
+    eobrd_canbattery            = eobrd_cantype_canbattery,
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 23 };
+enum { eobrd_type_numberof = 24 };
 
 
 typedef struct                  
