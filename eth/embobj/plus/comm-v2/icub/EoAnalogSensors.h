@@ -78,12 +78,13 @@ typedef enum
     eoas_psc_angle              = 16,
     eoas_pos_angle              = 17,
     eoas_ft                     = 18,
+    eoas_canbattery             = 19,
     // add in here eoas_xxxnameetc
     eoas_unknown                = 254,  
     eoas_none                   = 255   
 } eOas_sensor_t;
 
-enum { eoas_sensors_numberof = 19 };
+enum { eoas_sensors_numberof = 20 };
 
 
 /** @typedef    typedef enum eOas_entity_t;
@@ -99,10 +100,11 @@ typedef enum
     eoas_entity_inertial3                   = 4,
     eoas_entity_psc                         = 5,
     eoas_entity_pos                         = 6,
-    eoas_entity_ft                          = 7
+    eoas_entity_ft                          = 7,
+    eoas_entity_canbattery                  = 8
 } eOas_entity_t;
 
-enum { eoas_entities_numberof = 8 };
+enum { eoas_entities_numberof = 9 };
 
 
 // -- all the possible enum
@@ -775,13 +777,15 @@ typedef struct
     int16_t                 temperature;  // in steps of 0.1 celsius degree (pos and neg).
     float32_t               voltage;  
     float32_t               current;  
-} eOas_canbattery_timedvalue_t;     EO_VERIFYsizeof(eOas_canbattery_timedvalue_t, 24)
-
+    float32_t               charge;  
+    int8_t                  status;
+} eOas_canbattery_timedvalue_t;     EO_VERIFYsizeof(eOas_canbattery_timedvalue_t, 32)
+//char (*luca)[sizeof( eOas_canbattery_timedvalue_t )] = 1;
 
 typedef struct    
 {   // 40 + 12 + 4 = 56
     eOas_canbattery_timedvalue_t    timedvalue;
-} eOas_canbattery_status_t;         EO_VERIFYsizeof(eOas_canbattery_status_t, 24)
+} eOas_canbattery_status_t;         EO_VERIFYsizeof(eOas_canbattery_status_t, 32)
 
 
 typedef struct
@@ -790,8 +794,7 @@ typedef struct
     eOas_canbattery_config_t        config;
     eOas_canbattery_commands_t      cmmnds;
     eOas_canbattery_status_t        status;
-} eOas_canbattery_t; EO_VERIFYsizeof(eOas_canbattery_t, 32)
-//char (*luca)[sizeof( eOas_canbattery_t )] = 1;
+} eOas_canbattery_t; EO_VERIFYsizeof(eOas_canbattery_t, 40)
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

@@ -135,6 +135,10 @@ const eOprot_EPcfg_t eoprot_arrayof_stdEPcfg[eoprot_endpoints_numberof] =
         EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 1, 1, eOas_ft_sensors_maxnumber}
     },
     {
+        EO_INIT(.endpoint)          eoprot_endpoint_analogsensors,
+        EO_INIT(.numberofentities)  {1, 1, 1, 1, 1, 1, 1, eOas_canbattery_sensors_maxnumber}
+    },
+    {
         EO_INIT(.endpoint)          eoprot_endpoint_skin,
         EO_INIT(.numberofentities)  {2, 0, 0, 0, 0, 0, 0, 0}
     }      

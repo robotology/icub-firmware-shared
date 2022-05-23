@@ -469,7 +469,7 @@ typedef enum
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 18 };
+enum { eomn_serv_types_numberof = 19 };
 
 typedef enum
 {
@@ -560,6 +560,7 @@ typedef union
     eOmn_serv_config_data_as_psc_t          psc;
     eOmn_serv_config_data_as_pos_t          pos;
     eOmn_serv_config_data_as_ft_t           ft;
+    eOmn_serv_config_data_as_canbattery_t   canbattery;
 } eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
 
 

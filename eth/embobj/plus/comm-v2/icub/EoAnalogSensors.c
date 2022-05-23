@@ -88,7 +88,8 @@ static const char * s_eoas_sensors_strings[] =
     "eoas_temperature",
     "eoas_psc_angle",
     "eoas_pos_angle",
-    "eoas_ft"
+    "eoas_ft",
+    "eoas_canbattery"
 };  EO_VERIFYsizeof(s_eoas_sensors_strings, eoas_sensors_numberof*sizeof(const char *));    
 
 
