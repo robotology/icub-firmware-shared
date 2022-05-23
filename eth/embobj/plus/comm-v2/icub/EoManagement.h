@@ -437,12 +437,13 @@ typedef enum
     eomn_serv_category_psc              = 7,
     eomn_serv_category_pos              = 8,
     eomn_serv_category_ft               = 9,
+    eomn_serv_category_canbattery       = 10,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-enum { eomn_serv_categories_numberof = 10 };
+enum { eomn_serv_categories_numberof = 11 };
 
 typedef enum 
 {
@@ -762,7 +763,7 @@ typedef struct
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
     uint8_t                                 filler[6];    
     eOmn_service_command_result_t           commandresult;
-} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 48) 
+} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 49) 
 
 
 /** @typedef    typedef struct eOmn_service_t;
@@ -772,8 +773,7 @@ typedef struct
 {   // 48+336=372    
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
-} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 384)  
-
+} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 388)  
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
