@@ -681,7 +681,6 @@ typedef struct                      // size is: 4+32+4 = 40
 
 
 enum { eOas_ft_sensors_maxnumber = 4 };
-enum { eOas_canbattery_sensors_maxnumber = 1 };
 
 typedef struct
 {
@@ -697,17 +696,6 @@ typedef struct
     eOas_ft_sensordescriptor_t  data[eOas_ft_sensors_maxnumber];
 } eOas_ft_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_ft_arrayof_sensors_t, 36)
 
-typedef struct
-{
-    eObrd_info_t boardinfo;//6
-    eObrd_canlocation_t canloc;//8
-} eOas_canbattery_sensordescriptor_t; EO_VERIFYsizeof(eOas_canbattery_sensordescriptor_t, 7)
-
-typedef struct
-{
-    eOarray_head_t              head;//4
-    eOas_canbattery_sensordescriptor_t  data[eOas_canbattery_sensors_maxnumber];
-} eOas_canbattery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_canbattery_arrayof_sensors_t, 11)
 
 
 typedef enum { eoas_ft_mode_raw = 0, eoas_ft_mode_calibrated = 1 } eOas_ft_mode_t;
@@ -756,6 +744,22 @@ typedef struct
     eOas_ft_commands_t      cmmnds;
     eOas_ft_status_t        status;
 } eOas_ft_t; EO_VERIFYsizeof(eOas_ft_t, 64)
+
+// -- the definition of a CanBattery entity
+
+enum { eOas_canbattery_sensors_maxnumber = 1 };
+
+typedef struct
+{
+    eObrd_info_t boardinfo;//6
+    eObrd_canlocation_t canloc;//8
+} eOas_canbattery_sensordescriptor_t; EO_VERIFYsizeof(eOas_canbattery_sensordescriptor_t, 7)
+
+typedef struct
+{
+    eOarray_head_t              head;//4
+    eOas_canbattery_sensordescriptor_t  data[eOas_canbattery_sensors_maxnumber];
+} eOas_canbattery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_canbattery_arrayof_sensors_t, 11)
 
 
 typedef struct
