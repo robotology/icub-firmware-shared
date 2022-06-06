@@ -89,7 +89,7 @@ static const char * s_eoas_sensors_strings[] =
     "eoas_psc_angle",
     "eoas_pos_angle",
     "eoas_ft",
-    "eoas_canbattery"
+    "eoas_battery"
 };  EO_VERIFYsizeof(s_eoas_sensors_strings, eoas_sensors_numberof*sizeof(const char *));    
 
 
@@ -427,12 +427,12 @@ extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_te
 // 
 
 static const eObrd_cantype_t s_eoas_ft_supportedboards_types[] = { eobrd_cantype_strain, eobrd_cantype_strain2 };
-static const eObrd_cantype_t s_eoas_canbattery_supportedboards_types[] = { eobrd_cantype_canbattery };
+static const eObrd_cantype_t s_eoas_bms_supportedboards_types[] = { eobrd_cantype_bms };
 
 
-extern uint8_t eoas_canbattery_supportedboards_numberof(void)
+extern uint8_t eoas_bms_supportedboards_numberof(void)
 {
-    return sizeof(s_eoas_canbattery_supportedboards_types)/sizeof(eObrd_cantype_t);
+    return sizeof(s_eoas_bms_supportedboards_types)/sizeof(eObrd_cantype_t);
 }
 
 extern uint8_t eoas_ft_supportedboards_numberof(void)
@@ -440,14 +440,14 @@ extern uint8_t eoas_ft_supportedboards_numberof(void)
     return sizeof(s_eoas_ft_supportedboards_types)/sizeof(eObrd_cantype_t);
 }
 
-extern eObrd_cantype_t eoas_canbattery_supportedboards_gettype(uint8_t pos)
+extern eObrd_cantype_t eoas_bms_supportedboards_gettype(uint8_t pos)
 {
-    if(pos >= eoas_canbattery_supportedboards_numberof())
+    if(pos >= eoas_bms_supportedboards_numberof())
     {
         return eobrd_cantype_none;
     }
     
-    return s_eoas_canbattery_supportedboards_types[pos];    
+    return s_eoas_bms_supportedboards_types[pos];    
 }
 
 extern eObrd_cantype_t eoas_ft_supportedboards_gettype(uint8_t pos)
@@ -473,11 +473,11 @@ extern eObool_t eoas_ft_isboardvalid(eObrd_cantype_t boardtype)
     return eobool_false;    
 }
 
-extern eObool_t eoas_canbattery_isboardvalid(eObrd_cantype_t boardtype)
+extern eObool_t eoas_bms_isboardvalid(eObrd_cantype_t boardtype)
 {
-    for(uint8_t n=0; n<eoas_canbattery_supportedboards_numberof(); n++)
+    for(uint8_t n=0; n<eoas_bms_supportedboards_numberof(); n++)
     {
-        if(boardtype == s_eoas_canbattery_supportedboards_types[n])
+        if(boardtype == s_eoas_bms_supportedboards_types[n])
         {
             return eobool_true;
         }

@@ -411,34 +411,34 @@ EO_weak extern void eoprot_fun_INIT_as_ft_status_timedvalue(const EOnv* nv) {}
 EO_weak extern void eoprot_fun_UPDT_as_ft_status_timedvalue(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
-// -- canbattery
+// -- battery
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_canbattery_config)
-EO_weak extern void eoprot_fun_INIT_as_canbattery_config(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_battery_config)
+EO_weak extern void eoprot_fun_INIT_as_battery_config(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_canbattery_config)
-EO_weak extern void eoprot_fun_UPDT_as_canbattery_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_battery_config)
+EO_weak extern void eoprot_fun_UPDT_as_battery_config(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_canbattery_cmmnds_enable)
-EO_weak extern void eoprot_fun_INIT_as_canbattery_cmmnds_enable(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_battery_cmmnds_enable)
+EO_weak extern void eoprot_fun_INIT_as_battery_cmmnds_enable(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_canbattery_cmmnds_enable)
-EO_weak extern void eoprot_fun_UPDT_as_canbattery_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_battery_cmmnds_enable)
+EO_weak extern void eoprot_fun_UPDT_as_battery_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif  
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_canbattery_status)
-EO_weak extern void eoprot_fun_INIT_as_canbattery_status(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_battery_status)
+EO_weak extern void eoprot_fun_INIT_as_battery_status(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_canbattery_status)
-EO_weak extern void eoprot_fun_UPDT_as_canbattery_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_battery_status)
+EO_weak extern void eoprot_fun_UPDT_as_battery_status(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
     
-#if !defined(OVERRIDE_eoprot_fun_INIT_as_canbattery_status_timedvalue)
-EO_weak extern void eoprot_fun_INIT_as_canbattery_status_timedvalue(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_as_battery_status_timedvalue)
+EO_weak extern void eoprot_fun_INIT_as_battery_status_timedvalue(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_as_canbattery_status_timedvalue)
-EO_weak extern void eoprot_fun_UPDT_as_canbattery_status_timedvalue(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_as_battery_status_timedvalue)
+EO_weak extern void eoprot_fun_UPDT_as_battery_status_timedvalue(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
        
 

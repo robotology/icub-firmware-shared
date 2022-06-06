@@ -437,7 +437,7 @@ typedef enum
     eomn_serv_category_psc              = 7,
     eomn_serv_category_pos              = 8,
     eomn_serv_category_ft               = 9,
-    eomn_serv_category_canbattery       = 10,
+    eomn_serv_category_battery       = 10,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
@@ -465,7 +465,7 @@ typedef enum
     eomn_serv_MC_mc4plusfaps    = 15,
     eomn_serv_MC_mc4pluspmc     = 16,
     eomn_serv_AS_ft             = 17,
-    eomn_serv_AS_canbattery     = 18,
+    eomn_serv_AS_battery     = 18,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
@@ -548,8 +548,8 @@ typedef struct
 
 typedef struct
 {
-    eOas_canbattery_arrayof_sensors_t           arrayofsensors;
-} eOmn_serv_config_data_as_canbattery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_canbattery_t, 11)
+    eOas_battery_arrayof_sensors_t           arrayofsensors;
+} eOmn_serv_config_data_as_battery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_battery_t, 11)
 
 typedef union
 {   // max(6, 6, 44, 108, 156, 8, 6, 40)
@@ -561,7 +561,7 @@ typedef union
     eOmn_serv_config_data_as_psc_t          psc;
     eOmn_serv_config_data_as_pos_t          pos;
     eOmn_serv_config_data_as_ft_t           ft;
-    eOmn_serv_config_data_as_canbattery_t   canbattery;
+    eOmn_serv_config_data_as_battery_t   battery;
 } eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
 
 

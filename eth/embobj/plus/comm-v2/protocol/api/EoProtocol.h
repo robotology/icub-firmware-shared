@@ -218,7 +218,7 @@ typedef enum
     eoprot_entity_as_pos                    = eoas_entity_pos,          /**<  */ 
     eoprot_entity_as_ft                     = eoas_entity_ft,           /**<  */      
     eoprot_entity_sk_skin                   = eosk_entity_skin,         /**<  */
-    eoprot_entity_as_canbattery             = eoas_entity_canbattery,   /**<  */      
+    eoprot_entity_as_battery             = eoas_entity_battery,   /**<  */      
     eoprot_entity_none                      = EOK_uint08dummy
 } eOprot_entity_t;
 
