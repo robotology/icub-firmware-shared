@@ -701,13 +701,14 @@ typedef struct
 {
     eObrd_info_t boardinfo;//6
     eObrd_canlocation_t canloc;//8
-} eOas_battery_sensordescriptor_t; EO_VERIFYsizeof(eOas_battery_sensordescriptor_t, 7)
+    uint8_t ffu;
+} eOas_battery_sensordescriptor_t; EO_VERIFYsizeof(eOas_battery_sensordescriptor_t, 8)
 
 typedef struct
 {
     eOarray_head_t              head;//4
     eOas_battery_sensordescriptor_t  data[eOas_battery_sensors_maxnumber];
-} eOas_battery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_battery_arrayof_sensors_t, 11)
+} eOas_battery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_battery_arrayof_sensors_t, 12)
 
 
 typedef enum { eoas_ft_mode_raw = 0, eoas_ft_mode_calibrated = 1 } eOas_ft_mode_t;
@@ -777,7 +778,8 @@ typedef struct
 typedef struct
 {
     uint8_t                 period;           // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
-} eOas_battery_config_t;         EO_VERIFYsizeof(eOas_battery_config_t, 1)
+    uint8_t                 filler[3];
+} eOas_battery_config_t;         EO_VERIFYsizeof(eOas_battery_config_t, 4)
 
 
 typedef struct
@@ -791,17 +793,19 @@ typedef struct
 {
     eOabstime_t             age;          // timeoflife in usec. better using this because yarp may ask the board to have its time
     int16_t                 temperature;  // in steps of 0.1 celsius degree (pos and neg).
+    int8_t                  status;
+    uint8_t                 filler;
     float32_t               voltage;  
     float32_t               current;  
     float32_t               charge;  
-    int8_t                  status;
-} eOas_battery_timedvalue_t;     EO_VERIFYsizeof(eOas_battery_timedvalue_t, 32)
+
+} eOas_battery_timedvalue_t;     EO_VERIFYsizeof(eOas_battery_timedvalue_t, 24)
 //char (*luca)[sizeof( eOas_battery_timedvalue_t )] = 1;
 
 typedef struct    
 {   // 40 + 12 + 4 = 56
     eOas_battery_timedvalue_t    timedvalue;
-} eOas_battery_status_t;         EO_VERIFYsizeof(eOas_battery_status_t, 32)
+} eOas_battery_status_t;         EO_VERIFYsizeof(eOas_battery_status_t, 24)
 
 
 typedef struct
@@ -810,7 +814,7 @@ typedef struct
     eOas_battery_config_t        config;
     eOas_battery_commands_t      cmmnds;
     eOas_battery_status_t        status;
-} eOas_battery_t; EO_VERIFYsizeof(eOas_battery_t, 40)
+} eOas_battery_t; EO_VERIFYsizeof(eOas_battery_t, 32)
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
