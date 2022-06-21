@@ -655,11 +655,24 @@ typedef uint8_t  eOmc_jointId_t;
 typedef uint8_t  eOmc_torqueControlFilterType_t;
 
 
+/** @typedef    typedef struct eOmc_kalman_filter_config_t
+    @brief      eOmc_kalman_filter_config_t contains the values required to configure the Kalman Filter 
+ **/
+typedef struct                  // size is: 1+3+12+12+4+4= 36
+{
+    eObool_t                    enabled;
+    uint8_t                     filler[3]; // just for explicit padding
+    float32_t                   x0[3];
+    float32_t                   Q[3];
+    float32_t                   R;
+    float32_t                   P0;
+} eOmc_kalman_filter_config_t; EO_VERIFYsizeof(eOmc_kalman_filter_config_t, 36)
+
 
 /** @typedef    typedef struct eOmc_joint_config_t
     @brief      eOmc_joint_config_t contains the values required to configure a joint
  **/
-typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4= 200
+typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4+36= 236
 {
     eOmc_PID_t                  pidtrajectory;              /**< the pid for trajectory control */
     eOmc_PID_t                  piddirect;                  /**< the pid for direct control */
@@ -676,7 +689,8 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4= 
     float32_t                   jntEncTolerance;
     float32_t                   gearbox_E2J;
     float32_t                   deadzone;
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 200)
+    eOmc_kalman_filter_config_t kalman_params;              /**< the kalman filter parameters */
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 236)
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_legacy_t
@@ -873,13 +887,13 @@ typedef struct                  // size is 28+12+1+1+1+1+0 = 44
 /** @typedef    typedef struct eOmc_joint_t
     @brief      contains the whole joint
  **/
-typedef struct                  // size is 200+96+4+44+0 = 344
+typedef struct                  // size is 236+96+4+44+0 = 380
 {   
     eOmc_joint_config_t         config;                     /**< the configuration of the joint */
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 344);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 380);
 
 
 
