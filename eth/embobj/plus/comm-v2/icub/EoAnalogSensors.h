@@ -758,21 +758,6 @@ typedef struct
     eOas_ft_status_t        status;
 } eOas_ft_t; EO_VERIFYsizeof(eOas_ft_t, 64)
 
-// -- the definition of a CanBattery entity
-
-enum { eOas_battery_sensors_maxnumber = 1 };
-
-typedef struct
-{
-    eObrd_info_t boardinfo;//6
-    eObrd_canlocation_t canloc;//8
-} eOas_battery_sensordescriptor_t; EO_VERIFYsizeof(eOas_battery_sensordescriptor_t, 7)
-
-typedef struct
-{
-    eOarray_head_t              head;//4
-    eOas_battery_sensordescriptor_t  data[eOas_battery_sensors_maxnumber];
-} eOas_battery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_battery_arrayof_sensors_t, 11)
 
 
 typedef struct
