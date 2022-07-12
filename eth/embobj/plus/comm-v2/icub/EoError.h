@@ -398,11 +398,16 @@ typedef enum
     eoerror_value_CFG_ft_not_verified_yet               = 92,
     eoerror_value_CFG_ft_using_onboard_config           = 93,
     eoerror_value_CFG_ft_failed_notsupported            = 94,
-    eoerror_value_CFG_ft_failed_fullscales              = 95
-    
+    eoerror_value_CFG_ft_failed_fullscales              = 95,
+
+    eoerror_value_CFG_bat_ok                            = 96,
+    eoerror_value_CFG_bat_failed_candiscovery           = 97,
+    eoerror_value_CFG_bat_not_verified_yet              = 98,
+    eoerror_value_CFG_bat_using_onboard_config          = 99,
+    eoerror_value_CFG_bat_failed_notsupported           = 100,
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 96 };
+enum { eoerror_value_CFG_numberof = 101 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t

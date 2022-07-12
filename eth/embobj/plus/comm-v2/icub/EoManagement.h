@@ -437,7 +437,7 @@ typedef enum
     eomn_serv_category_psc              = 7,
     eomn_serv_category_pos              = 8,
     eomn_serv_category_ft               = 9,
-    eomn_serv_category_battery       = 10,
+    eomn_serv_category_battery          = 10,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
@@ -465,7 +465,7 @@ typedef enum
     eomn_serv_MC_mc4plusfaps    = 15,
     eomn_serv_MC_mc4pluspmc     = 16,
     eomn_serv_AS_ft             = 17,
-    eomn_serv_AS_battery     = 18,
+    eomn_serv_AS_battery        = 18,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
@@ -548,8 +548,9 @@ typedef struct
 
 typedef struct
 {
+    eObrd_canmonitor_cfg_t                   canmonitorconfig;
     eOas_battery_arrayof_sensors_t           arrayofsensors;
-} eOmn_serv_config_data_as_battery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_battery_t, 12)
+} eOmn_serv_config_data_as_battery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_battery_t, 16)
 
 typedef union
 {   // max(6, 6, 44, 108, 156, 8, 6, 40)
@@ -562,7 +563,7 @@ typedef union
     eOmn_serv_config_data_as_pos_t          pos;
     eOmn_serv_config_data_as_ft_t           ft;
     eOmn_serv_config_data_as_battery_t      battery;
-} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
+} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 160)
 
 
 
@@ -668,7 +669,7 @@ typedef union
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
-} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 328) 
+} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 332) 
 
 
 
@@ -678,7 +679,7 @@ typedef struct
     uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
     uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
-} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 332) 
+} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 336) 
 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };

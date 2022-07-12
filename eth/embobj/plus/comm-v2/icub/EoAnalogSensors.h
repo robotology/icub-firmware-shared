@@ -706,7 +706,7 @@ typedef struct
 
 typedef struct
 {
-    eOarray_head_t              head;//4
+    eOarray_head_t              head;//4                                                                                                  
     eOas_battery_sensordescriptor_t  data[eOas_battery_sensors_maxnumber];
 } eOas_battery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_battery_arrayof_sensors_t, 12)
 

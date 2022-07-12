@@ -345,7 +345,13 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_ft_not_verified_yet, "CFG: theFTservice is not verified yet"},
     {eoerror_value_CFG_ft_using_onboard_config, "CFG: theFTservice is using onboard config"},
     {eoerror_value_CFG_ft_failed_notsupported, "CFG: theFTservice is not supported"},
-    {eoerror_value_CFG_ft_failed_fullscales, "CFG: theFTservice cannot get fullscales"}
+    {eoerror_value_CFG_ft_failed_fullscales, "CFG: theFTservice cannot get fullscales"},
+
+    {eoerror_value_CFG_bat_ok, "CFG: theBATservice is OK"},
+    {eoerror_value_CFG_bat_failed_candiscovery, "CFG: theBATservice failed CAN discovery"},
+    {eoerror_value_CFG_bat_not_verified_yet, "CFG: theBATservice is not verified yet"},
+    {eoerror_value_CFG_bat_using_onboard_config, "CFG: theBATservice is using onboard config"},
+    {eoerror_value_CFG_bat_failed_notsupported, "CFG: theBATservice is not supported"},
         
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
