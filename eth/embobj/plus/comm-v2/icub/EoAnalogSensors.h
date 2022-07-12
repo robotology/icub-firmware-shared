@@ -760,19 +760,19 @@ typedef struct
 
 // -- the definition of a CanBattery entity
 
-enum { eOas_canbattery_sensors_maxnumber = 1 };
+enum { eOas_battery_sensors_maxnumber = 1 };
 
 typedef struct
 {
     eObrd_info_t boardinfo;//6
     eObrd_canlocation_t canloc;//8
-} eOas_canbattery_sensordescriptor_t; EO_VERIFYsizeof(eOas_canbattery_sensordescriptor_t, 7)
+} eOas_battery_sensordescriptor_t; EO_VERIFYsizeof(eOas_battery_sensordescriptor_t, 7)
 
 typedef struct
 {
     eOarray_head_t              head;//4
-    eOas_canbattery_sensordescriptor_t  data[eOas_canbattery_sensors_maxnumber];
-} eOas_canbattery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_canbattery_arrayof_sensors_t, 11)
+    eOas_battery_sensordescriptor_t  data[eOas_battery_sensors_maxnumber];
+} eOas_battery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_battery_arrayof_sensors_t, 11)
 
 
 typedef struct

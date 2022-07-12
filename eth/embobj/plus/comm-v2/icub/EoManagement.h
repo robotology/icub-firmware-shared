@@ -563,8 +563,7 @@ typedef union
     eOmn_serv_config_data_as_pos_t          pos;
     eOmn_serv_config_data_as_ft_t           ft;
     eOmn_serv_config_data_as_battery_t      battery;
-} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 160)
-
+} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
 
 
 enum { eomn_serv_skin_maxpatches = 4 };
@@ -669,8 +668,7 @@ typedef union
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
-} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 332) 
-
+} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 328) 
 
 
 typedef struct                              
@@ -679,8 +677,7 @@ typedef struct
     uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
     uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
-} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 336) 
-
+} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 332) 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
 typedef struct
