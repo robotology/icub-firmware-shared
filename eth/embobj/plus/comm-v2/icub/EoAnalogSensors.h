@@ -762,7 +762,7 @@ typedef struct
 
 typedef struct
 {
-    uint8_t                 period;           // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
+    uint8_t                 period;           // if 0 -> DONT TX, else TX
     uint8_t                 filler[3];
 } eOas_battery_config_t;         EO_VERIFYsizeof(eOas_battery_config_t, 4)
 
