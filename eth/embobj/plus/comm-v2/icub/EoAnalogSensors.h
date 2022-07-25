@@ -832,9 +832,9 @@ extern eObrd_cantype_t eoas_temperature_supportedboards_gettype(uint8_t pos);
 extern uint8_t eoas_ft_supportedboards_numberof(void);
 extern eObrd_cantype_t eoas_ft_supportedboards_gettype(uint8_t pos);
 extern eObool_t eoas_ft_isboardvalid(eObrd_cantype_t boardtype);
-extern uint8_t eoas_bms_supportedboards_numberof(void);
-extern eObrd_cantype_t eoas_bms_supportedboards_gettype(uint8_t pos);
-extern eObool_t eoas_bms_isboardvalid(eObrd_cantype_t boardtype);
+extern uint8_t eoas_battery_supportedboards_numberof(void);
+extern eObrd_cantype_t eoas_battery_supportedboards_gettype(uint8_t pos);
+extern eObool_t eoas_battery_isboardvalid(eObrd_cantype_t boardtype);
 
 
 /** @}
