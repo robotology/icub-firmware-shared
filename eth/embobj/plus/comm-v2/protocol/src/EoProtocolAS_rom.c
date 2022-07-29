@@ -111,6 +111,9 @@ static const eOas_pos_t eoprot_as_rom_pos_defaultvalue = { 0 };
 // - default value of a ft
 static const eOas_ft_t eoprot_as_rom_ft_defaultvalue = { 0 };
 
+// - default value of a battery
+static const eOas_battery_t eoprot_as_rom_battery_defaultvalue = { 0 };
+
 // - descriptors for the variables of a strain
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_strain_wholeitem =
@@ -743,6 +746,68 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_ft_status_fullscale =
 #endif
 };
 
+// - descriptors for the variables of a battery
+
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_battery_config =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_battery_defaultvalue.config),
+    EO_INIT(.rwmode)    eoprot_rwm_as_battery_config,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_battery_defaultvalue.config,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_battery_config,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_battery_config
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_battery_cmmnds_enable =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_battery_defaultvalue.cmmnds.enable),
+    EO_INIT(.rwmode)    eoprot_rwm_as_battery_cmmnds_enable,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_battery_defaultvalue.cmmnds.enable,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_battery_cmmnds_enable,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_battery_cmmnds_enable
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_battery_status =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_battery_defaultvalue.status),
+    EO_INIT(.rwmode)    eoprot_rwm_as_battery_status,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_battery_defaultvalue.status,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_battery_status,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_battery_status
+#endif
+};
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_as_rom_descriptor_battery_status_timedvalue =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_as_rom_battery_defaultvalue.status.timedvalue),
+    EO_INIT(.rwmode)    eoprot_rwm_as_battery_status_timedvalue,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_as_rom_battery_defaultvalue.status.timedvalue,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_as_battery_status_timedvalue,
+    EO_INIT(.update)    eoprot_fun_UPDT_as_battery_status_timedvalue
+#endif
+};
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -831,6 +896,14 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_ft_descriptors[] =
     &eoprot_as_rom_descriptor_ft_status_fullscale,
 };  EO_VERIFYsizeof(s_eoprot_as_rom_ft_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_ft_numberof))
 
+static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_as_rom_battery_descriptors[] =
+{   // here are eoprot_tags_as_inertial_numberof descriptors for the inertial entity
+    &eoprot_as_rom_descriptor_battery_config,
+    &eoprot_as_rom_descriptor_battery_cmmnds_enable,
+    &eoprot_as_rom_descriptor_battery_status,
+    &eoprot_as_rom_descriptor_battery_status_timedvalue,
+};  EO_VERIFYsizeof(s_eoprot_as_rom_battery_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_as_battery_numberof))
+
 EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] = 
 {
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_strain_descriptors,
@@ -840,9 +913,9 @@ EOPROT_ROMmap EOnv_rom_t * const * const eoprot_as_rom_descriptors[] =
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_inertial3_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_psc_descriptors,
     (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_pos_descriptors,
-    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_ft_descriptors
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_ft_descriptors,
+    (EOPROT_ROMmap EOnv_rom_t **)&s_eoprot_as_rom_battery_descriptors
 };  EO_VERIFYsizeof(eoprot_as_rom_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t** const)*(eoprot_entities_as_numberof))
-
 
 // the other constants: to be changed when a new entity is added
 
@@ -855,7 +928,8 @@ const uint8_t eoprot_as_rom_tags_numberof[] =
     eoprot_tags_as_inertial3_numberof,
     eoprot_tags_as_psc_numberof,
     eoprot_tags_as_pos_numberof,
-    eoprot_tags_as_ft_numberof
+    eoprot_tags_as_ft_numberof,
+    eoprot_tags_as_battery_numberof
 };  EO_VERIFYsizeof(eoprot_as_rom_tags_numberof, eoprot_entities_as_numberof*sizeof(uint8_t)) 
 
 const uint16_t eoprot_as_rom_entities_sizeof[] = 
@@ -867,7 +941,8 @@ const uint16_t eoprot_as_rom_entities_sizeof[] =
     sizeof(eOas_inertial3_t),
     sizeof(eOas_psc_t),
     sizeof(eOas_pos_t),
-    sizeof(eOas_ft_t)
+    sizeof(eOas_ft_t),
+    sizeof(eOas_battery_t)
 };  EO_VERIFYsizeof(eoprot_as_rom_entities_sizeof, eoprot_entities_as_numberof*sizeof(uint16_t)) 
 
 const void* const eoprot_as_rom_entities_defval[] = 
@@ -879,7 +954,8 @@ const void* const eoprot_as_rom_entities_defval[] =
     (const void*)&eoprot_as_rom_inertial3_defaultvalue,
     (const void*)&eoprot_as_rom_psc_defaultvalue,
     (const void*)&eoprot_as_rom_pos_defaultvalue,
-    (const void*)&eoprot_as_rom_ft_defaultvalue
+    (const void*)&eoprot_as_rom_ft_defaultvalue,
+    (const void*)&eoprot_as_rom_battery_defaultvalue,
 };  EO_VERIFYsizeof(eoprot_as_rom_entities_defval, eoprot_entities_as_numberof*sizeof(const void*)) 
 
 
@@ -894,7 +970,8 @@ const char * const eoprot_as_strings_entity[] =
     "eoprot_entity_as_inertial3",
     "eoprot_entity_as_psc",
     "eoprot_entity_as_pos",
-    "eoprot_entity_as_ft"
+    "eoprot_entity_as_ft",
+    "eoprot_entity_as_battery"
 };  EO_VERIFYsizeof(eoprot_as_strings_entity, eoprot_entities_as_numberof*sizeof(const char*)) 
 
 
@@ -971,6 +1048,14 @@ static const char * const s_eoprot_as_strings_tags_ft[] =
     "eoprot_tag_as_ft_status_timedvalue",
 };  EO_VERIFYsizeof(s_eoprot_as_strings_tags_ft, eoprot_tags_as_ft_numberof*sizeof(const char*)) 
 
+static const char * const s_eoprot_as_strings_tags_battery[] =
+{
+    "eoprot_tag_as_battery_config",
+    "eoprot_tag_as_battery_cmmnds_enable",
+    "eoprot_tag_as_battery_status",
+    "eoprot_tag_as_battery_status_timedvalue",
+};  EO_VERIFYsizeof(s_eoprot_as_strings_tags_battery, eoprot_tags_as_battery_numberof*sizeof(const char*)) 
+
 
 const char ** const eoprot_as_strings_tags[] =
 {
@@ -981,7 +1066,8 @@ const char ** const eoprot_as_strings_tags[] =
     (const char**)&s_eoprot_as_strings_tags_inertial3,
     (const char**)&s_eoprot_as_strings_tags_psc,
     (const char**)&s_eoprot_as_strings_tags_pos,
-    (const char**)&s_eoprot_as_strings_tags_ft
+    (const char**)&s_eoprot_as_strings_tags_ft,
+    (const char**)&s_eoprot_as_strings_tags_battery,
 };  EO_VERIFYsizeof(eoprot_as_strings_tags, eoprot_entities_as_numberof*sizeof(const char**)) 
 
 
@@ -1005,6 +1091,3 @@ const char ** const eoprot_as_strings_tags[] =
 // --------------------------------------------------------------------------------------------------------------------
 // - end-of-file (leave a blank line after)
 // --------------------------------------------------------------------------------------------------------------------
-
-
-

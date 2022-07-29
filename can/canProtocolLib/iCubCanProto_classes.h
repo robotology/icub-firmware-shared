@@ -52,11 +52,12 @@ extern "C" {
 #define ICUBCANPROTO_CLASS_PERIODIC_ANALOGSENSOR              0x03
 #define ICUBCANPROTO_CLASS_PERIODIC_SKIN                      0x04
 #define ICUBCANPROTO_CLASS_PERIODIC_INERTIALSENSOR            0x05
+#define ICUBCANPROTO_CLASS_PERIODIC_BATTERY                   0x06
 #define ICUBCANPROTO_CLASS_BOOTLOADER                         0x07
 // marco.accame: is this macro ICUBCANPROTO_CLASS_MAXNUM used? 
 //               if, so, after the addition of new class ICUBCANPROTO_CLASS_PERIODIC_INERTIALSENSOR, it should become 0x06 
 //               (the ICUBCANPROTO_CLASS_BOOTLOADER is not strangely not counted). 
-#define ICUBCANPROTO_CLASS_MAXNUM                             0x05
+#define ICUBCANPROTO_CLASS_MAXNUM                             0x07
 
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 

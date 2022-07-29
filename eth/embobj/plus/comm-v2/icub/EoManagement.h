@@ -437,12 +437,13 @@ typedef enum
     eomn_serv_category_psc              = 7,
     eomn_serv_category_pos              = 8,
     eomn_serv_category_ft               = 9,
+    eomn_serv_category_battery          = 10,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-enum { eomn_serv_categories_numberof = 10 };
+enum { eomn_serv_categories_numberof = 11 };
 
 typedef enum 
 {
@@ -464,11 +465,12 @@ typedef enum
     eomn_serv_MC_mc4plusfaps    = 15,
     eomn_serv_MC_mc4pluspmc     = 16,
     eomn_serv_AS_ft             = 17,
+    eomn_serv_AS_battery        = 18,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 18 };
+enum { eomn_serv_types_numberof = 19 };
 
 typedef enum
 {
@@ -544,6 +546,11 @@ typedef struct
     eOas_ft_arrayof_sensors_t           arrayofsensors;
 } eOmn_serv_config_data_as_ft_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_ft_t, 40)
 
+typedef struct
+{
+    eObrd_canmonitor_cfg_t                   canmonitorconfig;
+    eOas_battery_arrayof_sensors_t           arrayofsensors;
+} eOmn_serv_config_data_as_battery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_battery_t, 16)
 
 typedef union
 {   // max(6, 6, 44, 108, 156, 8, 6, 40)
@@ -555,8 +562,8 @@ typedef union
     eOmn_serv_config_data_as_psc_t          psc;
     eOmn_serv_config_data_as_pos_t          pos;
     eOmn_serv_config_data_as_ft_t           ft;
+    eOmn_serv_config_data_as_battery_t      battery;
 } eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
-
 
 
 enum { eomn_serv_skin_maxpatches = 4 };
@@ -664,7 +671,6 @@ typedef union
 } eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 328) 
 
 
-
 typedef struct                              
 {   // 1+3+324=328
     uint8_t                                 type;               // use eOmn_serv_type_t to identify what kind of service it is
@@ -672,7 +678,6 @@ typedef struct
     uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
 } eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 332) 
-
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
 typedef struct
@@ -754,7 +759,7 @@ typedef struct
 typedef struct
 {   // 32 + 32
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
-    uint8_t                                 filler[6];    
+    uint8_t                                 filler[5];    
     eOmn_service_command_result_t           commandresult;
 } eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 48) 
 
@@ -767,7 +772,7 @@ typedef struct
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
 } eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 384)  
-
+//char (*luca)[sizeof( eOmn_service_t )] = 1;
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
