@@ -152,9 +152,9 @@ extern eOas_sensor_t eoas_string2sensor(const char * string)
     return(eoas_unknown);    
 }
 
-enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2, in3_rfe_pos = 3 };
+enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2, in3_rfe_pos = 3, in3_mtb4c_pos = 4 };
 
-static const eObrd_cantype_t s_eoas_inertial3_supportedboards_types[] = { eobrd_cantype_mtb, eobrd_cantype_mtb4, eobrd_cantype_strain2, eobrd_cantype_rfe };
+static const eObrd_cantype_t s_eoas_inertial3_supportedboards_types[] = { eobrd_cantype_mtb, eobrd_cantype_mtb4, eobrd_cantype_strain2, eobrd_cantype_rfe, eobrd_cantype_mtb4c };
 
 
 extern uint8_t eoas_inertial3_supportedboards_numberof(void)
@@ -220,7 +220,13 @@ extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_board
     {
         memcpy(&set->data[in3_rfe_pos], brdinfo, sizeof(eObrd_info_t));
         return eores_OK;       
-    }  
+    }
+    
+    if(eobrd_cantype_mtb4c == brdinfo->type)
+    {
+        memcpy(&set->data[in3_mtb4c_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }    
     
     return eores_NOK_generic;
 }
@@ -268,7 +274,15 @@ extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_iner
             {
                 r = &set->data[in3_rfe_pos];
             }
-        } break;        
+        } break;  
+
+        case eobrd_cantype_mtb4c:
+        {
+            if(eobrd_cantype_mtb4c == set->data[in3_mtb4c_pos].type)
+            {
+                r = &set->data[in3_mtb4c_pos];
+            }
+        } break;         
         
         default: 
         {
@@ -326,10 +340,9 @@ extern eOas_inertial3_type_t eoas_inertial3_canproto_to_imu(uint8_t v)
 }
 
 
-enum { temp_mtb4_pos = 0, temp_strain2_pos = 1 };
+enum { temp_mtb4_pos = 0, temp_strain2_pos = 1, temp_mtb4c_pos = 2 };
 
-static const eObrd_cantype_t s_eoas_temperature_supportedboards_types[] = { eobrd_cantype_mtb4, eobrd_cantype_strain2 };
-
+static const eObrd_cantype_t s_eoas_temperature_supportedboards_types[] = { eobrd_cantype_mtb4, eobrd_cantype_strain2, eobrd_cantype_mtb4c };
 
 extern uint8_t eoas_temperature_supportedboards_numberof(void)
 {
@@ -381,7 +394,13 @@ extern eOresult_t eoas_temperature_setof_boardinfos_add(eOas_temperature_setof_b
     {
         memcpy(&set->data[temp_strain2_pos], brdinfo, sizeof(eObrd_info_t));
         return eores_OK;       
-    }    
+    }
+
+    if(eobrd_cantype_mtb4c == brdinfo->type)
+    {
+        memcpy(&set->data[temp_mtb4c_pos], brdinfo, sizeof(eObrd_info_t));
+        return eores_OK;       
+    }        
     
     return eores_NOK_generic;
 }
@@ -411,6 +430,14 @@ extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_te
             if(eobrd_cantype_strain2 == set->data[temp_strain2_pos].type)
             {
                 r = &set->data[temp_strain2_pos];
+            }
+        } break;
+
+        case eobrd_cantype_mtb4c:
+        {
+            if(eobrd_cantype_mtb4c == set->data[temp_mtb4c_pos].type)
+            {
+                r = &set->data[temp_mtb4c_pos];
             }
         } break;
         
