@@ -315,11 +315,11 @@ typedef struct
 
 
 // we use this struct to send activate-verify command to the board
-enum { eOas_temperature_boardinfos_maxnumber = 2 };
+enum { eOas_temperature_boardinfos_maxnumber = 3 };
 typedef struct
-{   //6*2=12
+{   //6*3=12
     eObrd_info_t                    data[eOas_temperature_boardinfos_maxnumber];
-} eOas_temperature_setof_boardinfos_t; EO_VERIFYsizeof(eOas_temperature_setof_boardinfos_t, 12)
+} eOas_temperature_setof_boardinfos_t; EO_VERIFYsizeof(eOas_temperature_setof_boardinfos_t, 18)
 
 
 // this struct describes the data acquired by a single temperature sensor
@@ -489,11 +489,11 @@ typedef struct
 
 
 // we use this struct to send activate-verify command to the board
-enum { eOas_inertials3_boardinfos_maxnumber = 4 };
+enum { eOas_inertials3_boardinfos_maxnumber = 5 };
 typedef struct
-{   //6*4=24
+{   //6*5=30
     eObrd_info_t                    data[eOas_inertials3_boardinfos_maxnumber];
-} eOas_inertial3_setof_boardinfos_t; EO_VERIFYsizeof(eOas_inertial3_setof_boardinfos_t, 24)
+} eOas_inertial3_setof_boardinfos_t; EO_VERIFYsizeof(eOas_inertial3_setof_boardinfos_t, 30)
 
 typedef struct
 {

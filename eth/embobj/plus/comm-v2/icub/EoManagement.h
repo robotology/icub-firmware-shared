@@ -513,17 +513,17 @@ typedef struct
 
 
 typedef struct
-{   // 24+132=156 
+{   // 30+132=162 
     eOas_inertial3_setof_boardinfos_t       setofboardinfos;
     eOas_inertial3_arrayof_descriptors_t    arrayofdescriptor;
-} eOmn_serv_config_data_as_inertial3_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial3_t, 156)
+} eOmn_serv_config_data_as_inertial3_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial3_t, 162)
 
 
 typedef struct
-{   // 12+32=44 
+{   // 18+32=50 
     eOas_temperature_setof_boardinfos_t       setofboardinfos;
     eOas_temperature_arrayof_descriptors_t    arrayofdescriptor;
-} eOmn_serv_config_data_as_temperature_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_temperature_t, 44)
+} eOmn_serv_config_data_as_temperature_t;     EO_VERIFYsizeof(eOmn_serv_config_data_as_temperature_t, 50)
 
 
 typedef struct
@@ -553,7 +553,7 @@ typedef struct
 } eOmn_serv_config_data_as_battery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_battery_t, 16)
 
 typedef union
-{   // max(6, 6, 44, 108, 156, 8, 6, 40)
+{   // max(6, 6, 44, 108, 162, 8, 6, 40)
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;
@@ -563,7 +563,7 @@ typedef union
     eOmn_serv_config_data_as_pos_t          pos;
     eOmn_serv_config_data_as_ft_t           ft;
     eOmn_serv_config_data_as_battery_t      battery;
-} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 156)
+} eOmn_serv_config_data_as_t;               EO_VERIFYsizeof(eOmn_serv_config_data_as_t, 162)
 
 
 enum { eomn_serv_skin_maxpatches = 4 };
