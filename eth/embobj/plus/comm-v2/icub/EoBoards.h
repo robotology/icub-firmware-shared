@@ -77,12 +77,13 @@ typedef enum
     eobrd_cantype_pmc               = ICUBCANPROTO_BOARDTYPE__PMC,      // 17 (pmc = piezo motor control)
     eobrd_cantype_amcbldc           = ICUBCANPROTO_BOARDTYPE__AMCBLDC,  // 18 (amcbldc)
     eobrd_cantype_bms               = ICUBCANPROTO_BOARDTYPE__BMS,      // 19 (bms)
-    eobrd_cantype_mtb4c             = ICUBCANPROTO_BOARDTYPE__MTB4C,    // 20 (mtb4c)    
+    eobrd_cantype_mtb4c             = ICUBCANPROTO_BOARDTYPE__MTB4C,    // 20 (mtb4c)  
+    eobrd_cantype_mtb4fap           = ICUBCANPROTO_BOARDTYPE__MTB4FAP,  // 21 (mtb4fap)     
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 21 };
+enum { eobrd_cantype_numberof = 22 };
 
 
 typedef enum
@@ -132,12 +133,13 @@ typedef enum
     eobrd_amcbldc               = eobrd_cantype_amcbldc,
     eobrd_bms                   = eobrd_cantype_bms,
     eobrd_mtb4c                 = eobrd_cantype_mtb4c,
+    eobrd_mtb4fap               = eobrd_cantype_mtb4fap,
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 25 };
+enum { eobrd_type_numberof = 26 };
 
 
 typedef struct                  

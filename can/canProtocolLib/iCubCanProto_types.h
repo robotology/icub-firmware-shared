@@ -78,6 +78,7 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__AMCBLDC 18
 #define ICUBCANPROTO_BOARDTYPE__BMS     19
 #define ICUBCANPROTO_BOARDTYPE__MTB4C   20
+#define ICUBCANPROTO_BOARDTYPE__MTB4FAP 21
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN 255
 
 // skin types
@@ -114,7 +115,8 @@ typedef enum
     icubCanProto_boardType__pmc     = ICUBCANPROTO_BOARDTYPE__PMC,
     icubCanProto_boardType__amcbldc = ICUBCANPROTO_BOARDTYPE__AMCBLDC,
     icubCanProto_boardType__bms     = ICUBCANPROTO_BOARDTYPE__BMS,
-    icubCanProto_boardType__mtb4c     = ICUBCANPROTO_BOARDTYPE__MTB4C,
+    icubCanProto_boardType__mtb4c   = ICUBCANPROTO_BOARDTYPE__MTB4C,
+    icubCanProto_boardType__mtb4fap = ICUBCANPROTO_BOARDTYPE__MTB4FAP,
     icubCanProto_boardType__unknown = ICUBCANPROTO_BOARDTYPE__UNKNOWN
 } icubCanProto_boardType_t;
 
