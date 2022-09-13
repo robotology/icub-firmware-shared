@@ -325,10 +325,15 @@ typedef enum
     eobrd_port_mc2plusP2            = 1,        // PWM & QUADENC: hal_motor2, hal_quad_enc2
     eobrd_port_mc2plusP3            = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
     eobrd_port_mc2plusP10           = 0,        // SPI encoder: hal_encoder1
-    eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2    
+    eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2   
+
+    eobrd_port_amcP1                = 0,        // SPI encoder: embot::hw::encoder1
+    eobrd_port_amcP2                = 1,        // SPI encoder: embot::hw::encoder2
+    eobrd_port_amcP3                = 2,        // SPI encoder: embot::hw::encoder3
+
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 16 };
+enum { eobrd_ports_numberof = 19 };
 
 
 typedef enum

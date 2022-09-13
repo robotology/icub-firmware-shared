@@ -177,6 +177,10 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"mc2plusP3", "eobrd_port_mc2plusP3", eobrd_port_mc2plusP3, eobrd_mc2plus, eobrd_conn_P3},
     {"mc2plusP10", "eobrd_port_mc2plusP10", eobrd_port_mc2plusP10, eobrd_mc2plus, eobrd_conn_P10},
     {"mc2plusP11", "eobrd_port_mc2plusP11", eobrd_port_mc2plusP11, eobrd_mc2plus, eobrd_conn_P11},
+
+    {"amcP1", "eobrd_port_amcP1", eobrd_port_amcP1, eobrd_amc, eobrd_conn_P1},
+    {"amcP2", "eobrd_port_amcP2", eobrd_port_amcP2, eobrd_amc, eobrd_conn_P2},
+    {"amcP3", "eobrd_port_amcP3", eobrd_port_amcP3, eobrd_amc, eobrd_conn_P3},
     
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}
