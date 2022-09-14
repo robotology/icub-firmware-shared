@@ -330,9 +330,9 @@ typedef enum
     eobrd_port_mc2plusP10           = 0,        // SPI encoder: hal_encoder1
     eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2   
 
-    eobrd_port_amc_J5_X1                = 0,        // SPI encoder: embot::hw::encoder1
-    eobrd_port_amc_J5_X2                = 1,        // SPI encoder: embot::hw::encoder2
-    eobrd_port_amc_J5_X3                = 2,        // SPI encoder: embot::hw::encoder3
+    eobrd_port_amc_J5_X1                = 1,        // SPI encoder: embot::hw::encoder1
+    eobrd_port_amc_J5_X2                = 2,        // SPI encoder: embot::hw::encoder2
+    eobrd_port_amc_J5_X3                = 3,        // SPI encoder: embot::hw::encoder3
 
 } eObrd_port_t;
 
