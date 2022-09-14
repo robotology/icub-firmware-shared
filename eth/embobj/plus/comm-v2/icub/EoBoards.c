@@ -151,6 +151,9 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     {"P13", "eobrd_conn_P13", eobrd_conn_P13},
     {"P14", "eobrd_conn_P14", eobrd_conn_P14},
     {"P15", "eobrd_conn_P15", eobrd_conn_P15},
+    {"J5_X1", "eobrd_conn_J5_X1", eobrd_conn_J5_X1},
+    {"J5_X2", "eobrd_conn_J5_X2", eobrd_conn_J5_X2},
+    {"J5_X3", "eobrd_conn_J5_X3", eobrd_conn_J5_X3},
     
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
@@ -178,9 +181,9 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"mc2plusP10", "eobrd_port_mc2plusP10", eobrd_port_mc2plusP10, eobrd_mc2plus, eobrd_conn_P10},
     {"mc2plusP11", "eobrd_port_mc2plusP11", eobrd_port_mc2plusP11, eobrd_mc2plus, eobrd_conn_P11},
 
-    {"amcP1", "eobrd_port_amcP1", eobrd_port_amcP1, eobrd_amc, eobrd_conn_P1},
-    {"amcP2", "eobrd_port_amcP2", eobrd_port_amcP2, eobrd_amc, eobrd_conn_P2},
-    {"amcP3", "eobrd_port_amcP3", eobrd_port_amcP3, eobrd_amc, eobrd_conn_P3},
+    {"amcP1", "eobrd_port_amc_J5_X1", eobrd_port_amc_J5_X1, eobrd_amc, eobrd_conn_J5_X1},
+    {"amcP2", "eobrd_port_amc_J5_X2", eobrd_port_amc_J5_X2, eobrd_amc, eobrd_conn_J5_X2},
+    {"amcP3", "eobrd_port_amc_J5_X3", eobrd_port_amc_J5_X3, eobrd_amc, eobrd_conn_J5_X3},
     
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}
