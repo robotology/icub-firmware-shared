@@ -295,11 +295,14 @@ typedef enum
     eobrd_conn_P13  = 13,
     eobrd_conn_P14  = 14,
     eobrd_conn_P15  = 15,
+    eobrd_conn_J5_X1  = 1,
+    eobrd_conn_J5_X2  = 2,
+    eobrd_conn_J5_X3  = 3,
     eobrd_conn_none = 0,
     eobrd_conn_unknown = 255
 } eObrd_connector_t;
 
-enum { eobrd_connectors_numberof = 15 };
+enum { eobrd_connectors_numberof = 18 };
 
 
 typedef enum
@@ -325,10 +328,15 @@ typedef enum
     eobrd_port_mc2plusP2            = 1,        // PWM & QUADENC: hal_motor2, hal_quad_enc2
     eobrd_port_mc2plusP3            = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
     eobrd_port_mc2plusP10           = 0,        // SPI encoder: hal_encoder1
-    eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2    
+    eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2   
+
+    eobrd_port_amc_J5_X1                = 1,        // SPI encoder: embot::hw::encoder1
+    eobrd_port_amc_J5_X2                = 2,        // SPI encoder: embot::hw::encoder2
+    eobrd_port_amc_J5_X3                = 3,        // SPI encoder: embot::hw::encoder3
+
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 16 };
+enum { eobrd_ports_numberof = 19 };
 
 
 typedef enum
