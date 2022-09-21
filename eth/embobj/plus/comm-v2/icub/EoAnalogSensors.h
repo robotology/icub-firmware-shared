@@ -634,6 +634,35 @@ typedef struct
     eObrd_canlocation_t                 canloc[eOas_pos_boards_maxnumber];
 } eOas_pos_canLocationsInfo_t;
 
+
+typedef struct
+{
+    uint16_t id                 : 4; // id on the board (0, 1, 2, ...)
+    uint16_t type               : 4; // only icubCanProto_pos_decideg = 0 
+    uint16_t label              : 4; // 0, 1, 2, 
+    uint16_t enabled            : 1; // if 1 is enabled
+    uint16_t invertdirection    : 1;
+    uint16_t rotation           : 2; // icubCanProto_pos_rot_t
+    int16_t  zero;                   // in decideg
+} eoas_pos_SensorConfig_t; EO_VERIFYsizeof(eoas_pos_SensorConfig_t, 4)
+
+//#warning change icubCanProto_pos_unkwown to have 4 bits range
+
+enum { eOas_pos_sensorsinboard_maxnumber = 4 };
+
+typedef struct
+{
+    eObrd_info_t            boardinfo;
+    eObrd_canlocation_t     canloc;
+    uint8_t                 filler[1];
+    eoas_pos_SensorConfig_t sensors[eOas_pos_sensorsinboard_maxnumber];   
+} eoas_pos_BoardConfig_t; EO_VERIFYsizeof(eoas_pos_BoardConfig_t, 24)
+
+typedef struct
+{
+    eoas_pos_BoardConfig_t boardconfig[eOas_pos_boards_maxnumber];
+} eoas_pos_ServiceConfig_t; EO_VERIFYsizeof(eoas_pos_ServiceConfig_t, 24)
+
 // a single pos sensor contains an angle expressed in deci-degrees 
 // this struct describes the data acquired by a single pos sensor
 typedef struct

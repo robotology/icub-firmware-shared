@@ -601,9 +601,23 @@ typedef struct
 
 typedef enum 
 { 
+    icubCanProto_pos_chipid_one         = 0,    
+    icubCanProto_pos_chipid_two         = 1, 
+    icubCanProto_pos_chipid_three       = 2,  
+    icubCanProto_pos_chipid_four        = 3,  
+    icubCanProto_pos_chipid_five        = 4, 
+    icubCanProto_pos_chipid_six         = 5,  
+    icubCanProto_pos_chipid_seven       = 6,
+    icubCanProto_pos_chipid_eigth       = 7,      
+    icubCanProto_pos_chipid_all         = 15 
+} icubCanProto_pos_chipid_t;
+
+typedef enum 
+{ 
     icubCanProto_pos_decideg            = 0,    // it is an angle expressed in 0.1 degrees and contained inside a int16_t 
     icubCanProto_pos_decimillimeter     = 1,    // it is a linear displacement expressed in 0.1 mm and contained inside a int16_t [+/- 3276 mm]
-    icubCanProto_pos_unkwown            = 255 
+    icubCanProto_pos_none               = 14,    
+    icubCanProto_pos_unkwown            = 15 
 } icubCanProto_pos_sensor_t;
 
 typedef enum 
@@ -630,8 +644,9 @@ typedef union
 } icubCanProto_pos_setting_t;
 
 typedef struct
-{   
-    icubCanProto_pos_sensor_t   type;               
+{ 
+    icubCanProto_pos_chipid_t   id;        
+    icubCanProto_pos_sensor_t   type;
     icubCanProto_pos_setting_t  setting;
 } icubCanProto_POS_CONFIG_t;
 
