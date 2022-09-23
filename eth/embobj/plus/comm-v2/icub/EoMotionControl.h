@@ -1118,12 +1118,13 @@ typedef enum
     eomc_enc_psc            = 10,
     eomc_enc_pos            = 11,
     eomc_enc_aea3           = 12,
+    eomc_enc_aksim2         = 13,
     
     eomc_enc_none           = 0,
     eomc_enc_unknown        = 255    
 } eOmc_encoder_t;
 
-enum { eomc_encoders_numberof = 12 };
+enum { eomc_encoders_numberof = 13 };
 enum { eomc_encoders_maxnumberofcomponents = 4 };
 
 
