@@ -98,6 +98,25 @@ static const char * s_eoas_sensors_string_unknown = "eoas_unknown";
 static const char * s_eoas_sensors_string_none = "eoas_none";
 
 
+static const char * s_eoas_postype_strings[] =
+{
+    "eoas_pos_TYPE_decideg"
+};  EO_VERIFYsizeof(s_eoas_postype_strings, eoas_pos_TYPE_numberof*sizeof(const char *));    
+
+static const char * s_eoas_postype_string_unknown = "eoas_pos_TYPE_unknown";
+static const char * s_eoas_postype_string_none = "eoas_pos_TYPE__none";
+
+
+static const char * s_eoas_posrot_strings[] =
+{
+    "eoas_pos_ROT_zero",
+    "eoas_pos_ROT_plus180",
+    "eoas_pos_ROT_plus090",
+    "eoas_pos_ROT_minus180"
+};  EO_VERIFYsizeof(s_eoas_posrot_strings, eoas_pos_ROT_numberof*sizeof(const char *));    
+
+static const char * s_eoas_posrot_string_zero = "eoas_pos_ROT_zero";
+
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
 // --------------------------------------------------------------------------------------------------------------------
@@ -151,6 +170,86 @@ extern eOas_sensor_t eoas_string2sensor(const char * string)
     
     return(eoas_unknown);    
 }
+
+
+
+extern const char * eoas_postype2string(eoas_pos_TYPE_t postype)
+{
+    const char * ret = s_eoas_postype_string_unknown;
+    
+    if(postype < eoas_pos_TYPE_numberof)
+    {
+        return(s_eoas_postype_strings[postype]);
+    }
+    else if(eoas_pos_TYPE_none == postype)
+    {
+        return(s_eoas_postype_string_none);
+    }
+
+
+    return(ret);
+}
+
+
+extern eoas_pos_TYPE_t eoas_string2postype(const char * string)
+{    
+    uint8_t i = 0;
+    if(NULL == string)
+    {
+        return(eoas_pos_TYPE_unknown);
+    }
+    
+    for(i=0; i<eoas_pos_TYPE_numberof; i++)
+    {
+        if(0 == strcmp(string, s_eoas_postype_strings[i]))
+        {
+            return((eoas_pos_TYPE_t)(i+0));
+        }
+    }
+    
+    if(0 == strcmp(string, s_eoas_postype_string_none))
+    {
+        return(eoas_pos_TYPE_none);
+    }        
+    
+    return(eoas_pos_TYPE_unknown);    
+}
+
+
+extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot)
+{
+    const char * ret = s_eoas_posrot_string_zero;
+    
+    if(posrot < eoas_pos_ROT_numberof)
+    {
+        return(s_eoas_posrot_strings[posrot]);
+    }
+
+    return(ret);
+}
+
+
+extern eoas_pos_ROT_t eoas_string2posrot(const char * string)
+{    
+    uint8_t i = 0;
+    if(NULL == string)
+    {
+        return(eoas_pos_ROT_zero);
+    }
+    
+    for(i=0; i<eoas_pos_ROT_numberof; i++)
+    {
+        if(0 == strcmp(string, s_eoas_posrot_strings[i]))
+        {
+            return((eoas_pos_ROT_t)(i+0));
+        }
+    }     
+    
+    return(eoas_pos_ROT_zero);    
+}
+
+
+
 
 enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2, in3_rfe_pos = 3, in3_mtb4c_pos = 4 };
 
