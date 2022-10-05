@@ -584,9 +584,10 @@ typedef union
 
 
 typedef struct
-{   //5+3+24+292=324   
+{   //5+1+2+24+292=324   
     eObrd_version_t                         version;
-    uint8_t                                 filler[3];  
+    uint8_t                                 type;       // use eObrd_type_t
+    uint8_t                                 filler[2];  
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;  
 } eOmn_serv_config_data_mc_foc_t;          EO_VERIFYsizeof(eOmn_serv_config_data_mc_foc_t, 324)
