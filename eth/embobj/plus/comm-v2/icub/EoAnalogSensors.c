@@ -218,8 +218,8 @@ extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot, eObool_t usecompac
 extern eoas_pos_ROT_t eoas_string2posrot(const char * string, eObool_t usecompactstring)
 {    
     const eOmap_str_str_u08_t * map = s_boards_map_of_posrots;
-    const uint8_t size = eoas_pos_ROT_numberof;
-    const uint8_t defvalue = eoas_pos_ROT_zero;
+    const uint8_t size = eoas_pos_ROT_numberof+2;
+    const uint8_t defvalue = eoas_pos_ROT_unknown;
     
     return((eoas_pos_ROT_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));    
 }
