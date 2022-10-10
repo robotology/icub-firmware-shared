@@ -79,6 +79,7 @@ typedef enum
     eobrd_cantype_bms               = ICUBCANPROTO_BOARDTYPE__BMS,      // 19 (bms)
     eobrd_cantype_mtb4c             = ICUBCANPROTO_BOARDTYPE__MTB4C,    // 20 (mtb4c)  
     eobrd_cantype_mtb4fap           = ICUBCANPROTO_BOARDTYPE__MTB4FAP,  // 21 (mtb4fap)     
+    eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C,  // 22 (strain2c)     
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
@@ -134,12 +135,13 @@ typedef enum
     eobrd_bms                   = eobrd_cantype_bms,
     eobrd_mtb4c                 = eobrd_cantype_mtb4c,
     eobrd_mtb4fap               = eobrd_cantype_mtb4fap,
+    eobrd_mtb4fap               = eobrd_cantype_strain2c,
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 26 };
+enum { eobrd_type_numberof = 27 };
 
 
 typedef struct                  
