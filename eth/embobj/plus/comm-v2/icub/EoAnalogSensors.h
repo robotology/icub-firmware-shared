@@ -632,7 +632,9 @@ typedef enum
     eoas_pos_ROT_zero = 0,
     eoas_pos_ROT_plus180 = 1,
     eoas_pos_ROT_plus090 = 2,
-    eoas_pos_ROT_minus090 = 3        
+    eoas_pos_ROT_minus090 = 3,
+    eoas_pos_ROT_none = 14,
+    eoas_pos_ROT_unknown = 15,
 } eoas_pos_ROT_t;
 enum { eoas_pos_ROT_numberof = 4 };
 

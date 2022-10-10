@@ -111,9 +111,12 @@ static const eOmap_str_str_u08_t s_boards_map_of_posrots[] =
     {"zero", "eoas_pos_ROT_zero", eoas_pos_ROT_zero},
     {"plus180", "eoas_pos_ROT_plus180", eoas_pos_ROT_plus180},
     {"plus090", "eoas_pos_ROT_plus090", eoas_pos_ROT_plus090},
-    {"minus180", "eoas_pos_ROT_minus090", eoas_pos_ROT_minus090} 
+    {"minus180", "eoas_pos_ROT_minus090", eoas_pos_ROT_minus090},
     
-};  EO_VERIFYsizeof(s_boards_map_of_posrots, (eoas_pos_ROT_numberof)*sizeof(eOmap_str_str_u08_t))
+    {"none", "eoas_pos_ROT_none", eoas_pos_ROT_none},
+    {"unknown", "eoas_pos_ROT_unknown", eoas_pos_ROT_unknown}   
+    
+};  EO_VERIFYsizeof(s_boards_map_of_posrots, (eoas_pos_ROT_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -199,14 +202,13 @@ extern eoas_pos_TYPE_t eoas_string2postype(const char * string, eObool_t usecomp
 extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot, eObool_t usecompactstring)
 {
     const eOmap_str_str_u08_t * map = s_boards_map_of_posrots;
-    const uint8_t size = eoas_pos_ROT_numberof;
+    const uint8_t size = eoas_pos_ROT_numberof+2;
     const uint8_t value = posrot;
     const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
     
     if(NULL == str)
     {
-        const uint8_t defaultvalueindex = 0; // zero
-        str = (eobool_true == usecompactstring) ? (map[defaultvalueindex].str0) : (map[defaultvalueindex].str1);
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
     }
     
     return(str);
