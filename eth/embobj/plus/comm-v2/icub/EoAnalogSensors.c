@@ -94,28 +94,26 @@ static const char * s_eoas_sensors_strings[] =
 
 
 static const char * s_eoas_sensors_string_unknown = "eoas_unknown";
-
 static const char * s_eoas_sensors_string_none = "eoas_none";
 
 
-static const char * s_eoas_postype_strings[] =
+static const eOmap_str_str_u08_t s_boards_map_of_postypes[] =
 {
-    "eoas_pos_TYPE_decideg"
-};  EO_VERIFYsizeof(s_eoas_postype_strings, eoas_pos_TYPE_numberof*sizeof(const char *));    
+    {"decideg", "eoas_pos_TYPE_decideg", eoas_pos_TYPE_decideg},
 
-static const char * s_eoas_postype_string_unknown = "eoas_pos_TYPE_unknown";
-static const char * s_eoas_postype_string_none = "eoas_pos_TYPE__none";
+    {"none", "eoas_pos_TYPE_none", eoas_pos_TYPE_none},
+    {"unknown", "eoas_pos_TYPE_unknown", eoas_pos_TYPE_unknown}    
+};  EO_VERIFYsizeof(s_boards_map_of_postypes, (eoas_pos_TYPE_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
 
-static const char * s_eoas_posrot_strings[] =
+static const eOmap_str_str_u08_t s_boards_map_of_posrots[] =
 {
-    "eoas_pos_ROT_zero",
-    "eoas_pos_ROT_plus180",
-    "eoas_pos_ROT_plus090",
-    "eoas_pos_ROT_minus180"
-};  EO_VERIFYsizeof(s_eoas_posrot_strings, eoas_pos_ROT_numberof*sizeof(const char *));    
-
-static const char * s_eoas_posrot_string_zero = "eoas_pos_ROT_zero";
+    {"zero", "eoas_pos_ROT_zero", eoas_pos_ROT_zero},
+    {"plus180", "eoas_pos_ROT_plus180", eoas_pos_ROT_plus180},
+    {"plus090", "eoas_pos_ROT_plus090", eoas_pos_ROT_plus090},
+    {"minus180", "eoas_pos_ROT_minus090", eoas_pos_ROT_minus090} 
+    
+};  EO_VERIFYsizeof(s_boards_map_of_posrots, (eoas_pos_ROT_numberof)*sizeof(eOmap_str_str_u08_t))
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -173,79 +171,55 @@ extern eOas_sensor_t eoas_string2sensor(const char * string)
 
 
 
-extern const char * eoas_postype2string(eoas_pos_TYPE_t postype)
-{
-    const char * ret = s_eoas_postype_string_unknown;
-    
-    if(postype < eoas_pos_TYPE_numberof)
-    {
-        return(s_eoas_postype_strings[postype]);
-    }
-    else if(eoas_pos_TYPE_none == postype)
-    {
-        return(s_eoas_postype_string_none);
-    }
-
-
-    return(ret);
-}
-
-
-extern eoas_pos_TYPE_t eoas_string2postype(const char * string)
+extern const char * eoas_postype2string(eoas_pos_TYPE_t postype, eObool_t usecompactstring)
 {    
-    uint8_t i = 0;
-    if(NULL == string)
+    const eOmap_str_str_u08_t * map = s_boards_map_of_postypes;
+    const uint8_t size = eoas_pos_TYPE_numberof+2;
+    const uint8_t value = postype;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
     {
-        return(eoas_pos_TYPE_unknown);
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
     }
     
-    for(i=0; i<eoas_pos_TYPE_numberof; i++)
-    {
-        if(0 == strcmp(string, s_eoas_postype_strings[i]))
-        {
-            return((eoas_pos_TYPE_t)(i+0));
-        }
-    }
-    
-    if(0 == strcmp(string, s_eoas_postype_string_none))
-    {
-        return(eoas_pos_TYPE_none);
-    }        
-    
-    return(eoas_pos_TYPE_unknown);    
+    return(str); 
 }
 
 
-extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot)
-{
-    const char * ret = s_eoas_posrot_string_zero;
-    
-    if(posrot < eoas_pos_ROT_numberof)
-    {
-        return(s_eoas_posrot_strings[posrot]);
-    }
-
-    return(ret);
-}
-
-
-extern eoas_pos_ROT_t eoas_string2posrot(const char * string)
+extern eoas_pos_TYPE_t eoas_string2postype(const char * string, eObool_t usecompactstring)
 {    
-    uint8_t i = 0;
-    if(NULL == string)
+    const eOmap_str_str_u08_t * map = s_boards_map_of_postypes;
+    const uint8_t size = eoas_pos_TYPE_numberof+2;
+    const uint8_t defvalue = eoas_pos_TYPE_unknown;
+    
+    return((eoas_pos_TYPE_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));     
+}
+
+extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_boards_map_of_posrots;
+    const uint8_t size = eoas_pos_ROT_numberof;
+    const uint8_t value = posrot;
+    const char * str = eo_common_map_str_str_u08__value2string(map, size, value, usecompactstring);
+    
+    if(NULL == str)
     {
-        return(eoas_pos_ROT_zero);
+        const uint8_t defaultvalueindex = 0; // zero
+        str = (eobool_true == usecompactstring) ? (map[defaultvalueindex].str0) : (map[defaultvalueindex].str1);
     }
     
-    for(i=0; i<eoas_pos_ROT_numberof; i++)
-    {
-        if(0 == strcmp(string, s_eoas_posrot_strings[i]))
-        {
-            return((eoas_pos_ROT_t)(i+0));
-        }
-    }     
+    return(str);
+}
+
+
+extern eoas_pos_ROT_t eoas_string2posrot(const char * string, eObool_t usecompactstring)
+{    
+    const eOmap_str_str_u08_t * map = s_boards_map_of_posrots;
+    const uint8_t size = eoas_pos_ROT_numberof;
+    const uint8_t defvalue = eoas_pos_ROT_zero;
     
-    return(eoas_pos_ROT_zero);    
+    return((eoas_pos_ROT_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));    
 }
 
 

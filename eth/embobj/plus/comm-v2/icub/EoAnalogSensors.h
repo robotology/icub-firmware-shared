@@ -869,11 +869,11 @@ extern uint8_t eoas_battery_supportedboards_numberof(void);
 extern eObrd_cantype_t eoas_battery_supportedboards_gettype(uint8_t pos);
 extern eObool_t eoas_battery_isboardvalid(eObrd_cantype_t boardtype);
 
-extern const char * eoas_postype2string(eoas_pos_TYPE_t postype);
-extern eoas_pos_TYPE_t eoas_string2postype(const char * string);
+extern const char * eoas_postype2string(eoas_pos_TYPE_t postype, eObool_t usecompactstring);
+extern eoas_pos_TYPE_t eoas_string2postype(const char * string, eObool_t usecompactstring);
 
-extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot);
-extern eoas_pos_ROT_t eoas_string2posrot(const char * string);
+extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot, eObool_t usecompactstring);
+extern eoas_pos_ROT_t eoas_string2posrot(const char * string, eObool_t usecompactstring);
 
 
 /** @}
