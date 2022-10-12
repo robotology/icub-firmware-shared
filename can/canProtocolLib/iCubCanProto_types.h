@@ -622,7 +622,7 @@ typedef enum
 
 typedef enum 
 { 
-    icubCanProto_pos_rot_none       = 0, 
+    icubCanProto_pos_rot_zero       = 0, 
     icubCanProto_pos_rot_plus180    = 1, 
     icubCanProto_pos_rot_plus090    = 2,
     icubCanProto_pos_rot_minus090   = 3
@@ -634,7 +634,7 @@ typedef struct
     uint8_t                     invertdirection : 1;    // if 1 the board applies a minus sign to the measure
     uint8_t                     rotation : 2;           // use icubCanProto_pos_rot_t to apply a rotation of the angle 
     uint8_t                     label : 4;              // a label used to identify the measure amongst many
-    int16_t                     zero;                   // the zero reference expressed in decidegrees        
+    int16_t                     offset;                 // the offset expressed in decidegrees        
 } icubCanProto_decideg_setting_t;
 
 typedef union

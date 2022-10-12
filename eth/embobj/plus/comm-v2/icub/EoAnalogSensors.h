@@ -652,7 +652,7 @@ typedef struct
     uint16_t enabled            : 1; // if 1 is enabled
     uint16_t invertdirection    : 1;
     uint16_t rotation           : 2; // use eoas_pos_ROT_t except for eoas_pos_ROT_unknown
-    int16_t  zero;                   // in decideg
+    int16_t  offset;                 // in decideg
 } eoas_pos_SensorConfig_t; EO_VERIFYsizeof(eoas_pos_SensorConfig_t, 4)
 
 
