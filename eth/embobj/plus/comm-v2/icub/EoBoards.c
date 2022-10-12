@@ -154,6 +154,14 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     {"J5_X1", "eobrd_conn_J5_X1", eobrd_conn_J5_X1},
     {"J5_X2", "eobrd_conn_J5_X2", eobrd_conn_J5_X2},
     {"J5_X3", "eobrd_conn_J5_X3", eobrd_conn_J5_X3},
+    {"J3_SDA0", "eobrd_conn_J3_SDA0", eobrd_conn_J3_SDA0},
+    {"J3_SDA1", "eobrd_conn_J3_SDA1", eobrd_conn_J3_SDA1},
+    {"J3_SDA2", "eobrd_conn_J3_SDA2", eobrd_conn_J3_SDA2},
+    {"J3_SDA3", "eobrd_conn_J3_SDA3", eobrd_conn_J3_SDA3},
+    {"J4", "eobrd_conn_J4", eobrd_conn_J4},
+    {"J5", "eobrd_conn_J5", eobrd_conn_J5},
+    {"J6", "eobrd_conn_J6", eobrd_conn_J6},
+    {"J7", "eobrd_conn_J7", eobrd_conn_J7},
     
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
@@ -184,6 +192,16 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"amcJ5_X1", "eobrd_port_amc_J5_X1", eobrd_port_amc_J5_X1, eobrd_amc, eobrd_conn_J5_X1},
     {"amcJ5_X2", "eobrd_port_amc_J5_X2", eobrd_port_amc_J5_X2, eobrd_amc, eobrd_conn_J5_X2},
     {"amcJ5_X3", "eobrd_port_amc_J5_X3", eobrd_port_amc_J5_X3, eobrd_amc, eobrd_conn_J5_X3},
+    
+    {"mtb4fap_J3_SDA0", "eobrd_port_mtb4fap_J3_SDA0", eobrd_port_mtb4fap_J3_SDA0, eobrd_mtb4fap, eobrd_conn_J3_SDA0},
+    {"mtb4fap_J3_SDA1", "eobrd_port_mtb4fap_J3_SDA1", eobrd_port_mtb4fap_J3_SDA1, eobrd_mtb4fap, eobrd_conn_J3_SDA1},
+    {"mtb4fap_J3_SDA2", "eobrd_port_mtb4fap_J3_SDA2", eobrd_port_mtb4fap_J3_SDA2, eobrd_mtb4fap, eobrd_conn_J3_SDA2},
+    {"mtb4fap_J3_SDA3", "eobrd_port_mtb4fap_J3_SDA3", eobrd_port_mtb4fap_J3_SDA3, eobrd_mtb4fap, eobrd_conn_J3_SDA3},
+
+    {"pmc_J4", "eobrd_port_pmc_J4", eobrd_port_pmc_J4, eobrd_pmc, eobrd_conn_J4},
+    {"pmc_J5", "eobrd_port_pmc_J5", eobrd_port_pmc_J5, eobrd_pmc, eobrd_conn_J5},
+    {"pmc_J6", "eobrd_port_pmc_J6", eobrd_port_pmc_J6, eobrd_pmc, eobrd_conn_J6},
+    {"pmc_J7", "eobrd_port_pmc_J7", eobrd_port_pmc_J7, eobrd_pmc, eobrd_conn_J7},
     
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}

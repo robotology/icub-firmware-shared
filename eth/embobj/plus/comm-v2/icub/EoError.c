@@ -334,7 +334,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
 
     {eoerror_value_CFG_mc_mc4plusfaps_ok, "CFG: EOtheMotionController can correctly configure mc4plusfaps-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4plusfaps_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc4plusfaps. see other messages for more details"},
-    {eoerror_value_CFG_mc_mc4plusfaps_failed_candiscovery_of_pmc, "CFG: EOtheMotionController cannot be configured. verification of pos for mc4plusfaps fails. see other messages for more details"},
+    {eoerror_value_CFG_mc_mc4plusfaps_failed_candiscovery, "CFG: EOtheMotionController cannot be configured. verification of pos for mc4plusfaps fails. see other messages for more details"},
  
     {eoerror_value_CFG_mc_mc4pluspmc_ok, "CFG: EOtheMotionController can correctly configure mc4pluspmc-based motion. more info will follow"},
     {eoerror_value_CFG_mc_mc4pluspmc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc4pluspmc. see other messages for more details"},

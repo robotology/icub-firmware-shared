@@ -280,29 +280,38 @@ typedef struct
  **/
 typedef enum
 {
-    eobrd_conn_P1   = 1,
-    eobrd_conn_P2   = 2,
-    eobrd_conn_P3   = 3,
-    eobrd_conn_P4   = 4,
-    eobrd_conn_P5   = 5,
-    eobrd_conn_P6   = 6,
-    eobrd_conn_P7   = 7,
-    eobrd_conn_P8   = 8,
-    eobrd_conn_P9   = 9,
-    eobrd_conn_P10  = 10,
-    eobrd_conn_P11  = 11,
-    eobrd_conn_P12  = 12,
-    eobrd_conn_P13  = 13,
-    eobrd_conn_P14  = 14,
-    eobrd_conn_P15  = 15,
-    eobrd_conn_J5_X1  = 16,
-    eobrd_conn_J5_X2  = 17,
-    eobrd_conn_J5_X3  = 18,
-    eobrd_conn_none = 0,
-    eobrd_conn_unknown = 255
+    eobrd_conn_P1       = 1,
+    eobrd_conn_P2       = 2,
+    eobrd_conn_P3       = 3,
+    eobrd_conn_P4       = 4,
+    eobrd_conn_P5       = 5,
+    eobrd_conn_P6       = 6,
+    eobrd_conn_P7       = 7,
+    eobrd_conn_P8       = 8,
+    eobrd_conn_P9       = 9,
+    eobrd_conn_P10      = 10,
+    eobrd_conn_P11      = 11,
+    eobrd_conn_P12      = 12,
+    eobrd_conn_P13      = 13,
+    eobrd_conn_P14      = 14,
+    eobrd_conn_P15      = 15,
+    eobrd_conn_J5_X1    = 16,
+    eobrd_conn_J5_X2    = 17,
+    eobrd_conn_J5_X3    = 18,
+    eobrd_conn_J3_SDA0  = 19,
+    eobrd_conn_J3_SDA1  = 20,
+    eobrd_conn_J3_SDA2  = 21,
+    eobrd_conn_J3_SDA3  = 22,
+    eobrd_conn_J4       = 23,
+    eobrd_conn_J5       = 24,
+    eobrd_conn_J6       = 25,
+    eobrd_conn_J7       = 26,   
+    
+    eobrd_conn_none     = 0,
+    eobrd_conn_unknown  = 255
 } eObrd_connector_t;
 
-enum { eobrd_connectors_numberof = 18 };
+enum { eobrd_connectors_numberof = 26 };
 
 
 typedef enum
@@ -330,13 +339,23 @@ typedef enum
     eobrd_port_mc2plusP10           = 0,        // SPI encoder: hal_encoder1
     eobrd_port_mc2plusP11           = 1,        // SPI encoder: hal_encoder2   
 
-    eobrd_port_amc_J5_X1                = 0,        // SPI encoder: embot::hw::encoder1
-    eobrd_port_amc_J5_X2                = 1,        // SPI encoder: embot::hw::encoder2
-    eobrd_port_amc_J5_X3                = 2,        // SPI encoder: embot::hw::encoder3
+    eobrd_port_amc_J5_X1            = 0,        // SPI encoder: embot::hw::encoder1
+    eobrd_port_amc_J5_X2            = 1,        // SPI encoder: embot::hw::encoder2
+    eobrd_port_amc_J5_X3            = 2,        // SPI encoder: embot::hw::encoder3
 
+    eobrd_port_mtb4fap_J3_SDA0      = 0,
+    eobrd_port_mtb4fap_J3_SDA1      = 1,
+    eobrd_port_mtb4fap_J3_SDA2      = 2,
+    eobrd_port_mtb4fap_J3_SDA3      = 3,  
+    
+    eobrd_port_pmc_J4               = 0,        // I2C1 
+    eobrd_port_pmc_J5               = 1,        // I2C2
+    eobrd_port_pmc_J6               = 2,        // I2C3
+    eobrd_port_pmc_J7               = 3         // I2C4 
+    
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 19 };
+enum { eobrd_ports_numberof = 27 };
 
 
 typedef enum
