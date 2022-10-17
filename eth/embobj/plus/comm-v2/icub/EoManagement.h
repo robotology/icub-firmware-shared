@@ -535,9 +535,8 @@ typedef struct
 
 typedef struct
 {   
-    eObrd_version_t                     version;
-    eOas_pos_canLocationsInfo_t         boardInfo;
-} eOmn_serv_config_data_as_pos_t;       EO_VERIFYsizeof(eOmn_serv_config_data_as_pos_t, 6)
+    eoas_pos_ServiceConfig_t            config;
+} eOmn_serv_config_data_as_pos_t;       EO_VERIFYsizeof(eOmn_serv_config_data_as_pos_t, 24)
 
 
 typedef struct
@@ -553,7 +552,7 @@ typedef struct
 } eOmn_serv_config_data_as_battery_t;        EO_VERIFYsizeof(eOmn_serv_config_data_as_battery_t, 16)
 
 typedef union
-{   // max(6, 6, 44, 108, 168, 8, 6, 40)
+{   // max(6, 6, 44, 108, 168, 8, 24, 40, 16)
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;
@@ -635,25 +634,23 @@ typedef struct
 
 
 typedef struct
-{   // 6+2+24+292=324
+{   // 24+24+292=340
     eOmn_serv_config_data_as_pos_t          pos;
-    uint8_t                                 filler[2];
     eOmc_arrayof_4jomodescriptors_t         arrayofjomodescriptors;  
     eOmc_4jomo_coupling_t                   jomocoupling;
-} eOmn_serv_config_data_mc_mc4plusfaps_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusfaps_t, 324)
+} eOmn_serv_config_data_mc_mc4plusfaps_t;   EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4plusfaps_t, 340)
 
 // we have 4 dc joints moved by the mc4plus + 3 joints moved by pmc. all of them are independent
 typedef struct
-{   // 6 + 2 + 39 + 1 + 116 = 164
+{   // 24 + 39 + 1 + 116 = 180
     eOmn_serv_config_data_as_pos_t          pos;
-    uint8_t                                 filler[2];
     eOmc_arrayof_7jomodescriptors_t         arrayof7jomodescriptors;  
     uint8_t                                 dummy[1];
     eOmc_arrayof_7jointsetconfig_t          arrayof7jointsets;
-} eOmn_serv_config_data_mc_mc4pluspmc_t;    EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4pluspmc_t, 164)
+} eOmn_serv_config_data_mc_mc4pluspmc_t;    EO_VERIFYsizeof(eOmn_serv_config_data_mc_mc4pluspmc_t, 180)
 
 typedef union                               
-{   // max(324, 28, 316, 328, 324, 47)
+{   // max(324, 28, 316, 328, 340, 180)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
@@ -662,23 +659,23 @@ typedef union
     eOmn_serv_config_data_mc_mc2pluspsc_t   mc2pluspsc;
     eOmn_serv_config_data_mc_mc4plusfaps_t  mc4plusfaps;
     eOmn_serv_config_data_mc_mc4pluspmc_t   mc4pluspmc;
-} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 328) 
+} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 340) 
 
 typedef union                               
-{   // max(156, 324, 24)
+{   // max(156, 340, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
-} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 328) 
+} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 340) 
 
 
 typedef struct                              
-{   // 1+3+324=328
+{   // 1+3+340=344
     uint8_t                                 type;               // use eOmn_serv_type_t to identify what kind of service it is
     uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
     uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
-} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 332) 
+} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 344) 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
 typedef struct
@@ -717,25 +714,25 @@ typedef enum
 
 
 typedef union
-{  //max( 328, 168)
+{  //max( 344, 168)
     eOmn_serv_configuration_t   configuration;
     eOmn_serv_arrayof_id32_t    arrayofid32;
-} eOmn_serv_parameter_t;
+} eOmn_serv_parameter_t; EO_VERIFYsizeof(eOmn_serv_parameter_t, 344)
 
 
 typedef struct                                
-{   // 1+3+328=304
+{   // 1+1+2+344=348
     uint8_t                                 operation;              // use eOmn_serv_operation_t
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
     eOmn_serv_parameter_t                   parameter;
-} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 336)
+} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 348)
 
 
 typedef struct
-{   // 332
+{   // 348
     eOmn_service_cmmnds_command_t           command;    
-} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 336)
+} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 348)
 
 
 typedef struct
@@ -769,11 +766,11 @@ typedef struct
     @brief      used to represent the info with config, status
  **/
 typedef struct                      
-{   // 48+336=372    
+{   // 48+348=396    
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
-} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 384)  
-//char (*luca)[sizeof( eOmn_service_t )] = 1;
+} eOmn_service_t;                           EO_VERIFYsizeof(eOmn_service_t, 396)  
+
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section

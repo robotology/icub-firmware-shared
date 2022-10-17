@@ -615,24 +615,59 @@ typedef struct                      // size is: 4+16+4 = 24
 
 // -- the definition of a pos sensor service
 
-// we use this struct to send activate-verify command to the board
-//enum { eOas_pos_boardinfos_maxnumber = 4 };
-//typedef struct
-//{   //6*4=24
-//    eObrd_info_t                    data[eOas_pos_boardinfos_maxnumber];
-//} eOas_pos_setof_boardinfos_t; EO_VERIFYsizeof(eOas_pos_setof_boardinfos_t, 24)
-
-//enum { eOas_pos_boards_maxnumber = 3 };
-//typedef struct
-//{
-//    eObrd_canproperties_t           canprop[eOas_pos_boards_maxnumber];
-//} eOas_pos_canPropertiesInfo_t;
-
+// we can have at most 1 CAN board for the POS service each with at most 4 sensors in it
 enum { eOas_pos_boards_maxnumber = 1 };
+enum { eOas_pos_sensorsinboard_maxnumber = 4 };
+
+typedef enum
+{
+    eoas_pos_TYPE_decideg = 0,
+    eoas_pos_TYPE_none = 14,
+    eoas_pos_TYPE_unknown = 15    
+} eoas_pos_TYPE_t;
+enum { eoas_pos_TYPE_numberof = 1 };
+
+typedef enum
+{
+    eoas_pos_ROT_zero = 0,
+    eoas_pos_ROT_plus180 = 1,
+    eoas_pos_ROT_plus090 = 2,
+    eoas_pos_ROT_minus090 = 3,
+    eoas_pos_ROT_none = 14,
+    eoas_pos_ROT_unknown = 15,
+} eoas_pos_ROT_t;
+enum { eoas_pos_ROT_numberof = 4 };
+
+// each sensor on the board is identified by:
+// - a type which specifies the nature of the quantity read by the sensor. so far we only have eoas_pos_TYPE_decideg, so rotational angle expressed in 0.1 deg
+// - a connector to which the sensor is attached in the board or the embot::hw::ID of the relevant device
+// - a port to which its reading is associated in the CAN protocol (via its label filed) so that we can understand if it is a POS:hand_thumb or POS:hand_index
+// - a boolean telling if the sensor is enabled or not
+// - some calibration parameters which are used to map the decideg reading in a valid range without zero crossing
 typedef struct
 {
-    eObrd_canlocation_t                 canloc[eOas_pos_boards_maxnumber];
-} eOas_pos_canLocationsInfo_t;
+    uint16_t type               : 4; // use eoas_pos_TYPE_t 
+    uint16_t connector          : 4; // connector on the board (0, 1, 2, ...) or id of the embot::hw device
+    uint16_t port               : 4; // [0, 1, ..., 15], BUT: use values such as POS:hand_thumb taken from eObrd_portpos_t
+    uint16_t enabled            : 1; // if 1 is enabled
+    uint16_t invertdirection    : 1;
+    uint16_t rotation           : 2; // use eoas_pos_ROT_t except for eoas_pos_ROT_unknown
+    int16_t  offset;                 // in decideg
+} eoas_pos_SensorConfig_t; EO_VERIFYsizeof(eoas_pos_SensorConfig_t, 4)
+
+
+typedef struct
+{
+    eObrd_info_t            boardinfo;
+    eObrd_canlocation_t     canloc;
+    uint8_t                 filler[1];
+    eoas_pos_SensorConfig_t sensors[eOas_pos_sensorsinboard_maxnumber];   
+} eoas_pos_BoardConfig_t; EO_VERIFYsizeof(eoas_pos_BoardConfig_t, 24)
+
+typedef struct
+{
+    eoas_pos_BoardConfig_t boardconfig[eOas_pos_boards_maxnumber];
+} eoas_pos_ServiceConfig_t; EO_VERIFYsizeof(eoas_pos_ServiceConfig_t, 24)
 
 // a single pos sensor contains an angle expressed in deci-degrees 
 // this struct describes the data acquired by a single pos sensor
@@ -835,6 +870,12 @@ extern eObool_t eoas_ft_isboardvalid(eObrd_cantype_t boardtype);
 extern uint8_t eoas_battery_supportedboards_numberof(void);
 extern eObrd_cantype_t eoas_battery_supportedboards_gettype(uint8_t pos);
 extern eObool_t eoas_battery_isboardvalid(eObrd_cantype_t boardtype);
+
+extern const char * eoas_postype2string(eoas_pos_TYPE_t postype, eObool_t usecompactstring);
+extern eoas_pos_TYPE_t eoas_string2postype(const char * string, eObool_t usecompactstring);
+
+extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot, eObool_t usecompactstring);
+extern eoas_pos_ROT_t eoas_string2posrot(const char * string, eObool_t usecompactstring);
 
 
 /** @}
