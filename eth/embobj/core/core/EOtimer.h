@@ -168,6 +168,10 @@ extern eOtimerStatus_t eo_timer_GetStatus(EOtimer *t);
 
 extern eOtimerMode_t eo_timer_GetMode(EOtimer *t);
  
+ 
+extern void eo_timer_SetName(EOtimer *t, const char *name);
+
+extern const char * eo_timer_GetName(EOtimer *t);  
 
 
 /** @}            

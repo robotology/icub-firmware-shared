@@ -117,6 +117,28 @@ extern EOtimer* eo_timer_New(void)
     return(retptr);
 }
 
+extern void eo_timer_SetName(EOtimer *t, const char *name) 
+{   
+    if(NULL == t)
+    {
+        return;
+    }
+    
+    if(NULL != name)
+    {
+//        t->name = name;
+    }
+}
+
+extern const char * eo_timer_GetName(EOtimer *t) 
+{   
+    if(NULL == t)
+    {
+        return s_eobj_ownname;
+    }
+    return s_eobj_ownname;    
+//    return t->name;
+}
 
 extern void eo_timer_Delete(EOtimer *t) 
 {   
@@ -313,7 +335,6 @@ extern eOtimerMode_t eo_timer_GetMode(EOtimer *t)
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------
 
-
 extern void eo_timer_hid_Reset(EOtimer *t, eOtimerStatus_t stat) 
 {
     uint8_t v = (eo_tmrstat_Idle == stat) ? (EOTIMER_STATUS_IDLE) : 
@@ -331,6 +352,7 @@ extern void eo_timer_hid_Reset(EOtimer *t, eOtimerStatus_t stat)
         t->envir.nextexpiry     = 0;
         memset(&(t->onexpiry), 0, sizeof(EOaction));
         t->onexpiry.actiontype  = eo_actypeNONE;
+//        t->name = s_eobj_ownname;
     }
 }
 
