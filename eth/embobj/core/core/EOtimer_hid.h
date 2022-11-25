@@ -76,6 +76,7 @@ struct EOtimer_hid
     uint8_t     initted: 1;
     uint8_t     dummy:  4;          /**< for future use                                        */
     EOaction    onexpiry;           /**< action to be executed on expiry                       */
+    //    const char *name; // marco.accame: dont want to increase memory requirement of EOtimer
 }; 
 
 
