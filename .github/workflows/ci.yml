@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        os: [windows-latest, ubuntu-latest, macOS-latest]
+        os: [windows-latest, ubuntu-latest]
 
     steps:
     - uses: actions/checkout@master
@@ -66,12 +66,6 @@ jobs:
         sudo apt update
         sudo apt install git build-essential pkg-config zip unzip cmake
 
-    - name: Dependencies [macOS]
-      if: matrix.os == 'macOS-latest'
-      run: |
-        brew update
-        brew upgrade
-        brew install cmake pkg-config
     - name: Source-based Dependencies [Windows] 
       if: matrix.os == 'windows-latest'
       shell: bash
@@ -84,8 +78,8 @@ jobs:
                      -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
         cmake --build . --config ${{ matrix.build_type }} --target INSTALL 
         
-    - name: Source-based Dependencies [Ubuntu/macOS]
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+    - name: Source-based Dependencies [Ubuntu]
+      if: matrix.os == 'ubuntu-latest'
       shell: bash
       run: |
         # ycm
@@ -108,17 +102,14 @@ jobs:
                      -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install \
                      -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
 
-    - name: Configure [Ubuntu/macOS]
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+    - name: Configure [Ubuntu]
+      if: matrix.os == 'ubuntu-latest'
       shell: bash
       run: |
         mkdir -p build
         cd build    
         cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
               -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
-      env:
-        # This is necessary only on macOS/homebrew, but on Linux it should be ignored
-        Qt5_DIR: /usr/local/opt/qt5/lib/cmake/Qt5
       
     - name: Build
       shell: bash
