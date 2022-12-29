@@ -68,7 +68,7 @@
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char * s_eouprot_procnames[uprot_proc_numberofthem+1] = {"eLoader", "eUpdater", "eApplication", "eApplPROGupdater", "uprot_proc_None"};
+static const char * s_eouprot_procnames[uprot_proc_numberofthem+1] = {"eLoader", "eUpdater", "eApplication", "eOther", "eApplPROGupdater", "uprot_proc_None"};
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -324,7 +324,8 @@ extern eObool_t eouprot_can_process_opcode(eOuprot_process_t proc, uint8_t proto
         {
             targetcapability = uprot_canDO_LEGACY_EEPROM_erase;
         } break;
-
+        
+        case uprot_OPC_DISCOVER2:
         case uprot_OPC_DISCOVER:
         {
             targetcapability = uprot_canDO_reply2discover;
