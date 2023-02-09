@@ -63,8 +63,8 @@ typedef enum
     eLoader                 = 0,    /**< the eLoader: the one executed just after reset which loads any other eProcess */
     eUpdater                = 1,    /**< the eUpdater: the one responsible for performing FW update */
     eApplication            = 2,    /**< the eApplication: the standard application */
-    eOther01                = 3,    /**< the eOther01: initially the application running on cm4 of AMC board */
-    eApplPROGupdater        = 4,    /**< the application used to perform programming of a new eUpdater */
+    eApplPROGupdater        = 3,    /**< the application used to perform programming of a new eUpdater */
+    eOther01                = 4,    /**< the eOther01: initially the application running on cm4 of AMC board */
     uprot_proc_None         = 255,
     
     uprot_proc_Loader          = eLoader,

@@ -68,7 +68,7 @@
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const char * s_eouprot_procnames[uprot_proc_numberofthem+1] = {"eLoader", "eUpdater", "eApplication", "eOther", "eApplPROGupdater", "uprot_proc_None"};
+static const char * s_eouprot_procnames[uprot_proc_numberofthem+1] = {"eLoader", "eUpdater", "eApplication", "eApplPROGupdater", "eOther01", "uprot_proc_None"};
 
 
 // --------------------------------------------------------------------------------------------------------------------
