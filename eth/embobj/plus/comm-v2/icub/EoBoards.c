@@ -200,6 +200,11 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"mtb4fap_J3_SDA2", "eobrd_port_mtb4fap_J3_SDA2", eobrd_port_mtb4fap_J3_SDA2, eobrd_mtb4fap, eobrd_conn_J3_SDA2},
     {"mtb4fap_J3_SDA3", "eobrd_port_mtb4fap_J3_SDA3", eobrd_port_mtb4fap_J3_SDA3, eobrd_mtb4fap, eobrd_conn_J3_SDA3},
 
+    {"mtb4c_J3_SDA0", "eobrd_port_mtb4c_J3_SDA0", eobrd_port_mtb4c_J3_SDA0, eobrd_mtb4c, eobrd_conn_J3_SDA0},
+    {"mtb4c_J3_SDA1", "eobrd_port_mtb4c_J3_SDA1", eobrd_port_mtb4c_J3_SDA1, eobrd_mtb4c, eobrd_conn_J3_SDA1},
+    {"mtb4c_J3_SDA2", "eobrd_port_mtb4c_J3_SDA2", eobrd_port_mtb4c_J3_SDA2, eobrd_mtb4c, eobrd_conn_J3_SDA2},
+    {"mtb4c_J3_SDA3", "eobrd_port_mtb4c_J3_SDA3", eobrd_port_mtb4c_J3_SDA3, eobrd_mtb4c, eobrd_conn_J3_SDA3},
+
     {"pmc_J4", "eobrd_port_pmc_J4", eobrd_port_pmc_J4, eobrd_pmc, eobrd_conn_J4},
     {"pmc_J5", "eobrd_port_pmc_J5", eobrd_port_pmc_J5, eobrd_pmc, eobrd_conn_J5},
     {"pmc_J6", "eobrd_port_pmc_J6", eobrd_port_pmc_J6, eobrd_pmc, eobrd_conn_J6},
