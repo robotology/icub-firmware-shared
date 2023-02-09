@@ -624,6 +624,11 @@ extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * str
     return((eObrd_canmonitor_reportmode_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
 }
 
+extern uint8_t eoboards_type2numberofcores(eObrd_type_t type)
+{
+    return type == eobrd_amc ? 2 : 1;
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

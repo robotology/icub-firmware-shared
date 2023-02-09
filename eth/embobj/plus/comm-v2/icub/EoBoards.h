@@ -469,6 +469,8 @@ extern eObrd_portpos_t eoboards_string2portpos(const char * string, eObool_t use
 extern const char * eoboards_reportmode2string(eObrd_canmonitor_reportmode_t mode, eObool_t usecompactstring);
 extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * string, eObool_t usecompactstring);
 
+extern uint8_t eoboards_type2numberofcores(eObrd_type_t type);
+
 /** @}            
     end of group eo_cevcwervcrev5555  
  **/

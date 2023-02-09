@@ -64,15 +64,17 @@ typedef enum
     eUpdater                = 1,    /**< the eUpdater: the one responsible for performing FW update */
     eApplication            = 2,    /**< the eApplication: the standard application */
     eApplPROGupdater        = 3,    /**< the application used to perform programming of a new eUpdater */
+    eOther01                = 4,    /**< the eOther01: initially the application running on cm4 of AMC board */
     uprot_proc_None         = 255,
     
-    uprot_proc_Loader       = eLoader,
-    uprot_proc_Updater      = eUpdater,
-    uprot_proc_Application  = eApplication,
-    uprot_proc_ApplPROGupdater  = eApplPROGupdater
+    uprot_proc_Loader          = eLoader,
+    uprot_proc_Updater         = eUpdater,
+    uprot_proc_Application00   = eApplication,
+    uprot_proc_Application01   = eOther01,
+    uprot_proc_ApplPROGupdater = eApplPROGupdater
 } eOuprot_process_t;
 
-enum { uprot_proc_numberofthem = 4 };
+enum { uprot_proc_numberofthem = 5 };
 
 
 typedef enum 
@@ -85,12 +87,12 @@ typedef enum
     uprot_OPC_LEGACY_IP_ADDR_SET= 0x07,
     uprot_OPC_LEGACY_EEPROM_ERASE = 0x12, // former SYSEEPROMERASE
     
-    
-    uprot_OPC_DISCOVER          = 0x7F,         
+    uprot_OPC_DISCOVER          = 0x7F,
     uprot_OPC_MOREINFO          = 0x79,
+    uprot_OPC_DISCOVER2         = 0x6F,
     
     uprot_OPC_PROG_START        = 0x01,
-    uprot_OPC_PROG_DATA         = 0x02,    
+    uprot_OPC_PROG_DATA         = 0x02,
     uprot_OPC_PROG_END          = 0x04,
 
 
@@ -99,6 +101,8 @@ typedef enum
     uprot_OPC_IP_ADDR_SET       = 0x77, 
     uprot_OPC_EEPROM_ERASE      = 0x72, 
     uprot_OPC_EEPROM_READ       = 0x13,
+
+    uprot_OPC_ERASE_APPLICATION = 0x82, 
     
     uprot_OPC_BLINK             = 0x0B,
     uprot_OPC_JUMP2UPDATER      = 0x0C,
@@ -189,14 +193,13 @@ typedef struct
     uint16_t            rom_size_kb;        // the max size in kb of the rom of the process.
 } eOuprot_procinfo_t;  EO_VERIFYsizeof(eOuprot_procinfo_t, 16)
 
-
 typedef struct 
 {     
     uint8_t             numberofthem;       // number of processes. it typically is 3, but it can be 2 if the eApplication is not available   
     uint8_t             startup;            // it is the process launched by the eLoader at bootstrap. it typically is the eUpdater but it may be the eApplication
     uint8_t             def2run;            // it is the process launched after the 5 second safe time is terminated
-    uint8_t             runningnow;         // it is the process which is running at the time of processing teh reply. it may be eUpdater or eApplication or eApplPROGupdater
-    eOuprot_procinfo_t  info[3];
+    uint8_t             runningnow;         // it is the process which is running at the time of processing the reply. it may be eUpdater or eApplication or eApplPROGupdater
+    eOuprot_procinfo_t  info[3];            // eLoader, eUpdater, eApplication
 } eOuprot_proctable_t;  EO_VERIFYsizeof(eOuprot_proctable_t, 52)
 
 
@@ -305,6 +308,12 @@ typedef struct
     uint8_t             boardinfo32[32];// where: boardinfo32[0] = strlen(&boardinfo32[1]) but if boardinfo32[0] is 255 then it means that it is not used
 } eOuprot_cmd_DISCOVER_REPLY_t;  EO_VERIFYsizeof(eOuprot_cmd_DISCOVER_REPLY_t, 100)
 
+// used to host the reply2 coming from the amc board that can run more applications using the other cores
+typedef struct
+{
+    eOuprot_cmd_DISCOVER_REPLY_t    discoveryreply;
+    eOuprot_procinfo_t              extraprocs[2];
+} eOuprot_cmd_DISCOVER_REPLY2_t;    EO_VERIFYsizeof(eOuprot_cmd_DISCOVER_REPLY2_t, sizeof(eOuprot_cmd_DISCOVER_REPLY_t)+16*2)
 
 // used to achieve more information about a specific board. this command is now superseded by what teh command eOuprot_cmd_DISCOVERY_t retrieves.
 // we nevertheless use it because of presence of legacy boards. this command is recognised by legacy boards as a eOuprot_cmd_LEGACY_PROCS_t.
