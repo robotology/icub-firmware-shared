@@ -191,12 +191,16 @@ enum { eoerror_value_SYS_numberof = 64 };
  **/
 typedef enum
 {
-    eoerror_value_HW_first             = 0,
-    eoerror_value_HW_second            = 1,
-    eoerror_value_HW_strain_saturation = 2
+    eoerror_value_HW_first                   = 0,
+    eoerror_value_HW_second                  = 1,
+    eoerror_value_HW_strain_saturation       = 2,
+    eoerror_value_HW_encoder_invalid_value   = 3,
+    eoerror_value_HW_encoder_close_to_limits = 4,
+    eoerror_value_HW_encoder_crc             = 5,
+    eoerror_value_HW_encoder_not_connected   = 6
 } eOerror_value_HW_t;
 
-enum { eoerror_value_HW_numberof = 3 };
+enum { eoerror_value_HW_numberof = 7 };
 
 
 

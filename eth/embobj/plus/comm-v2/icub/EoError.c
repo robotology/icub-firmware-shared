@@ -171,9 +171,13 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
 const eoerror_valuestring_t eoerror_valuestrings_HW[] =
 {   // very important: fill table with order of eOerror_value_HW_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_HW_first,                "HW: first error message of category hw"},       
-    {eoerror_value_HW_second,               "HW: second error message of category hw"},
-    {eoerror_value_HW_strain_saturation,    "HW: strain values saturation. In p16 there is the channel involved, in p64 there are the saturation counts for the last sec of both types (lower: LS32bits, upper MS32bits"},
+    {eoerror_value_HW_first,                   "HW: first error message of category hw"},       
+    {eoerror_value_HW_second,                  "HW: second error message of category hw"},
+    {eoerror_value_HW_strain_saturation,       "HW: strain values saturation. In p16 there is the channel involved, in p64 there are the saturation counts for the last sec of both types (lower: LS32bits, upper MS32bits"},
+    {eoerror_value_HW_encoder_invalid_value,   "HW - encoder: the position data is not valid"},
+    {eoerror_value_HW_encoder_close_to_limits, "HW - encoder: the position data is valid, but some operating conditions are close to limits."},
+    {eoerror_value_HW_encoder_crc,             "HW - encoder: inverted CRC is invalid"},
+    {eoerror_value_HW_encoder_not_connected,   "HW - encoder: not connected"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
