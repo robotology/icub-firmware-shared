@@ -184,7 +184,7 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
 const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_MC_motor_external_fault,  "MC: exernal fault button pressed."},
+    {eoerror_value_MC_motor_external_fault,  "MC: external fault button pressed."},
     {eoerror_value_MC_motor_overcurrent,     "MC: overcurrent. The motor has been turned off to prevent it from being damaged by an impulsive spike of current. par16 = ID of joint."},
     {eoerror_value_MC_motor_i2t_limit,       "MC: i2t limit exceeded. The motor has been turned off to prevent it from being damaged by overheating due to a continuous high current. par16 = ID of joint."},
     {eoerror_value_MC_motor_hallsensors,     "MC: 2FOC hall sensors fault. Invalid sequence in motor Hall effect sensors, please check motor hall cable connections. par16 = ID of joint."},
