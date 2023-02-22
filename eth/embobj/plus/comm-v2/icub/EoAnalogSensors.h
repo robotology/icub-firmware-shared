@@ -56,18 +56,18 @@ extern "C" {
 
 // - declaration of public user-defined types -------------------------------------------------------------------------
 
-// use eoas_sensor2string() and eoas_string2sensor() to convert to / from eOas_sensor_t and associated string 
+// use eoas_sensor2string() and eoas_string2sensor() to convert to / from eOas_sensor_t and associated string
 typedef enum
 {
     eoas_strain                 = 0,    // associated string is: "eoas_strain"
     eoas_mais                   = 1,    // etc ... the string is equal to the enum
-    eoas_accel_mtb_int          = 2,   
-    eoas_accel_mtb_ext          = 3,    
-    eoas_gyros_mtb_ext          = 4,    
-    eoas_accel_st_lis3x         = 5,    
-    eoas_gyros_st_l3g4200d      = 6, 
-    eoas_imu_acc                = 7,   
-    eoas_imu_mag                = 8,  
+    eoas_accel_mtb_int          = 2,
+    eoas_accel_mtb_ext          = 3,
+    eoas_gyros_mtb_ext          = 4,
+    eoas_accel_st_lis3x         = 5,
+    eoas_gyros_st_l3g4200d      = 6,
+    eoas_imu_acc                = 7,
+    eoas_imu_mag                = 8,
     eoas_imu_gyr                = 9,
     eoas_imu_eul                = 10,
     eoas_imu_qua                = 11,
@@ -80,8 +80,8 @@ typedef enum
     eoas_ft                     = 18,
     eoas_battery             = 19,
     // add in here eoas_xxxnameetc
-    eoas_unknown                = 254,  
-    eoas_none                   = 255   
+    eoas_unknown                = 254,
+    eoas_none                   = 255
 } eOas_sensor_t;
 
 enum { eoas_sensors_numberof = 20 };
@@ -95,7 +95,7 @@ typedef enum
 {
     eoas_entity_strain                      = 0,
     eoas_entity_mais                        = 1,
-    eoas_entity_temperature                 = 2,    
+    eoas_entity_temperature                 = 2,
     eoas_entity_inertial                    = 3,
     eoas_entity_inertial3                   = 4,
     eoas_entity_psc                         = 5,
@@ -308,7 +308,7 @@ typedef struct
 // we use this struct to send activate-verify command to the board
 enum { eOas_temperature_descriptors_maxnumber = 7 };
 typedef struct
-{   
+{
     eOarray_head_t                      head;
     eOas_temperature_descriptor_t       data[eOas_temperature_descriptors_maxnumber];
 } eOas_temperature_arrayof_descriptors_t; EO_VERIFYsizeof(eOas_temperature_arrayof_descriptors_t, 32)
@@ -328,14 +328,14 @@ typedef struct
     uint8_t     id;             // an id which is shared by transmitter and receiver. it can be a unique number or an index inside the array-of-sensors
     uint8_t     typeofsensor;   // use eOas_temperature_type_t
     int16_t     value;          // each unit is 0.1 Celsius (maybe move to 0.01 kelvin ...)
-    uint32_t    timestamp;      // the time in msec of reception of this data. it is circular in about an hour 
+    uint32_t    timestamp;      // the time in msec of reception of this data. it is circular in about an hour
 } eOas_temperature_data_t;      EO_VERIFYsizeof(eOas_temperature_data_t, 8)
 
 
 // nota di marco.accame: enabled kept at 16 bits so that we can have eOas_temperature_descriptors_maxnumber up to 15.
 typedef struct
 {
-    uint16_t                    datarate;       // it specifies the acquisition rate in seconds with accepted range. 
+    uint16_t                    datarate;       // it specifies the acquisition rate in seconds with accepted range.
     uint16_t                    enabled;        // bitmask of enabled sensors with reference to array-of-sensors
 } eOas_temperature_config_t;    EO_VERIFYsizeof(eOas_temperature_config_t, 4)
 
@@ -454,7 +454,7 @@ typedef enum
     eoas_inertial3_accel_ems_st_lis3x       = eoas_accel_st_lis3x,
     eoas_inertial3_gyros_ems_st_l3g4200d    = eoas_gyros_st_l3g4200d,
     // new imu-based sensors
-    eoas_inertial3_imu_acc                  = eoas_imu_acc,     
+    eoas_inertial3_imu_acc                  = eoas_imu_acc,
     eoas_inertial3_imu_mag                  = eoas_imu_mag,
     eoas_inertial3_imu_gyr                  = eoas_imu_gyr,
     eoas_inertial3_imu_eul                  = eoas_imu_eul,
@@ -462,7 +462,7 @@ typedef enum
     eoas_inertial3_imu_lia                  = eoas_imu_lia,
     eoas_inertial3_imu_grv                  = eoas_imu_grv,
     eoas_inertial3_imu_status               = eoas_imu_status,
-    
+
     eoas_inertial3_unknown                  = eoas_unknown,
     eoas_inertial3_none                     = eoas_none
 } eOas_inertial3_type_t;
@@ -571,7 +571,7 @@ typedef struct
     eObrd_canlocation_t                 canloc[eOas_psc_boards_maxnumber];
 } eOas_psc_canLocationsInfo_t;
 
-// a single psc sensor contains an angle expressed in deci-degrees 
+// a single psc sensor contains an angle expressed in deci-degrees
 // this struct describes the data acquired by a single psc sensor
 typedef struct
 {
@@ -623,7 +623,7 @@ typedef enum
 {
     eoas_pos_TYPE_decideg = 0,
     eoas_pos_TYPE_none = 14,
-    eoas_pos_TYPE_unknown = 15    
+    eoas_pos_TYPE_unknown = 15
 } eoas_pos_TYPE_t;
 enum { eoas_pos_TYPE_numberof = 1 };
 
@@ -641,14 +641,14 @@ enum { eoas_pos_ROT_numberof = 4 };
 // each sensor on the board is identified by:
 // - a type which specifies the nature of the quantity read by the sensor. so far we only have eoas_pos_TYPE_decideg, so rotational angle expressed in 0.1 deg
 // - a connector to which the sensor is attached in the board or the embot::hw::ID of the relevant device
-// - a port to which its reading is associated in the CAN protocol (via its label filed) so that we can understand if it is a POS:hand_thumb or POS:hand_index
+// - a port to which its reading is associated in the CAN protocol (via its label filed) so that we can understand if it is a POS:hand_thumb_oc or POS:hand_index_oc
 // - a boolean telling if the sensor is enabled or not
 // - some calibration parameters which are used to map the decideg reading in a valid range without zero crossing
 typedef struct
 {
-    uint16_t type               : 4; // use eoas_pos_TYPE_t 
+    uint16_t type               : 4; // use eoas_pos_TYPE_t
     uint16_t connector          : 4; // connector on the board (0, 1, 2, ...) or id of the embot::hw device
-    uint16_t port               : 4; // [0, 1, ..., 15], BUT: use values such as POS:hand_thumb taken from eObrd_portpos_t
+    uint16_t port               : 4; // [0, 1, ..., 15], BUT: use values such as POS:hand_thumb_oc taken from eObrd_portpos_t
     uint16_t enabled            : 1; // if 1 is enabled
     uint16_t invertdirection    : 1;
     uint16_t rotation           : 2; // use eoas_pos_ROT_t except for eoas_pos_ROT_unknown
@@ -661,7 +661,7 @@ typedef struct
     eObrd_info_t            boardinfo;
     eObrd_canlocation_t     canloc;
     uint8_t                 filler[1];
-    eoas_pos_SensorConfig_t sensors[eOas_pos_sensorsinboard_maxnumber];   
+    eoas_pos_SensorConfig_t sensors[eOas_pos_sensorsinboard_maxnumber];
 } eoas_pos_BoardConfig_t; EO_VERIFYsizeof(eoas_pos_BoardConfig_t, 24)
 
 typedef struct
@@ -669,7 +669,7 @@ typedef struct
     eoas_pos_BoardConfig_t boardconfig[eOas_pos_boards_maxnumber];
 } eoas_pos_ServiceConfig_t; EO_VERIFYsizeof(eoas_pos_ServiceConfig_t, 24)
 
-// a single pos sensor contains an angle expressed in deci-degrees 
+// a single pos sensor contains an angle expressed in deci-degrees
 // this struct describes the data acquired by a single pos sensor
 typedef struct
 {
@@ -741,7 +741,7 @@ typedef struct
 
 typedef struct
 {
-    eOarray_head_t              head;//4                                                                                                  
+    eOarray_head_t              head;//4
     eOas_battery_sensordescriptor_t  data[eOas_battery_sensors_maxnumber];
 } eOas_battery_arrayof_sensors_t;  EO_VERIFYsizeof(eOas_battery_arrayof_sensors_t, 12)
 
@@ -752,10 +752,10 @@ enum { eoas_ft_6axis = 6 };
 
 typedef struct
 {
-    eOenum08_t              mode;               // use eOas_ft_mode_t                                 
-    uint8_t                 ftperiod;           // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms} 
+    eOenum08_t              mode;               // use eOas_ft_mode_t
+    uint8_t                 ftperiod;           // if 0 -> DONT TX, else if(strain2) { in ms from 1 to 254, 255 = 500 us} else if(strain) { in ms from 1 up to 210 ms}
     uint8_t                 calibrationset;     // can be calibration set 0, 1, 2
-    uint8_t                 temperatureperiod;  // in seconds 
+    uint8_t                 temperatureperiod;  // in seconds
 } eOas_ft_config_t;         EO_VERIFYsizeof(eOas_ft_config_t, 4)
 
 
@@ -772,16 +772,16 @@ typedef struct
     uint32_t                info;         // ffu ... used-calib-set, saturated info, calib/notcalib, candata-not-heard-of-since-ms-ago, ... boh it is worth using extra 8 bytes?
     uint16_t                ffu;
     eOmeas_temperature_t    temperature;  // in steps of 0.1 celsius degree (pos and neg).
-    float32_t               values[eoas_ft_6axis];    // they may be [f, t] or also the 6 adc values or also ... see info.    
+    float32_t               values[eoas_ft_6axis];    // they may be [f, t] or also the 6 adc values or also ... see info.
 } eOas_ft_timedvalue_t;     EO_VERIFYsizeof(eOas_ft_timedvalue_t, 40)
 
 
-typedef struct    
+typedef struct
 {   // 40 + 12 + 4 = 56
     eOas_ft_timedvalue_t    timedvalue;
     uint16_t                fullscale[eoas_ft_6axis];
-    uint8_t                 mode;       // calibrated, not calibrated, may it be useful ????  
-    uint8_t                 filler[3];    
+    uint8_t                 mode;       // calibrated, not calibrated, may it be useful ????
+    uint8_t                 filler[3];
 } eOas_ft_status_t;         EO_VERIFYsizeof(eOas_ft_status_t, 56)
 
 
@@ -815,14 +815,14 @@ typedef struct
     int16_t                 temperature;  // in steps of 0.1 celsius degree (pos and neg).
     int8_t                  status;
     uint8_t                 filler;
-    float32_t               voltage;  
-    float32_t               current;  
-    float32_t               charge;  
+    float32_t               voltage;
+    float32_t               current;
+    float32_t               charge;
 
 } eOas_battery_timedvalue_t;     EO_VERIFYsizeof(eOas_battery_timedvalue_t, 24)
 //char (*luca)[sizeof( eOas_battery_timedvalue_t )] = 1;
 
-typedef struct    
+typedef struct
 {   // 40 + 12 + 4 = 56
     eOas_battery_timedvalue_t    timedvalue;
 } eOas_battery_status_t;         EO_VERIFYsizeof(eOas_battery_status_t, 24)
@@ -847,7 +847,7 @@ extern const char * eoas_sensor2string(eOas_sensor_t sensor);
 extern eOas_sensor_t eoas_string2sensor(const char * string);
 
 extern eOresult_t eoas_inertial3_setof_boardinfos_clear(eOas_inertial3_setof_boardinfos_t *set);
-extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_boardinfos_t *set, const eObrd_info_t *brdinfo); 
+extern eOresult_t eoas_inertial3_setof_boardinfos_add(eOas_inertial3_setof_boardinfos_t *set, const eObrd_info_t *brdinfo);
 extern const eObrd_info_t * eoas_inertial3_setof_boardinfos_find(const eOas_inertial3_setof_boardinfos_t *set, eObrd_cantype_t brdtype);
 
 extern uint8_t eoas_inertial3_supportedboards_numberof(void);
@@ -857,7 +857,7 @@ extern icubCanProto_imu_sensor_t eoas_inertial3_imu_to_canproto(eOas_inertial3_t
 extern eOas_inertial3_type_t eoas_inertial3_canproto_to_imu(uint8_t v);
 
 extern eOresult_t eoas_temperature_setof_boardinfos_clear(eOas_temperature_setof_boardinfos_t *set);
-extern eOresult_t eoas_temperature_setof_boardinfos_add(eOas_temperature_setof_boardinfos_t *set, const eObrd_info_t *brdinfo); 
+extern eOresult_t eoas_temperature_setof_boardinfos_add(eOas_temperature_setof_boardinfos_t *set, const eObrd_info_t *brdinfo);
 extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_temperature_setof_boardinfos_t *set, eObrd_cantype_t brdtype);
 
 extern uint8_t eoas_temperature_supportedboards_numberof(void);
