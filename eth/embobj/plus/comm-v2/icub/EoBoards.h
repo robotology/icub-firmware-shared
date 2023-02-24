@@ -349,6 +349,16 @@ typedef enum
     eobrd_port_mtb4fap_J3_SDA1      = 1,
     eobrd_port_mtb4fap_J3_SDA2      = 2,
     eobrd_port_mtb4fap_J3_SDA3      = 3,  
+
+    eobrd_port_mtb4_J3_SDA0         = 0,
+    eobrd_port_mtb4_J3_SDA1         = 1,
+    eobrd_port_mtb4_J3_SDA2         = 2,
+    eobrd_port_mtb4_J3_SDA3         = 3,  
+    
+    eobrd_port_mtb4c_J3_SDA0        = 0,
+    eobrd_port_mtb4c_J3_SDA1        = 1,
+    eobrd_port_mtb4c_J3_SDA2        = 2,
+    eobrd_port_mtb4c_J3_SDA3        = 3,  
     
     eobrd_port_pmc_J4               = 0,        // I2C1 
     eobrd_port_pmc_J5               = 1,        // I2C2
@@ -357,7 +367,7 @@ typedef enum
     
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 27 };
+enum { eobrd_ports_numberof = 35 };
 
 
 typedef enum
