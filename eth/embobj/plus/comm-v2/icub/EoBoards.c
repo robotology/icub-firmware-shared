@@ -291,7 +291,7 @@ static const eOmap_str_str_u08_t s_boards_map_of_portposs[] =
     {"hand_index_oc", "eobrd_portpos_hand_index_oc", eobrd_portpos_hand_index_oc},
     {"hand_middle_oc", "eobrd_portpos_hand_middle_oc", eobrd_portpos_hand_middle_oc},
     {"hand_ring_pinky_oc", "eobrd_portpos_hand_ring_pinky_oc", eobrd_portpos_hand_ring_pinky_oc},
-    {"hand_hand_thumb_add", "eobrd_portpos_hand_thumb_add", eobrd_portpos_hand_thumb_add},
+    {"hand_thumb_add", "eobrd_portpos_hand_thumb_add", eobrd_portpos_hand_thumb_add},
     {"hand_tbd", "eobrd_portpos_hand_tbd", eobrd_portpos_hand_tbd},
     {"hand_index_add", "eobrd_portpos_hand_index_add", eobrd_portpos_hand_index_add},
     
