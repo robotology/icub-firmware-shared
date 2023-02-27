@@ -648,7 +648,7 @@ typedef struct
 {
     uint16_t type               : 4; // use eoas_pos_TYPE_t 
     uint16_t connector          : 4; // connector on the board (0, 1, 2, ...) or id of the embot::hw device
-    uint16_t port               : 4; // [0, 1, ..., 15], BUT: use values such as POS:hand_thumb taken from eObrd_portpos_t
+    uint16_t port               : 4; // [0, 1, ..., 15], BUT: use values taken from eObrd_portpos_t
     uint16_t enabled            : 1; // if 1 is enabled
     uint16_t invertdirection    : 1;
     uint16_t rotation           : 2; // use eoas_pos_ROT_t except for eoas_pos_ROT_unknown

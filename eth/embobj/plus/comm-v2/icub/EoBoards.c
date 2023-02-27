@@ -164,6 +164,16 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     {"J5", "eobrd_conn_J5", eobrd_conn_J5},
     {"J6", "eobrd_conn_J6", eobrd_conn_J6},
     {"J7", "eobrd_conn_J7", eobrd_conn_J7},
+
+    {"J20", "eobrd_conn_J20", eobrd_conn_J20},
+    {"J21", "eobrd_conn_J21", eobrd_conn_J21},
+    {"J22", "eobrd_conn_J22", eobrd_conn_J22},
+    {"J23", "eobrd_conn_J23", eobrd_conn_J23},
+    
+    {"J30", "eobrd_conn_J30", eobrd_conn_J30},
+    {"J31", "eobrd_conn_J31", eobrd_conn_J31},
+    {"J32", "eobrd_conn_J32", eobrd_conn_J32},
+    {"J33", "eobrd_conn_J33", eobrd_conn_J33},
     
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
@@ -215,6 +225,36 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"pmc_J6", "eobrd_port_pmc_J6", eobrd_port_pmc_J6, eobrd_pmc, eobrd_conn_J6},
     {"pmc_J7", "eobrd_port_pmc_J7", eobrd_port_pmc_J7, eobrd_pmc, eobrd_conn_J7},
     
+    {"mtb4fap_mmaJ20", "eobrd_port_mtb4fap_mmaJ20", eobrd_port_mtb4fap_mmaJ20, eobrd_mtb4fap, eobrd_conn_J20},
+    {"mtb4fap_mmaJ21", "eobrd_port_mtb4fap_mmaJ21", eobrd_port_mtb4fap_mmaJ21, eobrd_mtb4fap, eobrd_conn_J21},
+    {"mtb4fap_mmaJ22", "eobrd_port_mtb4fap_mmaJ22", eobrd_port_mtb4fap_mmaJ22, eobrd_mtb4fap, eobrd_conn_J22},
+    {"mtb4fap_mmaJ23", "eobrd_port_mtb4fap_mmaJ23", eobrd_port_mtb4fap_mmaJ23, eobrd_mtb4fap, eobrd_conn_J23},
+    
+    {"mtb4_mmaJ20", "eobrd_port_mtb4_mmaJ20", eobrd_port_mtb4_mmaJ20, eobrd_mtb4, eobrd_conn_J20},
+    {"mtb4_mmaJ21", "eobrd_port_mtb4_mmaJ21", eobrd_port_mtb4_mmaJ21, eobrd_mtb4, eobrd_conn_J21},
+    {"mtb4_mmaJ22", "eobrd_port_mtb4_mmaJ22", eobrd_port_mtb4_mmaJ22, eobrd_mtb4, eobrd_conn_J22},
+    {"mtb4_mmaJ23", "eobrd_port_mtb4_mmaJ23", eobrd_port_mtb4_mmaJ23, eobrd_mtb4, eobrd_conn_J23},
+
+    {"mtb4c_mmaJ20", "eobrd_port_mtb4c_mmaJ20", eobrd_port_mtb4c_mmaJ20, eobrd_mtb4c, eobrd_conn_J20},
+    {"mtb4c_mmaJ21", "eobrd_port_mtb4c_mmaJ21", eobrd_port_mtb4c_mmaJ21, eobrd_mtb4c, eobrd_conn_J21},
+    {"mtb4c_mmaJ22", "eobrd_port_mtb4c_mmaJ22", eobrd_port_mtb4c_mmaJ22, eobrd_mtb4c, eobrd_conn_J22},
+    {"mtb4c_mmaJ23", "eobrd_port_mtb4c_mmaJ23", eobrd_port_mtb4c_mmaJ23, eobrd_mtb4c, eobrd_conn_J23},
+
+    {"mtb4fap_mmaJ30", "eobrd_port_mtb4fap_mmaJ30", eobrd_port_mtb4fap_mmaJ30, eobrd_mtb4fap, eobrd_conn_J30},
+    {"mtb4fap_mmaJ31", "eobrd_port_mtb4fap_mmaJ31", eobrd_port_mtb4fap_mmaJ31, eobrd_mtb4fap, eobrd_conn_J31},
+    {"mtb4fap_mmaJ32", "eobrd_port_mtb4fap_mmaJ32", eobrd_port_mtb4fap_mmaJ32, eobrd_mtb4fap, eobrd_conn_J32},
+    {"mtb4fap_mmaJ33", "eobrd_port_mtb4fap_mmaJ33", eobrd_port_mtb4fap_mmaJ33, eobrd_mtb4fap, eobrd_conn_J33},
+    
+    {"mtb4_mmaJ30", "eobrd_port_mtb4_mmaJ30", eobrd_port_mtb4_mmaJ30, eobrd_mtb4, eobrd_conn_J30},
+    {"mtb4_mmaJ31", "eobrd_port_mtb4_mmaJ31", eobrd_port_mtb4_mmaJ31, eobrd_mtb4, eobrd_conn_J31},
+    {"mtb4_mmaJ32", "eobrd_port_mtb4_mmaJ32", eobrd_port_mtb4_mmaJ32, eobrd_mtb4, eobrd_conn_J32},
+    {"mtb4_mmaJ33", "eobrd_port_mtb4_mmaJ33", eobrd_port_mtb4_mmaJ33, eobrd_mtb4, eobrd_conn_J33},
+
+    {"mtb4c_mmaJ30", "eobrd_port_mtb4c_mmaJ30", eobrd_port_mtb4c_mmaJ30, eobrd_mtb4c, eobrd_conn_J30},
+    {"mtb4c_mmaJ31", "eobrd_port_mtb4c_mmaJ31", eobrd_port_mtb4c_mmaJ31, eobrd_mtb4c, eobrd_conn_J31},
+    {"mtb4c_mmaJ32", "eobrd_port_mtb4c_mmaJ32", eobrd_port_mtb4c_mmaJ32, eobrd_mtb4c, eobrd_conn_J32},
+    {"mtb4c_mmaJ33", "eobrd_port_mtb4c_mmaJ33", eobrd_port_mtb4c_mmaJ33, eobrd_mtb4c, eobrd_conn_J33},
+    
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}
 };  EO_VERIFYsizeof(s_eoboards_map_of_ports, (eobrd_ports_numberof+2)*sizeof(eOmap_str_str_u08_u08_u08_t))
@@ -247,13 +287,13 @@ static const eOmap_str_str_u08_t s_boards_map_of_portpscs[] =
 
 static const eOmap_str_str_u08_t s_boards_map_of_portposs[] =
 {
-    {"hand_thumb", "eobrd_portpos_hand_thumb", eobrd_portpos_hand_thumb},
-    {"hand_index", "eobrd_portpos_hand_index", eobrd_portpos_hand_index},
-    {"hand_medium", "eobrd_portpos_hand_medium", eobrd_portpos_hand_medium},
-    {"hand_pinky", "eobrd_portpos_hand_pinky", eobrd_portpos_hand_pinky},
-    {"hand_thumbmetacarpus", "eobrd_portpos_hand_thumbmetacarpus", eobrd_portpos_hand_thumbmetacarpus},
-    {"hand_thumbrotation", "eobrd_portpos_hand_thumbrotation", eobrd_portpos_hand_thumbrotation},
-    {"hand_indexadduction", "eobrd_portpos_hand_indexadduction", eobrd_portpos_hand_indexadduction},
+    {"hand_thumb_oc", "eobrd_portpos_hand_thumb_oc", eobrd_portpos_hand_thumb_oc},
+    {"hand_index_oc", "eobrd_portpos_hand_index_oc", eobrd_portpos_hand_index_oc},
+    {"hand_middle_oc", "eobrd_portpos_hand_middle_oc", eobrd_portpos_hand_middle_oc},
+    {"hand_ring_pinky_oc", "eobrd_portpos_hand_ring_pinky_oc", eobrd_portpos_hand_ring_pinky_oc},
+    {"hand_thumb_add", "eobrd_portpos_hand_thumb_add", eobrd_portpos_hand_thumb_add},
+    {"hand_tbd", "eobrd_portpos_hand_tbd", eobrd_portpos_hand_tbd},
+    {"hand_index_add", "eobrd_portpos_hand_index_add", eobrd_portpos_hand_index_add},
     
     {"none", "eobrd_portpos_none", eobrd_portpos_none},
     {"unknown", "eobrd_portpos_unknown", eobrd_portpos_unknown}    
