@@ -307,13 +307,21 @@ typedef enum
     eobrd_conn_J4       = 23,
     eobrd_conn_J5       = 24,
     eobrd_conn_J6       = 25,
-    eobrd_conn_J7       = 26,   
+    eobrd_conn_J7       = 26,  
+    eobrd_conn_J20      = 27,
+    eobrd_conn_J21      = 28,
+    eobrd_conn_J22      = 29,
+    eobrd_conn_J23      = 30,    
+    eobrd_conn_J30      = 31,
+    eobrd_conn_J31      = 32,
+    eobrd_conn_J32      = 33,
+    eobrd_conn_J33      = 34,
     
     eobrd_conn_none     = 0,
     eobrd_conn_unknown  = 255
 } eObrd_connector_t;
 
-enum { eobrd_connectors_numberof = 26 };
+enum { eobrd_connectors_numberof = 34 };
 
 
 typedef enum
@@ -349,15 +357,56 @@ typedef enum
     eobrd_port_mtb4fap_J3_SDA1      = 1,
     eobrd_port_mtb4fap_J3_SDA2      = 2,
     eobrd_port_mtb4fap_J3_SDA3      = 3,  
+
+    eobrd_port_mtb4_J3_SDA0         = 0,
+    eobrd_port_mtb4_J3_SDA1         = 1,
+    eobrd_port_mtb4_J3_SDA2         = 2,
+    eobrd_port_mtb4_J3_SDA3         = 3,  
+    
+    eobrd_port_mtb4c_J3_SDA0        = 0,
+    eobrd_port_mtb4c_J3_SDA1        = 1,
+    eobrd_port_mtb4c_J3_SDA2        = 2,
+    eobrd_port_mtb4c_J3_SDA3        = 3,  
     
     eobrd_port_pmc_J4               = 0,        // I2C1 
     eobrd_port_pmc_J5               = 1,        // I2C2
     eobrd_port_pmc_J6               = 2,        // I2C3
-    eobrd_port_pmc_J7               = 3         // I2C4 
+    eobrd_port_pmc_J7               = 3,        // I2C4 
+
+    eobrd_port_mtb4fap_mmaJ20       = 0,
+    eobrd_port_mtb4fap_mmaJ21       = 1,
+    eobrd_port_mtb4fap_mmaJ22       = 2,
+    eobrd_port_mtb4fap_mmaJ23       = 3,   
+    
+    eobrd_port_mtb4_mmaJ20          = 0,
+    eobrd_port_mtb4_mmaJ21          = 1,
+    eobrd_port_mtb4_mmaJ22          = 2,
+    eobrd_port_mtb4_mmaJ23          = 3,      
+
+    eobrd_port_mtb4c_mmaJ20         = 0,
+    eobrd_port_mtb4c_mmaJ21         = 1,
+    eobrd_port_mtb4c_mmaJ22         = 2,
+    eobrd_port_mtb4c_mmaJ23         = 3,
+
+    eobrd_port_mtb4fap_mmaJ30       = 0,
+    eobrd_port_mtb4fap_mmaJ31       = 1,
+    eobrd_port_mtb4fap_mmaJ32       = 2,
+    eobrd_port_mtb4fap_mmaJ33       = 3,   
+    
+    eobrd_port_mtb4_mmaJ30          = 0,
+    eobrd_port_mtb4_mmaJ31          = 1,
+    eobrd_port_mtb4_mmaJ32          = 2,
+    eobrd_port_mtb4_mmaJ33          = 3,      
+
+    eobrd_port_mtb4c_mmaJ30         = 0,
+    eobrd_port_mtb4c_mmaJ31         = 1,
+    eobrd_port_mtb4c_mmaJ32         = 2,
+    eobrd_port_mtb4c_mmaJ33         = 3
+       
     
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 27 };
+enum { eobrd_ports_numberof = 59 };
 
 
 typedef enum
@@ -390,13 +439,13 @@ enum { eobrd_portpscs_numberof = 2 };
 
 typedef enum
 {
-    eobrd_portpos_hand_thumb            = 0,
-    eobrd_portpos_hand_index            = 1,
-    eobrd_portpos_hand_medium           = 2,
-    eobrd_portpos_hand_pinky            = 3,
-    eobrd_portpos_hand_thumbmetacarpus  = 4,
-    eobrd_portpos_hand_thumbrotation    = 5,
-    eobrd_portpos_hand_indexadduction   = 6,
+    eobrd_portpos_hand_thumb_oc         = 0,
+    eobrd_portpos_hand_index_oc         = 1,
+    eobrd_portpos_hand_middle_oc        = 2,
+    eobrd_portpos_hand_ring_pinky_oc    = 3,
+    eobrd_portpos_hand_thumb_add        = 4,
+    eobrd_portpos_hand_tbd              = 5,
+    eobrd_portpos_hand_index_add        = 6,    
     
     eobrd_portpos_none                  = 31,    // as ... eobrd_port_none
     eobrd_portpos_unknown               = 30     // as ... eobrd_port_unknown
@@ -468,6 +517,8 @@ extern eObrd_portpos_t eoboards_string2portpos(const char * string, eObool_t use
 
 extern const char * eoboards_reportmode2string(eObrd_canmonitor_reportmode_t mode, eObool_t usecompactstring);
 extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * string, eObool_t usecompactstring);
+
+extern uint8_t eoboards_type2numberofcores(eObrd_type_t type);
 
 /** @}            
     end of group eo_cevcwervcrev5555  
