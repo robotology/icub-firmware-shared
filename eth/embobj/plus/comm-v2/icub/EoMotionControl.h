@@ -218,6 +218,7 @@ typedef enum
     eomc_calibration_type11_cer_hands               = 11,   // cannot change
     eomc_calibration_type12_absolute_sensor         = 12,   // cannot change  //substitutes type 3
     eomc_calibration_type13_cer_hands_2             = 13,   // cannot change
+    eomc_calibration_type14_qenc_hard_stop_and_fap  = 14,   // cannot change
     eomc_calibration_typeMixed                      = 254,  // cannot change 
     eomc_calibration_typeUndefined                  = 255   // cannot change
 } eOmc_calibration_type_t;
@@ -441,6 +442,26 @@ typedef struct
     int32_t                     rawValueAtZeroPos3;
 } eOmc_calibrator_params_type13_cer_hands_2_t;
 
+
+/** @typedef    typedef struct eOmc_calibrator_params_type14_qenc_hard_stop_and_fap_t 
+    @brief      contains the params in case of eomc_calibration_type14_qenc_hard_stop_and_fap_t
+ **/
+typedef struct  
+{
+    int32_t                     pwmlimit;
+    int32_t                     final_pos;
+    uint8_t                     invertdirection;
+    uint8_t                     rotation;
+    uint8_t                     filler;
+    int32_t                     offset;
+    int32_t                     calibrationZero;
+    
+} eOmc_calibrator_params_type14_qenc_hard_stop_and_fap_t;
+
+
+
+
+
 // -- all the possible data holding structures used in a joint
 
 
@@ -551,6 +572,7 @@ typedef struct                  // size is 1+3+4*4 = 20
         eOmc_calibrator_params_type11_cer_hands_t                   type11; 
         eOmc_calibrator_params_type12_absolute_sensor_t             type12;
         eOmc_calibrator_params_type13_cer_hands_2_t                 type13;
+        eOmc_calibrator_params_type14_qenc_hard_stop_and_fap_t      type14;
     } params;                                                       /**< the params of the calibrator */   
 } eOmc_calibrator32_t;           EO_VERIFYsizeof(eOmc_calibrator32_t, 28)
 
