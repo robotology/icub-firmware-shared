@@ -94,7 +94,6 @@ static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) |
                                                 (0x1LL << eobrd_amcbldc)|
                                                 (0x1LL << eobrd_bms)|
                                                 (0x1LL << eobrd_mtb4c) |
-                                                (0x1LL << eobrd_mtb4fap) |
                                                 (0x1LL << eobrd_strain2c);
        
    
@@ -127,7 +126,6 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"amcbldc", "eobrd_amcbldc", eobrd_amcbldc},
     {"bms", "eobrd_bms", eobrd_bms},
     {"mtb4c", "eobrd_mtb4c", eobrd_mtb4c},
-    {"mtb4fap", "eobrd_mtb4fap", eobrd_mtb4fap},
     {"strain2c", "eobrd_strain2c", eobrd_strain2c},
     
     {"none", "eobrd_none", eobrd_none},
@@ -205,11 +203,6 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"amcJ5_X2", "eobrd_port_amc_J5_X2", eobrd_port_amc_J5_X2, eobrd_amc, eobrd_conn_J5_X2},
     {"amcJ5_X3", "eobrd_port_amc_J5_X3", eobrd_port_amc_J5_X3, eobrd_amc, eobrd_conn_J5_X3},
     
-    {"mtb4fap_J3_SDA0", "eobrd_port_mtb4fap_J3_SDA0", eobrd_port_mtb4fap_J3_SDA0, eobrd_mtb4fap, eobrd_conn_J3_SDA0},
-    {"mtb4fap_J3_SDA1", "eobrd_port_mtb4fap_J3_SDA1", eobrd_port_mtb4fap_J3_SDA1, eobrd_mtb4fap, eobrd_conn_J3_SDA1},
-    {"mtb4fap_J3_SDA2", "eobrd_port_mtb4fap_J3_SDA2", eobrd_port_mtb4fap_J3_SDA2, eobrd_mtb4fap, eobrd_conn_J3_SDA2},
-    {"mtb4fap_J3_SDA3", "eobrd_port_mtb4fap_J3_SDA3", eobrd_port_mtb4fap_J3_SDA3, eobrd_mtb4fap, eobrd_conn_J3_SDA3},
-
     {"mtb4_J3_SDA0", "eobrd_port_mtb4_J3_SDA0", eobrd_port_mtb4_J3_SDA0, eobrd_mtb4, eobrd_conn_J3_SDA0},
     {"mtb4_J3_SDA1", "eobrd_port_mtb4_J3_SDA1", eobrd_port_mtb4_J3_SDA1, eobrd_mtb4, eobrd_conn_J3_SDA1},
     {"mtb4_J3_SDA2", "eobrd_port_mtb4_J3_SDA2", eobrd_port_mtb4_J3_SDA2, eobrd_mtb4, eobrd_conn_J3_SDA2},
@@ -224,12 +217,7 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"pmc_J5", "eobrd_port_pmc_J5", eobrd_port_pmc_J5, eobrd_pmc, eobrd_conn_J5},
     {"pmc_J6", "eobrd_port_pmc_J6", eobrd_port_pmc_J6, eobrd_pmc, eobrd_conn_J6},
     {"pmc_J7", "eobrd_port_pmc_J7", eobrd_port_pmc_J7, eobrd_pmc, eobrd_conn_J7},
-    
-    {"mtb4fap_mmaJ20", "eobrd_port_mtb4fap_mmaJ20", eobrd_port_mtb4fap_mmaJ20, eobrd_mtb4fap, eobrd_conn_J20},
-    {"mtb4fap_mmaJ21", "eobrd_port_mtb4fap_mmaJ21", eobrd_port_mtb4fap_mmaJ21, eobrd_mtb4fap, eobrd_conn_J21},
-    {"mtb4fap_mmaJ22", "eobrd_port_mtb4fap_mmaJ22", eobrd_port_mtb4fap_mmaJ22, eobrd_mtb4fap, eobrd_conn_J22},
-    {"mtb4fap_mmaJ23", "eobrd_port_mtb4fap_mmaJ23", eobrd_port_mtb4fap_mmaJ23, eobrd_mtb4fap, eobrd_conn_J23},
-    
+        
     {"mtb4_mmaJ20", "eobrd_port_mtb4_mmaJ20", eobrd_port_mtb4_mmaJ20, eobrd_mtb4, eobrd_conn_J20},
     {"mtb4_mmaJ21", "eobrd_port_mtb4_mmaJ21", eobrd_port_mtb4_mmaJ21, eobrd_mtb4, eobrd_conn_J21},
     {"mtb4_mmaJ22", "eobrd_port_mtb4_mmaJ22", eobrd_port_mtb4_mmaJ22, eobrd_mtb4, eobrd_conn_J22},
@@ -239,11 +227,6 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"mtb4c_mmaJ21", "eobrd_port_mtb4c_mmaJ21", eobrd_port_mtb4c_mmaJ21, eobrd_mtb4c, eobrd_conn_J21},
     {"mtb4c_mmaJ22", "eobrd_port_mtb4c_mmaJ22", eobrd_port_mtb4c_mmaJ22, eobrd_mtb4c, eobrd_conn_J22},
     {"mtb4c_mmaJ23", "eobrd_port_mtb4c_mmaJ23", eobrd_port_mtb4c_mmaJ23, eobrd_mtb4c, eobrd_conn_J23},
-
-    {"mtb4fap_mmaJ30", "eobrd_port_mtb4fap_mmaJ30", eobrd_port_mtb4fap_mmaJ30, eobrd_mtb4fap, eobrd_conn_J30},
-    {"mtb4fap_mmaJ31", "eobrd_port_mtb4fap_mmaJ31", eobrd_port_mtb4fap_mmaJ31, eobrd_mtb4fap, eobrd_conn_J31},
-    {"mtb4fap_mmaJ32", "eobrd_port_mtb4fap_mmaJ32", eobrd_port_mtb4fap_mmaJ32, eobrd_mtb4fap, eobrd_conn_J32},
-    {"mtb4fap_mmaJ33", "eobrd_port_mtb4fap_mmaJ33", eobrd_port_mtb4fap_mmaJ33, eobrd_mtb4fap, eobrd_conn_J33},
     
     {"mtb4_mmaJ30", "eobrd_port_mtb4_mmaJ30", eobrd_port_mtb4_mmaJ30, eobrd_mtb4, eobrd_conn_J30},
     {"mtb4_mmaJ31", "eobrd_port_mtb4_mmaJ31", eobrd_port_mtb4_mmaJ31, eobrd_mtb4, eobrd_conn_J31},
