@@ -77,14 +77,13 @@ typedef enum
     eobrd_cantype_pmc               = ICUBCANPROTO_BOARDTYPE__PMC,      // 17 (pmc = piezo motor control)
     eobrd_cantype_amcbldc           = ICUBCANPROTO_BOARDTYPE__AMCBLDC,  // 18 (amcbldc)
     eobrd_cantype_bms               = ICUBCANPROTO_BOARDTYPE__BMS,      // 19 (bms)
-    eobrd_cantype_mtb4c             = ICUBCANPROTO_BOARDTYPE__MTB4C,    // 20 (mtb4c)  
-    eobrd_cantype_mtb4fap           = ICUBCANPROTO_BOARDTYPE__MTB4FAP,  // 21 (mtb4fap)     
+    eobrd_cantype_mtb4c             = ICUBCANPROTO_BOARDTYPE__MTB4C,    // 20 (mtb4c)     
     eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C, // 22 (strain2c)     
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 22 };
+enum { eobrd_cantype_numberof = 21 };
 
 
 typedef enum
@@ -134,14 +133,13 @@ typedef enum
     eobrd_amcbldc               = eobrd_cantype_amcbldc,
     eobrd_bms                   = eobrd_cantype_bms,
     eobrd_mtb4c                 = eobrd_cantype_mtb4c,
-    eobrd_mtb4fap               = eobrd_cantype_mtb4fap,
     eobrd_strain2c              = eobrd_cantype_strain2c,
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 27 };
+enum { eobrd_type_numberof = 26 };
 
 
 typedef struct                  
@@ -353,11 +351,6 @@ typedef enum
     eobrd_port_amc_J5_X2            = 1,        // SPI encoder: embot::hw::encoder2
     eobrd_port_amc_J5_X3            = 2,        // SPI encoder: embot::hw::encoder3
 
-    eobrd_port_mtb4fap_J3_SDA0      = 0,
-    eobrd_port_mtb4fap_J3_SDA1      = 1,
-    eobrd_port_mtb4fap_J3_SDA2      = 2,
-    eobrd_port_mtb4fap_J3_SDA3      = 3,  
-
     eobrd_port_mtb4_J3_SDA0         = 0,
     eobrd_port_mtb4_J3_SDA1         = 1,
     eobrd_port_mtb4_J3_SDA2         = 2,
@@ -372,11 +365,6 @@ typedef enum
     eobrd_port_pmc_J5               = 1,        // I2C2
     eobrd_port_pmc_J6               = 2,        // I2C3
     eobrd_port_pmc_J7               = 3,        // I2C4 
-
-    eobrd_port_mtb4fap_mmaJ20       = 0,
-    eobrd_port_mtb4fap_mmaJ21       = 1,
-    eobrd_port_mtb4fap_mmaJ22       = 2,
-    eobrd_port_mtb4fap_mmaJ23       = 3,   
     
     eobrd_port_mtb4_mmaJ20          = 0,
     eobrd_port_mtb4_mmaJ21          = 1,
@@ -386,12 +374,7 @@ typedef enum
     eobrd_port_mtb4c_mmaJ20         = 0,
     eobrd_port_mtb4c_mmaJ21         = 1,
     eobrd_port_mtb4c_mmaJ22         = 2,
-    eobrd_port_mtb4c_mmaJ23         = 3,
-
-    eobrd_port_mtb4fap_mmaJ30       = 0,
-    eobrd_port_mtb4fap_mmaJ31       = 1,
-    eobrd_port_mtb4fap_mmaJ32       = 2,
-    eobrd_port_mtb4fap_mmaJ33       = 3,   
+    eobrd_port_mtb4c_mmaJ23         = 3, 
     
     eobrd_port_mtb4_mmaJ30          = 0,
     eobrd_port_mtb4_mmaJ31          = 1,
@@ -403,10 +386,9 @@ typedef enum
     eobrd_port_mtb4c_mmaJ32         = 2,
     eobrd_port_mtb4c_mmaJ33         = 3
        
-    
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 59 };
+enum { eobrd_ports_numberof = 47 };
 
 
 typedef enum
