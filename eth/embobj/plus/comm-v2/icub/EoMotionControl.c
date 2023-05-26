@@ -173,6 +173,18 @@ static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
     {"unknown", "eomc_jsetconstraint_unknown", eomc_jsetconstraint_unknown}
 };  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof + 1)*sizeof(eOmap_str_str_u08_t));
 
+static const eOmap_int32_u08_t s_eomc_map_of_calib14rot[] =
+{
+    {0, eOmc_calib14_ROT_zero},
+    {32768, eOmc_calib14_ROT_plus180},
+    {16384, eOmc_calib14_ROT_plus090},
+    {-16384, eOmc_calib14_ROT_minus090},
+    
+    {-1, eOmc_calib14_ROT_none},
+    {-2, eOmc_calib14_ROT_unknown}   
+    
+};  EO_VERIFYsizeof(s_eomc_map_of_calib14rot, (eOmc_calib14_ROT_numberof+2)*sizeof(eOmap_int32_u08_t))
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition (and initialisation) of extern variables
@@ -433,6 +445,40 @@ extern eOmc_stopswitch_t eomc_stopswitch_getlow(const eomc_stopswitches_t value)
 extern eOmc_stopswitch_t eomc_stopswitch_gethigh(const eomc_stopswitches_t value)
 {
     return (eOmc_stopswitch_t)((value >> 4) & 0xf);
+}
+
+extern eOmc_calib14_ROT_t eomc_int2calib14_ROT(int32_t value)
+{
+    uint8_t i = 0;
+    const eOmap_int32_u08_t *map = s_eomc_map_of_calib14rot;
+    const uint8_t size = eOmc_calib14_ROT_numberof+2;
+    uint8_t defvalue = eOmc_calib14_ROT_unknown;
+    
+    for(i = 0; i < size; i++)
+    {
+        if(map[i].int0 == value)
+        {
+            return(map[i].val0);
+        }
+    }
+    return defvalue;
+}
+
+extern int32_t eomc_calib14_ROT2int(eOmc_calib14_ROT_t value)
+{
+    uint8_t i = 0;
+    const eOmap_int32_u08_t *map = s_eomc_map_of_calib14rot;
+    const uint8_t size = eOmc_calib14_ROT_numberof+2;
+    uint8_t defvalue = -2;
+    
+    for(i = 0; i < size; i++)
+    {
+        if(map[i].val0 == value)
+        {
+            return(map[i].int0);
+        }
+    }
+    return defvalue;
 }
 
 // --------------------------------------------------------------------------------------------------------------------

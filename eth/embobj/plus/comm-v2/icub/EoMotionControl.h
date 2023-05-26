@@ -451,8 +451,9 @@ typedef struct
     int32_t                     pwmlimit;
     int32_t                     final_pos;
     uint8_t                     invertdirection;
-    uint8_t                     rotation;
-    uint8_t                     filler;
+    uint8_t                     filler8;
+    uint16_t                    filler16;
+    int32_t                     rotation;
     int32_t                     offset;
     int32_t                     calibrationZero;
     
@@ -551,7 +552,7 @@ typedef struct                  // size is 1+1+2+2+2+0 = 8
 /** @typedef    typedef struct eOmc_calibrator32_t
     @brief      eOmc_calibrator32_t specifies a calibrator with type and parameters for teh new definition of measures
  **/
-typedef struct                  // size is 1+3+4*4 = 20
+typedef struct                  // size is 1+3+6*4 = 28
 {
     eOenum08_t                  type;                               /**< use eOmc_calibration_type_t */
     uint8_t                     filler03[3];
@@ -1426,6 +1427,18 @@ typedef enum
 
 enum { eomc_mc4broadcasts_numberof = 5 };
 
+typedef enum
+{
+    eOmc_calib14_ROT_zero = 0,
+    eOmc_calib14_ROT_plus180 = 1,
+    eOmc_calib14_ROT_plus090 = 2,
+    eOmc_calib14_ROT_minus090 = 3,
+    eOmc_calib14_ROT_none = 14,
+    eOmc_calib14_ROT_unknown = 15,
+} eOmc_calib14_ROT_t;
+
+enum { eOmc_calib14_ROT_numberof = 4 };
+
 
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
@@ -1463,6 +1476,8 @@ extern eOmc_pidoutputtype_t eomc_string2pidoutputtype(const char * string, eOboo
 extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring);
 extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstraint, eObool_t usecompactstring);
 
+extern eOmc_calib14_ROT_t eomc_int2calib14_ROT(int32_t value);
+extern int32_t eomc_calib14_ROT2int(eOmc_calib14_ROT_t value);
 
 /** @}            
     end of group eo_motioncontrol  

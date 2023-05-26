@@ -596,6 +596,14 @@ typedef struct
     uint8_t         val2;    
 } eOmap_str_str_u08_u08_u08_t;
 
+/** @typedef    typedef struct eOmap_int32_u08_t
+    @brief      it can be used to build a map containing one int32_t and a value. 
+ **/
+typedef struct
+{
+    int32_t         int0;
+    uint8_t         val0;    
+} eOmap_int32_u08_t;
 
 // - public #define  --------------------------------------------------------------------------------------------------
 
