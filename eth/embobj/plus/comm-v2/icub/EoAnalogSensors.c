@@ -114,7 +114,7 @@ static const eOmap_str_str_u08_t s_boards_map_of_posrots[] =
     {"minus090", "eoas_pos_ROT_minus090", eoas_pos_ROT_minus090},
     
     {"none", "eoas_pos_ROT_none", eoas_pos_ROT_none},
-    {"unknown", "eoas_pos_ROT_unknown", eoas_pos_ROT_unknown}   
+    {"unknown", "eoas_pos_ROT_unknown", eoas_pos_ROT_unknown}
     
 };  EO_VERIFYsizeof(s_boards_map_of_posrots, (eoas_pos_ROT_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
@@ -609,7 +609,7 @@ extern eObool_t eoas_battery_isboardvalid(eObrd_cantype_t boardtype)
         }
     }
     
-    return eobool_false;    
+    return eobool_false;
 }
 
 
