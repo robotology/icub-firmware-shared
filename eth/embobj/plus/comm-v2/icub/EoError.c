@@ -211,11 +211,11 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 const eoerror_valuestring_t eoerror_valuestrings_SK[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_SYS_unspecified,             "SK: unspecified code.", ""}, //no need to modify
-    {eoerror_value_SK_arrayofcandataoverflow,   "SK: cannot put rx can frames into arrayofcandata, thus some skin readings will be lost", ""}, // In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data
-    {eoerror_value_SK_onoroff,                  "SK: the skin transmission has been switched", ""}, // on or off. In par16 there's the corresponding code (0: OFF, 1: ON)", ""},
-    {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. Actual state of the EMS board is", ""}, //In par16 there's the actual state of the EMS board (0: CFG, 1: RUN)", ""},
-    {eoerror_value_SK_obsoletecommand,          "SK: the board has received an obsolete command of type eosk_sigmode_signal_oldway. use eosk_sigmode_signal instead."} //no need to modify
+    {eoerror_value_SK_unspecified,             "SK: unspecified code.", ""}, //no need to modify
+    {eoerror_value_SK_arrayofcandataoverflow,   "SK: cannot put rx can frames into arrayofcandata, thus some skin readings will be lost", "In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
+    {eoerror_value_SK_onoroff,                  "SK: the skin transmission has been switched", "In par16 there's the corresponding code (0: OFF, 1: ON)"},
+    {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. Current state of the EMS board is", "In par16 there's the current state of the EMS board (0: CFG, 1: RUN)"},
+    {eoerror_value_SK_obsoletecommand,          "SK: the board has received an obsolete command of type eosk_sigmode_signal_oldway. use eosk_sigmode_signal instead.", ""} //no need to modify
 };  EO_VERIFYsizeof(eoerror_valuestrings_SK, eoerror_value_SK_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
