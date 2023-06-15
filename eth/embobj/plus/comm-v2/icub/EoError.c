@@ -186,23 +186,23 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
     {eoerror_value_MC_motor_external_fault,  "MC: external fault button pressed.", ""},
-    {eoerror_value_MC_motor_overcurrent,     "MC: overcurrent. The motor has been turned off to prevent it from being damaged by an impulsive spike of current.", ""},
-    {eoerror_value_MC_motor_i2t_limit,       "MC: i2t limit exceeded. The motor has been turned off to prevent it from being damaged by overheating due to a continuous high current.", ""},
-    {eoerror_value_MC_motor_hallsensors,     "MC: 2FOC hall sensors fault. Invalid sequence in motor Hall effect sensors, please check motor hall cable connections.", ""},
-    {eoerror_value_MC_motor_can_invalid_prot,"MC: 2FOC CAN invalid protocol. The EMS and 2FOC firmware versions are incompatible, please update.", ""},
-    {eoerror_value_MC_motor_can_generic,     "MC: 2FOC CAN generic error. Errors happened in the CAN bus between the EMS and the 2FOC board.", ""},
-    {eoerror_value_MC_motor_can_no_answer,   "MC: 2FOC CAN no answer. The communication between the EMS and the 2FOC board has been lost for more than 50 ms.", ""},
-    {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout. The joint is in a compliant interaction mode or torque control mode, and data from torque sensor have been unavailable for more than 100 ms.", ""},
-    {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data. Hardware problem in the magnetic position sensor of the joint caused invalid position readings.", ""},
-    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout. No answer from the magnetic position sensor of the joint (cable broken?).", ""},
-    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes. There is impulsive noise in the measures of the magnetic position sensor of the joint.", ""},
-    {eoerror_value_MC_motor_qencoder_dirty,  "MC: 2FOC quadrature encoder dirty. The number of thicks in a complete revolution of the motor was lower than expected, the optical disks need to be cleaned.", ""},
-    {eoerror_value_MC_motor_qencoder_index,  "MC: 2FOC quadrature encoder index broken. The reference special thick was not detected during a complete revolution of the motor, please check motor encoder cables.", ""},
-    {eoerror_value_MC_motor_qencoder_phase,  "MC: 2FOC quadrature encoder phase broken. The motor encoder is not counting even if the motor is moving, please check motor encoder cables.", ""},
-    {eoerror_value_MC_generic_error,         "MC: generic motor error (see 64 bit mask parameter).", ""},
-    {eoerror_value_MC_motor_wrong_state,     "MC: 2FOC wrong state. The 2FOC motor controller is in a control state different from required by the EMS.", ""},
-    {eoerror_value_MC_joint_hard_limit,      "MC: hard limit reached. The joint position is outside its hardware boundaries.", ""},
-    {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset."}
+    {eoerror_value_MC_motor_overcurrent,     "MC: overcurrent. The motor has been turned off to prevent it from being damaged by an impulsive spike of current.", "In par16 = ID of joint."},
+    {eoerror_value_MC_motor_i2t_limit,       "MC: i2t limit exceeded. The motor has been turned off to prevent it from being damaged by overheating due to a continuous high current.", "In par16 = ID of joint."},
+    {eoerror_value_MC_motor_hallsensors,     "MC: 2FOC hall sensors fault. Invalid sequence in motor Hall effect sensors, please check motor hall cable connections.", "In par16 = ID of joint."},
+    {eoerror_value_MC_motor_can_invalid_prot,"MC: 2FOC CAN invalid protocol. The EMS and 2FOC firmware versions are incompatible, please update.", "In par16 = ID of joint."},
+    {eoerror_value_MC_motor_can_generic,     "MC: 2FOC CAN generic error. Errors happened in the CAN bus between the EMS and the 2FOC board.", "In par16 = ID of joint."},
+    {eoerror_value_MC_motor_can_no_answer,   "MC: 2FOC CAN no answer. The communication between the EMS and the 2FOC board has been lost for more than 50 ms.", "In par16 = ID of joint."},
+    {eoerror_value_MC_axis_torque_sens,      "MC: torque sensor timeout. The joint is in a compliant interaction mode or torque control mode, and data from torque sensor have been unavailable for more than 100 ms.", "In par16 = ID of joint."},
+    {eoerror_value_MC_aea_abs_enc_invalid,   "MC: AEA encoder invalid data. Hardware problem in the magnetic position sensor of the joint caused invalid position readings.", "In par16 = AEA port (msb) and ID of joint (lsb)."},
+    {eoerror_value_MC_aea_abs_enc_timeout,   "MC: AEA encoder timeout. No answer from the magnetic position sensor of the joint (cable broken?).", "In par16 = AEA port (msb) and ID of joint (lsb)."},
+    {eoerror_value_MC_aea_abs_enc_spikes,    "MC: AEA encoder has spikes. There is impulsive noise in the measures of the magnetic position sensor of the joint.", "In par16 = AEA port (msb) and ID of joint (lsb)."},
+    {eoerror_value_MC_motor_qencoder_dirty,  "MC: 2FOC quadrature encoder dirty. The number of thicks in a complete revolution of the motor was lower than expected, the optical disks need to be cleaned.", "In par64 0xFF is the mask of raw encoder value. par16 = ID of joint."},
+    {eoerror_value_MC_motor_qencoder_index,  "MC: 2FOC quadrature encoder index broken. The reference special thick was not detected during a complete revolution of the motor, please check motor encoder cables.", "In par64 0xFF is the mask of raw encoder value. par16 = ID of joint."},
+    {eoerror_value_MC_motor_qencoder_phase,  "MC: 2FOC quadrature encoder phase broken. The motor encoder is not counting even if the motor is moving, please check motor encoder cables.", "In par64 0xFF is the mask of raw encoder value. par16 = ID of joint."},
+    {eoerror_value_MC_generic_error,         "MC: generic motor error.", "See 64 bit mask parameter"},
+    {eoerror_value_MC_motor_wrong_state,     "MC: 2FOC wrong state. The 2FOC motor controller is in a control state different from required by the EMS.", "In par64 0xF0 is the mask of requested state, 0x0F is the mask of actual state. par16 = ID of joint."},
+    {eoerror_value_MC_joint_hard_limit,      "MC: hard limit reached. The joint position is outside its hardware boundaries.", "In par16 = ID of joint."},
+    {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset.", ""}
 
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
