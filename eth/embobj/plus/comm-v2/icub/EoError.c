@@ -497,7 +497,38 @@ extern const char* eoerror_code2string(eOerror_code_t code)
     return(eoerror_valuestrings[cat][val].string);
 }
 
+extern const char* eoerror_code2rulesstring(eOerror_code_t code)
+{
+    static const char interror_codeunrecognised[] = "eoerror_INTERNALERROR__codeunrecognised";
+    static const char interror_categoryisempty[] = "eoerror_INTERNALERROR__categoryisempty";
+    static const char interror_valueisempty[] = "eoerror_INTERNALERROR__valueisempty";
+    static const char interror_stringatwrongplace[] = "eoerror_INTERNALERROR__stringatwrongplace";
+       
+    eOerror_category_t cat = eoerror_code2category(code);
+    eOerror_value_t val = eoerror_code2value(code);
+    
+    if((eoerror_category_dummy == cat) || (eoerror_value_dummy == val))
+    {
+        return(interror_codeunrecognised);
+    }
+    
+    if(NULL == eoerror_valuestrings[cat])
+    {
+        return(interror_categoryisempty);
+    }
 
+    if(NULL == eoerror_valuestrings[cat][val].parser_rule_string)
+    {
+        return(interror_valueisempty);
+    }
+
+    if(val != eoerror_valuestrings[cat][val].value)
+    {
+        return(interror_stringatwrongplace);
+    }
+    
+    return(eoerror_valuestrings[cat][val].parser_rule_string);
+}
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
 // --------------------------------------------------------------------------------------------------------------------
