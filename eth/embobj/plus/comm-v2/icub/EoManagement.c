@@ -178,7 +178,7 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
 
 extern const char * eomn_servicecategory2string(eOmn_serv_category_t servicecat)
 {
-    const char * ret = eomn_serv_category_unknown;
+    const char * ret = s_mn_servicecategory_string_unknown;
     
     if(servicecat < eomn_serv_categories_numberof)
     {
