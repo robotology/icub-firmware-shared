@@ -94,6 +94,26 @@ static const char * s_mn_servicetype_string_unknown = "eomn_serv_UNKNOWN";
 static const char * s_mn_servicetype_string_none = "eomn_serv_NONE";
 
 
+static const char * s_mn_servicecategory_strings[] =
+{
+    "eomn_serv_category_mc",
+    "eomn_serv_category_strain"
+    "eomn_serv_category_mais",
+    "eomn_serv_category_inertials",
+    "eomn_serv_category_skin",
+    "eomn_serv_category_inertials3",
+    "eomn_serv_category_temperatures",
+    "eomn_serv_category_psc",
+    "eomn_serv_category_pos",
+    "eomn_serv_category_ft",
+    "eomn_serv_category_battery",
+    "eomn_serv_category_all"
+};  EO_VERIFYsizeof(s_mn_servicecategory_strings, eomn_serv_categories_numberof*sizeof(const char *))   
+ 
+static const char * s_mn_servicecategory_string_unknown = "eomn_serv_category_unknown";
+static const char * s_mn_servicecategory_string_none = "eomn_serv_category_none";
+
+
 static const char * s_mn_servicediagnmode_strings[] =
 {
     "eomn_serv_diagn_mode_NONE",
@@ -154,6 +174,47 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
     }        
     
     return(eomn_serv_UNKNOWN);    
+}
+
+extern const char * eomn_servicecategory2string(eOmn_serv_category_t servicecat)
+{
+    const char * ret = eomn_serv_category_unknown;
+    
+    if(servicecat < eomn_serv_categories_numberof)
+    {
+        return(s_mn_servicecategory_strings[servicecat]);
+    }
+    else if(eomn_serv_category_none == servicecat)
+    {
+        return(s_mn_servicecategory_string_none);
+    }
+
+    return(ret);
+}
+
+extern eOmn_serv_category_t eomn_string2servicecategory(const char * string)
+{     
+    uint8_t i = 0;   
+    
+    if(NULL == string)
+    {
+        return(eomn_serv_category_unknown);
+    }
+      
+    for(i=0; i<eomn_serv_categories_numberof; i++)
+    {
+        if(0 == strcmp(string, s_mn_servicecategory_strings[i]))
+        {
+            return((eOmn_serv_category_t)(i+0));
+        }
+    }
+    
+    if(0 == strcmp(string, s_mn_servicecategory_string_none))
+    {
+        return(eomn_serv_category_none);
+    }        
+    
+    return(eomn_serv_category_unknown);    
 }
 
 
