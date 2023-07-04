@@ -793,6 +793,41 @@ typedef struct
     eOas_ft_status_t        status;
 } eOas_ft_t; EO_VERIFYsizeof(eOas_ft_t, 64)
 
+typedef enum
+{
+    //shold I define a value to the first element of bat, such as 16, 
+    //thus to give to bms a certain amount of int for the statuses thinking about a future expantion 
+    // so that number from 0 to 15 are restricted to bms and the other to bat
+    //an then add null values in the map for the empty spaces
+    eoas_bms_general_alarm_lowvoltage            = 1,
+    eoas_bms_general_alarm_highvoltage           = 2,
+    eoas_bms_general_alarm_overcurrent_discharge = 3,
+    eoas_bms_general_alarm_overcurrent_charge    = 4,
+    eoas_bms_general_alarm_lowSOC                = 5,
+    eoas_bms_general_alarm_lowtemperature        = 6,
+    eoas_bms_general_alarm_hightemperature       = 7,
+    eoas_bat_status_hsm_mosfet_broken            = 16, 
+    eoas_bat_status_hsm_mosfet_normal            = 116, //(x-1)+100
+    eoas_bat_status_hsm_overcurrent_overvoltage  = 17,
+    eoas_bat_status_hsm_normal                   = 117,
+    eoas_bat_status_hsm_voltage_power_good       = 18,
+    eoas_bat_status_hsm_voltage_not_guaranteed   = 118,
+    eoas_bat_status_hsm_status_on                = 19,
+    eoas_bat_status_hsm_status_off               = 119,
+    eoas_bat_status_motor_regulator_overcurrent  = 20,
+    eoas_bat_status_motor_regulator_normal       = 120,
+    eoas_bat_status_motor_on                     = 21,
+    eoas_bat_status_motor_off                    = 121,
+    eoas_bat_status_board_regulator_overcurrent  = 22,
+    eoas_bat_status_board_regulator_normal       = 122,
+    eoas_bat_status_board_on                     = 23,
+    eoas_bat_status_board_off                    = 123,
+    eoas_bat_status_btn_2_start_up_phase         = 24,
+    eoas_bat_status_btn_2_stable_op              = 124,
+    eoas_bat_status_btn_1_start_up_phase         = 25,
+    eoas_bat_status_btn_1_stable_op              = 125
+} eOas_battery_alarm_status_t;
+enum { eoas_bms_alarm_numberof = 8, eoas_battery_alarm_status_numberof = 27 };
 
 
 typedef struct
@@ -808,33 +843,33 @@ typedef struct
     uint8_t                 filler[3];
 } eOas_battery_commands_t;       EO_VERIFYsizeof(eOas_battery_commands_t, 4)
 
-
 typedef struct
 {
-    eOabstime_t             age;          // timeoflife in usec. better using this because yarp may ask the board to have its time
-    int16_t                 temperature;  // in steps of 0.1 celsius degree (pos and neg).
-    int8_t                  status;
-    uint8_t                 filler;
+    eOabstime_t             age;               // timeoflife in usec. better using this because yarp may ask the board to have its time
+    int16_t                 temperature;       // in steps of 0.1 celsius degree (pos and neg).
+    int16_t                 filler16;          // filler to cover the remaining 16bits considired that we are working efficiently in memory packs of 32bits
+    uint32_t                status;            // status used on both BAT(10 bits - primary in 0x00000000ffffffff - secondary in 0x000000ff00000000) and BMS(8 MSB)
     float32_t               voltage;  
     float32_t               current;  
-    float32_t               charge;  
+    float32_t               charge; 
+    uint32_t                filler32;          // to keep struct with an even number of memory chunks
 
-} eOas_battery_timedvalue_t;     EO_VERIFYsizeof(eOas_battery_timedvalue_t, 24)
+} eOas_battery_timedvalue_t;     EO_VERIFYsizeof(eOas_battery_timedvalue_t, 32)
 //char (*luca)[sizeof( eOas_battery_timedvalue_t )] = 1;
 
 typedef struct    
 {   // 40 + 12 + 4 = 56
     eOas_battery_timedvalue_t    timedvalue;
-} eOas_battery_status_t;         EO_VERIFYsizeof(eOas_battery_status_t, 24)
+} eOas_battery_status_t;         EO_VERIFYsizeof(eOas_battery_status_t, 32)
 
 
 typedef struct
 {
-    // size is: 4 + 4 + 56 = 64
+    // size is: 4 + 4 + 32 = 40
     eOas_battery_config_t        config;
     eOas_battery_commands_t      cmmnds;
     eOas_battery_status_t        status;
-} eOas_battery_t; EO_VERIFYsizeof(eOas_battery_t, 32)
+} eOas_battery_t; EO_VERIFYsizeof(eOas_battery_t, 40)
 
 // - declaration of extern public variables, ... but better using use _get/_set instead -------------------------------
 // empty-section
@@ -876,7 +911,6 @@ extern eoas_pos_TYPE_t eoas_string2postype(const char * string, eObool_t usecomp
 
 extern const char * eoas_posrot2string(eoas_pos_ROT_t posrot, eObool_t usecompactstring);
 extern eoas_pos_ROT_t eoas_string2posrot(const char * string, eObool_t usecompactstring);
-
 
 /** @}
     end of group eo_cevcwervcrev5555

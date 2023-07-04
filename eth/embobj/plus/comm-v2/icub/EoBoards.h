@@ -58,7 +58,7 @@ extern "C" {
 typedef enum
 {   
     eobrd_cantype_dsp               = ICUBCANPROTO_BOARDTYPE__DSP,      // 0, not used
-    eobrd_cantype_pic               = ICUBCANPROTO_BOARDTYPE__PIC,      // 2, not used
+    eobrd_cantype_pic               = ICUBCANPROTO_BOARDTYPE__PIC,      // 1, not used
     eobrd_cantype_2dc               = ICUBCANPROTO_BOARDTYPE__2DC,      // 2, not used
     eobrd_cantype_mc4               = ICUBCANPROTO_BOARDTYPE__4DC,      // 3
     eobrd_cantype_bll               = ICUBCANPROTO_BOARDTYPE__BLL,      // 4, not used
@@ -78,12 +78,13 @@ typedef enum
     eobrd_cantype_amcbldc           = ICUBCANPROTO_BOARDTYPE__AMCBLDC,  // 18 (amcbldc)
     eobrd_cantype_bms               = ICUBCANPROTO_BOARDTYPE__BMS,      // 19 (bms)
     eobrd_cantype_mtb4c             = ICUBCANPROTO_BOARDTYPE__MTB4C,    // 20 (mtb4c)     
-    eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C, // 22 (strain2c)     
+    eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C, // 22 (strain2c)
+    eobrd_cantype_bat               = ICUBCANPROTO_BOARDTYPE__BAT,      // 23 (bat)
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 21 };
+enum { eobrd_cantype_numberof = 23 };
 
 
 typedef enum
@@ -134,12 +135,13 @@ typedef enum
     eobrd_bms                   = eobrd_cantype_bms,
     eobrd_mtb4c                 = eobrd_cantype_mtb4c,
     eobrd_strain2c              = eobrd_cantype_strain2c,
+    eobrd_bat                   = eobrd_cantype_bat,
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 26 };
+enum { eobrd_type_numberof = 27 };
 
 
 typedef struct                  
