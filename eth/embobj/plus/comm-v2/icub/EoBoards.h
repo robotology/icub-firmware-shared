@@ -317,6 +317,7 @@ typedef enum
     eobrd_conn_P3P      = 35,
     eobrd_conn_P4P      = 36,
 
+
     
     eobrd_conn_none     = 0,
     eobrd_conn_unknown  = 255
@@ -344,6 +345,7 @@ typedef enum
     eobrd_port_mc4plusP5            = 3,        // PWM & QUADENC: hal_motor4, hal_quad_enc4
     eobrd_port_mc4plusP3P           = 4,        // PWM & QUADENC: hal_motor1, hal_quad_enc1 parrallelized driver
     eobrd_port_mc4plusP4P           = 5,        // PWM & QUADENC: hal_motor3, hal_quad_enc3 parrallelized driver
+
     eobrd_port_mc4plusP10           = 0,        // SPI encoder: hal_encoder1
     eobrd_port_mc4plusP11           = 1,        // SPI encoder: hal_encoder2
     
