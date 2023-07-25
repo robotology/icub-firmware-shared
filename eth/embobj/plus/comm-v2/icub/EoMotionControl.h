@@ -1285,12 +1285,13 @@ typedef enum
     eomc_jsetconstraint_cerhand     = 1,
     eomc_jsetconstraint_trifid      = 2,
     eomc_jsetconstraint_cerhand2    = 3,
+    eomc_jsetconstraint_ergocubwrist = 4,
     
     eomc_jsetconstraint_unknown     = 255
 } eOmc_jsetconstraint_t;
 
 
-enum { eomc_jsetconstraints_numberof = 4 };
+enum { eomc_jsetconstraints_numberof = 5 };
 
 
 // size is 
