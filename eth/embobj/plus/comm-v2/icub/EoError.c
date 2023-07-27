@@ -262,7 +262,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_mc4plus_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails. see other messages for more details",""},
 
     {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured"," par16&0xf000: number of joint; primary encs: failure mask in par16&0x000f and errorcodes in par64&0x0000ffff; secondary encs: failure mask in par16&0x00f0 and errorcodes in par64&0xffff0000"}, 
-    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncodeerReader cannot be configured: verification fails", "par16&0xf000: number of joint; primary encs: failure mask in par16&0x000f and errorcodes in par64&0x0000ffff; secondary encs: failure mask in par16&0x00f0 and errorcodes in par64&0xffff0000"},         
+    {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncoderReader cannot be configured: verification fails", "par16&0xf000: number of joint; primary encs: failure mask in par16&0x000f and errorcodes in par64&0x0000ffff; secondary encs: failure mask in par16&0x00f0 and errorcodes in par64&0xffff0000"},         
 
     {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured.", ""}, 
     {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured", "In par16: number of requested boards in 0xff00, max number in 0x00ff. In par64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."}, 
