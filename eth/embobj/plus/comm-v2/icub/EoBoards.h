@@ -314,8 +314,8 @@ typedef enum
     eobrd_conn_J31      = 32,
     eobrd_conn_J32      = 33,
     eobrd_conn_J33      = 34,
-    eobrd_conn_P3P2     = 35,
-    eobrd_conn_P4P5     = 36,
+    eobrd_conn_P3P      = 35,
+    eobrd_conn_P4P      = 36,
 
     
     eobrd_conn_none     = 0,
@@ -342,8 +342,8 @@ typedef enum
     eobrd_port_mc4plusP3            = 0,        // PWM & QUADENC: hal_motor1, hal_quad_enc1
     eobrd_port_mc4plusP4            = 2,        // PWM & QUADENC: hal_motor3, hal_quad_enc3
     eobrd_port_mc4plusP5            = 3,        // PWM & QUADENC: hal_motor4, hal_quad_enc4
-    eobrd_port_mc4plusP3P2          = 4,        // PWM & QUADENC: hal_motor1, hal_quad_enc1 parrallelized driver
-    eobrd_port_mc4plusP4P5          = 5,        // PWM & QUADENC: hal_motor3, hal_quad_enc3 parrallelized driver
+    eobrd_port_mc4plusP3P           = 4,        // PWM & QUADENC: hal_motor1, hal_quad_enc1 parrallelized driver
+    eobrd_port_mc4plusP4P           = 5,        // PWM & QUADENC: hal_motor3, hal_quad_enc3 parrallelized driver
     eobrd_port_mc4plusP10           = 0,        // SPI encoder: hal_encoder1
     eobrd_port_mc4plusP11           = 1,        // SPI encoder: hal_encoder2
     
@@ -393,7 +393,7 @@ typedef enum
        
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 47 };
+enum { eobrd_ports_numberof = 49 };
 
 
 typedef enum
