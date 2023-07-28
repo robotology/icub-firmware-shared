@@ -504,6 +504,17 @@ extern eOerror_value_t eoerror_code2value(eOerror_code_t code);
 extern const char* eoerror_code2string(eOerror_code_t code);
 
 
+/** @fn         extern const char* eoerror_code2rulesstring(eOerror_code_t code)
+    @brief      it returns a string which describes the parsing rules for the error code in argument. 
+                if the argument maps to an existing code, then the associated 
+                string is returned. Otherwise, it is returned a string with prefix "eoerror_INTERNALERROR__"
+                which describes why a valid string could not be found.                
+    @param      code            the error code obtained from a message or from function eoerror_code_get()
+    @return     a zero-terminated string associated to the error code or an error string with prefix "eoerror_INTERNALERROR__".
+ **/
+extern const char* eoerror_code2rulesstring(eOerror_code_t code);
+
+
 
 /** @}            
     end of group eo_EoError  
