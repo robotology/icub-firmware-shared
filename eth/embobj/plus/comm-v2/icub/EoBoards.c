@@ -172,8 +172,8 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     {"J31", "eobrd_conn_J31", eobrd_conn_J31},
     {"J32", "eobrd_conn_J32", eobrd_conn_J32},
     {"J33", "eobrd_conn_J33", eobrd_conn_J33},
-    {"P3P2", "eobrd_conn_P3P2", eobrd_conn_P3P},
-    {"P4P5", "eobrd_conn_P4P5", eobrd_conn_P4P},
+    {"P3P", "eobrd_conn_P3P", eobrd_conn_P3P},
+    {"P4P", "eobrd_conn_P4P", eobrd_conn_P4P},
 
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
