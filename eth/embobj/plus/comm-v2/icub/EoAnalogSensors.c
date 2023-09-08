@@ -38,6 +38,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 #include "EoAnalogSensors.h"
+#include "EOtheErrorManager.h"
+#include "EoError.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -221,7 +223,6 @@ extern eoas_pos_ROT_t eoas_string2posrot(const char * string, eObool_t usecompac
     
     return((eoas_pos_ROT_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));    
 }
-
 
 enum { in3_mtb_pos = 0, in3_mtb4_pos = 1, in3_strain2_pos = 2, in3_rfe_pos = 3, in3_mtb4c_pos = 4, in3_strain2c_pos = 5 };
 
@@ -553,7 +554,7 @@ extern const eObrd_info_t * eoas_temperature_setof_boardinfos_find(const eOas_te
 // 
 
 static const eObrd_cantype_t s_eoas_ft_supportedboards_types[] = { eobrd_cantype_strain, eobrd_cantype_strain2, eobrd_cantype_strain2c };
-static const eObrd_cantype_t s_eoas_bms_supportedboards_types[] = { eobrd_cantype_bms };
+static const eObrd_cantype_t s_eoas_bms_supportedboards_types[] = { eobrd_cantype_bms, eobrd_cantype_bat };
 
 
 extern uint8_t eoas_battery_supportedboards_numberof(void)
