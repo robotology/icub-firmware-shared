@@ -174,7 +174,9 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     {"J31", "eobrd_conn_J31", eobrd_conn_J31},
     {"J32", "eobrd_conn_J32", eobrd_conn_J32},
     {"J33", "eobrd_conn_J33", eobrd_conn_J33},
-    
+    {"P3P", "eobrd_conn_P3P", eobrd_conn_P3P},
+    {"P4P", "eobrd_conn_P4P", eobrd_conn_P4P},
+
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
 };  EO_VERIFYsizeof(s_eoboards_map_of_connectors, (eobrd_connectors_numberof+2)*sizeof(eOmap_str_str_u08_t))
@@ -193,6 +195,8 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"mc4plusP3", "eobrd_port_mc4plusP3", eobrd_port_mc4plusP3, eobrd_mc4plus, eobrd_conn_P3},
     {"mc4plusP4", "eobrd_port_mc4plusP4", eobrd_port_mc4plusP4, eobrd_mc4plus, eobrd_conn_P4},
     {"mc4plusP5", "eobrd_port_mc4plusP5", eobrd_port_mc4plusP5, eobrd_mc4plus, eobrd_conn_P5},
+    {"mc4plusP3P", "eobrd_port_mc4plusP3P", eobrd_port_mc4plusP3P, eobrd_mc4plus, eobrd_conn_P3P},
+    {"mc4plusP4P", "eobrd_port_mc4plusP4P", eobrd_port_mc4plusP4P, eobrd_mc4plus, eobrd_conn_P4P},    
     {"mc4plusP10", "eobrd_port_mc4plusP10", eobrd_port_mc4plusP10, eobrd_mc4plus, eobrd_conn_P10},
     {"mc4plusP11", "eobrd_port_mc4plusP11", eobrd_port_mc4plusP11, eobrd_mc4plus, eobrd_conn_P11},
     
