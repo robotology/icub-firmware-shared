@@ -211,30 +211,32 @@ enum { eoerror_value_HW_numberof = 7 };
  **/
 typedef enum
 {
-    eoerror_value_MC_motor_external_fault           = 0,
-    eoerror_value_MC_motor_overcurrent              = 1,
-    eoerror_value_MC_motor_i2t_limit                = 2,
-    eoerror_value_MC_motor_hallsensors              = 3,
-    eoerror_value_MC_motor_can_invalid_prot         = 4,
-    eoerror_value_MC_motor_can_generic              = 5,
-    eoerror_value_MC_motor_can_no_answer            = 6,
-    eoerror_value_MC_axis_torque_sens               = 7,
-    eoerror_value_MC_aea_abs_enc_invalid            = 8,
-    eoerror_value_MC_aea_abs_enc_timeout            = 9,
-    eoerror_value_MC_aea_abs_enc_spikes             = 10,
+    eoerror_value_MC_motor_external_fault               = 0,
+    eoerror_value_MC_motor_overcurrent                  = 1,
+    eoerror_value_MC_motor_i2t_limit                    = 2,
+    eoerror_value_MC_motor_hallsensors                  = 3,
+    eoerror_value_MC_motor_can_invalid_prot             = 4,
+    eoerror_value_MC_motor_can_generic                  = 5,
+    eoerror_value_MC_motor_can_no_answer                = 6,
+    eoerror_value_MC_axis_torque_sens                   = 7,
+    eoerror_value_MC_aea_abs_enc_invalid                = 8,
+    eoerror_value_MC_aea_abs_enc_timeout                = 9,
+    eoerror_value_MC_aea_abs_enc_spikes                 = 10,
     
-    eoerror_value_MC_motor_qencoder_dirty           = 11,
-    eoerror_value_MC_motor_qencoder_index           = 12,
-    eoerror_value_MC_motor_qencoder_phase           = 13,
+    eoerror_value_MC_motor_qencoder_dirty               = 11,
+    eoerror_value_MC_motor_qencoder_index               = 12,
+    eoerror_value_MC_motor_qencoder_phase               = 13,
     
-    eoerror_value_MC_generic_error                  = 14,
-    eoerror_value_MC_motor_wrong_state              = 15,
+    eoerror_value_MC_generic_error                      = 14,
+    eoerror_value_MC_motor_wrong_state                  = 15,
     
-    eoerror_value_MC_joint_hard_limit               = 16,
-    eoerror_value_MC_motor_qencoder_phase_disappeared   = 17
+    eoerror_value_MC_joint_hard_limit                   = 16,
+    eoerror_value_MC_motor_qencoder_phase_disappeared   = 17,
+    
+    eoerror_value_MC_motor_overheating                  = 18
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 18 };
+enum { eoerror_value_MC_numberof = 19 };
 
 
 
