@@ -494,7 +494,8 @@ typedef struct
     float32_t               viscous_neg_val;
     float32_t               coulomb_pos_val;
     float32_t               coulomb_neg_val;
-} eOmc_FrictionParams_t;    EO_VERIFYsizeof(eOmc_FrictionParams_t, 16)
+    float32_t               velocityThres_val;
+} eOmc_FrictionParams_t;    EO_VERIFYsizeof(eOmc_FrictionParams_t, 20)
 
 typedef struct
 {
@@ -648,7 +649,7 @@ typedef struct
     int8_t                  bemf_scale;
     int8_t                  ktau_scale;
     int8_t                  filler02[2];
-} eOmc_motor_params_t;  EO_VERIFYsizeof(eOmc_motor_params_t, 28)
+} eOmc_motor_params_t;  EO_VERIFYsizeof(eOmc_motor_params_t, 32)
 
 // -- all the possible data holding structures used in a motor
 
@@ -713,7 +714,7 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4+3
     float32_t                   gearbox_E2J;
     float32_t                   deadzone;
     eOmc_kalman_filter_config_t kalman_params;              /**< the kalman filter parameters */
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 236)
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 240)
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_legacy_t
@@ -916,7 +917,7 @@ typedef struct                  // size is 236+96+4+44+0 = 380
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 380);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 384);
 
 
 
