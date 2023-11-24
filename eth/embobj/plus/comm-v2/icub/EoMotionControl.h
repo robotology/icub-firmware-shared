@@ -1081,6 +1081,12 @@ typedef struct
 
 typedef struct
 {
+    eObrd_location_t            location;
+} eOmc_actuator_descriptor_generic_t;
+
+
+typedef struct
+{
     eObrd_canlocation_t         canloc;
 } eOmc_actuator_descriptor_mc4_t;
 
@@ -1103,11 +1109,12 @@ typedef struct
 } eOmc_actuator_descriptor_none_t;
 
 
-// comment: the descriptor does not contain a .type fieles because we dont mix joints with different types of actuators.
+// comment: the descriptor does not contain a .type field because (so far) we dont need to mix joints with different types of actuators.
 // however, we may transform the eOmc_actuator_descriptor_t to be a struct of size 2 bytes with .type and .data where
 // .data is a union with .foc, .mc4, .pwm
 typedef union
 {
+    eOmc_actuator_descriptor_generic_t  gen;  
     eOmc_actuator_descriptor_foc_t      foc;
     eOmc_actuator_descriptor_mc4_t      mc4;
     eOmc_actuator_descriptor_pwm_t      pwm;

@@ -111,7 +111,7 @@ namespace embot { namespace core {
         fpCaller call {nullptr};
         void * arg {nullptr};
         
-        Callback() = default;
+        constexpr Callback() = default;
         constexpr Callback(fpCaller _c, void *_a) : call(_c), arg(_a) {}
         void load(fpCaller _c, void *_a) { call = _c; arg = _a; }
         void clear() { call = nullptr; arg = nullptr; }
