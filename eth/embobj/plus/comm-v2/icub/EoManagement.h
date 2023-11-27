@@ -430,7 +430,6 @@ typedef enum
     eomn_serv_category_mc               = 0,
     eomn_serv_category_strain           = 1,
     eomn_serv_category_mais             = 2,
-    eomn_serv_category_inertials        = 3,
     eomn_serv_category_skin             = 4,
     eomn_serv_category_inertials3       = 5,
     eomn_serv_category_temperatures     = 6,
@@ -504,15 +503,6 @@ typedef struct
 
 
 typedef struct
-{   // 5+3+100=108 
-    eObrd_version_t                     mtbversion;
-    uint8_t                             filler[3];
-    eOas_inertial_arrayof_sensors_t     arrayofsensors;
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108)
-
-
-
-typedef struct
 {   // 36+132=166 
     eOas_inertial3_setof_boardinfos_t       setofboardinfos;
     eOas_inertial3_arrayof_descriptors_t    arrayofdescriptor;
@@ -556,7 +546,6 @@ typedef union
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;
-    eOmn_serv_config_data_as_inertial_t     inertial;  
     eOmn_serv_config_data_as_inertial3_t    inertial3;
     eOmn_serv_config_data_as_psc_t          psc;
     eOmn_serv_config_data_as_pos_t          pos;

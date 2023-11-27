@@ -265,9 +265,6 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_encoders_ok, "CFG: EOtheEncoderReader can be correctly configured"," par16&0xf000: number of joint; primary encs: failure mask in par16&0x000f and errorcodes in par64&0x0000ffff; secondary encs: failure mask in par16&0x00f0 and errorcodes in par64&0xffff0000"}, 
     {eoerror_value_CFG_encoders_failed_verify, "CFG: EOtheEncoderReader cannot be configured: verification fails", "par16&0xf000: number of joint; primary encs: failure mask in par16&0x000f and errorcodes in par64&0x0000ffff; secondary encs: failure mask in par16&0x00f0 and errorcodes in par64&0xffff0000"},         
 
-    {eoerror_value_CFG_inertials_ok, "CFG: EOtheInertial can be correctly configured.", ""}, 
-    {eoerror_value_CFG_inertials_failed_toomanyboards, "CFG: EOtheInertial cannot be configured", "In par16: number of requested boards in 0xff00, max number in 0x00ff. In par64: mask of requested boards in 0x00000000ffff0000 (can2) and 0x000000000000ffff (can1)."}, 
-    {eoerror_value_CFG_inertials_failed_candiscovery, "CFG: EOtheInertial cannot be configured. CANdiscovery fails", "In par64 from lsb to msb masks of: missing can1, can2, found but incompatible can1, can2"}, 
     
     {eoerror_value_CFG_comm_cannotloadaregularrop, "CFG: cannot load a regular rop.", ""}, 
 
@@ -280,18 +277,13 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_strain_not_verified_yet, "CFG: EOtheSTRAIN service was not verified yet, thus it cannot start.", ""},
     {eoerror_value_CFG_mais_not_verified_yet, "CFG: EOtheMAIS service was not verified yet, thus it cannot start.", ""},
     {eoerror_value_CFG_skin_not_verified_yet, "CFG: EOtheSKIN service was not verified yet, thus it cannot start.", ""},
-    {eoerror_value_CFG_inertials_not_verified_yet, "CFG: EOtheInertials service was not verified yet, thus it cannot start.", ""},
     {eoerror_value_CFG_inertials3_not_verified_yet, "CFG: EOtheInertials3 service was not verified yet, thus it cannot start.", ""},
     {eoerror_value_CFG_encoders_not_verified_yet, "CFG: EOtheEncoderReader service was not verified yet, thus it cannot start.", ""},
     {eoerror_value_CFG_mc_using_onboard_config, "CFG: EOtheMotionController service is using the local default configuration based on its IP address.", ""},
     {eoerror_value_CFG_strain_using_onboard_config, "CFG: EOtheSTRAIN service is using the local default configuration based on its IP address.", ""},
     {eoerror_value_CFG_mais_using_onboard_config, "CFG: EOtheMAIS service is using the local default configuration based on its IP address.", ""},
-    {eoerror_value_CFG_inertials_using_onboard_config, "CFG: EOtheInertials service is using the local default configuration based on its IP address.", ""},
     {eoerror_value_CFG_inertials3_using_onboard_config, "CFG: EOtheInertials3 service is using the local default configuration based on its IP address.", ""},
     {eoerror_value_CFG_skin_using_onboard_config, "CFG: EOtheSKIN service is using the local default configuration based on its IP address.", ""},
-    
-    {eoerror_value_CFG_inertials_failed_unsupportedsensor, "CFG: EOtheInertial cannot be configured. some sensors are not supported", "In par16 their number."},     
-    {eoerror_value_CFG_inertials_changed_requestedrate, "CFG: EOtheInertial has changed the requested rate", "In par16 the requested (MSB) and the assigned (LSB)."},
 
     {eoerror_value_CFG_inertials3_failed_unsupportedsensor, "CFG: EOtheInertial3 cannot be configured. some sensors are not supported", "In par16 their number."},
     {eoerror_value_CFG_inertials3_changed_requestedrate, "CFG: EOtheInertial3 has changed the requested rate", "In par16 the requested (MSB) and the assigned (LSB)."},
@@ -320,7 +312,6 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_mc2pluspsc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoder fails for mc2pluspsc. see other messages for more details", ""},
     {eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs, "CFG: EOtheMotionController cannot be configured. verification of pscs for mc2pluspsc fails. see other messages for more details", ""},
     
-    {eoerror_value_CFG_inertials_failed_notsupported, "CFG: EOtheInertials cannot be configured. This board does not support this service.", ""},
     {eoerror_value_CFG_inertials3_failed_notsupported, "CFG: EOtheInertials3 cannot be configured. This board does not support this service.", ""},
     {eoerror_value_CFG_temperatures_failed_notsupported, "CFG: EOtheTemperatures cannot be configured. This board does not support this service.", ""},
     {eoerror_value_CFG_mais_failed_notsupported, "CFG: EOtheMAIS cannot be configured. This board does not support this service.", ""},

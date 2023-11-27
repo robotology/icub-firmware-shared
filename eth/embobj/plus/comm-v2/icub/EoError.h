@@ -315,10 +315,6 @@ typedef enum
     
     eoerror_value_CFG_encoders_ok                       = 21,
     eoerror_value_CFG_encoders_failed_verify            = 22,
-
-    eoerror_value_CFG_inertials_ok                      = 23,
-    eoerror_value_CFG_inertials_failed_toomanyboards    = 24,
-    eoerror_value_CFG_inertials_failed_candiscovery     = 25,
     
     eoerror_value_CFG_comm_cannotloadaregularrop        = 26,
     
@@ -331,20 +327,15 @@ typedef enum
     eoerror_value_CFG_strain_not_verified_yet           = 32,        
     eoerror_value_CFG_mais_not_verified_yet             = 33,
     eoerror_value_CFG_skin_not_verified_yet             = 34,        
-    eoerror_value_CFG_inertials_not_verified_yet        = 35,
     eoerror_value_CFG_inertials3_not_verified_yet       = 36,
     eoerror_value_CFG_encoders_not_verified_yet         = 37,
 
     eoerror_value_CFG_mc_using_onboard_config           = 38,
     eoerror_value_CFG_strain_using_onboard_config       = 39,
     eoerror_value_CFG_mais_using_onboard_config         = 40,
-    eoerror_value_CFG_inertials_using_onboard_config    = 41,
     eoerror_value_CFG_inertials3_using_onboard_config   = 42,
     eoerror_value_CFG_skin_using_onboard_config         = 43,
-    
-    eoerror_value_CFG_inertials_failed_unsupportedsensor= 44,
-    eoerror_value_CFG_inertials_changed_requestedrate   = 45,
-    
+        
     eoerror_value_CFG_inertials3_failed_unsupportedsensor= 46,
     eoerror_value_CFG_inertials3_changed_requestedrate  = 47,
 
@@ -373,7 +364,6 @@ typedef enum
     eoerror_value_CFG_mc_mc2pluspsc_failed_encoders_verify = 66, 
     eoerror_value_CFG_mc_mc2pluspsc_failed_candiscovery_of_pscs = 67,
     
-    eoerror_value_CFG_inertials_failed_notsupported = 68,
     eoerror_value_CFG_inertials3_failed_notsupported = 69,
     eoerror_value_CFG_temperatures_failed_notsupported = 70,
     eoerror_value_CFG_mais_failed_notsupported = 71,
@@ -413,7 +403,7 @@ typedef enum
     eoerror_value_CFG_bat_failed_notsupported           = 100,
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 101 };
+enum { eoerror_value_CFG_numberof = 93 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
