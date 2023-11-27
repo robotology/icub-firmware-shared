@@ -1122,18 +1122,6 @@ typedef union
     eOmc_actuator_descriptor_none_t     none;
 } eOmc_actuator_descriptor_t; EO_VERIFYsizeof(eOmc_actuator_descriptor_t, 1)   
 
-//typedef enum 
-//{
-//    eomc_encoder_NONE           = 0,
-//    eomc_encoder_AEA            = 1,
-//    eomc_encoder_ROIE           = 2,
-//    eomc_encoder_HALL_ADC       = 3,
-//    eomc_encoder_MAIS           = 4,
-//    eomc_encoder_OPTICAL_QUAD   = 5,
-//    eomc_encoder_HALL_MOTOR_SENS= 6
-//    // etc
-//} eOmc_EncoderType_t;
-
 
 typedef enum
 {
@@ -1205,6 +1193,37 @@ typedef struct
     eOmc_jomo_descriptor_t              data[7];
 } eOmc_arrayof_7jomodescriptors_t;      EO_VERIFYsizeof(eOmc_arrayof_7jomodescriptors_t, 39)
 
+
+
+typedef struct
+{
+    uint8_t                 type;
+    uint8_t                 board;
+    eObrd_location_t        location; 
+    eObrd_firmwareversion_t firmware; 
+    eObrd_protocolversion_t protocol; 
+} eOmc_actuator_adv_descriptor_t;   EO_VERIFYsizeof(eOmc_actuator_adv_descriptor_t, 8)
+
+typedef struct
+{
+    uint8_t     type;           // use eOmc_encoder_t
+    uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t or eObrd_portpsc_t
+    uint8_t     pos  : 3;       // use eOmc_position_t
+    uint8_t     ffu[2];
+} eOmc_encoder_adv_descriptor_t;   EO_VERIFYsizeof(eOmc_encoder_adv_descriptor_t, 4)  
+
+typedef struct                  // 1+2+2=5
+{
+    eOmc_actuator_adv_descriptor_t  actuator;
+    eOmc_encoder_adv_descriptor_t   encoder1;
+    eOmc_encoder_adv_descriptor_t   encoder2;
+} eOmc_jomo_adv_descriptor_t;       EO_VERIFYsizeof(eOmc_jomo_adv_descriptor_t, 16)
+
+typedef struct                          
+{   // 4+4*16=24
+    eOarray_head_t                      head;
+    eOmc_jomo_adv_descriptor_t          data[4];
+} eOmc_arrayof_4jomoadvdescriptors_t;   EO_VERIFYsizeof(eOmc_arrayof_4jomoadvdescriptors_t, 68)
 
 typedef enum
 {
