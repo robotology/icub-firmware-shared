@@ -84,7 +84,7 @@ static const char * s_mn_servicetype_strings[] =
     "eomn_serv_AS_psc",
     "eomn_serv_AS_pos",
     "eomn_serv_MC_mc4plusfaps",
-    "eomn_serv_MC_mc4pluspmc",
+    "eomn_serv_MC_advfoc",
     "eomn_serv_AS_ft",
     "eomn_serv_AS_battery"
 };  EO_VERIFYsizeof(s_mn_servicetype_strings, eomn_serv_types_numberof*sizeof(const char *))   

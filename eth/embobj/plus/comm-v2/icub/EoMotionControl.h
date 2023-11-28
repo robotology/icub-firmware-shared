@@ -1197,12 +1197,10 @@ typedef struct
 
 typedef struct
 {
-    uint8_t                 type;
-    uint8_t                 board;
-    eObrd_location_t        location; 
-    eObrd_firmwareversion_t firmware; 
-    eObrd_protocolversion_t protocol; 
-} eOmc_actuator_adv_descriptor_t;   EO_VERIFYsizeof(eOmc_actuator_adv_descriptor_t, 8)
+    uint8_t                 type;       // use eOmc_actuator_t
+    eOlocation_t            location;
+    eObrd_info_t            board; 
+} eOmc_adv_actuator_descriptor_t;   EO_VERIFYsizeof(eOmc_adv_actuator_descriptor_t, 8)
 
 typedef struct
 {
@@ -1210,20 +1208,20 @@ typedef struct
     uint8_t     port : 5;       // use eObrd_port_t or eObrd_portmais_t or eObrd_portpsc_t
     uint8_t     pos  : 3;       // use eOmc_position_t
     uint8_t     ffu[2];
-} eOmc_encoder_adv_descriptor_t;   EO_VERIFYsizeof(eOmc_encoder_adv_descriptor_t, 4)  
+} eOmc_adv_encoder_descriptor_t;   EO_VERIFYsizeof(eOmc_adv_encoder_descriptor_t, 4)  
 
-typedef struct                  // 1+2+2=5
-{
-    eOmc_actuator_adv_descriptor_t  actuator;
-    eOmc_encoder_adv_descriptor_t   encoder1;
-    eOmc_encoder_adv_descriptor_t   encoder2;
-} eOmc_jomo_adv_descriptor_t;       EO_VERIFYsizeof(eOmc_jomo_adv_descriptor_t, 16)
+typedef struct 
+{   // 8+4+4
+    eOmc_adv_actuator_descriptor_t  actuator;
+    eOmc_adv_encoder_descriptor_t   encoder1;
+    eOmc_adv_encoder_descriptor_t   encoder2;
+} eOmc_adv_jomo_descriptor_t;       EO_VERIFYsizeof(eOmc_adv_jomo_descriptor_t, 16)
 
 typedef struct                          
 {   // 4+4*16=24
     eOarray_head_t                      head;
-    eOmc_jomo_adv_descriptor_t          data[4];
-} eOmc_arrayof_4jomoadvdescriptors_t;   EO_VERIFYsizeof(eOmc_arrayof_4jomoadvdescriptors_t, 68)
+    eOmc_adv_jomo_descriptor_t          data[4];
+} eOmc_arrayof_4advjomodescriptors_t;   EO_VERIFYsizeof(eOmc_arrayof_4advjomodescriptors_t, 68)
 
 typedef enum
 {
@@ -1357,14 +1355,6 @@ typedef struct
     float   param2;
 } eOmc_jointSet_constraints_t;  EO_VERIFYsizeof(eOmc_jointSet_constraints_t, 12)
 
-//typedef enum
-//{
-//    eomc_pidoutputtype_pwm = 1,
-//    eomc_pidoutputtype_vel = 2,
-//    eomc_pidoutputtype_iqq = 3,
-
-//    eomc_pidoutputtype_unknown = 0
-//} eOmc_pidoutputtype_t;
 
 typedef enum
 {
@@ -1410,26 +1400,26 @@ typedef struct
     eOmc_4x4_matrix_t               motor2joint; 
     eOmc_4x6_matrix_t               encoder2joint;
 } eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292)
-//end VALE
-
-typedef struct                          
-{   // 4+7*16=116
-    eOarray_head_t                      head;
-    eOmc_jointset_configuration_t       data[7];
-} eOmc_arrayof_7jointsetconfig_t;       EO_VERIFYsizeof(eOmc_arrayof_7jointsetconfig_t, 116)
 
 
-typedef eOq17_14_t eOmc_7x7_matrix_t[7][7]; EO_VERIFYsizeof(eOmc_7x7_matrix_t, 196)
+typedef union                               
+{   // max(292, 4)
+    eOmc_4jomo_coupling_t   traditional;
+    uint32_t                other;
+} eOmc_adv4jomo_coupling_data_t;  EO_VERIFYsizeof(eOmc_adv4jomo_coupling_data_t, 292)
+
+typedef enum
+{
+    eommccoupling_traditional = 0
+} eOmc_adv4jomocoupling_type_t;
 
 typedef struct
-{   // 7 + 1 + 112 + 196 + 196 + 196 = 708
-    uint8_t                         joint2set[7];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
-    uint8_t                         dummy;
-    eOmc_jointset_configuration_t   jsetcfg[7];
-    eOmc_7x7_matrix_t               joint2motor;
-    eOmc_7x7_matrix_t               motor2joint; 
-    eOmc_7x7_matrix_t               encoder2joint;
-} eOmc_7jomo_coupling_t; EO_VERIFYsizeof(eOmc_7jomo_coupling_t, 708)
+{   // 4 + 292 = 296
+    uint8_t                         typeof;   // use eOmc_adv4jomocoupling_type_t
+    uint8_t                         filler[3];
+    eOmc_adv4jomo_coupling_data_t   data;   
+} eOmc_adv4jomo_coupling_t; EO_VERIFYsizeof(eOmc_adv4jomo_coupling_t, 296)
+
 
 typedef struct
 {
