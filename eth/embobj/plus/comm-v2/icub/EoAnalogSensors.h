@@ -96,11 +96,11 @@ typedef enum
     eoas_entity_strain                      = 0,
     eoas_entity_mais                        = 1,
     eoas_entity_temperature                 = 2,    
-    eoas_entity_inertial3                   = 4,
-    eoas_entity_psc                         = 5,
-    eoas_entity_pos                         = 6,
-    eoas_entity_ft                          = 7,
-    eoas_entity_battery                     = 8
+    eoas_entity_inertial3                   = 3,
+    eoas_entity_psc                         = 4,
+    eoas_entity_pos                         = 5,
+    eoas_entity_ft                          = 6,
+    eoas_entity_battery                     = 7
 } eOas_entity_t;
 
 enum { eoas_entities_numberof = 8 };

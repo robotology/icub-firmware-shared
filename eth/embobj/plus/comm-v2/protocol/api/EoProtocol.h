@@ -271,7 +271,7 @@ typedef struct
 } eOprot_callbacks_endpoint_descriptor_t;
 
 
-enum { eoprot_maxvalueof_entity = 8 }; // must be higher equal than the values inside eOprot_entity_t
+enum { eoprot_maxvalueof_entity = 7 }; // must be higher equal than the values inside eOprot_entity_t
 enum { eoprot_entities_maxnumberofsupported = eoprot_maxvalueof_entity+1 }; // it is used to shape data structures
 // it is what is enough to configure an endpoint
 typedef struct                     
