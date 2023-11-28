@@ -1081,7 +1081,7 @@ typedef struct
 
 typedef struct
 {
-    eObrd_location_t            location;
+    eOlocation_t                location;
 } eOmc_actuator_descriptor_generic_t;
 
 
