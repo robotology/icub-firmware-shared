@@ -76,7 +76,6 @@ static const char * s_mn_servicetype_strings[] =
     "eomn_serv_MC_mc4plusmais",   
     "eomn_serv_AS_mais",    
     "eomn_serv_AS_strain",
-    "eomn_serv_AS_inertials",
     "eomn_serv_SK_skin",
     "eomn_serv_AS_inertials3",
     "eomn_serv_AS_temperature",
@@ -99,7 +98,6 @@ static const char * s_mn_servicecategory_strings[] =
     "eomn_serv_category_mc",
     "eomn_serv_category_strain"
     "eomn_serv_category_mais",
-    "eomn_serv_category_inertials",
     "eomn_serv_category_skin",
     "eomn_serv_category_inertials3",
     "eomn_serv_category_temperatures",
