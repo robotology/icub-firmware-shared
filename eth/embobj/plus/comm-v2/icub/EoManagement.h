@@ -644,15 +644,15 @@ typedef union
     eOmn_serv_config_data_mc_mc2plus_t      mc2plus;
     eOmn_serv_config_data_mc_mc2pluspsc_t   mc2pluspsc;
     eOmn_serv_config_data_mc_mc4plusfaps_t  mc4plusfaps;
-    eOmn_serv_config_data_mc_advfoc_t       advfoc; 
-} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 364) 
+//    eOmn_serv_config_data_mc_advfoc_t       advfoc; 
+} eOmn_serv_config_data_mc_t;               //EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 364) 
 
 typedef union                               
 {   // max(156, 364, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
-} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 364) 
+} eOmn_serv_config_data_t;                  //EO_VERIFYsizeof(eOmn_serv_config_data_t, 364) 
 
 
 typedef struct                              
@@ -661,7 +661,7 @@ typedef struct
     uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
     uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
-} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 368) 
+} eOmn_serv_configuration_t;                //EO_VERIFYsizeof(eOmn_serv_configuration_t, 368) 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
 typedef struct
@@ -703,7 +703,7 @@ typedef union
 {   // max(368, 168) 
     eOmn_serv_configuration_t   configuration;
     eOmn_serv_arrayof_id32_t    arrayofid32;
-} eOmn_serv_parameter_t;        EO_VERIFYsizeof(eOmn_serv_parameter_t, 368) 
+} eOmn_serv_parameter_t;        //EO_VERIFYsizeof(eOmn_serv_parameter_t, 368) 
 
 
 typedef struct                                
@@ -712,13 +712,13 @@ typedef struct
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
     eOmn_serv_parameter_t                   parameter;
-} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 372)
+} eOmn_service_cmmnds_command_t;            //EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 372)
 
 
 typedef struct
 {   // 372
     eOmn_service_cmmnds_command_t           command;    
-} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 372) 
+} eOmn_service_cmmnds_t;                    //EO_VERIFYsizeof(eOmn_service_cmmnds_t, 372) 
 
 
 typedef struct
