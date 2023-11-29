@@ -1415,7 +1415,7 @@ typedef enum
 
 typedef struct
 {   // 4 + 292 = 296
-    uint8_t                         typeof;   // use eOmc_adv4jomocoupling_type_t
+    uint8_t                         type;   // use eOmc_adv4jomocoupling_type_t
     uint8_t                         filler[3];
     eOmc_adv4jomo_coupling_data_t   data;   
 } eOmc_adv4jomo_coupling_t; EO_VERIFYsizeof(eOmc_adv4jomo_coupling_t, 296)
