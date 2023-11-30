@@ -347,7 +347,7 @@ enum { eoprot_rwms_as_battery_numberof = 4 };  // it MUST be equal to the number
     @brief      It is a template for the organisation of strain, mais etc entities in the analog sensors endpoint.
                 The effective number depends on the board.
  **/
-typedef struct                  // 56*1+48*1+8*1 = 112              
+typedef struct                                
 {
     eOas_strain_t               strain[1]; 
     eOas_mais_t                 mais[1];
@@ -355,9 +355,9 @@ typedef struct                  // 56*1+48*1+8*1 = 112
     eOas_inertial3_t            inertial3[1];
     eOas_psc_t                  psc[1];
     eOas_pos_t                  pos[1];
-    eOas_ft_t                   ft[1];
-    eOas_battery_t           battery[1];
-} eOprot_template_as_t;         //EO_VERIFYsizeof(eOprot_template_as_t, 112);
+    eOas_ft_t                   ft[eOas_ft_sensors_maxnumber];
+    eOas_battery_t              battery[1];
+} eOprot_template_as_t;         
   
   
 

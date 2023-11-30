@@ -743,11 +743,11 @@ typedef struct
 
 
 typedef struct
-{   // 32 + 32
+{   // 16 + 32
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
-    uint8_t                                 filler[5];    
+    uint8_t                                 filler[6];    
     eOmn_service_command_result_t           commandresult;
-} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 47) 
+} eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 48) 
 
 
 /** @typedef    typedef struct eOmn_service_t;
