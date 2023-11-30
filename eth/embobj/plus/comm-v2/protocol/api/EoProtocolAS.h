@@ -57,7 +57,7 @@ extern "C" {
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
-enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 9 };
+enum { eoprot_version_as_major = 1, eoprot_version_as_minor = 10 };
 
 
 enum { eoprot_entities_as_numberof = eoas_entities_numberof };
@@ -172,45 +172,6 @@ typedef enum
 } eOprot_rwm_as_temperature_t; 
 
 enum { eoprot_rwms_as_temperature_numberof = 4 };  // it MUST be equal to the number of rw modes. 
-
-
-
-// - entity inertial
-
-
-/** @typedef    typedef enum eOprot_tag_as_inertial_t
-    @brief      It contains the tags for all variables of the inertial entity.
-                See definition of eOas_inertial_t (and its fields) in file EoAnalogSensors.h for explanation of the variables.
- **/
-typedef enum
-{
-    eoprot_tag_as_inertial_wholeitem                                = 0,
-    eoprot_tag_as_inertial_config                                   = 1,
-    eoprot_tag_as_inertial_config_datarate                          = 2,
-    eoprot_tag_as_inertial_config_enabled                           = 3,
-    eoprot_tag_as_inertial_status                                   = 4,
-    eoprot_tag_as_inertial_cmmnds_enable                            = 5
-} eOprot_tag_as_inertial_t;
-
-enum { eoprot_tags_as_inertial_numberof = 6 };  // it MUST be equal to the number of tags. 
-
-
-/** @typedef    typedef enum eOprot_rwm_as_inertial_t
-    @brief      It contains the rw modes for all variables of the inertial entity. There must be a one-to-one
-                correspondence to the values in eOprot_tag_as_inertial_t.
- **/
-typedef enum
-{
-    eoprot_rwm_as_inertial_wholeitem                                = eo_nv_rwmode_RO,
-    eoprot_rwm_as_inertial_config                                   = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial_config_datarate                          = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial_config_enabled                           = eo_nv_rwmode_RW,
-    eoprot_rwm_as_inertial_status                                   = eo_nv_rwmode_RO,
-    eoprot_rwm_as_inertial_cmmnds_enable                            = eo_nv_rwmode_RW    
-} eOprot_rwm_as_inertial_t; 
-
-enum { eoprot_rwms_as_inertial_numberof = 6 };  // it MUST be equal to the number of rw modes. 
-
 
 
 // - entity inertial3
@@ -386,18 +347,17 @@ enum { eoprot_rwms_as_battery_numberof = 4 };  // it MUST be equal to the number
     @brief      It is a template for the organisation of strain, mais etc entities in the analog sensors endpoint.
                 The effective number depends on the board.
  **/
-typedef struct                  // 56*1+48*1+8*1 = 112              
+typedef struct                                
 {
     eOas_strain_t               strain[1]; 
     eOas_mais_t                 mais[1];
     eOas_temperature_t          temperature[1];
-    eOas_inertial_t             inertial[1];
     eOas_inertial3_t            inertial3[1];
     eOas_psc_t                  psc[1];
     eOas_pos_t                  pos[1];
-    eOas_ft_t                   ft[1];
-    eOas_battery_t           battery[1];
-} eOprot_template_as_t;         //EO_VERIFYsizeof(eOprot_template_as_t, 112);
+    eOas_ft_t                   ft[eOas_ft_sensors_maxnumber];
+    eOas_battery_t              battery[1];
+} eOprot_template_as_t;         
   
   
 
@@ -472,31 +432,6 @@ extern void eoprot_fun_UPDT_as_temperature_status(const EOnv* nv, const eOropdes
 
 extern void eoprot_fun_INIT_as_temperature_cmmnds_enable(const EOnv* nv);
 extern void eoprot_fun_UPDT_as_temperature_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
-
-// -- inertial
-
-extern void eoprot_fun_INIT_as_inertial_wholeitem(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_wholeitem(const EOnv* nv, const eOropdescriptor_t* rd);
-
-extern void eoprot_fun_INIT_as_inertial_config(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_config(const EOnv* nv, const eOropdescriptor_t* rd);
-
-extern void eoprot_fun_INIT_as_inertial_config_datarate(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_config_datarate(const EOnv* nv, const eOropdescriptor_t* rd);
-
-extern void eoprot_fun_INIT_as_inertial_config_enabled(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_config_enabled(const EOnv* nv, const eOropdescriptor_t* rd);
-
-
-
-extern void eoprot_fun_INIT_as_inertial_status(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_status(const EOnv* nv, const eOropdescriptor_t* rd);
-
-
-extern void eoprot_fun_INIT_as_inertial_cmmnds_enable(const EOnv* nv);
-extern void eoprot_fun_UPDT_as_inertial_cmmnds_enable(const EOnv* nv, const eOropdescriptor_t* rd);
-
-
 
 // -- inertial3
 

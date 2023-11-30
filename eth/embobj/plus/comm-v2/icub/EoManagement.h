@@ -430,20 +430,19 @@ typedef enum
     eomn_serv_category_mc               = 0,
     eomn_serv_category_strain           = 1,
     eomn_serv_category_mais             = 2,
-    eomn_serv_category_inertials        = 3,
-    eomn_serv_category_skin             = 4,
-    eomn_serv_category_inertials3       = 5,
-    eomn_serv_category_temperatures     = 6,
-    eomn_serv_category_psc              = 7,
-    eomn_serv_category_pos              = 8,
-    eomn_serv_category_ft               = 9,
-    eomn_serv_category_battery          = 10,
+    eomn_serv_category_skin             = 3,
+    eomn_serv_category_inertials3       = 4,
+    eomn_serv_category_temperatures     = 5,
+    eomn_serv_category_psc              = 6,
+    eomn_serv_category_pos              = 7,
+    eomn_serv_category_ft               = 8,
+    eomn_serv_category_battery          = 9,
     eomn_serv_category_all              = 128,
     eomn_serv_category_unknown          = 254,
     eomn_serv_category_none             = 255
 } eOmn_serv_category_t;
 
-enum { eomn_serv_categories_numberof = 11 };
+enum { eomn_serv_categories_numberof = 10 };
 
 typedef enum 
 {
@@ -454,23 +453,22 @@ typedef enum
     eomn_serv_MC_mc4plusmais    = 4,    
     eomn_serv_AS_mais           = 5,
     eomn_serv_AS_strain         = 6,
-    eomn_serv_AS_inertials      = 7,
-    eomn_serv_SK_skin           = 8,
-    eomn_serv_AS_inertials3     = 9,
-    eomn_serv_AS_temperatures   = 10,
-    eomn_serv_MC_mc2plus        = 11,
-    eomn_serv_MC_mc2pluspsc     = 12,
-    eomn_serv_AS_psc            = 13,
-    eomn_serv_AS_pos            = 14,
-    eomn_serv_MC_mc4plusfaps    = 15,
-    eomn_serv_MC_mc4pluspmc     = 16,
-    eomn_serv_AS_ft             = 17,
-    eomn_serv_AS_battery        = 18,
+    eomn_serv_SK_skin           = 7,
+    eomn_serv_AS_inertials3     = 8,
+    eomn_serv_AS_temperatures   = 9,
+    eomn_serv_MC_mc2plus        = 10,
+    eomn_serv_MC_mc2pluspsc     = 11,
+    eomn_serv_AS_psc            = 12,
+    eomn_serv_AS_pos            = 13,
+    eomn_serv_MC_mc4plusfaps    = 14,
+    eomn_serv_MC_mc4pluspmc     = 15,
+    eomn_serv_AS_ft             = 16,
+    eomn_serv_AS_battery        = 17,
     eomn_serv_UNKNOWN           = 254,
     eomn_serv_NONE              = 255
 } eOmn_serv_type_t;
 
-enum { eomn_serv_types_numberof = 19 };
+enum { eomn_serv_types_numberof = 18 };
 
 typedef enum
 {
@@ -501,15 +499,6 @@ typedef struct
     eObrd_info_t                        boardtype;
     eObrd_canlocation_t                 canloc;
 } eOmn_serv_config_data_as_strain_t;    EO_VERIFYsizeof(eOmn_serv_config_data_as_strain_t, 7)
-
-
-typedef struct
-{   // 5+3+100=108 
-    eObrd_version_t                     mtbversion;
-    uint8_t                             filler[3];
-    eOas_inertial_arrayof_sensors_t     arrayofsensors;
-} eOmn_serv_config_data_as_inertial_t;  EO_VERIFYsizeof(eOmn_serv_config_data_as_inertial_t, 108)
-
 
 
 typedef struct
@@ -556,7 +545,6 @@ typedef union
     eOmn_serv_config_data_as_mais_t         mais;
     eOmn_serv_config_data_as_strain_t       strain;
     eOmn_serv_config_data_as_temperature_t  temperature;
-    eOmn_serv_config_data_as_inertial_t     inertial;  
     eOmn_serv_config_data_as_inertial3_t    inertial3;
     eOmn_serv_config_data_as_psc_t          psc;
     eOmn_serv_config_data_as_pos_t          pos;
@@ -755,9 +743,9 @@ typedef struct
 
 
 typedef struct
-{   // 32 + 32
+{   // 16 + 32
     uint8_t                                 stateofservice[eomn_serv_categories_numberof];     // use eOmn_serv_state_t
-    uint8_t                                 filler[5];    
+    uint8_t                                 filler[6];    
     eOmn_service_command_result_t           commandresult;
 } eOmn_service_status_t;                    EO_VERIFYsizeof(eOmn_service_status_t, 48) 
 

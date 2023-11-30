@@ -212,7 +212,6 @@ typedef enum
     eoprot_entity_as_strain                 = eoas_entity_strain,       /**<  */   
     eoprot_entity_as_mais                   = eoas_entity_mais,         /**<  */            
     eoprot_entity_as_temperature            = eoas_entity_temperature,  /**<  */  
-    eoprot_entity_as_inertial               = eoas_entity_inertial,     /**<  */   
     eoprot_entity_as_inertial3              = eoas_entity_inertial3,    /**<  */  
     eoprot_entity_as_psc                    = eoas_entity_psc,          /**<  */   
     eoprot_entity_as_pos                    = eoas_entity_pos,          /**<  */ 
@@ -222,7 +221,7 @@ typedef enum
     eoprot_entity_none                      = EOK_uint08dummy
 } eOprot_entity_t;
 
-enum { eoprot_entities_numberof = 17 }; // it does not count the eoprot_entity_none.
+enum { eoprot_entities_numberof = 16 }; // it does not count the eoprot_entity_none.
 
 
 /** @typedef    typedef enum eOprot_index_t
@@ -272,7 +271,7 @@ typedef struct
 } eOprot_callbacks_endpoint_descriptor_t;
 
 
-enum { eoprot_maxvalueof_entity = 8 }; // must be higher equal than the values inside eOprot_entity_t
+enum { eoprot_maxvalueof_entity = 7 }; // must be higher equal than the values inside eOprot_entity_t
 enum { eoprot_entities_maxnumberofsupported = eoprot_maxvalueof_entity+1 }; // it is used to shape data structures
 // it is what is enough to configure an endpoint
 typedef struct                     
