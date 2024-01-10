@@ -111,6 +111,12 @@ enum { eoas_entities_numberof = 8 };
 
 typedef enum
 {
+    eoas_batterymode_txdatacontinuously                    = 0,
+    eoas_batterymode_acquirebutdonttx                      = 1,
+} eOas_batterymode_t;
+
+typedef enum
+{
     eoas_strainmode_txcalibrateddatacontinuously        = 0,
     eoas_strainmode_acquirebutdonttx                    = 1,
     eoas_strainmode_txuncalibrateddatacontinuously      = 3,
