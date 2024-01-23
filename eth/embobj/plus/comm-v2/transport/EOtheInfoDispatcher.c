@@ -139,7 +139,7 @@ extern EOtheInfoDispatcher * eo_infodispatcher_Initialise(const eOinfodispatcher
     
     // 1. init the infostatus vector, overflow, transmitter etc.
 
-    s_eo_theinfodispatcher.vectorOfinfostatus = eo_vector_New(sizeof(eOmn_info_status_t), cfg->capacity, NULL, NULL, NULL, NULL);    
+    s_eo_theinfodispatcher.vectorOfinfostatus = eo_vector_New(sizeof(eOmn_info_status_t), cfg->capacity, NULL, 0, NULL, NULL);    
     s_eo_theinfodispatcher.overflow = (eOmn_info_status_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(eOmn_info_status_t), 1);
     s_eo_theinfodispatcher.infostatus = (eOmn_info_status_t*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_auto, sizeof(eOmn_info_status_t), 1);
     

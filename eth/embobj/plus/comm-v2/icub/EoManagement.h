@@ -644,7 +644,7 @@ typedef union
     eOmn_serv_config_data_mc_mc2plus_t      mc2plus;
     eOmn_serv_config_data_mc_mc2pluspsc_t   mc2pluspsc;
     eOmn_serv_config_data_mc_mc4plusfaps_t  mc4plusfaps;
-//    eOmn_serv_config_data_mc_advfoc_t       advfoc; 
+    eOmn_serv_config_data_mc_advfoc_t       advfoc; 
 } eOmn_serv_config_data_mc_t;               //EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 364) 
 
 typedef union                               
