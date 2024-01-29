@@ -1065,7 +1065,7 @@ typedef enum
     eomc_act_foc        = 1,
     eomc_act_mc4        = 2,
     eomc_act_pwm        = 3,
-    eomc_act_pmc        = 4,    
+    eomc_act_advfoc     = 4,    
     eomc_act_none       = 0,
     eomc_act_unknown    = 255    
 } eOmc_actuator_t;
