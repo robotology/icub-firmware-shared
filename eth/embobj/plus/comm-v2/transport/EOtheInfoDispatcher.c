@@ -434,7 +434,7 @@ static eOresult_t s_eo_infodispatcher_transmit(EOtheInfoDispatcher* p, eOmn_info
         size = p->ropsizeinfostatus;        
     }
     
-    #warning: acemor, pls read here
+    // #warning: acemor, pls read here
     // eo_transmitter_occasional_rops_LoadStream() carica uno stream in un ropframe, quello ropframeoccasionals del trasmitter
     // nel ns caso pero'... usiamo un ropframe generico in c ad esempio. e poi quando serve lo trasmettiamo su un socket. tutto in c.
 
