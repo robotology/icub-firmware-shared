@@ -59,7 +59,7 @@ extern "C" {
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
-
+//#warning: review it
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
 
@@ -630,13 +630,13 @@ typedef struct
 
 
 typedef struct
-{   // 68+296 = 364   
+{   // 68+264 = 332   
     eOmc_arrayof_4advjomodescriptors_t      arrayof4advjomodescriptors;  
     eOmc_adv4jomo_coupling_t                adv4jomocoupling;  
-} eOmn_serv_config_data_mc_advfoc_t;        EO_VERIFYsizeof(eOmn_serv_config_data_mc_advfoc_t, 364)
+} eOmn_serv_config_data_mc_advfoc_t;        EO_VERIFYsizeof(eOmn_serv_config_data_mc_advfoc_t, 332)
 
 typedef union                               
-{   // max(324, 28, 316, 324, 316, 328, 340, 364)
+{   // max(324, 28, 316, 324, 316, 328, 340, 332)
     eOmn_serv_config_data_mc_foc_t          foc_based;
     eOmn_serv_config_data_mc_mc4_t          mc4_based;
     eOmn_serv_config_data_mc_mc4plus_t      mc4plus_based;
@@ -645,23 +645,23 @@ typedef union
     eOmn_serv_config_data_mc_mc2pluspsc_t   mc2pluspsc;
     eOmn_serv_config_data_mc_mc4plusfaps_t  mc4plusfaps;
     eOmn_serv_config_data_mc_advfoc_t       advfoc; 
-} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 364) 
+} eOmn_serv_config_data_mc_t;               EO_VERIFYsizeof(eOmn_serv_config_data_mc_t, 340) 
 
 typedef union                               
-{   // max(156, 364, 24)
+{   // max(156, 340, 24)
     eOmn_serv_config_data_as_t              as;
     eOmn_serv_config_data_mc_t              mc;
     eOmn_serv_config_data_sk_t              sk;   
-} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 364) 
+} eOmn_serv_config_data_t;                  EO_VERIFYsizeof(eOmn_serv_config_data_t, 340) 
 
 
 typedef struct                              
-{   // 1+3+364=368
+{   // 1+1+2+340=344
     uint8_t                                 type;               // use eOmn_serv_type_t to identify what kind of service it is
     uint8_t                                 diagnosticsmode;    // use eOmn_serv_diagn_mode_t
     uint16_t                                diagnosticsparam;   // i cannot fit eOmn_serv_diagn_cfg_t inside here because of alignment and i want to keep backwards compatibility
     eOmn_serv_config_data_t                 data;   
-} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 368) 
+} eOmn_serv_configuration_t;                EO_VERIFYsizeof(eOmn_serv_configuration_t, 344) 
 
 enum { eOmn_serv_capacity_arrayof_id32 = 41 };
 typedef struct
@@ -700,26 +700,36 @@ typedef enum
 
 
 typedef union
-{   // max(368, 168) 
+{   // max(344, 168) 
     eOmn_serv_configuration_t   configuration;
     eOmn_serv_arrayof_id32_t    arrayofid32;
-} eOmn_serv_parameter_t;        EO_VERIFYsizeof(eOmn_serv_parameter_t, 368) 
+} eOmn_serv_parameter_t;        EO_VERIFYsizeof(eOmn_serv_parameter_t, 344) 
 
 
 typedef struct                                
-{   // 1+1+2+368=372
+{   // 1+1+2+344=348
     uint8_t                                 operation;              // use eOmn_serv_operation_t
     uint8_t                                 category;               // use eOmn_serv_category_t
     uint8_t                                 filler[2];
     eOmn_serv_parameter_t                   parameter;
-} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 372)
+} eOmn_service_cmmnds_command_t;            EO_VERIFYsizeof(eOmn_service_cmmnds_command_t, 348)
 
 
 typedef struct
-{   // 372
+{   // 348
     eOmn_service_cmmnds_command_t           command;    
-} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 372) 
+} eOmn_service_cmmnds_t;                    EO_VERIFYsizeof(eOmn_service_cmmnds_t, 348) 
 
+#if 0
+
+    rop -> [header-8B][data][extra-signature-4B][extra-time-8B]
+    we transmit the set<eOmn_service_cmmnds_t> with only extra-signature but NOT with extra-time,
+    so... we must configure maxROPsize to be
+      maxROPsize > (sizeof(eOmn_service_cmmnds_t) + 8 + 4) = 360
+    we have a maxROPsize = 384 and that is OK
+    we wnat to keep this maxROPsize, so we cannot have a sizeof(eOmn_service_cmmnds_t) > 384 - 12 = 372    
+
+#endif
 
 typedef struct
 {   // 1+1+1+1+28=32
@@ -752,7 +762,7 @@ typedef struct
     @brief      used to represent the info with config, status
  **/
 typedef struct                      
-{   // 48+372=396    
+{   // 48+348=396    
     eOmn_service_status_t                   status;
     eOmn_service_cmmnds_t                   cmmnds;
 } eOmn_service_t;                           // EO_VERIFYsizeof(eOmn_service_t, 396)  

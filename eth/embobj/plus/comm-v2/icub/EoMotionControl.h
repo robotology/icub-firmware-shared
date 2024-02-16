@@ -1401,24 +1401,32 @@ typedef struct
     eOmc_4x6_matrix_t               encoder2joint;
 } eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292)
 
+typedef struct
+{   // 4 + 64 + 64 + 64 + 64 = 260
+    uint8_t                         joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
+    eOmc_jointset_configuration_t   jsetcfg[4];
+    eOmc_4x4_matrix_t               joint2motor;
+    eOmc_4x4_matrix_t               motor2joint; 
+    eOmc_4x4_matrix_t               encoder2joint4x4;
+} eOmc_4jomo_coupling_4x4_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_4x4_t, 260)
 
 typedef union                               
-{   // max(292, 4)
-    eOmc_4jomo_coupling_t   traditional;
-    uint32_t                other;
-} eOmc_adv4jomo_coupling_data_t;  EO_VERIFYsizeof(eOmc_adv4jomo_coupling_data_t, 292)
+{   // max(260, 4)
+    eOmc_4jomo_coupling_4x4_t   coupling4x4;
+    uint32_t                    other;
+} eOmc_adv4jomo_coupling_data_t;  EO_VERIFYsizeof(eOmc_adv4jomo_coupling_data_t, 260)
 
 typedef enum
 {
-    eommccoupling_traditional = 0
+    eommccoupling_traditional4x4 = 0
 } eOmc_adv4jomocoupling_type_t;
 
 typedef struct
-{   // 4 + 292 = 296
-    uint8_t                         type;   // use eOmc_adv4jomocoupling_type_t
+{   // 4 + 260 = 264
+    uint8_t                         type;       // use eOmc_adv4jomocoupling_type_t
     uint8_t                         filler[3];
     eOmc_adv4jomo_coupling_data_t   data;   
-} eOmc_adv4jomo_coupling_t; EO_VERIFYsizeof(eOmc_adv4jomo_coupling_t, 296)
+} eOmc_adv4jomo_coupling_t; EO_VERIFYsizeof(eOmc_adv4jomo_coupling_t, 264)
 
 
 typedef struct
