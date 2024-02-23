@@ -96,7 +96,7 @@ static const char * s_mn_servicetype_string_none = "eomn_serv_NONE";
 static const char * s_mn_servicecategory_strings[] =
 {
     "eomn_serv_category_mc",
-    "eomn_serv_category_strain"
+    "eomn_serv_category_strain",
     "eomn_serv_category_mais",
     "eomn_serv_category_skin",
     "eomn_serv_category_inertials3",
@@ -104,10 +104,10 @@ static const char * s_mn_servicecategory_strings[] =
     "eomn_serv_category_psc",
     "eomn_serv_category_pos",
     "eomn_serv_category_ft",
-    "eomn_serv_category_battery",
-    "eomn_serv_category_all"
+    "eomn_serv_category_battery"
 };  EO_VERIFYsizeof(s_mn_servicecategory_strings, eomn_serv_categories_numberof*sizeof(const char *))   
  
+static const char * s_mn_servicecategory_string_all = "eomn_serv_category_all";
 static const char * s_mn_servicecategory_string_unknown = "eomn_serv_category_unknown";
 static const char * s_mn_servicecategory_string_none = "eomn_serv_category_none";
 
@@ -177,7 +177,7 @@ extern eOmn_serv_type_t eomn_string2servicetype(const char * string)
 extern const char * eomn_servicecategory2string(eOmn_serv_category_t servicecat)
 {
     const char * ret = s_mn_servicecategory_string_unknown;
-    
+
     if(servicecat < eomn_serv_categories_numberof)
     {
         return(s_mn_servicecategory_strings[servicecat]);
@@ -186,7 +186,11 @@ extern const char * eomn_servicecategory2string(eOmn_serv_category_t servicecat)
     {
         return(s_mn_servicecategory_string_none);
     }
-
+    else if(eomn_serv_category_all == servicecat)
+    {
+        return(s_mn_servicecategory_string_all);
+    }
+    
     return(ret);
 }
 
