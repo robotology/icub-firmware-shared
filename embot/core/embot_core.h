@@ -95,6 +95,7 @@ namespace embot { namespace core {
     using fpI08ParU32   = std::int8_t (*)(std::uint32_t);
     using fpWorker      = void (*)(void);
     using fpCaller      = void (*)(void *);
+    using fpResult      = void (*)(void *, bool);
     using fpPrint       = int (*)(const std::string &str);
     
     // useful converter for enum class
@@ -111,13 +112,26 @@ namespace embot { namespace core {
         fpCaller call {nullptr};
         void * arg {nullptr};
         
-        Callback() = default;
+        constexpr Callback() = default;
         constexpr Callback(fpCaller _c, void *_a) : call(_c), arg(_a) {}
         void load(fpCaller _c, void *_a) { call = _c; arg = _a; }
         void clear() { call = nullptr; arg = nullptr; }
         bool isvalid() const { if(nullptr != call) { return true; } else { return false; } } 
         void execute() const { if(true == isvalid()) { call(arg); } }
     };
+    
+    struct Confirmer
+    {
+        fpResult call {nullptr};
+        void * arg {nullptr};
+        
+        constexpr Confirmer() = default;
+        constexpr Confirmer(fpResult _c, void *_a) : call(_c), arg(_a) {}
+        void load(fpResult _c, void *_a) { call = _c; arg = _a; }
+        void clear() { call = nullptr; arg = nullptr; }
+        bool isvalid() const { if(nullptr != call) { return true; } else { return false; } } 
+        void execute(bool result) const { if(true == isvalid()) { call(arg, result); } }
+    };    
 
     // it is a holder of data, either mutable or constexpr
     // we dont want to change what is inside pointer unless basic initialization

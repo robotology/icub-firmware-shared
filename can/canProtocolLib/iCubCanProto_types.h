@@ -78,7 +78,7 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__AMCBLDC  18
 #define ICUBCANPROTO_BOARDTYPE__BMS      19
 #define ICUBCANPROTO_BOARDTYPE__MTB4C    20
-#define ICUBCANPROTO_BOARDTYPE__FFU      21
+#define ICUBCANPROTO_BOARDTYPE__AMC2C    21
 #define ICUBCANPROTO_BOARDTYPE__STRAIN2C 22
 #define ICUBCANPROTO_BOARDTYPE__BAT      23
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN  255
@@ -356,6 +356,11 @@ typedef struct
     int16_t                           reserved;
 } icubCanProto_calibrator_params_type7_hall_sensor_t;
 
+typedef struct  
+{
+    uint32_t undefined;
+} icubCanProto_calibrator_params_type_undefined_t;
+
 
 /** @typedef    typedef enum icubCanProto_calibration_type_t
     @brief      contains the possible types of calibration.
@@ -370,7 +375,8 @@ typedef enum
     icubCanProto_calibration_type3_abs_sens_digital         = 3,
     icubCanProto_calibration_type4_abs_and_incremental      = 4,
     icubCanProto_calibration_type6_mais                     = 6,
-    icubCanProto_calibration_type7_hall_sensor              = 7
+    icubCanProto_calibration_type7_hall_sensor              = 7,
+    icubCanProto_calibration_type_undefined                 = 255
 } icubCanProto_calibration_type_t;
 
 
@@ -391,6 +397,7 @@ typedef struct
         icubCanProto_calibrator_params_type4_abs_and_incremental_t      type4;
         icubCanProto_calibrator_params_type6_mais_t                     type6;
         icubCanProto_calibrator_params_type7_hall_sensor_t              type7;
+        icubCanProto_calibrator_params_type_undefined_t                 typeundefined;
     } params;                                                       /**< the params of the calibrator */   
 } icubCanProto_calibrator_t;
 

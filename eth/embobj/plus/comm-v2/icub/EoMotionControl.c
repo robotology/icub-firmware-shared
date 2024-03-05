@@ -73,7 +73,7 @@ static const eOmap_str_str_u08_t s_eomc_map_of_actuators[] =
     {"foc", "eomc_act_foc", eomc_act_foc},
     {"mc4", "eomc_act_mc4", eomc_act_mc4},
     {"pwm", "eomc_act_pwm", eomc_act_pwm},
-    {"pmc", "eomc_act_pmc", eomc_act_pmc},
+    {"advfoc", "eomc_act_advfoc", eomc_act_advfoc},
 
     {"none", "eomc_act_none", eomc_act_none},
     {"unknown", "eomc_act_unknown", eomc_act_unknown}

@@ -80,8 +80,8 @@ extern "C" {
 #include "stdio.h"
 
 
-
-
+// issues a compiler error if the sizeof the struct is not what in second argument
+#define EO_VERIFYsizeof(sname, ssize)       __emBODYportingVERIFYsizeof(sname, ssize)
 
 // - declaration of public user-defined types -------------------------------------------------------------------------
 
@@ -605,6 +605,21 @@ typedef struct
     uint8_t         val0;    
 } eOmap_int32_u08_t;
 
+
+// --
+
+typedef enum
+{ 
+    eobus_can1 = 0, eobus_can2 = 1, eobus_local = 2, eobus_icc1 = 3, eobus_icc2 = 4, eobus_ffu1 = 5, eobus_ffu2 = 6, eobus_none = 7             
+} eObus_t; 
+
+typedef struct
+{
+    uint8_t bus:3; // use only values from eObus_t
+    uint8_t ffu:1; 
+    uint8_t adr:4;      
+} eOlocation_t; EO_VERIFYsizeof(eOlocation_t, 1)
+
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
@@ -619,10 +634,6 @@ typedef struct
 #define EO_CLIP_INT16(i16)                  ( ((i16)>EO_INT16_MAX) ? (EO_INT16_MAX) : ( ((i16)<(-EO_INT16_MAX)) ? (-EO_INT16_MAX) : (i16) )  )
 #define EO_CLIP_UINT16(u16)                 ( ((u16)>EO_UINT16_MAX) ? (EO_UINT16_MAX) : (u16) )
 
-
-
-// issues a compiler error if the sizeof the struct is not what in second argument
-#define EO_VERIFYsizeof(sname, ssize)       __emBODYportingVERIFYsizeof(sname, ssize)
 
 // issues a compiler error if the prop is false
 #define TOKENPASTE(x, y) x ## y

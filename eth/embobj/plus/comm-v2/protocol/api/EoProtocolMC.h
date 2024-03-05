@@ -148,7 +148,7 @@ typedef enum
     eoprot_tag_mc_motor_wholeitem                                   = 0,
     eoprot_tag_mc_motor_config                                      = 1,
     eoprot_tag_mc_motor_config_currentlimits                        = 2,
-    eoprot_tag_mc_motor_config_gearboxratio                         = 3,
+    eoprot_tag_mc_motor_config_gearbox_M2J                          = 3,
     eoprot_tag_mc_motor_config_rotorencoder                         = 4,
     eoprot_tag_mc_motor_config_pwmlimit                             = 5,
     eoprot_tag_mc_motor_config_temperaturelimit                     = 6,

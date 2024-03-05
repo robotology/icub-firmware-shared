@@ -94,6 +94,7 @@ static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) |
                                                 (0x1LL << eobrd_amcbldc)|
                                                 (0x1LL << eobrd_bms)|
                                                 (0x1LL << eobrd_mtb4c) |
+                                                (0x1LL << eobrd_amc2c)|
                                                 (0x1LL << eobrd_strain2c) | 
                                                 (0x1LL << eobrd_bat);
        
@@ -127,6 +128,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"amcbldc", "eobrd_amcbldc", eobrd_amcbldc},
     {"bms", "eobrd_bms", eobrd_bms},
     {"mtb4c", "eobrd_mtb4c", eobrd_mtb4c},
+    {"amc2c", "eobrd_amc2c", eobrd_amc2c},
     {"strain2c", "eobrd_strain2c", eobrd_strain2c},
     {"bat", "eobrd_bat", eobrd_bat},
     
@@ -134,6 +136,10 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"unknown", "eobrd_unknown", eobrd_unknown}
 };  EO_VERIFYsizeof(s_eoboards_map_of_boards, (eobrd_type_numberof+2)*sizeof(eOmap_str_str_u08_t))
 
+// just to check that the number of can type board is lower than 32 otherwise we go up to the ems.
+// if that happens, the can boards will have a hole between [32, 63] ...
+static const uint8_t xxx[eobrd_ems4-eobrd_cantype_numberof+1] = {0};
+    
 
 
 static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
