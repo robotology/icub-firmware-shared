@@ -731,13 +731,13 @@ typedef enum
     //thus to give to bms a certain amount of int for the statuses thinking about a future expantion 
     // so that number from 0 to 15 are restricted to bms and the other to bat
     //an then add null values in the map for the empty spaces
-    eoas_bms_general_alarm_lowvoltage            = 1,
-    eoas_bms_general_alarm_highvoltage           = 2,
-    eoas_bms_general_alarm_overcurrent_discharge = 3,
-    eoas_bms_general_alarm_overcurrent_charge    = 4,
-    eoas_bms_general_alarm_lowSOC                = 5,
-    eoas_bms_general_alarm_lowtemperature        = 6,
-    eoas_bms_general_alarm_hightemperature       = 7,
+    eoas_bms_general_alarm_lowvoltage            = 0,
+    eoas_bms_general_alarm_highvoltage           = 1,
+    eoas_bms_general_alarm_overcurrent_discharge = 2,
+    eoas_bms_general_alarm_overcurrent_charge    = 3,
+    eoas_bms_general_alarm_lowSOC                = 4,
+    eoas_bms_general_alarm_lowtemperature        = 5,
+    eoas_bms_general_alarm_hightemperature       = 6,
     eoas_bat_status_hsm_mosfet_broken            = 16, 
     eoas_bat_status_hsm_mosfet_normal            = 116, //(x-1)+100
     eoas_bat_status_hsm_overcurrent_overvoltage  = 17,
@@ -759,7 +759,7 @@ typedef enum
     eoas_bat_status_btn_1_start_up_phase         = 25,
     eoas_bat_status_btn_1_stable_op              = 125
 } eOas_battery_alarm_status_t;
-enum { eoas_bms_alarm_numberof = 8, eoas_battery_alarm_status_numberof = 27 };
+enum { eoas_bms_alarm_numberof = 7, eoas_battery_alarm_status_numberof = 27 };
 
 
 typedef struct
@@ -780,7 +780,7 @@ typedef struct
     eOabstime_t             age;               // timeoflife in usec. better using this because yarp may ask the board to have its time
     int16_t                 temperature;       // in steps of 0.1 celsius degree (pos and neg).
     int16_t                 filler16;          // filler to cover the remaining 16bits considired that we are working efficiently in memory packs of 32bits
-    uint32_t                status;            // status used on both BAT(10 bits - primary in 0x00000000ffffffff - secondary in 0x000000ff00000000) and BMS(8 MSB)
+    uint16_t                status;            // status used on both BAT(10 bits - primary in 0x00000000ffffffff - secondary in 0x000000ff00000000) and BMS(8 MSB) --> does not make sense since they are intialized as separated instances
     float32_t               voltage;  
     float32_t               current;  
     float32_t               charge; 
