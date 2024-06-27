@@ -281,7 +281,7 @@ typedef enum
 typedef struct 
 {
     uint16_t                        flags;  // uses OR of eOmn_appl_log_flags_t
-    uint16_t                        period; // in ms. used by periodic logs    
+    uint16_t                        period10ms; // in 10*ms so that we manage ut to 10 minutes. used by periodic logs    
 } eOmn_appl_config_logging_t;
 
 /** @typedef    typedef struct eOmn_appl_config_t;
