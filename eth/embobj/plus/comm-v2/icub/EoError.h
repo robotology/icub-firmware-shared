@@ -177,11 +177,12 @@ typedef enum
     eoerror_value_SYS_canservices_monitor_regularcontact    = 60,
     eoerror_value_SYS_canservices_monitor_lostcontact       = 61,
     eoerror_value_SYS_canservices_monitor_stillnocontact    = 62,
-    eoerror_value_SYS_canservices_monitor_retrievedcontact  = 63
+    eoerror_value_SYS_canservices_monitor_retrievedcontact  = 63,
+    eoerror_value_SYS_exec_time_stats                       = 64
     
 } eOerror_value_SYS_t;
 
-enum { eoerror_value_SYS_numberof = 64 };
+enum { eoerror_value_SYS_numberof = 65 };
 
 
 /** @typedef    typedef enum eOerror_value_HW_t
