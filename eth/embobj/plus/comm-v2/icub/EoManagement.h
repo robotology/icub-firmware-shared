@@ -272,6 +272,18 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
 
 // -- the definition of an appl entity
 
+typedef enum
+{
+    eomn_appl_log_asynchro_exectime_overflow    = 0,    // if used it sends logging as an overflow of execution time happens in the runner
+    eomn_appl_log_periodic_exectime_statistics  = 1     // if used it sends periodic logging on stats of the runner    
+} eOmn_appl_log_flags_t;
+
+typedef struct 
+{
+    uint16_t                        flags;  // uses OR of eOmn_appl_log_flags_t
+    uint16_t                        period10ms; // in 10*ms so that we manage ut to 10 minutes. used by periodic logs    
+} eOmn_appl_config_logging_t;
+
 /** @typedef    typedef struct eOmn_appl_config_t;
     @brief      used to configure the application
  **/
@@ -282,7 +294,8 @@ typedef struct                      // size is 4+3+3 = 8 bytes
     uint16_t                        maxtimeDO;      // in usec         
     uint16_t                        maxtimeTX;      // in usec  
     uint8_t                         txratedivider;  // if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles
-    uint8_t                         filler05[5];     
+    uint8_t                         filler01[1];
+    eOmn_appl_config_logging_t      logging;  
 } eOmn_appl_config_t;               EO_VERIFYsizeof(eOmn_appl_config_t, 16)
 
 
