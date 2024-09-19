@@ -276,6 +276,9 @@ extern void eoprot_fun_UPDT_mc_joint_config_impedance(const EOnv* nv, const eOro
 extern void eoprot_fun_INIT_mc_joint_config_motor_params(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_motor_params(const EOnv* nv, const eOropdescriptor_t* rd);
 
+extern void eoprot_fun_INIT_mc_joint_config_LuGre_params(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_LuGre_params(const EOnv* nv, const eOropdescriptor_t* rd);
+
 extern void eoprot_fun_INIT_mc_joint_config_tcfiltertype(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_tcfiltertype(const EOnv* nv, const eOropdescriptor_t* rd);
 
