@@ -165,9 +165,39 @@ namespace embot { namespace core { namespace binary { namespace mask {
     constexpr M ones(const uint8_t num)
     {
         return static_cast<M>(-(num != 0)) & (static_cast<M>(-1) >> ((sizeof(M) * CHAR_BIT) - num));
-    }        
+    }  
+
+
+    template <typename T>
+    struct Mask
+    {
+        T bits {0};
+        
+        constexpr Mask(T b) : bits(b) {}
+        constexpr Mask() = default;
+        
+        void load(const T &b) 
+        { 
+            bits = b; 
+        }
+        
+        T get() const 
+        { 
+            return bits; 
+        }
+                
+        void set(uint8_t pos)
+        {
+            embot::core::binary::bit::set(bits, pos);
+        }
+        
+        bool check(uint8_t pos)
+        {
+            return embot::core::binary::bit::check(bits, pos);
+        }                 
+    };    
     
-} } } } // namespace embot { namespace core { namespace binary { namespace mask
+} } } } // namespace embot::core::binary::mask
 
 
 
@@ -253,6 +283,50 @@ namespace embot { namespace core { namespace binary { namespace pair {
     } 
        
 } } } } // namespace embot { namespace core { namespace binary { namespace pair
+
+
+namespace embot::core::binary::word {
+    
+    enum class Endianess: uint8_t { Little = 0, Big = 1 };
+    
+    // usable for for u8, u16, u32, u64 (and i8 ....)
+    template<typename T>
+    constexpr void load2memory(const T value, void *memory, Endianess e = embot::core::binary::word::Endianess::Little)
+    {
+        int8_t size = sizeof(value);
+        for(uint8_t i=0; i<size; i++)
+        {
+            //uint8_t vx = (Endianess::Little == e) ? ( (value >> (8*(i))) & 0xff ) : ( (value >> (8*(size-1-i))) & 0xff );
+            uint8_t v = (Endianess::Little == e) ? reinterpret_cast<const uint8_t*>(value)[i] : reinterpret_cast<const uint8_t*>(value)[size-1-i];
+            reinterpret_cast<uint8_t*>(memory)[i] = v;
+        }
+    }       
+
+    template<typename T>
+    constexpr void load2value(const void *memory, T &value, Endianess e = embot::core::binary::word::Endianess::Little)
+    {
+        int8_t size = sizeof(value);
+        for(uint8_t i=0; i<size; i++)
+        {
+            uint8_t v = (Endianess::Little == e) ? reinterpret_cast<const uint8_t*>(memory)[i] : reinterpret_cast<const uint8_t*>(memory)[size-1-i];
+            reinterpret_cast<uint8_t*>(&value)[i] = v;
+        }
+    }  
+
+
+    template<typename T>
+    constexpr T memory2value(const void *memory, Endianess e = embot::core::binary::word::Endianess::Little)
+    {
+        T value {0};
+        int8_t size = sizeof(value);
+        for(uint8_t i=0; i<size; i++)
+        {
+            uint8_t v = (Endianess::Little == e) ? reinterpret_cast<const uint8_t*>(memory)[i] : reinterpret_cast<const uint8_t*>(memory)[size-1-i];
+            reinterpret_cast<uint8_t*>(&value)[i] = v;
+        }
+        return value;
+    }      
+}
 
 #endif  // include-guard
 
