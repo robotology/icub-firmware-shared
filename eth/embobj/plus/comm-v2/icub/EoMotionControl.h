@@ -711,10 +711,14 @@ typedef struct
     float S0; 
     float S1;
     float Vth;
-    float Fc;
-    float Fs;
-    float tbd;
-} eOmc_LuGre_params_t;  EO_VERIFYsizeof(eOmc_LuGre_params_t, 32)
+    float Fc_pos;
+    float Fc_neg;
+    float Fs_pos;
+    float Fs_neg;
+    float tbd0;
+    float tbd1;
+    float tbd2;
+} eOmc_LuGre_params_t;  EO_VERIFYsizeof(eOmc_LuGre_params_t, 48)
 
 // -- all the possible data holding structures used in a LuGre frction model
 
@@ -779,7 +783,7 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4+3
     float32_t                   deadzone;
     eOmc_kalman_filter_config_t kalman_params;              /**< the kalman filter parameters */
     eOmc_LuGre_params_t         LuGre_params;               /**< the LuGre friction model parameters */
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 272)
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 288)
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_legacy_t
@@ -982,7 +986,7 @@ typedef struct                  // size is 236+96+4+44+0 = 380
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 416);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 432);
 
 
 
