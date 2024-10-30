@@ -82,7 +82,10 @@ typedef enum
 {   // they must be equal to what the can protocol specifies
     eosk_skintype_withtempcomp                      = icubCanProto_skinType__withtempcomp,      /**< 0 */  
     eosk_skintype_palmfingertip                     = icubCanProto_skinType__palmfingertip,     /**< 1 */
-    eosk_skintype_withouttempcomp                   = icubCanProto_skinType__withouttempcomp    /**< 2 */   
+    eosk_skintype_withouttempcomp                   = icubCanProto_skinType__withouttempcomp,   /**< 2 */   
+    eosk_skintype_ergohand                          = icubCanProto_skinType__ergohand,          /**< 3 */  
+    eosk_skintype_testmoderaw                       = icubCanProto_skinType__testmoderaw,       /**< 7 */
+    eosk_skintype_withtempcompv2                    = icubCanProto_skinType__withtempcompv2     /**< 8 */       
 } eOsk_skintype_t;
 
 // -- all the possible data service structures

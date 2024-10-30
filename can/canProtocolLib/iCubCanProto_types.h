@@ -84,9 +84,12 @@ extern "C" {
 #define ICUBCANPROTO_BOARDTYPE__UNKNOWN  255
 
 // skin types
-#define ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP    0  
-#define ICUBCANPROTO_SKINTYPE__PALMFINGERTIP   1    
-#define ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP 2    
+#define ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP     0  
+#define ICUBCANPROTO_SKINTYPE__PALMFINGERTIP    1    
+#define ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP  2 
+#define ICUBCANPROTO_SKINTYPE__ERGOHAND         3
+#define ICUBCANPROTO_SKINTYPE__TESTMODERAW      7
+#define ICUBCANPROTO_SKINTYPE__WITHTEMPCOMPV2   8
 
 // - declaration of public user-defined types ------------------------------------------------------------------------- 
 
@@ -472,7 +475,10 @@ typedef enum
 {
     icubCanProto_skinType__withtempcomp       = ICUBCANPROTO_SKINTYPE__WITHTEMPCOMP,
     icubCanProto_skinType__palmfingertip      = ICUBCANPROTO_SKINTYPE__PALMFINGERTIP,
-    icubCanProto_skinType__withouttempcomp    = ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP
+    icubCanProto_skinType__withouttempcomp    = ICUBCANPROTO_SKINTYPE__WITHOUTTEMPCOMP,
+    icubCanProto_skinType__ergohand           = ICUBCANPROTO_SKINTYPE__ERGOHAND,
+    icubCanProto_skinType__testmoderaw        = ICUBCANPROTO_SKINTYPE__TESTMODERAW,
+    icubCanProto_skinType__withtempcompv2     = ICUBCANPROTO_SKINTYPE__WITHTEMPCOMPV2    
 } icubCanProto_skinType_t;
 
 
