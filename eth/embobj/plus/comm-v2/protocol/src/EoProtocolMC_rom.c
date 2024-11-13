@@ -255,21 +255,6 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_motor_para
 #endif
 }; 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_LuGre_params =
-{   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.LuGre_params),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_motor_params,
-    EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.config.LuGre_params,
-#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
-    EO_INIT(.init)      NULL,
-    EO_INIT(.update)    NULL
-#else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_LuGre_params,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_LuGre_params
-#endif
-}; 
-
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_tcfiltertype =
 {
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.tcfiltertype),
