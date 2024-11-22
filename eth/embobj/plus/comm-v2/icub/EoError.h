@@ -220,9 +220,9 @@ typedef enum
     eoerror_value_MC_motor_can_generic                  = 5,
     eoerror_value_MC_motor_can_no_answer                = 6,
     eoerror_value_MC_axis_torque_sens                   = 7,
-    eoerror_value_MC_aea_abs_enc_invalid                = 8,
-    eoerror_value_MC_aea_abs_enc_timeout                = 9,
-    eoerror_value_MC_aea_abs_enc_spikes                 = 10,
+    eoerror_value_MC_abs_enc_invalid                    = 8,
+    eoerror_value_MC_abs_enc_timeout                    = 9,
+    eoerror_value_MC_abs_enc_spikes                     = 10,
     
     eoerror_value_MC_motor_qencoder_dirty               = 11,
     eoerror_value_MC_motor_qencoder_index               = 12,
