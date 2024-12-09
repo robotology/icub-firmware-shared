@@ -71,7 +71,8 @@
 static const uint64_t s_eoboards_is_eth_mask =  (0x1LL << eobrd_ems4) | 
                                                 (0x1LL << eobrd_mc4plus) | 
                                                 (0x1LL << eobrd_mc2plus) |
-                                                (0x1LL << eobrd_amc);
+                                                (0x1LL << eobrd_amc) |
+                                                (0x1LL << eobrd_amcfoc);
 
 static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) | 
                                                 (0x1LL << eobrd_mtb) | 
@@ -105,6 +106,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"mc4plus", "eobrd_mc4plus", eobrd_mc4plus},
     {"mc2plus", "eobrd_mc2plus", eobrd_mc2plus},
     {"amc", "eobrd_amc", eobrd_amc},
+    {"amcfoc", "eobrd_amcfoc", eobrd_amcfoc},
     
     {"mc4", "eobrd_mc4", eobrd_mc4},
     {"mtb", "eobrd_mtb", eobrd_mtb},
