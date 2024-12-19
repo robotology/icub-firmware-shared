@@ -133,6 +133,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"amc2c", "eobrd_amc2c", eobrd_amc2c},
     {"strain2c", "eobrd_strain2c", eobrd_strain2c},
     {"bat", "eobrd_bat", eobrd_bat},
+    {"amcfoc2c", "eobrd_amcfoc2c", eobrd_amcfoc2c},
     
     {"none", "eobrd_none", eobrd_none},
     {"unknown", "eobrd_unknown", eobrd_unknown}
