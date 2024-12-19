@@ -81,11 +81,12 @@ typedef enum
     eobrd_cantype_amc2c             = ICUBCANPROTO_BOARDTYPE__AMC2C,    // 21 (amc2c)    
     eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C, // 22 (strain2c)
     eobrd_cantype_bat               = ICUBCANPROTO_BOARDTYPE__BAT,      // 23 (bat)
+    eobrd_cantype_amcfoc2c          = ICUBCANPROTO_BOARDTYPE__AMCFOC2C, // 24 (amcfoc2c)
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 24 };
+enum { eobrd_cantype_numberof = 25 };
 
 
 typedef enum
@@ -140,13 +141,14 @@ typedef enum
     eobrd_amc2c                 = eobrd_cantype_amc2c,
     eobrd_strain2c              = eobrd_cantype_strain2c,
     eobrd_bat                   = eobrd_cantype_bat,
+    eobrd_amcfoc2c              = eobrd_cantype_amcfoc2c,
 
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 29 };
+enum { eobrd_type_numberof = 30 };
 
 
 typedef struct                  
