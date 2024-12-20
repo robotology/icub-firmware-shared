@@ -674,7 +674,7 @@ extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * str
 
 extern uint8_t eoboards_type2numberofcores(eObrd_type_t type)
 {
-    return type == eobrd_amc ? 2 : 1;
+    return ((eobrd_amc == type) || (eobrd_amcfoc == type)) ? 2 : 1;
 }
 
 
