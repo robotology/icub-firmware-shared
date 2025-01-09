@@ -694,6 +694,21 @@ typedef struct              // size is 1+3+8+0 = 12
 
 typedef struct
 {
+    float Km;
+    float Kw;
+    float S0; 
+    float S1;
+    float Vth;
+    float Fc_pos;
+    float Fc_neg;
+    float Fs_pos;
+    float Fs_neg;
+} eOmc_LuGre_params_t;  EO_VERIFYsizeof(eOmc_LuGre_params_t, 36)
+
+// -- all the possible data holding structures used in a LuGre frction model
+
+typedef struct
+{
     float                   bemf_value;
     float                   ktau_value;
     eOmc_FrictionParams_t   friction;
@@ -703,7 +718,6 @@ typedef struct
 } eOmc_motor_params_t;  EO_VERIFYsizeof(eOmc_motor_params_t, 32)
 
 // -- all the possible data holding structures used in a motor
-
 
 typedef struct
 {
@@ -1017,7 +1031,8 @@ typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 12
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
-} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 120);
+    eOmc_LuGre_params_t             LuGre_params;               /**< the LuGre friction model parameters */
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 156);
 
 
 
@@ -1054,7 +1069,7 @@ typedef struct                  // size is 120+24+0 = 144
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 144);
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 180);
  
 
 // -- the definition of a controller containing a given number of joints and motors  
