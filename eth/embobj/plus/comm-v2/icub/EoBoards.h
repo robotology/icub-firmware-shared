@@ -82,6 +82,7 @@ typedef enum
     eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C, // 22 (strain2c)
     eobrd_cantype_bat               = ICUBCANPROTO_BOARDTYPE__BAT,      // 23 (bat)
     eobrd_cantype_amcfoc2c          = ICUBCANPROTO_BOARDTYPE__AMCFOC2C, // 24 (amcfoc2c)
+
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
@@ -325,12 +326,14 @@ typedef enum
     eobrd_conn_J33      = 34,
     eobrd_conn_P3P      = 35,
     eobrd_conn_P4P      = 36,
+    eobrd_conn_J11      = 37,    
+    eobrd_conn_J12      = 38,
     
     eobrd_conn_none     = 0,
     eobrd_conn_unknown  = 255
 } eObrd_connector_t;
 
-enum { eobrd_connectors_numberof = 36 };
+enum { eobrd_connectors_numberof = 38 };
 
 
 typedef enum
@@ -397,11 +400,14 @@ typedef enum
     eobrd_port_mtb4c_mmaJ30         = 0,
     eobrd_port_mtb4c_mmaJ31         = 1,
     eobrd_port_mtb4c_mmaJ32         = 2,
-    eobrd_port_mtb4c_mmaJ33         = 3
+    eobrd_port_mtb4c_mmaJ33         = 3,
+
+    eobrd_port_amcfoc_J11            = 0,        // SPI encoder: embot::hw::encoder1
+    eobrd_port_amcfoc_J12            = 1,        // SPI encoder: embot::hw::encoder2
        
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 49 };
+enum { eobrd_ports_numberof = 51 };
 
 
 typedef enum
