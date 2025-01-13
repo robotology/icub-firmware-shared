@@ -402,8 +402,8 @@ typedef enum
     eobrd_port_mtb4c_mmaJ32         = 2,
     eobrd_port_mtb4c_mmaJ33         = 3,
 
-    eobrd_port_amcfoc_J11            = 0,        // SPI encoder: embot::hw::encoder1
-    eobrd_port_amcfoc_J12            = 1,        // SPI encoder: embot::hw::encoder2
+    eobrd_port_amcfoc_J11           = 0,        // SPI encoder: embot::hw::encoder1
+    eobrd_port_amcfoc_J12           = 1,        // SPI encoder: embot::hw::encoder2
        
 } eObrd_port_t;
 
