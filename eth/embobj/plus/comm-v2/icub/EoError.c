@@ -179,7 +179,9 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
     {eoerror_value_HW_encoder_invalid_value,   "HW - encoder: the position data is not valid", ""},
     {eoerror_value_HW_encoder_close_to_limits, "HW - encoder: the position data is valid, but some operating conditions are close to limits.", ""},
     {eoerror_value_HW_encoder_crc,             "HW - encoder: inverted CRC is invalid", ""},
-    {eoerror_value_HW_encoder_not_connected,   "HW - encoder: not connected"}
+    {eoerror_value_HW_encoder_not_connected,   "HW - encoder: not connected"},
+    {eoerror_value_HW_amo_encoder_status0,     "HW - amo encoder status0 error: poor-level or clipping in the signal of master and/or nonius track.", "In par64 counts for the number of errors in 10 seconds (lower: LS 32bits nonius_max|nonius_min, upper: MS 32bits master_max|master_min)"},
+    {eoerror_value_HW_amo_encoder_status1,     "HW - amo encoder status1 error: errors on reading on master and/or nonius track.", "In par64 counts for the number of errors in 10 seconds masked as: crc error 0xffff000000000000, i2c comm error 0x0000ffff00000000, nonius track period consistency error 0x00000000ffff0000, eccessive input signal frequency for converters error 0x000000000000ffff "}
 };  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
@@ -204,7 +206,8 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_wrong_state,     "MC: 2FOC wrong state. The 2FOC motor controller is in a control state different from required by the EMS.", "In par64 0xF0 is the mask of requested state, 0x0F is the mask of actual state. par16 = ID of joint."},
     {eoerror_value_MC_joint_hard_limit,      "MC: hard limit reached. The joint position is outside its hardware boundaries.", "In par16 = ID of joint."},
     {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset.", ""},
-    {eoerror_value_MC_motor_overheating,     "MC: overheating. Temperature hardware limit exceeded. The motor has been turned off to prevent it from being damaged by overheating.", "In par16 = ID of the joint. In par64 0xFFFF is the mask of the raw tmperature feedback."}
+    {eoerror_value_MC_motor_overheating,     "MC: overheating. Temperature hardware limit exceeded. The motor has been turned off to prevent it from being damaged by overheating.", "In par16 = ID of the joint. In par64 0xFFFF is the mask of the raw tmperature feedback."},
+    {eoerror_value_MC_motor_tdb_not_reading, "MC: TDB cannot receive any data on I2C channel. Motor temperature detection board is not receiving any data on the i2C channel.", "In par16 = ID of the joint."}
 
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
