@@ -198,10 +198,12 @@ typedef enum
     eoerror_value_HW_encoder_invalid_value   = 3,
     eoerror_value_HW_encoder_close_to_limits = 4,
     eoerror_value_HW_encoder_crc             = 5,
-    eoerror_value_HW_encoder_not_connected   = 6
+    eoerror_value_HW_encoder_not_connected   = 6,
+    eoerror_value_HW_amo_encoder_status0     = 7,
+    eoerror_value_HW_amo_encoder_status1     = 8
 } eOerror_value_HW_t;
 
-enum { eoerror_value_HW_numberof = 7 };
+enum { eoerror_value_HW_numberof = 9 };
 
 
 
@@ -234,10 +236,11 @@ typedef enum
     eoerror_value_MC_joint_hard_limit                   = 16,
     eoerror_value_MC_motor_qencoder_phase_disappeared   = 17,
     
-    eoerror_value_MC_motor_overheating                  = 18
+    eoerror_value_MC_motor_overheating                  = 18,
+    eoerror_value_MC_motor_tdb_not_reading              = 19
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 19 };
+enum { eoerror_value_MC_numberof = 20 };
 
 
 
