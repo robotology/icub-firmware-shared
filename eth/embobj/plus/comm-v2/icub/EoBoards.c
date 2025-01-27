@@ -97,7 +97,8 @@ static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) |
                                                 (0x1LL << eobrd_mtb4c) |
                                                 (0x1LL << eobrd_amc2c)|
                                                 (0x1LL << eobrd_strain2c) | 
-                                                (0x1LL << eobrd_bat);
+                                                (0x1LL << eobrd_bat) |
+                                                (0x1LL << eobrd_amcfoc2c); 
        
    
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
@@ -186,6 +187,9 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_connectors[] =
     {"P3P", "eobrd_conn_P3P", eobrd_conn_P3P},
     {"P4P", "eobrd_conn_P4P", eobrd_conn_P4P},
 
+    {"J11", "eobrd_conn_J11", eobrd_conn_J11},
+    {"J12", "eobrd_conn_J12", eobrd_conn_J12},
+
     {"none", "eobrd_conn_none", eobrd_conn_none},
     {"unknown", "eobrd_conn_unknown", eobrd_conn_unknown}
 };  EO_VERIFYsizeof(s_eoboards_map_of_connectors, (eobrd_connectors_numberof+2)*sizeof(eOmap_str_str_u08_t))
@@ -252,6 +256,9 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
     {"mtb4c_mmaJ31", "eobrd_port_mtb4c_mmaJ31", eobrd_port_mtb4c_mmaJ31, eobrd_mtb4c, eobrd_conn_J31},
     {"mtb4c_mmaJ32", "eobrd_port_mtb4c_mmaJ32", eobrd_port_mtb4c_mmaJ32, eobrd_mtb4c, eobrd_conn_J32},
     {"mtb4c_mmaJ33", "eobrd_port_mtb4c_mmaJ33", eobrd_port_mtb4c_mmaJ33, eobrd_mtb4c, eobrd_conn_J33},
+
+    {"amcfocJ11", "eobrd_port_amcfoc_J11", eobrd_port_amcfoc_J11, eobrd_amcfoc, eobrd_conn_J11},
+    {"amcfocJ12", "eobrd_port_amcfoc_J12", eobrd_port_amcfoc_J12, eobrd_amcfoc, eobrd_conn_J12},
     
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}
