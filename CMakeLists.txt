@@ -5,7 +5,7 @@
 
 cmake_minimum_required(VERSION 3.12)
 
-project(icub_firmware_shared VERSION 1.42.0)
+project(icub_firmware_shared VERSION 1.43.0)
 
 find_package(YCM 0.11.0 REQUIRED)
 

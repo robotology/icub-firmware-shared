@@ -1091,14 +1091,15 @@ typedef enum
 } eOmc_stateofcontroller_t;
  
 
-typedef struct                  // size is 4+4+0 = 8
+typedef struct                  // size is 4+1+3 = 8
 {
     eOreltime_t                 durationofctrlloop;         /**< the duration of the control-loop in micro-sec. its default is 1000. so far it cannot be changed. */
-    uint8_t                     filler04[4];   
+    eObool_t                    enableskiprecalibration;    /**< it is eobool_true if the user request the system to skip recalibration at yri startup. default is false */
+    uint8_t                     filler03[3];   
 } eOmc_controller_config_t;     //EO_VERIFYsizeof(eOmc_controller_config_t, 8); 
 
 
-typedef struct                  // size is 1+1+1+1+2+2+ 2+6 = 16
+typedef struct                  // size is 1+1+1+1+2+2+2+6 = 16
 {
     eOenum08_t                  stateofcontroller;          /**< it holds a value from enum eOmc_stateofcontroller_t */               
     uint8_t                     numofjoints;                /**< the number of joints */   
