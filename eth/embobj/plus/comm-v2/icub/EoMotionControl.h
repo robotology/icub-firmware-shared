@@ -1007,7 +1007,7 @@ typedef struct
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8 = 120
+typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8+36 = 156
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
     eOmc_PID_t                      pidspeed;                   /**< the pid for speed control */
@@ -1065,7 +1065,7 @@ typedef struct                  // size is: 20+4+0 = 24
 /** @typedef    typedef struct eOmc_motor_t
     @brief      contains the whole motor
  **/
-typedef struct                  // size is 120+24+0 = 144
+typedef struct                  // size is 156+24+0 = 180
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
