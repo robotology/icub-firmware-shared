@@ -251,4 +251,7 @@ if(WITH_EMBOBJ)
           PATTERN "*.h") #TODO check if we need only the header
   install(DIRECTORY robotconfig
           DESTINATION ${icub_firmware_shared_INSTALL_INCLUDE_DIR})
+
+  install(FILES embobj_wireshark.lua
+          DESTINATION ${CMAKE_INSTALL_DATADIR}/icub_firmware_shared)
 endif()
