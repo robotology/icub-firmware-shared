@@ -470,6 +470,27 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
 //}
 
 
+eObool_t eo_ropframe_ROP_ShouldROPBeDeduplicatedInROPFrame(const eOprotID32_t id32)
+{
+    eOprotEndpoint_t endpoint = eoprot_ID2endpoint(id32);
+    eOprotEntity_t entity = eoprot_ID2entity(id32);
+    eOprotTag_t tag = eoprot_ID2tag(id32);
+
+    // For minimizing the interaction with existing code, we only do ROP de-duplication only
+    // for eoprot_tag_mc_joint_inputs_externallymeasuredtorque and eoprot_tag_mc_joint_cmmnds_setpoint
+    if (endpoint == eoprot_endpoint_motioncontrol && entity == eoprot_entity_mc_joint)
+    {
+        if (tag == eoprot_tag_mc_joint_inputs_externallymeasuredtorque || tag == eoprot_tag_mc_joint_cmmnds_setpoint)
+        {
+            return eobool_true;
+        }
+    }
+
+    // Everything else is not de-duplicated
+    return eobool_false;
+}
+
+
 extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t* addedinpos, uint16_t* consumedbytes, uint16_t *remainingbytes)
 {    
     uint8_t* ropstream = NULL;
@@ -487,6 +508,43 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
     if(eobool_false == eo_rop_IsValid((EOrop*)rop))
     {
         return(eores_NOK_generic);
+    }
+
+    
+    // Check if the id32 indicates that the ROP should be deduplicated, 
+    if (eo_ropframe_ROP_ShouldROPBeDeduplicatedInROPFrame(rop->id32))
+    {
+        // Search for an existing ROP with the same ID32.
+        uint16_t numOfRops = s_eo_ropframe_numberofrops_get(p);
+        uint8_t* currentRopStream = s_eo_ropframe_rops_get(p);
+        uint16_t remainingstreamsize = s_eo_ropframe_sizeofrops_get(p);
+        for (uint16_t i = 0; i < numOfRops; i++)
+        {
+            EOrop currentRop;
+            eo_parser_GetROP(eo_parser_GetHandle(), currentRopStream, remainingstreamsize, &currentRop, NULL, NULL);
+
+            if (currentRop.id32 == rop->id32)
+            {
+                // Check if data sizes match.
+                if (eo_rop_GetSize(&currentRop) == eo_rop_GetSize((EOrop*)rop))
+                {
+                    // Overwrite the existing ROP with the new rop
+                    res = eo_former_GetStream(eo_former_GetHandle(), rop, remainingstreamsize, currentRopStream, &remainingstreamsize); 
+ 
+                    if(eores_OK != res)
+                    {
+                        // the rop is incorrect or it simply contains too much data to be fit inside the stream ...
+                        return(eores_NOK_generic);
+                    }
+        
+                    return(eores_OK);
+                }
+            }
+
+            // Move to the next ROP in the stream.
+            currentRopStream += eo_rop_GetSize(&currentRop);
+            remainingstreamsize -= eo_rop_GetSize(&currentRop);
+        }
     }
     
     // verify that we have bytes enough to convert the rop to stream 
