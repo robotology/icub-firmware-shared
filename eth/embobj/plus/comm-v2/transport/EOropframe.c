@@ -30,7 +30,8 @@
 
 #include "EOrop_hid.h"
 
-
+#include "EoProtocol.h"
+#include "EoProtocolMC.h"
 
 
 
@@ -42,10 +43,10 @@
 
 
 // --------------------------------------------------------------------------------------------------------------------
-// - declaration of extern hidden interface 
+// - declaration of extern hidden interface
 // --------------------------------------------------------------------------------------------------------------------
 
-#include "EOropframe_hid.h" 
+#include "EOropframe_hid.h"
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -55,7 +56,7 @@
 
 
 // --------------------------------------------------------------------------------------------------------------------
-// - definition (and initialisation) of extern variables, but better using _get(), _set() 
+// - definition (and initialisation) of extern variables, but better using _get(), _set()
 // --------------------------------------------------------------------------------------------------------------------
 // empty-section
 
@@ -121,14 +122,14 @@ static const char s_eobj_ownname[] = "EOropframe";
 // --------------------------------------------------------------------------------------------------------------------
 
 
- 
+
 extern EOropframe* eo_ropframe_New(void)
 {
-    EOropframe *retptr = NULL;    
+    EOropframe *retptr = NULL;
 
     // i get the memory for the object
     retptr = (EOropframe*) eo_mempool_GetMemory(eo_mempool_GetHandle(), eo_mempool_align_32bit, sizeof(EOropframe), 1);
-    
+
     retptr->capacity                = 0;
     retptr->size                    = 0;
     retptr->index2nextrop2beparsed  = 0;
@@ -143,10 +144,10 @@ extern void eo_ropframe_Delete(EOropframe *p)
     if(NULL == p)
     {
         return;
-    }    
+    }
 
     memset(p, 0, sizeof(EOropframe));
-    
+
     eo_mempool_Delete(eo_mempool_GetHandle(), p);
     return;
 }
@@ -154,11 +155,11 @@ extern void eo_ropframe_Delete(EOropframe *p)
 
 extern eOresult_t eo_ropframe_Load(EOropframe *p, uint8_t *framedata, uint16_t framesize, uint16_t framecapacity)
 {
-    if((NULL == p) || (NULL == framedata)) 
+    if((NULL == p) || (NULL == framedata))
     {
         return(eores_NOK_nullpointer);
     }
-    
+
     if((framecapacity < eo_ropframe_sizeforZEROrops) || (framesize > framecapacity) || (framesize < eo_ropframe_sizeforZEROrops))
     {
         return(eores_NOK_generic);
@@ -168,13 +169,13 @@ extern eOresult_t eo_ropframe_Load(EOropframe *p, uint8_t *framedata, uint16_t f
     p->size                     = framesize;
     p->index2nextrop2beparsed   = 0;
     p->framedata                = (EOropframeData*)framedata;
-    
+
     return(eores_OK);
 }
 
 extern eOresult_t eo_ropframe_Unload(EOropframe *p)
 {
-    if(NULL == p) 
+    if(NULL == p)
     {
         return(eores_NOK_nullpointer);
     }
@@ -187,9 +188,9 @@ extern eOresult_t eo_ropframe_Unload(EOropframe *p)
     return(eores_OK);
 }
 
-extern eOresult_t eo_ropframe_Get(EOropframe *p, uint8_t **framedata, uint16_t* framesize, uint16_t* framecapacity)  
+extern eOresult_t eo_ropframe_Get(EOropframe *p, uint8_t **framedata, uint16_t* framesize, uint16_t* framecapacity)
 {
-    if((NULL == p) || (NULL == framedata) || (NULL == framesize) || (NULL == framecapacity)) 
+    if((NULL == p) || (NULL == framedata) || (NULL == framesize) || (NULL == framecapacity))
     {
         return(eores_NOK_nullpointer);
     }
@@ -203,7 +204,7 @@ extern eOresult_t eo_ropframe_Get(EOropframe *p, uint8_t **framedata, uint16_t* 
 
 extern eOresult_t eo_ropframe_Size_Get(EOropframe *p, uint16_t* framesize)
 {
-    if((NULL == p) || (NULL == framesize)) 
+    if((NULL == p) || (NULL == framesize))
     {
         return(eores_NOK_nullpointer);
     }
@@ -219,12 +220,12 @@ extern uint16_t eo_ropframe_capacity2effectivecapacity(uint16_t capacity)
     {
         return(capacity - eo_ropframe_sizeforZEROrops);
     }
-    return(0);   
+    return(0);
 }
 
 extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* effectivecapacity)
 {
-    if((NULL == p) || (NULL == effectivecapacity)) 
+    if((NULL == p) || (NULL == effectivecapacity))
     {
         return(eores_NOK_nullpointer);
     }
@@ -237,17 +238,17 @@ extern eOresult_t eo_ropframe_EffectiveCapacity_Get(EOropframe *p, uint16_t* eff
 
 extern eOresult_t eo_ropframe_Clear(EOropframe *p)
 {
-    if(NULL == p) 
+    if(NULL == p)
     {
         return(eores_NOK_nullpointer);
     }
-   
+
     p->size                     = (0 == p->capacity) ? (0) : (eo_ropframe_sizeforZEROrops); // if capacity is zero then we dont have buffer ... else we have and size must be eo_ropframe_sizeforZEROrops
     p->index2nextrop2beparsed   = 0;
-    
+
     if(NULL != p->framedata)
     {
-        s_eo_ropframe_header_clr(p);    
+        s_eo_ropframe_header_clr(p);
         s_eo_ropframe_footer_adjust(p);
     }
 
@@ -255,13 +256,13 @@ extern eOresult_t eo_ropframe_Clear(EOropframe *p)
 }
 
 
-extern eOresult_t eo_ropframe_Append(EOropframe *p, EOropframe *rfr, uint16_t *remainingbytes)  
+extern eOresult_t eo_ropframe_Append(EOropframe *p, EOropframe *rfr, uint16_t *remainingbytes)
 {
     uint16_t rfr_sizeofrops;
     uint16_t p_sizeofrops;
 
 // removed because the control vs NULL is done inside _Isvalid() method
-//    if((NULL == p) || (NULL == rfr)) 
+//    if((NULL == p) || (NULL == rfr))
 //    {
 //        return(eores_NOK_nullpointer);
 //    }
@@ -275,7 +276,7 @@ extern eOresult_t eo_ropframe_Append(EOropframe *p, EOropframe *rfr, uint16_t *r
     // get the ropstream starting from the end of rops. call the parser
 
     rfr_sizeofrops = s_eo_ropframe_sizeofrops_get(rfr);
-    
+
     if(0 == rfr_sizeofrops)
     {   // the second ropframe is empty
         return(eores_OK);
@@ -300,13 +301,13 @@ extern eOresult_t eo_ropframe_Append(EOropframe *p, EOropframe *rfr, uint16_t *r
 
     // advance the size
     p->size  += rfr_sizeofrops;     // if we append a ropframe the size of the resulting frame will be the sum of the old size (head+rops+foot) plus the size of the appended rops.
-    
+
     // adjust the header
     s_eo_ropframe_header_addrops(p, s_eo_ropframe_numberofrops_get(rfr), rfr_sizeofrops);
 
     // adjust the footer
     s_eo_ropframe_footer_adjust(p);
-    
+
     // fill the retrun value
     if(NULL != remainingbytes)
     {
@@ -321,25 +322,25 @@ extern eObool_t eo_ropframe_IsValid(EOropframe *p)
 {
     EOropframeHeader_t *header;
     EOropframeFooter_t *footer;
-    
-    if((NULL == p) || (NULL == p->framedata)) 
+
+    if((NULL == p) || (NULL == p->framedata))
     {
         return(eobool_false);
     }
 
     header = s_eo_ropframe_header_get(p);
     footer = s_eo_ropframe_footer_get(p);
-    
+
     if(EOFRAME_START != header->startofframe)
     {
         return(eobool_false);
     }
-       
+
     if(EOFRAME_END != footer->endoframe)
     {
         return(eobool_false);
     }
-    
+
     return(eobool_true);
 }
 
@@ -368,14 +369,14 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
     uint16_t unparsed = 0;
     uint8_t * ropstream = NULL;
     eOparserResult_t parsres = eo_parser_res_ok;
-    
-    if((NULL == p) || (NULL == rop)) 
+
+    if((NULL == p) || (NULL == rop))
     {
         return(eores_NOK_nullpointer);
     }
-        
+
     unparsed = s_eo_ropframe_sizeofrops_get(p) - p->index2nextrop2beparsed;
-    
+
     if(0 == unparsed)
     {
         // cannot parse anymore ...
@@ -384,47 +385,47 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
         if(NULL != unparsedbytes)
         {
             *unparsedbytes = 0;
-        }        
+        }
         return(eores_NOK_generic);
     }
-    
+
     // get the ropstream starting from p->index2nextrop2beparsed. call the parser
-    
+
     ropstream = s_eo_ropframe_rops_get(p);
     ropstream += p->index2nextrop2beparsed;
-   
+
     // this function fills the rop only if everything is ok. it returns error if it cannot prepare a valid rop
     // in consumedbytes it tells how many bytes it has used. in some case if the ropstream is strongly illegal
     // an it cannot go to next rop, consumedbytes is equal to unparsed, so that we have to quit.
     res = eo_parser_GetROP(eo_parser_GetHandle(), ropstream, unparsed, rop, &consumedbytes, &parsres);
-    
+
     if(eores_OK != res)
-    { 
+    {
         eOerrmanDescriptor_t errdes = {0};
 
         // in case of failure, at first reset the rop. then ... it is possible to go on unless there are some serious problems, such as NULL pointer.
         eo_rop_Reset(rop);
-            
+
         errdes.code             = eo_errman_code_sys_ropparsingerror;
         errdes.par16            = parsres;
         errdes.sourcedevice     = eo_errman_sourcedevice_localboard;
-        errdes.sourceaddress    = 0;           
-        
+        errdes.sourceaddress    = 0;
+
         if(eores_NOK_nullpointer == res)
         {
-            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_ropframe_ROP_Parse(): eo_parser_GetROP() called w/ NULL params", s_eobj_ownname, &errdes);          
+            eo_errman_Error(eo_errman_GetHandle(), eo_errortype_fatal, "eo_ropframe_ROP_Parse(): eo_parser_GetROP() called w/ NULL params", s_eobj_ownname, &errdes);
         }
-        
-        // for all other errors the parser tells us how many bytes consume. 
-        // they may be those of the single rop or also those of the entire stream. 
-        // thus we go on ...   
-     
-        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "eo_ropframe_ROP_Parse(): eo_parser_GetROP() had problems", s_eobj_ownname, &errdes);         
+
+        // for all other errors the parser tells us how many bytes consume.
+        // they may be those of the single rop or also those of the entire stream.
+        // thus we go on ...
+
+        eo_errman_Error(eo_errman_GetHandle(), eo_errortype_error, "eo_ropframe_ROP_Parse(): eo_parser_GetROP() had problems", s_eobj_ownname, &errdes);
     }
-    
+
     // advance the internal index2nextrop2beparsed
     p->index2nextrop2beparsed += consumedbytes;
-  
+
     // returns the number of un-parsed bytes
     if(NULL != unparsedbytes)
     {
@@ -443,20 +444,20 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
 //    uint16_t streamsize = 0;
 //    uint16_t streamindex = 0;
 //    eOresult_t res = eores_NOK_generic;
-//    
-//    if((NULL == p) || (NULL == p->framedata) || (NULL == rop)) 
+//
+//    if((NULL == p) || (NULL == p->framedata) || (NULL == rop))
 //    {
 //        return(eobool_false);
 //    }
-//     
+//
 //    // verify that the rop is valid
 //    if(eobool_false == eo_rop_IsValid((EOrop*)rop))
 //    {
 //        return(eobool_false);
 //    }
-//    
-//    // verify that we have bytes enough to convert the rop to stream 
-//    
+//
+//    // verify that we have bytes enough to convert the rop to stream
+//
 //    streamsize = eo_rop_GetSize((EOrop*)rop);
 //    // remaining can be also negative. for example when capacity is eo_ropframe_sizeforZEROrops+1 (thus only one byte for rops) and the target rop requires 8 bytes.
 //    // we have eo_ropframe_sizeforZEROrops+1 - eo_ropframe_sizeforZEROrops - 8 = -7 ...
@@ -464,9 +465,9 @@ extern eOresult_t eo_ropframe_ROP_Parse(EOropframe *p, EOrop *rop, uint16_t *unp
 //    if(remaining < ((int32_t)streamsize))
 //    {   // not enough space in ...
 //        return(eobool_false);
-//    } 
+//    }
 
-//    return(eobool_true);        
+//    return(eobool_true);
 //}
 
 
@@ -491,28 +492,68 @@ eObool_t eo_ropframe_ROP_ShouldROPBeDeduplicatedInROPFrame(const eOprotID32_t id
 }
 
 
+extern uint16_t eo_rop_GetSize_fromeOrophead_t(const eOrophead_t *phead)
+{
+    // This implementation must be consistent with eo_rop_GetSize implementation
+    uint16_t size = sizeof(eOrophead_t);
+
+    if(NULL == phead)
+    {
+        return(0);
+    }
+
+    if(eobool_true == eo_rop_datafield_is_present(phead))
+    {
+         size += eo_rop_datafield_effective_size(phead->dsiz);
+    }
+
+    if(1 == phead->ctrl.plussign)
+    {
+        size += 4;
+    }
+
+    if(1 == phead->ctrl.plustime)
+    {
+        size+= 8;
+    }
+
+    return(size);
+}
+
+extern eOprotID32_t eo_rop_GetID32_fromeOrophead_t(const eOrophead_t *phead)
+{
+    if(NULL == phead)
+    {
+        return(0);
+    }
+
+    return(phead->id32);
+}
+
 extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t* addedinpos, uint16_t* consumedbytes, uint16_t *remainingbytes)
-{    
+{
     uint8_t* ropstream = NULL;
     int32_t remaining = 0;
     uint16_t streamsize = 0;
     uint16_t streamindex = 0;
     eOresult_t res = eores_NOK_generic;
-    
-    if((NULL == p) || (NULL == p->framedata) || (NULL == rop)) 
+
+    if((NULL == p) || (NULL == p->framedata) || (NULL == rop))
     {
         return(eores_NOK_nullpointer);
     }
-     
+
     // verify that the rop is valid
     if(eobool_false == eo_rop_IsValid((EOrop*)rop))
     {
         return(eores_NOK_generic);
     }
 
-    
-    // Check if the id32 indicates that the ROP should be deduplicated, 
-    if (eo_ropframe_ROP_ShouldROPBeDeduplicatedInROPFrame(rop->id32))
+    const eOprotID32_t new_id32 = eo_rop_GetID32_fromeOrophead_t(&(rop->stream.head));
+    int16_t new_rop_size = eo_rop_GetSize_fromeOrophead_t(&(rop->stream.head));
+
+    // Check if the id32 indicates that the ROP should be deduplicated,
+    if (eo_ropframe_ROP_ShouldROPBeDeduplicatedInROPFrame(new_id32))
     {
         // Search for an existing ROP with the same ID32.
         uint16_t numOfRops = s_eo_ropframe_numberofrops_get(p);
@@ -520,35 +561,36 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
         uint16_t remainingstreamsize = s_eo_ropframe_sizeofrops_get(p);
         for (uint16_t i = 0; i < numOfRops; i++)
         {
-            EOrop currentRop;
-            eo_parser_GetROP(eo_parser_GetHandle(), currentRopStream, remainingstreamsize, &currentRop, NULL, NULL);
+            // The first field of the stream is the rop header, see eo_former_GetStream implementation
+            eOrophead_t* currentRopHeader = (eOrophead_t*)currentRopStream;
+            int16_t currentRopSize = eo_rop_GetSize_fromeOrophead_t(currentRopHeader);
+            const eOprotID32_t currentRopID32 = eo_rop_GetID32_fromeOrophead_t(currentRopHeader);
 
-            if (currentRop.id32 == rop->id32)
+            // Check if the ID32 and the size match
+            if (currentRopID32 == new_id32 && currentRopSize == new_rop_size)
             {
-                // Check if data sizes match.
-                if (eo_rop_GetSize(&currentRop) == eo_rop_GetSize((EOrop*)rop))
+                // Overwrite the existing ROP with the new rop
+                res = eo_former_GetStream(eo_former_GetHandle(), rop, remainingstreamsize, currentRopStream, &remainingstreamsize);
+
+                if(eores_OK != res)
                 {
-                    // Overwrite the existing ROP with the new rop
-                    res = eo_former_GetStream(eo_former_GetHandle(), rop, remainingstreamsize, currentRopStream, &remainingstreamsize); 
- 
-                    if(eores_OK != res)
-                    {
-                        // the rop is incorrect or it simply contains too much data to be fit inside the stream ...
-                        return(eores_NOK_generic);
-                    }
-        
-                    return(eores_OK);
+                    // the rop is incorrect or it simply contains too much data to be fit inside the stream ...
+                    return(eores_NOK_generic);
                 }
+
+                return(eores_OK);
             }
 
             // Move to the next ROP in the stream.
-            currentRopStream += eo_rop_GetSize(&currentRop);
-            remainingstreamsize -= eo_rop_GetSize(&currentRop);
+            currentRopStream += currentRopSize;
+            remainingstreamsize -= currentRopSize;
         }
     }
-    
-    // verify that we have bytes enough to convert the rop to stream 
-    
+
+
+
+    // verify that we have bytes enough to convert the rop to stream
+
     streamsize = eo_rop_GetSize((EOrop*)rop);
     // remaining can be also negative. for example when capacity is eo_ropframe_sizeforZEROrops+1 (thus only one byte for rops) and the target rop requires 8 bytes.
     // we have eo_ropframe_sizeforZEROrops+1 - eo_ropframe_sizeforZEROrops - 8 = -7 ...
@@ -560,28 +602,28 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
         eo_errman_Trace(eo_errman_GetHandle(), msg, NULL);
         return(eores_NOK_generic);
     }
-  
+
     // get the ropstream starting from the end of rops. call the former
     ropstream = s_eo_ropframe_rops_get(p);
     streamindex = s_eo_ropframe_sizeofrops_get(p);
     ropstream += streamindex;
-    
-    // convert the rop and put it inside the stream;    
-    res = eo_former_GetStream(eo_former_GetHandle(), rop, remaining, ropstream, &streamsize); 
- 
+
+    // convert the rop and put it inside the stream;
+    res = eo_former_GetStream(eo_former_GetHandle(), rop, remaining, ropstream, &streamsize);
+
     if(eores_OK != res)
     {
         // the rop is incorrect or it simply contains too much data to be fit inside the stream ...
         return(eores_NOK_generic);
     }
-    
+
 //    // advance the internal index2nextrop2beparsed: are we sure that we must advance it?
 //#warning --> remove it
 //    p->index2nextrop2beparsed += streamsize;
 
     // advance the size with what is sued by the added stream
     p->size  += streamsize;
-    
+
     // adjust the header
     s_eo_ropframe_header_addrop(p, streamsize);
 
@@ -598,12 +640,12 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
     {
         *consumedbytes = streamsize;
     }
-        
+
     if(NULL != remainingbytes)
     {
         *remainingbytes = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
     }
-    
+
     // ... returns ok
 
     return(eores_OK);
@@ -611,24 +653,24 @@ extern eOresult_t eo_ropframe_ROP_Add(EOropframe *p, const EOrop *rop, uint16_t*
 
 
 extern eOresult_t eo_ropframe_ROPdata_Add(EOropframe *p, uint8_t* data, uint16_t size, uint16_t *remainingbytes)
-{    
+{
     uint8_t* ropstream = NULL;
     int32_t remaining = 0;
     //uint16_t streamsize = 0;
     uint16_t streamindex = 0;
     //eOresult_t res = eores_NOK_generic;
-    
-    if((NULL == p) || (NULL == data) || (0 == size)) 
+
+    if((NULL == p) || (NULL == data) || (0 == size))
     {
         return(eores_NOK_nullpointer);
     }
-     
+
     // verify that the ropstream is valid ... dont do it to gain some speed
 
-    
+
     // verify that we have bytes enough to put the data into the ropframe
-    
- 
+
+
     // if we dont have space, remaining can be also negative. for example when capacity is eo_ropframe_sizeforZEROrops+1 (thus only one byte for rops) and the target rop requires 8 bytes.
     // we have eo_ropframe_sizeforZEROrops+1 - eo_ropframe_sizeforZEROrops - 8 = -7 ... thus remaining must be signed
     remaining = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
@@ -636,19 +678,19 @@ extern eOresult_t eo_ropframe_ROPdata_Add(EOropframe *p, uint8_t* data, uint16_t
     {   // not enough space in ...
         return(eores_NOK_generic);
     }
-  
+
     // get the ropstream starting from the end of rops.
     ropstream = s_eo_ropframe_rops_get(p);
     streamindex = s_eo_ropframe_sizeofrops_get(p);
     ropstream += streamindex;
-    
-    
+
+
     // copy directly into the ropstream
     memcpy(ropstream, data, size);
-    
+
     // advance the size with what is used by the added stream
     p->size  += size;
-    
+
     // adjust the header
     s_eo_ropframe_header_addrop(p, size);
 
@@ -660,7 +702,7 @@ extern eOresult_t eo_ropframe_ROPdata_Add(EOropframe *p, uint8_t* data, uint16_t
     {
         *remainingbytes = p->capacity - eo_ropframe_sizeforZEROrops - s_eo_ropframe_sizeofrops_get(p);
     }
-    
+
     // ... returns ok
 
     return(eores_OK);
@@ -690,7 +732,7 @@ extern eOresult_t eo_ropframe_ROP_Rem(EOropframe *p, uint16_t wasaddedinpos, uin
 
     // decrement the size by the byte used by the removed stream
     p->size  -= itsizewas;
-    
+
     // adjust the header
     s_eo_ropframe_header_remrop(p, itsizewas);
 
@@ -706,54 +748,54 @@ extern eOresult_t eo_ropframe_ROP_Rem(EOropframe *p, uint16_t wasaddedinpos, uin
 
 extern eOresult_t eo_ropframedata_age_Set(EOropframeData *d, eOabstime_t age)
 {
-    if(NULL == d) 
+    if(NULL == d)
     {
         return(eores_NOK_nullpointer);
     }
 
     d->header.ageofframe = age;
- 
-    return(eores_OK);    
+
+    return(eores_OK);
 }
 
 extern eOabstime_t eo_ropframedata_age_Get(EOropframeData *d)
-{  
-    if(NULL == d) 
+{
+    if(NULL == d)
     {
         return(eok_abstimeNOW);
     }
 
-    return(d->header.ageofframe);    
+    return(d->header.ageofframe);
 }
 
 extern eOresult_t eo_ropframedata_seqnum_Set(EOropframeData *d, uint64_t seqnum)
 {
-    if(NULL == d) 
+    if(NULL == d)
     {
         return(eores_NOK_nullpointer);
     }
 
     d->header.sequencenumber = seqnum;
- 
-    return(eores_OK);    
+
+    return(eores_OK);
 }
 
 
 extern uint64_t eo_ropframedata_seqnum_Get(EOropframeData *d)
 {
-    if(NULL == d) 
+    if(NULL == d)
     {
         return(eok_uint64dummy);
     }
-    
-    return(d->header.sequencenumber);    
+
+    return(d->header.sequencenumber);
 }
 
 extern eOresult_t eo_ropframe_age_Set(EOropframe *p, eOabstime_t age)
 {
     EOropframeHeader_t* header = NULL;
-    
-    if(NULL == p) 
+
+    if(NULL == p)
     {
         return(eores_NOK_nullpointer);
     }
@@ -761,15 +803,15 @@ extern eOresult_t eo_ropframe_age_Set(EOropframe *p, eOabstime_t age)
     header = s_eo_ropframe_header_get(p);
 
     header->ageofframe = age;
- 
+
     return(eores_OK);
 }
 
 extern eOabstime_t eo_ropframe_age_Get(EOropframe *p)
 {
     EOropframeHeader_t* header = NULL;
-    
-    if(NULL == p) 
+
+    if(NULL == p)
     {
         return(eok_abstimeNOW);
     }
@@ -782,8 +824,8 @@ extern eOabstime_t eo_ropframe_age_Get(EOropframe *p)
 extern eOresult_t eo_ropframe_seqnum_Set(EOropframe *p, uint64_t seqnum)
 {
     EOropframeHeader_t* header = NULL;
-    
-    if(NULL == p) 
+
+    if(NULL == p)
     {
         return(eores_NOK_nullpointer);
     }
@@ -791,15 +833,15 @@ extern eOresult_t eo_ropframe_seqnum_Set(EOropframe *p, uint64_t seqnum)
     header = s_eo_ropframe_header_get(p);
 
     header->sequencenumber = seqnum;
- 
+
     return(eores_OK);
 }
 
 extern uint64_t eo_ropframe_seqnum_Get(EOropframe *p)
 {
     EOropframeHeader_t* header = NULL;
-    
-    if(NULL == p) 
+
+    if(NULL == p)
     {
         return(eok_uint64dummy);
     }
@@ -810,7 +852,7 @@ extern uint64_t eo_ropframe_seqnum_Get(EOropframe *p)
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-// - definition of extern hidden functions 
+// - definition of extern hidden functions
 // --------------------------------------------------------------------------------------------------------------------
 
 uint8_t* eo_ropframe_hid_get_pointer_offset(EOropframe *p, uint16_t offset)
@@ -828,14 +870,14 @@ uint8_t* eo_ropframe_hid_get_pointer_offset(EOropframe *p, uint16_t offset)
 
 
 // --------------------------------------------------------------------------------------------------------------------
-// - definition of static functions 
+// - definition of static functions
 // --------------------------------------------------------------------------------------------------------------------
 
 
 static void s_eo_ropframe_header_addrop(EOropframe *p, uint16_t sizeofrop)
 {
     EOropframeHeader_t* header = s_eo_ropframe_header_get(p);
-    
+
     header->ropssizeof              += sizeofrop;
     header->ropsnumberof            += 1;
 }
@@ -844,7 +886,7 @@ static void s_eo_ropframe_header_addrop(EOropframe *p, uint16_t sizeofrop)
 static void s_eo_ropframe_header_remrop(EOropframe *p, uint16_t sizeofrop)
 {
     EOropframeHeader_t* header = s_eo_ropframe_header_get(p);
-    
+
     header->ropssizeof              -= sizeofrop;
     header->ropsnumberof            -= 1;
 }
@@ -852,7 +894,7 @@ static void s_eo_ropframe_header_remrop(EOropframe *p, uint16_t sizeofrop)
 static void s_eo_ropframe_header_addrops(EOropframe *p, uint16_t numofrops, uint16_t sizeofrops)
 {
     EOropframeHeader_t* header = s_eo_ropframe_header_get(p);
-    
+
     header->ropssizeof              += sizeofrops;
     header->ropsnumberof            += numofrops;
 }
@@ -860,17 +902,17 @@ static void s_eo_ropframe_header_addrops(EOropframe *p, uint16_t numofrops, uint
 static void s_eo_ropframe_header_clr(EOropframe *p)
 {
     EOropframeHeader_t* header = s_eo_ropframe_header_get(p);
-    
+
     header->startofframe            = EOFRAME_START;
     header->ropssizeof              = 0;
     header->ropsnumberof            = 0;
     header->ageofframe              = 0;
 }
-    
+
 static void s_eo_ropframe_footer_adjust(EOropframe *p)
 {
     EOropframeFooter_t* footer = s_eo_ropframe_footer_get(p);
-    
+
     footer->endoframe               = EOFRAME_END;
 }
 
