@@ -208,9 +208,7 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset.", ""},
     {eoerror_value_MC_motor_overheating,     "MC: overheating. Temperature hardware limit exceeded. The motor has been turned off to prevent it from being damaged by overheating.", "In par16 = ID of the joint. In par64 0xFFFF is the mask of the raw tmperature feedback."},
     {eoerror_value_MC_motor_tdb_not_reading, "MC: TDB cannot receive any data on I2C channel. Motor temperature detection board is not receiving any data on the i2C channel.", "In par16 = ID of the joint."},
-    {eoerror_value_MC_trq_ref_timeout,       "MC: torque reference timeout. The board isn't receiving torque reference commands and its control/interaction mode has been automatically switched to position/stiff for safety."},
-    {eoerror_value_MC_cur_ref_timeout,       "MC: current reference timeout. The board isn't receiving current reference commands and its control/interaction mode has been automatically switched to position/stiff for safety."},
-    {eoerror_value_MC_pwm_ref_timeout,       "MC: pwm reference timeout. The board isn't receiving pwm reference commands and its control/interaction mode has been automatically switched to position/stiff for safety."}
+    {eoerror_value_MC_ref_setpoint_timeout,  "MC: reference setpoint timeout. The board isn't receiving reference setpoint commands and its control/interaction mode has been automatically switched to position/stiff for safety.", "In par16 = reference type (1: torque, 2: current, 3: pwm.)"}
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
 

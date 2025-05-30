@@ -238,13 +238,11 @@ typedef enum
     
     eoerror_value_MC_motor_overheating                  = 18,
     eoerror_value_MC_motor_tdb_not_reading              = 19,
-    eoerror_value_MC_trq_ref_timeout                    = 20,
-    eoerror_value_MC_cur_ref_timeout                    = 21,
-    eoerror_value_MC_pwm_ref_timeout                    = 22
+    eoerror_value_MC_ref_setpoint_timeout               = 20
     
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 23 };
+enum { eoerror_value_MC_numberof = 21 };
 
 
 
