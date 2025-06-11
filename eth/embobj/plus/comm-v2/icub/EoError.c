@@ -167,6 +167,7 @@ const eoerror_valuestring_t eoerror_valuestrings_SYS[] =
     {eoerror_value_SYS_canservices_monitor_stillnocontact,  "SYS: a service has detected that some CAN boards are still not transmitting.", "In sourceaddress the eOmn_serv_category_t, in par64 LS 32 bits the bit mask of lost board (CAN1 in MS 16 bits and CAN2 in LS 16 bits), in in par64 MS 32 bits the total disappearence time in ms"},
     {eoerror_value_SYS_canservices_monitor_retrievedcontact, "SYS: a service has recovered all CAN boards that were not transmitting.", "In sourceaddress the eOmn_serv_category_t"},
     {eoerror_value_SYS_exec_time_stats, "SYS: execution time statistics (min, average, max) us in a period", "(us min, us average, us max, ms period) is in par64, thread id in par16"},
+    {eoerror_value_SYS_ctrloop_execoverflowPERIOD, "SYS: execution time overflow (budget, actual, TX, DO, TX) us in a period", "us budget is in par16, (us actual, RX, DO, TX) is in par64"} 
 };  EO_VERIFYsizeof(eoerror_valuestrings_SYS, eoerror_value_SYS_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
