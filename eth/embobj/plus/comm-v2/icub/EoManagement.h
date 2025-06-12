@@ -55,7 +55,7 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
-//#define EOMANAGEMENT_useRUNNERMODE
+#define EOMANAGEMENT_useRUNNERMODE
 
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
@@ -274,8 +274,11 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
 
 typedef enum
 {
-    eomn_appl_log_asynchro_exectime_overflow    = 0,    // if used it sends logging as an overflow of execution time happens in the runner
-    eomn_appl_log_periodic_exectime_statistics  = 1     // if used it sends periodic logging on stats of the runner    
+    eomn_appl_log_asynchro_exectime_rxdotx_overflow     = 0,    // it sends logging as an overflow of execution time rx, do and tx in the runner
+    eomn_appl_log_periodic_exectime_rxdotx_minavgmax    = 1,    // it sends periodic logging on stats (min, avg, max) for rx, do and tx in the runner 
+    eomn_appl_log_asynchro_exectime_period_overflow     = 2,    // it sends logging as an overflow of execution time in the runner  
+    eomn_appl_log_periodic_exectime_period_minavgmax    = 3,    // it sends periodic logging on stats (min, avg, max) for execution time in the runner    
+    eomn_appl_log_periodic_exectime_period_histogram    = 4     // it sends periodic logging on stats (min, avg, max) for execution time in the runner
 } eOmn_appl_log_flags_t;
 
 typedef struct 
@@ -287,8 +290,8 @@ typedef struct
 
 typedef enum 
 {
-    eom_appl_runnermode_1slot = 0, 
-    eom_appl_runnermode_3slots = 1
+    eomn_appl_runnermode_besteffort = 0, 
+    eomn_appl_runnermode_syncronized = 1
 } eOmn_appl_runnermode_t; 
 
 #if defined(EOMANAGEMENT_useRUNNERMODE)
