@@ -291,7 +291,7 @@ typedef struct
 typedef enum 
 {
     eomn_appl_runnermode_besteffort = 0, 
-    eomn_appl_runnermode_syncronized = 1
+    eomn_appl_runnermode_synchronized = 1
 } eOmn_appl_runnermode_t; 
 
 #if defined(EOMANAGEMENT_useRUNNERMODE)
