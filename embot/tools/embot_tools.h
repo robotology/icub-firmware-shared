@@ -44,8 +44,8 @@ namespace embot { namespace tools {
             std::uint64_t min {0};        // the start value of first interval.
             std::uint64_t max {0};        // the upper limit of all possible values (which is actually max-1).
             std::uint32_t step {0};       // the width of the interval 
-            Config() = default;
-            Config(std::uint64_t mi, std::uint64_t ma, std::uint32_t st) : min(mi), max(ma), step(st) {}
+            constexpr Config() = default;
+            constexpr Config(std::uint64_t mi, std::uint64_t ma, std::uint32_t st) : min(mi), max(ma), step(st) {}
             std::uint64_t range() const { return max - min; }
             std::uint32_t nsteps() const { return ( (range() + step - 1) / step); }
             bool isvalid() const { return ((0 == step) || (min >= max)) ? false : true; }

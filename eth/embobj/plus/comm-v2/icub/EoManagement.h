@@ -55,8 +55,6 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
-#define EOMANAGEMENT_useRUNNERMODE
-
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
 //#warning: review it
@@ -294,7 +292,6 @@ typedef enum
     eomn_appl_runnermode_synchronized = 1
 } eOmn_appl_runnermode_t; 
 
-#if defined(EOMANAGEMENT_useRUNNERMODE)
 
 /** @typedef    typedef struct eOmn_appl_config_t;
     @brief      used to configure the application
@@ -311,24 +308,7 @@ typedef struct                      // size is 4+3*2+1+1+4 = 16 bytes
     eOmn_appl_config_logging_t      logging;  
 } eOmn_appl_config_t;               EO_VERIFYsizeof(eOmn_appl_config_t, 16)
 
-#else
 
-/** @typedef    typedef struct eOmn_appl_config_t;
-    @brief      used to configure the application
- **/
-typedef struct                      // size is 4+3+3 = 8 bytes
-{
-    eOreltime_t                     cycletime;      // in usec
-    uint16_t                        maxtimeRX;      // in usec
-    uint16_t                        maxtimeDO;      // in usec         
-    uint16_t                        maxtimeTX;      // in usec  
-    uint8_t                         txratedivider;  // if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles
-    uint8_t                         filler01[1];
-    eOmn_appl_config_logging_t      logging;  
-} eOmn_appl_config_t;               EO_VERIFYsizeof(eOmn_appl_config_t, 16)
-
-
-#endif
 
 /** @typedef    typedef struct eOmn_appl_status_t;
     @brief      used to report status of the application
