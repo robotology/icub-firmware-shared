@@ -409,7 +409,7 @@ typedef enum
     eoerror_value_CFG_bat_failed_notsupported                       = 92,
     
     eoerror_value_CFG_mc_advfoc_ok                                  = 93,
-    eoerror_value_CFG_mc_advfoc_failed_candiscovery_of_advfoc       = 94,
+    eoerror_value_CFG_mc_advfoc_failed_candiscovery                 = 94,
     eoerror_value_CFG_mc_advfoc_failed_encoders_verify              = 95,
     eoerror_value_CFG_mc_advfoc_failed_ICCdiscovery                 = 96
 } eOerror_value_CFG_t;
