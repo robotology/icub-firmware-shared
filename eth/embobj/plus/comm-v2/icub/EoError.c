@@ -354,7 +354,18 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_bat_failed_candiscovery, "CFG: theBATservice failed CAN discovery", ""},
     {eoerror_value_CFG_bat_not_verified_yet, "CFG: theBATservice is not verified yet", ""},
     {eoerror_value_CFG_bat_using_onboard_config, "CFG: theBATservice is using onboard config", ""},
-    {eoerror_value_CFG_bat_failed_notsupported, "CFG: theBATservice is not supported", ""}
+    {eoerror_value_CFG_bat_failed_notsupported, "CFG: theBATservice is not supported", ""},
+    
+    
+    
+    {eoerror_value_CFG_mc_advfoc_ok, "CFG: EOtheMotionController can correctly configure advfoc-based motion. more info will follow",""},
+    {eoerror_value_CFG_mc_advfoc_failed_candiscovery_of_foc, "CFG: EOtheMotionController cannot be configured. CANdiscovery of advfoc boards fails. see CANdiscovery messages for more details",""},
+    {eoerror_value_CFG_mc_advfoc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoders fails. see other messages for more details",""},
+    {eoerror_value_CFG_mc_advfoc_failed_ICCdiscovery_of_advfoc, "CFG: EOtheMotionController cannot be configured. ICCdiscovery fails. see ICCdiscovery messages for more details",""}
+    
+    
+    
+    
 };  EO_VERIFYsizeof(eoerror_valuestrings_CFG, eoerror_value_CFG_numberof*sizeof(const eoerror_valuestring_t))
 
 
