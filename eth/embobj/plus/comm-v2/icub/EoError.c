@@ -361,8 +361,9 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_advfoc_ok, "CFG: EOtheMotionController can correctly configure advfoc-based motion. more info will follow",""},
     {eoerror_value_CFG_mc_advfoc_failed_candiscovery, "CFG: EOtheMotionController cannot be configured. CANdiscovery of advfoc boards fails. see CANdiscovery messages for more details",""},
     {eoerror_value_CFG_mc_advfoc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoders fails. see other messages for more details",""},
-    {eoerror_value_CFG_mc_advfoc_failed_ICCdiscovery, "CFG: EOtheMotionController cannot be configured. ICCdiscovery fails. see ICCdiscovery messages for more details",""}
-    
+    {eoerror_value_CFG_mc_advfoc_failed_ICCdiscovery, "CFG: EOtheMotionController cannot be configured. ICCdiscovery fails. see ICCdiscovery messages for more details",""},
+    {eoerror_value_CFG_mc_advfoc_failed_ICCping, "CFG: EOtheMotionController: ICCping fails, the application on the other core does not respond to the ping. ",""},
+    {eoerror_value_CFG_mc_advfoc_ICCdiscovery_invalid, "CFG: ICCdiscovery detected","In par16: target board type in 0xff00 and number of invalid in 0x000f. In par64: each nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"}
     
     
     
