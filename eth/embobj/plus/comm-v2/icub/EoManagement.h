@@ -55,8 +55,6 @@ extern "C" {
 // - public #define  --------------------------------------------------------------------------------------------------
 
 
-
-
 // it allows to fit a EOarray of 64 bytes (or 16 words)
 #define EOMANAGEMENT_COMMAND_DATA_SIZE 68
 //#warning: review it
@@ -274,8 +272,11 @@ typedef struct                      // size is 8+32+80+0 = 120 bytes
 
 typedef enum
 {
-    eomn_appl_log_asynchro_exectime_overflow    = 0,    // if used it sends logging as an overflow of execution time happens in the runner
-    eomn_appl_log_periodic_exectime_statistics  = 1     // if used it sends periodic logging on stats of the runner    
+    eomn_appl_log_asynchro_exectime_rxdotx_overflow     = 0,    // it sends logging as an overflow of execution time rx, do and tx in the runner
+    eomn_appl_log_periodic_exectime_rxdotx_minavgmax    = 1,    // it sends periodic logging on stats (min, avg, max) for rx, do and tx in the runner 
+    eomn_appl_log_asynchro_exectime_period_overflow     = 2,    // it sends logging as an overflow of execution time in the runner  
+    eomn_appl_log_periodic_exectime_period_minavgmax    = 3,    // it sends periodic logging on stats (min, avg, max) for execution time in the runner    
+    eomn_appl_log_periodic_exectime_period_histogram    = 4     // it sends periodic logging on stats (min, avg, max) for execution time in the runner
 } eOmn_appl_log_flags_t;
 
 typedef struct 
@@ -284,19 +285,29 @@ typedef struct
     uint16_t                        period10ms; // in 10*ms so that we manage ut to 10 minutes. used by periodic logs    
 } eOmn_appl_config_logging_t;
 
+
+typedef enum 
+{
+    eomn_appl_runnermode_besteffort = 0, 
+    eomn_appl_runnermode_synchronized = 1
+} eOmn_appl_runnermode_t; 
+
+
 /** @typedef    typedef struct eOmn_appl_config_t;
     @brief      used to configure the application
  **/
-typedef struct                      // size is 4+3+3 = 8 bytes
+typedef struct                      // size is 4+3*2+1+1+4 = 16 bytes
 {
-    eOreltime_t                     cycletime;      // in usec
+    uint16_t                        cycletime;      // in usec
     uint16_t                        maxtimeRX;      // in usec
     uint16_t                        maxtimeDO;      // in usec         
-    uint16_t                        maxtimeTX;      // in usec  
+    uint16_t                        maxtimeTX;      // in usec 
+    uint16_t                        safetygap;      // in usec    
     uint8_t                         txratedivider;  // if equal to 1 (or 0) the cycle sends up packets at every cycles, if 2 it sends up packets every two cycles
-    uint8_t                         filler01[1];
+    uint8_t                         runnermode;     // use eOmn_appl_runnermode_t
     eOmn_appl_config_logging_t      logging;  
 } eOmn_appl_config_t;               EO_VERIFYsizeof(eOmn_appl_config_t, 16)
+
 
 
 /** @typedef    typedef struct eOmn_appl_status_t;
