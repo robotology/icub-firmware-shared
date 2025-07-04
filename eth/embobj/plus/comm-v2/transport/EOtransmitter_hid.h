@@ -60,7 +60,8 @@ typedef enum
 {
     eo_transm_regropframe_standard  = 0,
     eo_transm_regropframe_cycle0of  = 1,
-    eo_transm_regropframe_cycle1of  = 2
+    eo_transm_regropframe_cycle1of  = 2,
+    eo_transm_regropframe_cycle2of  = 3
 } eo_transm_regropframe_t;
 
 typedef struct      // 40 bytes on arm .... but not 40 on a 64-bit architecture because of the pointer
@@ -94,7 +95,8 @@ struct EOtransmitter_hid
     EOropframe*                 ropframereadytotx;
     EOropframe*                 ropframeregulars_standard;
     EOropframe*                 ropframeregulars_cycle0of;  
-    EOropframe*                 ropframeregulars_cycle1of;  
+    EOropframe*                 ropframeregulars_cycle1of; 
+    EOropframe*                 ropframeregulars_cycle2of;    
     EOropframe*                 ropframeoccasionals;    
     EOropframe*                 ropframereplies;
     EOrop*                      roptmp;
@@ -106,6 +108,7 @@ struct EOtransmitter_hid
     uint8_t*                    bufferropframeregulars_standard;
     uint8_t*                    bufferropframeregulars_cycle0of;
     uint8_t*                    bufferropframeregulars_cycle1of;
+    uint8_t*                    bufferropframeregulars_cycle2of;
     uint8_t*                    bufferropframeoccasionals;
     uint8_t*                    bufferropframereplies;
     EOlist*                     listofregropinfo; 
@@ -129,6 +132,7 @@ struct EOtransmitter_hid
     uint16_t                    totalsizeofregulars_standard;
     uint16_t                    totalsizeofregulars_cycle0of;
     uint16_t                    totalsizeofregulars_cycle1of;
+    uint16_t                    totalsizeofregulars_cycle2of;
     uint16_t                    maxsizeofregulars;
     uint16_t                    effectivecapacityofregulars;
     uint64_t                    txregularsprogressive;
