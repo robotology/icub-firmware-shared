@@ -413,7 +413,7 @@ typedef enum
     eoerror_value_CFG_mc_advfoc_failed_encoders_verify              = 95,
     eoerror_value_CFG_mc_advfoc_failed_ICCdiscovery                 = 96,
     eoerror_value_CFG_mc_advfoc_failed_ICCping                      = 97,
-    eoerror_value_CFG_mc_advfoc_ICCdiscovery_invalid                = 98
+    eoerror_value_CFG_mc_advfoc_ICCdiscovery_result                 = 98
 } eOerror_value_CFG_t;
 
 enum { eoerror_value_CFG_numberof = 99 };
