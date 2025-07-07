@@ -362,7 +362,7 @@ const eoerror_valuestring_t eoerror_valuestrings_CFG[] =
     {eoerror_value_CFG_mc_advfoc_failed_candiscovery, "CFG: EOtheMotionController cannot be configured. CANdiscovery of actuator board fails. see CANdiscovery messages for more details",""},
     {eoerror_value_CFG_mc_advfoc_failed_encoders_verify, "CFG: EOtheMotionController cannot be configured. verification of encoders fails. see other messages for more details",""},
     {eoerror_value_CFG_mc_advfoc_failed_ICCdiscovery, "CFG: EOtheMotionController cannot be configured. ICCdiscovery fails. see ICCdiscovery messages for more details",""},
-    {eoerror_value_CFG_mc_advfoc_ICCdiscovery_result, "CFG: ICCdiscovery result: ","In par16: the nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot"}
+    {eoerror_value_CFG_mc_advfoc_ICCdiscovery_result, "CFG: ICCdiscovery result: ","In par16: the nibble contains 0x0 if ok, mask 0x1 if wrong type, mask 0x2 if wrong fw, mask 0x4 if wrong prot, mask 0x8 if wrong port, mask 0x10 if not respond to ping. On par 64 it has info on FW and protocol version, port and board info."}
     
     
     
