@@ -415,7 +415,7 @@ typedef enum
     eoerror_value_CFG_mc_advfoc_ICCdiscovery_result                 = 97
 } eOerror_value_CFG_t;
 
-enum { eoerror_value_CFG_numberof = 99 };
+enum { eoerror_value_CFG_numberof = 98 };
 
 
 /** @typedef    typedef enum eOerror_value_ETHMON_t
