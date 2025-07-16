@@ -761,7 +761,7 @@ typedef struct                  // size is: 1+3+12+12+4+4= 36
 /** @typedef    typedef struct eOmc_joint_config_t
     @brief      eOmc_joint_config_t contains the values required to configure a joint
  **/
-typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4+36= 236
+typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+2+2+2+2+1+1+4+4+4+36= 236
 {
     eOmc_PID_t                  pidtrajectory;              /**< the pid for trajectory control */
     eOmc_PID_t                  piddirect;                  /**< the pid for direct control */
@@ -772,14 +772,18 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+1+1+4+4+4+3
     eOmeas_velocity_t           maxvelocityofjoint;         /**< the maximum velocity in the joint */
     int32_t                     jntEncoderResolution;
     eOmc_motor_params_t         motor_params;
-    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before going back to eomc_controlmode_position */              
+    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before setting velocity = 0 */
+    eOmeas_time_t               currentsetpointtimeout;     /**< max time between two setpoints in eomc_controlmode_current before going back to eomc_controlmode_position */    
+    eOmeas_time_t               openloopsetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_openloop before going back to eomc_controlmode_position */
+    eOmeas_time_t               torquesetpointtimeout;      /**< max time between two setpoints in eomc_controlmode_torque before going back to eomc_controlmode_position */
+    eOmeas_time_t               torquefeedbacktimeout;      /**< max time between two feedbacks in eomc_controlmode_torque before going back to eomc_controlmode_position */
     uint8_t                     tcfiltertype;               /**< use values from eOmc_torqueControlFilterType_t */
     uint8_t                     jntEncoderType;             /**< use values from eOmc_encoder_t */
     float32_t                   jntEncTolerance;
     float32_t                   gearbox_E2J;
     float32_t                   deadzone;
     eOmc_kalman_filter_config_t kalman_params;              /**< the kalman filter parameters */
-} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 240)
+} eOmc_joint_config_t;          EO_VERIFYsizeof(eOmc_joint_config_t, 248)
 
 
 /** @typedef    typedef struct eOmc_status_ofpid_legacy_t
@@ -982,7 +986,7 @@ typedef struct                  // size is 236+96+4+44+0 = 380
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 384);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 392);
 
 
 

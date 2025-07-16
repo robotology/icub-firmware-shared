@@ -239,11 +239,25 @@ typedef enum
     eoerror_value_MC_motor_qencoder_phase_disappeared   = 17,
     
     eoerror_value_MC_motor_overheating                  = 18,
-    eoerror_value_MC_motor_tdb_not_reading              = 19
+    eoerror_value_MC_motor_tdb_not_reading              = 19,
+    eoerror_value_MC_ref_setpoint_timeout               = 20
+    
 } eOerror_value_MC_t;
 
-enum { eoerror_value_MC_numberof = 20 };
+enum { eoerror_value_MC_numberof = 21 };
 
+/** @typedef    typedef enum eOerror_value_MC_ref_timeout_t
+    @brief      It contains the subtype of the setpoint timeout (torque, current, pwm).
+ **/
+typedef enum
+{
+    eoerror_value_MC_ref_timeout_unknown = 0,
+    eoerror_value_MC_ref_timeout_torque  = 1,
+    eoerror_value_MC_ref_timeout_current = 2,
+    eoerror_value_MC_ref_timeout_pwm     = 3
+} eOerror_value_MC_ref_timeout_t;
+
+enum { eOerror_value_MC_ref_timeout_numberof = 4 };
 
 
 /** @typedef    typedef enum eOerror_value_SK_t
