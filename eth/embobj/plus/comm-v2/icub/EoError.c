@@ -210,7 +210,7 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset.", ""},
     {eoerror_value_MC_motor_overheating,     "MC: overheating. Temperature hardware limit exceeded. The motor has been turned off to prevent it from being damaged by overheating.", "In par16 = ID of the joint. In par64 0xFFFF is the mask of the raw tmperature feedback."},
     {eoerror_value_MC_motor_tdb_not_reading, "MC: TDB cannot receive any data on I2C channel. Motor temperature detection board is not receiving any data on the i2C channel.", "In par16 = ID of the joint."},
-    {eoerror_value_MC_ref_setpoint_timeout,  "MC: reference setpoint timeout.", ""}
+    {eoerror_value_MC_ref_setpoint_timeout,  "MC: reference setpoint timeout.", "Param16 = type of the expired timeout."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
