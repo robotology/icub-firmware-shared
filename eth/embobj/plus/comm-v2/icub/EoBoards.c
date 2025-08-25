@@ -103,6 +103,7 @@ static const uint64_t s_eoboards_is_can_mask =      (0x1LL << eobrd_mc4)        
 static const uint64_t s_eoboards_is_dualcore_mask = (0x1LL << eobrd_amc)        |
                                                     (0x1LL << eobrd_amcfoc);
 
+// MC stands for motor control
 static const uint64_t s_eoboards_is_MC_board_mask = (0x1LL << eobrd_amc)        |
                                                     (0x1LL << eobrd_amcfoc);
        
