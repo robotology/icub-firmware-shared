@@ -103,11 +103,6 @@ static const uint64_t s_eoboards_is_can_mask =      (0x1LL << eobrd_mc4)        
 static const uint64_t s_eoboards_is_dualcore_mask = (0x1LL << eobrd_amc)        |
                                                     (0x1LL << eobrd_amcfoc);
 
-// MC stands for motor control
-static const uint64_t s_eoboards_is_MC_board_mask = (0x1LL << eobrd_amc)        |
-                                                    (0x1LL << eobrd_amcfoc);
-       
-   
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
 {    
     {"ems4", "eobrd_ems4", eobrd_ems4},
@@ -354,17 +349,6 @@ extern eObool_t eoboards_is_eth(eObrd_type_t type)
     }
  
     return(eo_common_dword_bitcheck(s_eoboards_is_eth_mask, type));       
-}
-
-
-extern eObool_t eoboards_is_motor_control_board(eObrd_type_t type)
-{
-    if(type > 63)
-    {
-        return(eobool_false);
-    }
- 
-    return(eo_common_dword_bitcheck(s_eoboards_is_MC_board_mask, type));       
 }
 
 

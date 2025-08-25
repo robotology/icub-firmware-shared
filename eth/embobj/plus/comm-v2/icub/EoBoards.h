@@ -484,8 +484,6 @@ extern eObool_t eoboards_is_can(eObrd_type_t type);
 
 extern eObool_t eoboards_is_eth(eObrd_type_t type);
 
-extern eObool_t eoboards_is_motor_control_board(eObrd_type_t type);
-
 extern eObrd_cantype_t eoboards_type2cantype(eObrd_type_t type);
 
 extern eObrd_ethtype_t eoboards_type2ethtype(eObrd_type_t type);
