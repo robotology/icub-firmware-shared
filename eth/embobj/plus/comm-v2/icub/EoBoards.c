@@ -68,39 +68,41 @@
 // - definition (and initialisation) of static variables
 // --------------------------------------------------------------------------------------------------------------------
 
-static const uint64_t s_eoboards_is_eth_mask =  (0x1LL << eobrd_ems4) | 
-                                                (0x1LL << eobrd_mc4plus) | 
-                                                (0x1LL << eobrd_mc2plus) |
-                                                (0x1LL << eobrd_amc) |
-                                                (0x1LL << eobrd_amcfoc);
+static const uint64_t s_eoboards_is_eth_mask =      (0x1LL << eobrd_ems4)       | 
+                                                    (0x1LL << eobrd_mc4plus)    | 
+                                                    (0x1LL << eobrd_mc2plus)    |
+                                                    (0x1LL << eobrd_amc)        |
+                                                    (0x1LL << eobrd_amcfoc);
 
-static const uint64_t s_eoboards_is_can_mask =  (0x1LL << eobrd_mc4) | 
-                                                (0x1LL << eobrd_mtb) | 
-                                                (0x1LL << eobrd_strain) |                                                
-                                                (0x1LL << eobrd_mais) |
-                                                (0x1LL << eobrd_foc) |
-                                                (0x1LL << eobrd_dsp) |
-                                                (0x1LL << eobrd_pic) |
-                                                (0x1LL << eobrd_2dc) |
-                                                (0x1LL << eobrd_bll) |
-                                                (0x1LL << eobrd_6sg) |
-                                                (0x1LL << eobrd_jog) |
-                                                (0x1LL << eobrd_mtb4) |
-                                                (0x1LL << eobrd_strain2) |
-                                                (0x1LL << eobrd_rfe) |
-                                                (0x1LL << eobrd_sg3) |
-                                                (0x1LL << eobrd_psc) |
-                                                (0x1LL << eobrd_mtb4w) |
-                                                (0x1LL << eobrd_pmc)   |
-                                                (0x1LL << eobrd_amcbldc)|
-                                                (0x1LL << eobrd_bms)|
-                                                (0x1LL << eobrd_mtb4c) |
-                                                (0x1LL << eobrd_amc2c)|
-                                                (0x1LL << eobrd_strain2c) | 
-                                                (0x1LL << eobrd_bat) |
-                                                (0x1LL << eobrd_amcfoc2c); 
-       
-   
+static const uint64_t s_eoboards_is_can_mask =      (0x1LL << eobrd_mc4)        | 
+                                                    (0x1LL << eobrd_mtb)        | 
+                                                    (0x1LL << eobrd_strain)     |                                                
+                                                    (0x1LL << eobrd_mais)       |
+                                                    (0x1LL << eobrd_foc)        |
+                                                    (0x1LL << eobrd_dsp)        |
+                                                    (0x1LL << eobrd_pic)        |
+                                                    (0x1LL << eobrd_2dc)        |
+                                                    (0x1LL << eobrd_bll)        |
+                                                    (0x1LL << eobrd_6sg)        |
+                                                    (0x1LL << eobrd_jog)        |
+                                                    (0x1LL << eobrd_mtb4)       |
+                                                    (0x1LL << eobrd_strain2)    |
+                                                    (0x1LL << eobrd_rfe)        |
+                                                    (0x1LL << eobrd_sg3)        |
+                                                    (0x1LL << eobrd_psc)        |
+                                                    (0x1LL << eobrd_mtb4w)      |
+                                                    (0x1LL << eobrd_pmc)        |
+                                                    (0x1LL << eobrd_amcbldc)    |
+                                                    (0x1LL << eobrd_bms)        |
+                                                    (0x1LL << eobrd_mtb4c)      |
+                                                    (0x1LL << eobrd_amc2c)      |
+                                                    (0x1LL << eobrd_strain2c)   | 
+                                                    (0x1LL << eobrd_bat)        |
+                                                    (0x1LL << eobrd_amcfoc2c); 
+
+static const uint64_t s_eoboards_is_dualcore_mask = (0x1LL << eobrd_amc)        |
+                                                    (0x1LL << eobrd_amcfoc);
+
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
 {    
     {"ems4", "eobrd_ems4", eobrd_ems4},
@@ -380,6 +382,25 @@ extern eObrd_ethtype_t eoboards_type2ethtype(eObrd_type_t type)
     
     return(eobrd_ethtype_unknown);
 }
+
+
+extern uint8_t eoboards_type2numberofcores(eObrd_type_t type)
+{
+    if(type > 63)
+    {
+        return 0;
+    }
+ 
+    if(eo_common_dword_bitcheck(s_eoboards_is_dualcore_mask, type))
+    {
+        return 2;
+    }
+    else
+    { 
+        return 1;
+    }
+}
+
 
 extern eObrd_type_t eoboards_cantype2type(eObrd_cantype_t type)
 {
@@ -677,11 +698,6 @@ extern eObrd_canmonitor_reportmode_t eoboards_string2reportmode(const char * str
     const uint8_t defvalue = eobrd_canmonitor_reportmode_unknown;
     
     return((eObrd_canmonitor_reportmode_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));        
-}
-
-extern uint8_t eoboards_type2numberofcores(eObrd_type_t type)
-{
-    return ((eobrd_amc == type) || (eobrd_amcfoc == type)) ? 2 : 1;
 }
 
 
