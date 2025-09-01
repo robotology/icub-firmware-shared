@@ -1032,11 +1032,12 @@ typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8+36 =
     uint8_t                         rotorEncoderType;           /**< rotor encoder type */
     uint8_t                         filler;
     float32_t                       rotEncTolerance;            /**< max number of passable error. It is use to determine a spike */
+    float32_t                       Kbemf;                      /**< electric constant of the motor (Back EMF) */    
     eOmeas_pwm_t                    pwmLimit;                   /**< the pwm limit of the motor */
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
     eOmc_LuGre_params_t             LuGre_params;               /**< the LuGre friction model parameters */
-} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 156);
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 160);
 
 
 
@@ -1073,7 +1074,7 @@ typedef struct                  // size is 156+24+0 = 180
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 180);
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 184);
  
 
 // -- the definition of a controller containing a given number of joints and motors  
