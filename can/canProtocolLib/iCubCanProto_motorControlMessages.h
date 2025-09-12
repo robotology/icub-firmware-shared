@@ -49,13 +49,19 @@ extern "C" {
 /***************************************************************************/
 // command messages of class ICUBCANPROTO_CLASS_POLLING_MOTORCONTROL
 /***************************************************************************/
+
+#undef ICUBCANPROTO_POL_MC_CMD__CONTROLLER_RUN                  // formerly 1 but obsolete even in bll can boards
+#undef ICUBCANPROTO_POL_MC_CMD__CONTROLLER_IDLE                 // formerly 2 but obsolete even in bll can boards
+#undef ICUBCANPROTO_POL_MC_CMD__ENABLE_PWM_PAD                  // formerly 5 but obsolete even in bll can boards  
+#undef ICUBCANPROTO_POL_MC_CMD__DISABLE_PWM_PAD                 // formerly 6 but obsolete even in bll can boards
+
 #define ICUBCANPROTO_POL_MC_CMD__NO_MESSAGE                     0
-#define ICUBCANPROTO_POL_MC_CMD__CONTROLLER_RUN                 1
-#define ICUBCANPROTO_POL_MC_CMD__CONTROLLER_IDLE                2
+#define ICUBCANPROTO_POL_MC_CMD__SET_MOTOR_PARAM                1
+#define ICUBCANPROTO_POL_MC_CMD__GET_MOTOR_PARAM                2
 #define ICUBCANPROTO_POL_MC_CMD__TOGGLE_VERBOSE                 3
 #define ICUBCANPROTO_POL_MC_CMD__CALIBRATE_ENCODER              4
-#define ICUBCANPROTO_POL_MC_CMD__ENABLE_PWM_PAD                 5
-#define ICUBCANPROTO_POL_MC_CMD__DISABLE_PWM_PAD                6
+#define ICUBCANPROTO_POL_MC_CMD__FFU005                         5 
+#define ICUBCANPROTO_POL_MC_CMD__FFU006                         6
 #define ICUBCANPROTO_POL_MC_CMD__GET_CONTROL_MODE               7
 #define ICUBCANPROTO_POL_MC_CMD__MOTION_DONE                    8
 #define ICUBCANPROTO_POL_MC_CMD__SET_CONTROL_MODE               9
@@ -173,7 +179,9 @@ extern "C" {
 #define ICUBCANPROTO_POL_MC_CMD__GET_TEMPERATURE_LIMIT          122
 #define ICUBCANPROTO_POL_MC_CMD__GET_MOTOR_CONFIG               123
 #define ICUBCANPROTO_POL_MC_CMD__GET_CURRENT_LIMIT              124
-#define ICUBCANPROTO_POL_MC_CMD_MAXNUM                          (ICUBCANPROTO_POL_MC_CMD__GET_CURRENT_LIMIT + 1) 
+#define ICUBCANPROTO_POL_MC_CMD__SET_PID                        125
+#define ICUBCANPROTO_POL_MC_CMD__GET_PID                        126
+#define ICUBCANPROTO_POL_MC_CMD_MAXNUM                          (ICUBCANPROTO_POL_MC_CMD__GET_PID + 1) 
 
 
 
