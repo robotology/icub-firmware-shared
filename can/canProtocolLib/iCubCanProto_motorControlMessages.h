@@ -60,8 +60,8 @@ extern "C" {
 #define ICUBCANPROTO_POL_MC_CMD__GET_MOTOR_PARAM                2
 #define ICUBCANPROTO_POL_MC_CMD__TOGGLE_VERBOSE                 3
 #define ICUBCANPROTO_POL_MC_CMD__CALIBRATE_ENCODER              4
-#define ICUBCANPROTO_POL_MC_CMD__FFU005                         5 
-#define ICUBCANPROTO_POL_MC_CMD__FFU006                         6
+#define ICUBCANPROTO_POL_MC_CMD__SET                            5 
+#define ICUBCANPROTO_POL_MC_CMD__GET                            6
 #define ICUBCANPROTO_POL_MC_CMD__GET_CONTROL_MODE               7
 #define ICUBCANPROTO_POL_MC_CMD__MOTION_DONE                    8
 #define ICUBCANPROTO_POL_MC_CMD__SET_CONTROL_MODE               9
