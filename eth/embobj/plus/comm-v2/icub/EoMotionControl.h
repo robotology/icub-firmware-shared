@@ -157,7 +157,7 @@ enum {  eomc_ctrlmval_idle          = 0x00,
 
 /** @typedef    typedef enum eOmc_controlmode_command_t
     @brief      eOmc_controlmode_command_t contains command to set the control mode.
-    @warning    On an EMS only modes eomc_controlmode_cmd_idle, eomc_controlmode_cmd_position, eomc_controlmode_cmd_velocity, eomc_controlmode_cmd_torque,
+    @warning    On an EMS only modes eomc_controlmode_cmd_idle, eomc_controlmode_cmd_position, eomc_controlmode_cmd_velocity, eomc_controlmode_cmd_vel_direct, eomc_controlmode_cmd_torque,
                 eomc_controlmode_cmd_impedance_pos, eomc_controlmode_cmd_impedance_vel, and eomc_controlmode_cmd_openloop are allowed.
                 On a 2FOC the only possible mode is eomc_controlmode_cmd_current.  
                 Pay attention if you change numbers. they must be align with eOmc_controlmode_t.
@@ -183,7 +183,7 @@ typedef enum
 
 /** @typedef    typedef enum eOmc_controlmode_t
     @brief      eOmc_controlmode_t contains all the possible modes for motion control.
-    @warning    On an EMS only modes eomc_controlmode_idle, eomc_controlmode_position, eomc_controlmode_velocity, eomc_controlmode_torque,
+    @warning    On an EMS only modes eomc_controlmode_idle, eomc_controlmode_position, eomc_controlmode_velocity, eomc_controlmode_vel_direct, eomc_controlmode_torque,
                 eomc_controlmode_impedance_pos, eomc_controlmode_impedance_vel, and eomc_controlmode_openloop are allowed.
                 On a 2FOC the only possible mode is eomc_controlmode_current.
                 when command eomc_controlmode_cmd_switch_everything_off is received the motor controller is in eomc_controlmode_idle.
@@ -772,7 +772,7 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+2+2+2+2+1+1
     eOmeas_velocity_t           maxvelocityofjoint;         /**< the maximum velocity in the joint */
     int32_t                     jntEncoderResolution;
     eOmc_motor_params_t         motor_params;
-    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity before setting velocity = 0 */
+    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity or eomc_controlmode_vel_direct before setting velocity = 0 */
     eOmeas_time_t               currentsetpointtimeout;     /**< max time between two setpoints in eomc_controlmode_current before going back to eomc_controlmode_position */    
     eOmeas_time_t               openloopsetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_openloop before going back to eomc_controlmode_position */
     eOmeas_time_t               torquesetpointtimeout;      /**< max time between two setpoints in eomc_controlmode_torque before going back to eomc_controlmode_position */
@@ -1015,6 +1015,7 @@ typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8+36 =
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
     eOmc_PID_t                      pidspeed;                   /**< the pid for speed control */
+    eOmc_PID_t                      pidvelcurrent;              /**< the pid for speed control with inner current control loop */
     float32_t                       gearbox_M2J;                /**< the gearbox reduction ration from motor to joint motor:joint*/
     int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
     eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
@@ -1037,7 +1038,7 @@ typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8+36 =
     eOmeas_temperature_t            temperatureLimit;           /**< the motor temperature limit */
     eOmeas_position_limits_t        limitsofrotor;              /**< rotor limits */
     eOmc_LuGre_params_t             LuGre_params;               /**< the LuGre friction model parameters */
-} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 160);
+} eOmc_motor_config_t;              EO_VERIFYsizeof(eOmc_motor_config_t, 200);
 
 
 
@@ -1074,7 +1075,7 @@ typedef struct                  // size is 156+24+0 = 180
 {
     eOmc_motor_config_t         config;                     /**< the configuration of the motor */
     eOmc_motor_status_t         status;                     /**< the status of the motor */   
-} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 184);
+} eOmc_motor_t;                 EO_VERIFYsizeof(eOmc_motor_t, 224);
  
 
 // -- the definition of a controller containing a given number of joints and motors  
@@ -1430,11 +1431,12 @@ typedef struct
 
 typedef enum
 {
-  eomc_ctrl_out_type_n_a = 0,
-  eomc_ctrl_out_type_pwm = 1, 
-  eomc_ctrl_out_type_vel = 2,
-  eomc_ctrl_out_type_cur = 3,
-  eomc_ctrl_out_type_off = 4
+  eomc_ctrl_out_type_n_a     = 0,
+  eomc_ctrl_out_type_pwm     = 1, 
+  eomc_ctrl_out_type_vel_pwm = 2,
+  eomc_ctrl_out_type_cur     = 3,
+  eomc_ctrl_out_type_vel_cur = 4,
+  eomc_ctrl_out_type_off     = 5,
 } eOmc_ctrl_out_type_t;
 
 typedef struct
