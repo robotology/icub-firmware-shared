@@ -778,7 +778,7 @@ typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+2+2+2+2+1+1
     eOmeas_velocity_t           maxvelocityofjoint;         /**< the maximum velocity in the joint */
     int32_t                     jntEncoderResolution;
     eOmc_motor_params_t         motor_params;
-    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity or eomc_controlmode_vel_direct before setting velocity = 0 */
+    eOmeas_time_t               velocitysetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_velocity or eomc_controlmode_vel_direct or eomc_controlmode_vel_direct before setting velocity = 0 */
     eOmeas_time_t               currentsetpointtimeout;     /**< max time between two setpoints in eomc_controlmode_current before going back to eomc_controlmode_position */    
     eOmeas_time_t               openloopsetpointtimeout;    /**< max time between two setpoints in eomc_controlmode_openloop before going back to eomc_controlmode_position */
     eOmeas_time_t               torquesetpointtimeout;      /**< max time between two setpoints in eomc_controlmode_torque before going back to eomc_controlmode_position */
@@ -1440,10 +1440,10 @@ typedef enum
 {
   eomc_ctrl_out_type_n_a     = 0,
   eomc_ctrl_out_type_pwm     = 1, 
-  eomc_ctrl_out_type_vel     = 2,
+  eomc_ctrl_out_type_vel_pwm = 2,
   eomc_ctrl_out_type_cur     = 3,
-  eomc_ctrl_out_type_off     = 4,
-  eomc_ctrl_out_type_vel_cur = 5
+  eomc_ctrl_out_type_vel_cur = 4,
+  eomc_ctrl_out_type_off     = 5,
 } eOmc_ctrl_out_type_t;
 
 typedef struct
