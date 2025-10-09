@@ -1433,10 +1433,10 @@ typedef enum
 {
   eomc_ctrl_out_type_n_a     = 0,
   eomc_ctrl_out_type_pwm     = 1, 
-  eomc_ctrl_out_type_vel_pwm = 2,
+  eomc_ctrl_out_type_vel     = 2,
   eomc_ctrl_out_type_cur     = 3,
-  eomc_ctrl_out_type_vel_cur = 4,
-  eomc_ctrl_out_type_off     = 5,
+  eomc_ctrl_out_type_off     = 4,
+  eomc_ctrl_out_type_vel_cur = 5
 } eOmc_ctrl_out_type_t;
 
 typedef struct
