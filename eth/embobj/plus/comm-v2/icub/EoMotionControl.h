@@ -245,7 +245,8 @@ typedef enum
     eomc_setpoint_torque                        = 2,
     eomc_setpoint_current                       = 3,
     eomc_setpoint_positionraw                   = 4,
-    eomc_setpoint_openloop                      = 5
+    eomc_setpoint_openloop                      = 5,
+    eomc_setpoint_velocityraw                   = 6
 } eOmc_setpoint_type_t;
 
 
@@ -654,6 +655,10 @@ typedef struct
     eOmeas_acceleration_t   withacceleration; 
 } eOmc_setpoint_velocity_t;
 
+typedef struct 
+{ 
+    eOmeas_velocity_t       value; 
+} eOmc_setpoint_velocityraw_t;
 
 typedef struct 
 { 
@@ -676,6 +681,7 @@ typedef union
     eOmc_setpoint_position_t    position;
     eOmc_setpoint_positionraw_t positionraw;
     eOmc_setpoint_velocity_t    velocity;
+    eOmc_setpoint_velocityraw_t velocityraw;
     eOmc_setpoint_torque_t      torque;
     eOmc_setpoint_current_t     current;
     eOmc_setpoint_openloop_t    openloop;
@@ -926,16 +932,17 @@ typedef struct                  // size is:  16+20+4 = 40
 /** @typedef    typedef struct eOmc_joint_status_target_t
     @brief      eOmc_joint_status_target_t contains the targets of a joint
  **/
-typedef struct                  // size is:  4+4+4+4+4+4+4 = 28
+typedef struct                  // ANTO: size is: 4+4+4+4+4+4+4+4 = 32        // OLD: size is:  4+4+4+4+4+4+4 = 28
 {
     eOmeas_position_t           trgt_position;              /**< the target position of the joint */           
     eOmeas_position_t           trgt_positionraw;           /**< the target position raw of the joint */           
     eOmeas_velocity_t           trgt_velocity;              /**< the target velocity of the joint */          
+    eOmeas_velocity_t           trgt_velocityraw;           /**< the target velocity raw of the joint */
     eOmeas_acceleration_t       trgt_acceleration;          /**< the target acceleration of the joint */       
     eOmeas_torque_t             trgt_torque;                /**< the target torque of the joint */
     int32_t                     trgt_pwm;                   /**< the target pwm of the joint */
     int32_t                     trgt_current;               /**< the target current of the joint */
-} eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 28) 
+} eOmc_joint_status_target_t;   EO_VERIFYsizeof(eOmc_joint_status_target_t, 32)  // ANTO: 32 // OLD: 28
 
 
 enum{ eOmc_joint_multienc_maxnum = 3};
@@ -959,7 +966,7 @@ typedef struct                  // size is:  40+28+12+16 = 96
     eOmc_joint_status_target_t          target;
     eOmc_joint_status_additionalInfo_t  addinfo;
     uint8_t                             debug[16];
-} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 96) 
+} eOmc_joint_status_t;         EO_VERIFYsizeof(eOmc_joint_status_t, 100) 
 
 
 
@@ -986,7 +993,7 @@ typedef struct                  // size is 236+96+4+44+0 = 380
     eOmc_joint_status_t         status;                     /**< the status of the joint */
     eOmc_joint_inputs_t         inputs;                     /**< it contains all the values that a host can send to a joint as inputs */
     eOmc_joint_commands_t       cmmnds;                     /**< it contains all the commands that a host can send to a joint */
-} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 392);
+} eOmc_joint_t;                 EO_VERIFYsizeof(eOmc_joint_t, 396);
 
 
 
