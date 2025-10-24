@@ -72,7 +72,9 @@ static const uint64_t s_eoboards_is_eth_mask =      (0x1LL << eobrd_ems4)       
                                                     (0x1LL << eobrd_mc4plus)    | 
                                                     (0x1LL << eobrd_mc2plus)    |
                                                     (0x1LL << eobrd_amc)        |
-                                                    (0x1LL << eobrd_amcfoc);
+                                                    (0x1LL << eobrd_amcfoc)     |
+                                                    (0x1LL << eobrd_amcmj1)     |
+                                                     0;
 
 static const uint64_t s_eoboards_is_can_mask =      (0x1LL << eobrd_mc4)        | 
                                                     (0x1LL << eobrd_mtb)        | 
@@ -98,10 +100,14 @@ static const uint64_t s_eoboards_is_can_mask =      (0x1LL << eobrd_mc4)        
                                                     (0x1LL << eobrd_amc2c)      |
                                                     (0x1LL << eobrd_strain2c)   | 
                                                     (0x1LL << eobrd_bat)        |
-                                                    (0x1LL << eobrd_amcfoc2c); 
+                                                    (0x1LL << eobrd_amcfoc2c)   |
+                                                    (0x1LL << eobrd_amcmj1_mot) |
+                                                    0; 
 
 static const uint64_t s_eoboards_is_dualcore_mask = (0x1LL << eobrd_amc)        |
-                                                    (0x1LL << eobrd_amcfoc);
+                                                    (0x1LL << eobrd_amcfoc)     |
+                                                    (0x1LL << eobrd_amcmj1)     |
+                                                    0;
 
 static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
 {    
@@ -110,6 +116,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"mc2plus", "eobrd_mc2plus", eobrd_mc2plus},
     {"amc", "eobrd_amc", eobrd_amc},
     {"amcfoc", "eobrd_amcfoc", eobrd_amcfoc},
+    {"amcmj1", "eobrd_amcmj1", eobrd_amcmj1},
     
     {"mc4", "eobrd_mc4", eobrd_mc4},
     {"mtb", "eobrd_mtb", eobrd_mtb},
@@ -137,6 +144,7 @@ static const eOmap_str_str_u08_t s_eoboards_map_of_boards[] =
     {"strain2c", "eobrd_strain2c", eobrd_strain2c},
     {"bat", "eobrd_bat", eobrd_bat},
     {"amcfoc2c", "eobrd_amcfoc2c", eobrd_amcfoc2c},
+    {"amcmj1_mot", "eobrd_amcmj1_mot", eobrd_amcmj1_mot},
     
     {"none", "eobrd_none", eobrd_none},
     {"unknown", "eobrd_unknown", eobrd_unknown}

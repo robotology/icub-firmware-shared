@@ -37,6 +37,10 @@ namespace embot { namespace core { namespace binary { namespace bit {
     template<typename T>
     constexpr void set(T &value, std::uint8_t pos)
     {
+        if(pos >= 8*sizeof(T))
+        {
+            return;
+        }
         value |= (static_cast<T>(1)<<pos);
     }
     
@@ -44,6 +48,10 @@ namespace embot { namespace core { namespace binary { namespace bit {
     template<typename T>
     void constexpr clear(T &value, std::uint8_t pos)
     {
+        if(pos >= 8*sizeof(T))
+        {
+            return;
+        }
         value &= (~(static_cast<T>(1)<<pos));
     }
     
@@ -51,6 +59,10 @@ namespace embot { namespace core { namespace binary { namespace bit {
     template<typename T>
     void constexpr toggle(T &value, std::uint8_t pos)
     {
+        if(pos >= 8*sizeof(T))
+        {
+            return;
+        }
         value ^= (static_cast<T>(1)<<pos);
     }
     
@@ -58,6 +70,10 @@ namespace embot { namespace core { namespace binary { namespace bit {
     template<typename T>
     constexpr bool check(const T value, std::uint8_t pos)
     {
+        if(pos >= 8*sizeof(T))
+        {
+            return false;
+        }
         if(value & (static_cast<T>(1)<<pos))
         {
             return true;
