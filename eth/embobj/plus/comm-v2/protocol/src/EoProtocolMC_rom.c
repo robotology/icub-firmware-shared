@@ -192,21 +192,36 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_pidcurrent
 #endif
 };
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_pidspeed =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_pidvelpwm =
 {   
-    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.pidspeed),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_pidspeed,
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.pidvelpwm),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_pidvelpwm,
     EO_INIT(.dummy)     0,    
-    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.pidspeed,
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.pidvelpwm,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_pidspeed,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_pidspeed
+    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_pidvelpwm,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_pidvelpwm
 #endif
 };
 
+
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_motor_config_pidvelcur =
+{   
+    EO_INIT(.capacity)  sizeof(eoprot_mc_rom_motor_defaultvalue.config.pidvelcur),
+    EO_INIT(.rwmode)    eoprot_rwm_mc_motor_config_pidvelcur,
+    EO_INIT(.dummy)     0,    
+    EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_motor_defaultvalue.config.pidvelcur,
+#ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
+    EO_INIT(.init)      NULL,
+    EO_INIT(.update)    NULL
+#else       
+    EO_INIT(.init)      eoprot_fun_INIT_mc_motor_config_pidvelcur,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_motor_config_pidvelcur
+#endif
+};
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_userlimits =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.userlimits),
@@ -751,7 +766,8 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_motor_descriptors[] =
     &eoprot_mc_rom_descriptor_motor_config_pwmlimit,
     &eoprot_mc_rom_descriptor_motor_config_temperaturelimit,
     &eoprot_mc_rom_descriptor_motor_config_pidcurrent,
-    &eoprot_mc_rom_descriptor_motor_config_pidspeed,
+    &eoprot_mc_rom_descriptor_motor_config_pidvelpwm,
+    &eoprot_mc_rom_descriptor_motor_config_pidvelcur,
     &eoprot_mc_rom_descriptor_motor_status,
     &eoprot_mc_rom_descriptor_motor_status_basic   
 };  EO_VERIFYsizeof(s_eoprot_mc_rom_motor_descriptors, sizeof(EOPROT_ROMmap EOnv_rom_t* const)*(eoprot_tags_mc_motor_numberof));
@@ -848,7 +864,8 @@ static const char * const s_eoprot_mc_strings_tags_motor[] =
     "eoprot_tag_mc_motor_config_pwmlimit",
     "eoprot_tag_mc_motor_config_temperaturelimit",
     "eoprot_tag_mc_motor_config_pidcurrent",
-    "eoprot_tag_mc_motor_config_pidspeed",
+    "eoprot_tag_mc_motor_config_pidvelpwm",
+    "eoprot_tag_mc_motor_config_pidvelcur",
     "eoprot_tag_mc_motor_status",
     "eoprot_tag_mc_motor_status_basic"
 };  EO_VERIFYsizeof(s_eoprot_mc_strings_tags_motor, eoprot_tags_mc_motor_numberof*sizeof(const char*)) 
