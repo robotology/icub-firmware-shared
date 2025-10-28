@@ -153,12 +153,13 @@ typedef enum
     eoprot_tag_mc_motor_config_pwmlimit                             = 5,
     eoprot_tag_mc_motor_config_temperaturelimit                     = 6,
     eoprot_tag_mc_motor_config_pidcurrent                           = 7,
-    eoprot_tag_mc_motor_config_pidspeed                             = 8,
-    eoprot_tag_mc_motor_status                                      = 9,
-    eoprot_tag_mc_motor_status_basic                                = 10
+    eoprot_tag_mc_motor_config_pidvelpwm                            = 8,
+    eoprot_tag_mc_motor_config_pidvelcur                            = 9,
+    eoprot_tag_mc_motor_status                                      = 10,
+    eoprot_tag_mc_motor_status_basic                                = 11
 } eOprot_tag_mc_motor_t;
 
-enum { eoprot_tags_mc_motor_numberof = 11 };   // it MUST be equal to the number of tags 
+enum { eoprot_tags_mc_motor_numberof = 12 };   // it MUST be equal to the number of tags
 
 
 /** @typedef    typedef enum eOprot_rwm_mc_motor_t
@@ -176,12 +177,13 @@ typedef enum
     eoprot_rwm_mc_motor_config_pwmlimit                             = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_temperaturelimit                     = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_config_pidcurrent                           = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_motor_config_pidspeed                             = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_pidvelpwm                            = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_motor_config_pidvelcur                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_motor_status                                      = eo_nv_rwmode_RO,
     eoprot_rwm_mc_motor_status_basic                                = eo_nv_rwmode_RO
 } eOprot_rwm_mc_motor_t;  
 
-enum { eoprot_rwms_mc_motor_numberof = 11 };   // it MUST be equal to the number of rw modes
+enum { eoprot_rwms_mc_motor_numberof = 12 };   // it MUST be equal to the number of rw modes
 
 
 
@@ -336,8 +338,11 @@ extern void eoprot_fun_UPDT_mc_motor_config(const EOnv* nv, const eOropdescripto
 extern void eoprot_fun_INIT_mc_motor_config_pidcurrent(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_pidcurrent(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_motor_config_pidspeed(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_motor_config_pidspeed(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_motor_config_pidvelpwm(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_pidvelpwm(const EOnv* nv, const eOropdescriptor_t* rd);
+
+extern void eoprot_fun_INIT_mc_motor_config_pidvelcur(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_motor_config_pidvelcur(const EOnv* nv, const eOropdescriptor_t* rd);
 
 extern void eoprot_fun_INIT_mc_motor_config_currentlimits(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_motor_config_currentlimits(const EOnv* nv, const eOropdescriptor_t* rd);

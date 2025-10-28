@@ -1021,8 +1021,8 @@ typedef struct
 typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8+36 = 156
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
-    eOmc_PID_t                      pidspeed;                   /**< the pid for speed control */
-    eOmc_PID_t                      pidvelcurrent;              /**< the pid for speed control with inner current control loop */
+    eOmc_PID_t                      pidvelpwm;                   /**< the pid for speed control with pwm output */
+    eOmc_PID_t                      pidvelcur;              /**< the pid for speed control with inner current control loop */
     float32_t                       gearbox_M2J;                /**< the gearbox reduction ration from motor to joint motor:joint*/
     int32_t                         rotorEncoderResolution;     /**< the rotorencoder resolution  */
     eOmeas_velocity_t               maxvelocityofmotor;         /**< the maximum velocity in the motor */
