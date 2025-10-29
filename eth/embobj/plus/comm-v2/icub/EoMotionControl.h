@@ -1448,15 +1448,15 @@ typedef enum
 
 typedef struct
 {
-    uint8_t torque_ctrl_out_type : 2;
-    uint8_t postrj_ctrl_out_type : 2;
-    uint8_t veltrj_ctrl_out_type : 2;
-    uint8_t mixtrj_ctrl_out_type : 2;
-    uint8_t posdir_ctrl_out_type : 2;
-    uint8_t veldir_ctrl_out_type : 2;
-    uint8_t pwm_ctrl_out_type : 2;
-    uint8_t cur_ctrl_out_type : 2;
-} eOmc_pid_output_types_t; EO_VERIFYsizeof(eOmc_pid_output_types_t, 2);
+    uint8_t torque_ctrl_out_type : 3;
+    uint8_t postrj_ctrl_out_type : 3;
+    uint8_t veltrj_ctrl_out_type : 3;
+    uint8_t mixtrj_ctrl_out_type : 3;
+    uint8_t posdir_ctrl_out_type : 3;
+    uint8_t veldir_ctrl_out_type : 3;
+    uint8_t pwm_ctrl_out_type    : 3;
+    uint8_t cur_ctrl_out_type    : 3;
+} eOmc_pid_output_types_t; EO_VERIFYsizeof(eOmc_pid_output_types_t, 3);
 
 typedef struct
 {   //2+ 1+ 1+ 12 = 16
@@ -1465,7 +1465,7 @@ typedef struct
     uint8_t                         pidoutputtype               : 3;        // use eOmc_pidoutputtype_t
     uint8_t                         dummy                       : 3;        
     eOmc_pid_output_types_t         pid_output_types;
-    uint8_t                         filler;
+    //uint8_t                         filler;
     
     //uint8_t usespeedfeedbackfrommotors;
     //uint8_t filler;
