@@ -1571,8 +1571,13 @@ extern const char * eomc_pidoutputtype2string(eOmc_pidoutputtype_t pidoutputtype
 extern eOmc_pidoutputtype_t eomc_string2pidoutputtype(const char * string, eObool_t usecompactstring);
 
 
-extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring);
 extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstraint, eObool_t usecompactstring);
+extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring);
+
+
+extern const char * eomc_controlmode2string(eOenum08_t controlmode, eObool_t usecompactstring);
+extern eOenum08_t eomc_string2controlmode(const char * string, eObool_t usecompactstring);
+
 
 extern eOmc_calib14_ROT_t eomc_int2calib14_ROT(int32_t value);
 extern int32_t eomc_calib14_ROT2int(eOmc_calib14_ROT_t value);

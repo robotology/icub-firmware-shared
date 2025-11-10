@@ -571,6 +571,16 @@ typedef struct
     uint8_t         val0;    
 } eOmap_str_str_u08_t;
 
+/** @typedef    typedef struct eOmap_str_str_i08_t
+    @brief      it can be used to build a map containing two strings and a value. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    const char *    str1;
+    int8_t          val0;
+} eOmap_str_str_i08_t;
+
 
 /** @typedef    typedef struct eOmap_str_str_u08_u08_t
     @brief      it can be used to build a map containing two strings and two values. 
