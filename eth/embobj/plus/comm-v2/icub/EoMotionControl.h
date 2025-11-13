@@ -1448,54 +1448,52 @@ typedef enum
 
 typedef struct
 {
-    uint8_t torque_ctrl_out_type : 3;
-    uint8_t postrj_ctrl_out_type : 3;
-    uint8_t veltrj_ctrl_out_type : 3;
-    uint8_t mixtrj_ctrl_out_type : 3;
-    uint8_t posdir_ctrl_out_type : 3;
-    uint8_t veldir_ctrl_out_type : 3;
-    uint8_t pwm_ctrl_out_type    : 3;
-    uint8_t cur_ctrl_out_type    : 3;
-} eOmc_pid_output_types_t; EO_VERIFYsizeof(eOmc_pid_output_types_t, 3);
+    uint8_t torque_ctrl_out_type : 4;
+    uint8_t postrj_ctrl_out_type : 4;
+    uint8_t veltrj_ctrl_out_type : 4;
+    uint8_t mixtrj_ctrl_out_type : 4;
+    uint8_t posdir_ctrl_out_type : 4;
+    uint8_t veldir_ctrl_out_type : 4;
+    uint8_t pwm_ctrl_out_type    : 4;
+    uint8_t cur_ctrl_out_type    : 4;
+} eOmc_pid_output_types_t; EO_VERIFYsizeof(eOmc_pid_output_types_t, 4);
 
 typedef struct
-{   //2+ 1+ 1+ 12 = 16
+{   //1 + 1 + 3 + 3 + 4 + + 3 + 12 = 20
     uint8_t                         candotorquecontrol          : 1;        // use eobool_true / eobool_false
     uint8_t                         usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
+    uint8_t                         dummy                       : 3;        // for alignment
     uint8_t                         pidoutputtype               : 3;        // use eOmc_pidoutputtype_t
-    uint8_t                         dummy                       : 3;        
     eOmc_pid_output_types_t         pid_output_types;
-    //uint8_t                         filler;
-    
-    //uint8_t usespeedfeedbackfrommotors;
-    //uint8_t filler;
+    uint8_t                         filler[3];
+
     eOmc_jointSet_constraints_t     constraints;
-} eOmc_jointset_configuration_t; EO_VERIFYsizeof(eOmc_jointset_configuration_t, 16)
+} eOmc_jointset_configuration_t; EO_VERIFYsizeof(eOmc_jointset_configuration_t, 20)
 
 
 typedef struct
-{   // 4+ 64 + 64 + 64 + 96 = 292
+{   // 4+ 80 + 64 + 64 + 96 = 308
     uint8_t                         joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
-    eOmc_jointset_configuration_t   jsetcfg[4];
     eOmc_4x4_matrix_t               joint2motor;
     eOmc_4x4_matrix_t               motor2joint; 
+    eOmc_jointset_configuration_t   jsetcfg[4];
     eOmc_4x6_matrix_t               encoder2joint;
-} eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 292)
+} eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 308)
 
 typedef struct
-{   // 4 + 64 + 64 + 64 + 64 = 260
+{   // 4 + + 64 + 64 + 64 + 80 = 260
     uint8_t                         joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
-    eOmc_jointset_configuration_t   jsetcfg[4];
     eOmc_4x4_matrix_t               joint2motor;
     eOmc_4x4_matrix_t               motor2joint; 
     eOmc_4x4_matrix_t               encoder2joint4x4;
-} eOmc_4jomo_coupling_4x4_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_4x4_t, 260)
+    eOmc_jointset_configuration_t   jsetcfg[4];
+} eOmc_4jomo_coupling_4x4_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_4x4_t, 276)
 
 typedef union                               
-{   // max(260, 4)
+{   // max(276, 4)
     eOmc_4jomo_coupling_4x4_t   coupling4x4;
     uint32_t                    other;
-} eOmc_adv4jomo_coupling_data_t;  EO_VERIFYsizeof(eOmc_adv4jomo_coupling_data_t, 260)
+} eOmc_adv4jomo_coupling_data_t;  EO_VERIFYsizeof(eOmc_adv4jomo_coupling_data_t, 276)
 
 typedef enum
 {
@@ -1503,11 +1501,11 @@ typedef enum
 } eOmc_adv4jomocoupling_type_t;
 
 typedef struct
-{   // 4 + 260 = 264
+{   // 4 + 276 = 264
     uint8_t                         type;       // use eOmc_adv4jomocoupling_type_t
     uint8_t                         filler[3];
     eOmc_adv4jomo_coupling_data_t   data;   
-} eOmc_adv4jomo_coupling_t; EO_VERIFYsizeof(eOmc_adv4jomo_coupling_t, 264)
+} eOmc_adv4jomo_coupling_t; EO_VERIFYsizeof(eOmc_adv4jomo_coupling_t, 280)
 
 
 typedef struct
