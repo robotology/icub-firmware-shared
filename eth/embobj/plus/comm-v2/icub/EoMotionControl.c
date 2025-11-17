@@ -177,24 +177,27 @@ static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
 
 static const eOmap_str_str_i08_t s_eomc_map_of_controlmodes[] =
 {    
-    {"idle", "eomc_controlmode_idle", eomc_controlmode_idle},
-    {"position", "eomc_controlmode_position", eomc_controlmode_position},
-    {"velocity", "eomc_controlmode_velocity", eomc_controlmode_velocity},
-    {"torque", "eomc_controlmode_torque", eomc_controlmode_torque},
-    {"impedance_pos", "eomc_controlmode_impedance_pos", eomc_controlmode_impedance_pos},
-    {"impedance_vel", "eomc_controlmode_impedance_vel", eomc_controlmode_impedance_vel},
-    {"current", "eomc_controlmode_current", eomc_controlmode_current},
-    {"vel_direct", "eomc_controlmode_vel_direct", eomc_controlmode_vel_direct},
-    {"openloop", "eomc_controlmode_openloop", eomc_controlmode_openloop},
-    {"calib", "eomc_controlmode_calib", eomc_controlmode_calib},
-    {"mixed", "eomc_controlmode_mixed", eomc_controlmode_mixed},
-    {"velocity_pos", "eomc_controlmode_velocity_pos", eomc_controlmode_velocity_pos},
-    {"direct", "eomc_controlmode_direct", eomc_controlmode_direct},
-    {"hwFault", "eomc_controlmode_hwFault", eomc_controlmode_hwFault},
-    {"notConfigured", "eomc_controlmode_notConfigured", eomc_controlmode_notConfigured},
-    {"configured", "eomc_controlmode_configured", eomc_controlmode_configured},
+    {"idle", "eomc_ctrlmval_idle", eomc_ctrlmval_idle},
+    {"position", "eomc_ctrlmval_position", eomc_ctrlmval_position},
+    {"velocity", "eomc_ctrlmval_velocity", eomc_ctrlmval_velocity},
+    {"torque", "eomc_ctrlmval_torque", eomc_ctrlmval_torque},
+    {"impedance_pos", "eomc_ctrlmval_impedance_pos", eomc_ctrlmval_impedance_pos},
+    {"impedance_vel", "eomc_ctrlmval_impedance_vel", eomc_ctrlmval_impedance_vel},
+    {"current", "eomc_ctrlmval_current", eomc_ctrlmval_current},
+    {"velocity_pos", "eomc_ctrlmval_velocity_pos", eomc_ctrlmval_velocity_pos},
+    {"mixed", "eomc_ctrlmval_mixed", eomc_ctrlmval_mixed},
+    {"direct", "eomc_ctrlmval_direct", eomc_ctrlmval_direct},
+    {"calib", "eomc_ctrlmval_calib", eomc_ctrlmval_calib},
+    {"hwFault", "eomc_ctrlmval_hwFault" , eomc_ctrlmval_hwFault},
+    {"notConfigured", "eomc_ctrlmval_notConfigured", eomc_ctrlmval_notConfigured},
+    {"configured", "eomc_ctrlmval_configured", eomc_ctrlmval_configured},
+    {"forceIdle", "eomc_ctrlmval_forceIdle", eomc_ctrlmval_forceIdle},
+    {"vel_direct", "eomc_ctrlmval_vel_direct", eomc_ctrlmval_vel_direct},
+    {"openloop", "eomc_ctrlmval_openloop", eomc_ctrlmval_openloop},
+    {"everything_off", "eomc_ctrlmval_everything_off", eomc_ctrlmval_everything_off},
+    {"calib", "eomc_ctrlmval_calib", eomc_ctrlmval_calib},
     
-    {"unknown", "eomc_controlmode_unknownError", eomc_controlmode_unknownError}
+    {"unknown", "eomc_ctrlmval_unknownError", eomc_ctrlmval_unknownError}
 };
 
 static const eOmap_int32_u08_t s_eomc_map_of_calib14rot[] =

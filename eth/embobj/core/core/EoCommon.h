@@ -809,6 +809,10 @@ extern const char * eo_common_map_str_str_u08__value2string(const eOmap_str_str_
 
 extern uint8_t eo_common_map_str_str_u08__string2value(const eOmap_str_str_u08_t * map, uint8_t size, const char * string, eObool_t usestr0, uint8_t defvalue);
 
+extern const char * eo_common_map_str_str_i08__value2string(const eOmap_str_str_i08_t * map, uint8_t size, int8_t value, eObool_t usestr0);
+
+extern int8_t eo_common_map_str_str_i08__string2value(const eOmap_str_str_i08_t * map, uint8_t size, const char * string, eObool_t usestr0, int8_t defvalue);
+
 
 extern eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4);
 extern eOmacaddr_t eo_common_macaddr(uint8_t m1, uint8_t m2, uint8_t m3, uint8_t m4, uint8_t m5, uint8_t m6);
