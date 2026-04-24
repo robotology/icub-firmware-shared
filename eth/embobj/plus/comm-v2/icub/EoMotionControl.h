@@ -1018,7 +1018,7 @@ typedef struct
     @brief      eOmc_motor_config_t contains the values required to configure a motor
     @warning    This struct must be of fixed size and multiple of 4.
  **/
-typedef struct                  // size is: 40+40+4+4+4+6+2+1+1+1+1+4+2+2+8+36 = 156
+typedef struct                  // size is: 40+40+40+4+4+4+6+2+1+1+1+1+4+4+2+2+8+36 = 200
 {
     eOmc_PID_t                      pidcurrent;                 /**< the pid for current control */
     eOmc_PID_t                      pidvelpwm;                   /**< the pid for speed control with pwm output */
@@ -1472,7 +1472,7 @@ typedef struct
 
 
 typedef struct
-{   // 4+ 80 + 64 + 64 + 96 = 308
+{   // 4 + 64 + 64 + 80 + 96 = 308
     uint8_t                         joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
     eOmc_4x4_matrix_t               joint2motor;
     eOmc_4x4_matrix_t               motor2joint; 
@@ -1481,7 +1481,7 @@ typedef struct
 } eOmc_4jomo_coupling_t; EO_VERIFYsizeof(eOmc_4jomo_coupling_t, 308)
 
 typedef struct
-{   // 4 + + 64 + 64 + 64 + 80 = 260
+{   // 4 + 64 + 64 + 64 + 80 = 276
     uint8_t                         joint2set[4];       // it contains the set each joint belongs to. Use eOmc_jointSetNumber_t values
     eOmc_4x4_matrix_t               joint2motor;
     eOmc_4x4_matrix_t               motor2joint; 
