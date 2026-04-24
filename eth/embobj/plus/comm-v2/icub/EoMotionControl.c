@@ -195,7 +195,6 @@ static const eOmap_str_str_i08_t s_eomc_map_of_controlmodes[] =
     {"vel_direct", "eomc_ctrlmval_vel_direct", eomc_ctrlmval_vel_direct},
     {"openloop", "eomc_ctrlmval_openloop", eomc_ctrlmval_openloop},
     {"everything_off", "eomc_ctrlmval_everything_off", eomc_ctrlmval_everything_off},
-    {"calib", "eomc_ctrlmval_calib", eomc_ctrlmval_calib},
     
     {"unknown", "eomc_ctrlmval_unknownError", eomc_ctrlmval_unknownError}
 };
@@ -460,6 +459,12 @@ extern const char * eomc_controlmode2string(eOenum08_t controlmode, eObool_t use
     const uint8_t size = sizeof(s_eomc_map_of_controlmodes)/sizeof(eOmap_str_str_i08_t);
     const char * str = eo_common_map_str_str_i08__value2string(map, size, value, usecompactstring);
     
+    if(NULL == str)
+    {
+        str = (eobool_true == usecompactstring) ? (map[size-1].str0) : (map[size-1].str1);
+    }    
+    
+    return(str);       
 }
 
 extern eOenum08_t eomc_string2controlmode(const char * string, eObool_t usecompactstring)
