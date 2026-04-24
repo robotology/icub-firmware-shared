@@ -174,6 +174,32 @@ static const eOmap_str_str_u08_t s_eomc_map_of_jsetconstraints[] =
     {"unknown", "eomc_jsetconstraint_unknown", eomc_jsetconstraint_unknown}
 };  EO_VERIFYsizeof(s_eomc_map_of_jsetconstraints, (eomc_jsetconstraints_numberof + 1)*sizeof(eOmap_str_str_u08_t));
 
+
+static const eOmap_str_str_i08_t s_eomc_map_of_controlmodes[] =
+{    
+    {"idle", "eomc_ctrlmval_idle", eomc_ctrlmval_idle},
+    {"position", "eomc_ctrlmval_position", eomc_ctrlmval_position},
+    {"velocity", "eomc_ctrlmval_velocity", eomc_ctrlmval_velocity},
+    {"torque", "eomc_ctrlmval_torque", eomc_ctrlmval_torque},
+    {"impedance_pos", "eomc_ctrlmval_impedance_pos", eomc_ctrlmval_impedance_pos},
+    {"impedance_vel", "eomc_ctrlmval_impedance_vel", eomc_ctrlmval_impedance_vel},
+    {"current", "eomc_ctrlmval_current", eomc_ctrlmval_current},
+    {"velocity_pos", "eomc_ctrlmval_velocity_pos", eomc_ctrlmval_velocity_pos},
+    {"mixed", "eomc_ctrlmval_mixed", eomc_ctrlmval_mixed},
+    {"direct", "eomc_ctrlmval_direct", eomc_ctrlmval_direct},
+    {"calib", "eomc_ctrlmval_calib", eomc_ctrlmval_calib},
+    {"hwFault", "eomc_ctrlmval_hwFault" , eomc_ctrlmval_hwFault},
+    {"notConfigured", "eomc_ctrlmval_notConfigured", eomc_ctrlmval_notConfigured},
+    {"configured", "eomc_ctrlmval_configured", eomc_ctrlmval_configured},
+    {"forceIdle", "eomc_ctrlmval_forceIdle", eomc_ctrlmval_forceIdle},
+    {"vel_direct", "eomc_ctrlmval_vel_direct", eomc_ctrlmval_vel_direct},
+    {"openloop", "eomc_ctrlmval_openloop", eomc_ctrlmval_openloop},
+    {"everything_off", "eomc_ctrlmval_everything_off", eomc_ctrlmval_everything_off},
+    {"calib", "eomc_ctrlmval_calib", eomc_ctrlmval_calib},
+    
+    {"unknown", "eomc_ctrlmval_unknownError", eomc_ctrlmval_unknownError}
+};
+
 static const eOmap_int32_u08_t s_eomc_map_of_calib14rot[] =
 {
     {0, eOmc_calib14_ROT_zero},
@@ -402,16 +428,6 @@ extern const char * eomc_pidoutputtype2string(eOmc_pidoutputtype_t pidoutputtype
 }
 
 
-extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring)
-{
-    const eOmap_str_str_u08_t * map = s_eomc_map_of_jsetconstraints;
-    const uint8_t size = eomc_jsetconstraints_numberof+1;
-    const uint8_t defvalue = eomc_jsetconstraint_unknown;
-    
-    return((eOmc_jsetconstraint_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
-}
-
-
 extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstraint, eObool_t usecompactstring)
 {
     const eOmap_str_str_u08_t * map = s_eomc_map_of_jsetconstraints;
@@ -427,7 +443,32 @@ extern const char * eomc_jsetconstraint2string(eOmc_jsetconstraint_t jsetconstra
     return(str);       
 }
 
+extern eOmc_jsetconstraint_t eomc_string2jsetconstraint(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_u08_t * map = s_eomc_map_of_jsetconstraints;
+    const uint8_t size = eomc_jsetconstraints_numberof+1;
+    const uint8_t defvalue = eomc_jsetconstraint_unknown;
+    
+    return((eOmc_jsetconstraint_t)eo_common_map_str_str_u08__string2value(map, size, string, usecompactstring, defvalue));
+}
 
+
+extern const char * eomc_controlmode2string(eOenum08_t controlmode, eObool_t usecompactstring)
+{
+    const eOmap_str_str_i08_t * map = s_eomc_map_of_controlmodes;
+    const int8_t value = controlmode;
+    const uint8_t size = sizeof(s_eomc_map_of_controlmodes)/sizeof(eOmap_str_str_i08_t);
+    const char * str = eo_common_map_str_str_i08__value2string(map, size, value, usecompactstring);
+    
+}
+
+extern eOenum08_t eomc_string2controlmode(const char * string, eObool_t usecompactstring)
+{
+    const eOmap_str_str_i08_t * map = s_eomc_map_of_controlmodes;
+    const uint8_t size = sizeof(s_eomc_map_of_controlmodes)/sizeof(eOmap_str_str_i08_t);
+    const int8_t defvalue = eomc_controlmode_unknownError;
+    return((eOenum08_t)eo_common_map_str_str_i08__string2value(map, size, string, usecompactstring, defvalue));
+}
 
 
 extern void eomc_stopswitch_set(eomc_stopswitches_t *value, const eOmc_stopswitch_t low, const eOmc_stopswitch_t high)
@@ -481,6 +522,7 @@ extern int32_t eomc_calib14_ROT2int(eOmc_calib14_ROT_t value)
     }
     return defvalue;
 }
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 

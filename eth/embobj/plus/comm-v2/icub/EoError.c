@@ -210,7 +210,8 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
     {eoerror_value_MC_motor_qencoder_phase_disappeared, "MC: qenc error has disappeared, warning counter has been reset.", ""},
     {eoerror_value_MC_motor_overheating,     "MC: overheating. Temperature hardware limit exceeded. The motor has been turned off to prevent it from being damaged by overheating.", "In par16 = ID of the joint. In par64 0xFFFF is the mask of the raw tmperature feedback."},
     {eoerror_value_MC_motor_tdb_not_reading, "MC: TDB cannot receive any data on I2C channel. Motor temperature detection board is not receiving any data on the i2C channel.", "In par16 = ID of the joint."},
-    {eoerror_value_MC_ref_setpoint_timeout,  "MC: reference setpoint timeout.", "Param16 = type of the expired timeout."}
+    {eoerror_value_MC_ref_setpoint_timeout,  "MC: reference setpoint timeout.", "Param16 = type of the expired timeout."},
+    {eoerror_value_MC_joint_software_limit,  "MC: software limit reached. The joint position is outside its software boundaries. Output limited awaiting to be moved back inside safe positions.", "In par16 = ID of joint. In par64 lsb 8 bits = control mode, msb 32 bits = feedback joint position."}
 };  EO_VERIFYsizeof(eoerror_valuestrings_MC, eoerror_value_MC_numberof*sizeof(const eoerror_valuestring_t)) 
 
 
@@ -218,7 +219,7 @@ const eoerror_valuestring_t eoerror_valuestrings_MC[] =
 const eoerror_valuestring_t eoerror_valuestrings_SK[] =
 {   // very important: fill table with order of eOerror_value_MC_t
     //                 in case of holes, use {0, NULL}
-    {eoerror_value_SK_unspecified,             "SK: unspecified code.", ""}, //no need to modify
+    {eoerror_value_SK_unspecified,              "SK: unspecified code.", ""}, //no need to modify
     {eoerror_value_SK_arrayofcandataoverflow,   "SK: cannot put rx can frames into arrayofcandata, thus some skin readings will be lost", "In par16 there is frame.id and frame.size (in most significant nibble). In par64 there is the frame.data"},
     {eoerror_value_SK_onoroff,                  "SK: the skin transmission has been switched", "In par16 there's the corresponding code (0: OFF, 1: ON)"},
     {eoerror_value_SK_unexpecteddata,           "SK: the board has received a message from the skin even if it should be in a silenced modality. Current state of the EMS board is", "In par16 there's the current state of the EMS board (0: CFG, 1: RUN)"},

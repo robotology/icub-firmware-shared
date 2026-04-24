@@ -82,12 +82,13 @@ typedef enum
     eobrd_cantype_strain2c          = ICUBCANPROTO_BOARDTYPE__STRAIN2C, // 22 (strain2c)
     eobrd_cantype_bat               = ICUBCANPROTO_BOARDTYPE__BAT,      // 23 (bat)
     eobrd_cantype_amcfoc2c          = ICUBCANPROTO_BOARDTYPE__AMCFOC2C, // 24 (amcfoc2c)
+    eobrd_cantype_amcmj1_mot        = ICUBCANPROTO_BOARDTYPE__AMCMJ1_MOT,// 25 (amcmj1_mot)
 
     eobrd_cantype_none              = 254, 	
     eobrd_cantype_unknown           = ICUBCANPROTO_BOARDTYPE__UNKNOWN   // 255 
 } eObrd_cantype_t;
 
-enum { eobrd_cantype_numberof = 25 };
+enum { eobrd_cantype_numberof = 26 };
 
 
 typedef enum
@@ -97,12 +98,13 @@ typedef enum
     eobrd_ethtype_mc2plus           = 34,   
     eobrd_ethtype_amc               = 35,
     eobrd_ethtype_amcfoc            = 36,
+    eobrd_ethtype_amcmj1            = 37,
 	
     eobrd_ethtype_none              = 254, 	
     eobrd_ethtype_unknown           = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN 
 } eObrd_ethtype_t;
 
-enum { eobrd_ethtype_numberof = 5 };
+enum { eobrd_ethtype_numberof = 6 };
 
 
 // use eoboards_is_can() / eoboards_is_eth() to check if the eObrd_type_t belongs also to eObrd_cantype_t / eObrd_ethtype_t group.
@@ -116,6 +118,7 @@ typedef enum
     eobrd_mc2plus               = eobrd_ethtype_mc2plus,     
     eobrd_amc                   = eobrd_ethtype_amc,
 	eobrd_amcfoc                = eobrd_ethtype_amcfoc,
+    eobrd_amcmj1                = eobrd_ethtype_amcmj1,
     
     eobrd_mc4                   = eobrd_cantype_mc4,        
     eobrd_mtb                   = eobrd_cantype_mtb,        
@@ -143,13 +146,14 @@ typedef enum
     eobrd_strain2c              = eobrd_cantype_strain2c,
     eobrd_bat                   = eobrd_cantype_bat,
     eobrd_amcfoc2c              = eobrd_cantype_amcfoc2c,
+    eobrd_amcmj1_mot            = eobrd_cantype_amcmj1_mot,
 
 
     eobrd_none                  = 254,                      
     eobrd_unknown               = 255  // = ICUBCANPROTO_BOARDTYPE__UNKNOWN                     
 } eObrd_type_t;
 
-enum { eobrd_type_numberof = 30 };
+enum { eobrd_type_numberof = 32 };
 
 
 typedef struct                  

@@ -682,6 +682,42 @@ extern uint8_t eo_common_map_str_str_u08__string2value(const eOmap_str_str_u08_t
     return(defvalue);
 }
 
+extern const char * eo_common_map_str_str_i08__value2string(const eOmap_str_str_i08_t * map, uint8_t size, int8_t value, eObool_t usestr0)
+{
+    uint8_t i = 0;
+    for(i=0; i<size; i++)
+    {
+        if(value == map[i].val0)
+        {
+            const char * str = (eobool_true == usestr0) ? map[i].str0 : map[i].str1;
+            return(str);
+        }
+    }    
+    
+    return(NULL);
+}
+
+extern int8_t eo_common_map_str_str_i08__string2value(const eOmap_str_str_i08_t * map, uint8_t size, const char * string, eObool_t usestr0, int8_t defvalue)
+{
+    uint8_t i = 0;
+    
+    if(NULL == string)
+    {
+        return(defvalue);
+    }
+      
+    for(i=0; i<size; i++)
+    {
+        const char * str = (eobool_true == usestr0) ? map[i].str0 : map[i].str1;
+        if(0 == strcmp(string, str))
+        {
+            return(map[i].val0);
+        }
+    }
+    
+    return(defvalue);
+}
+
 extern eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4)
 {
     return(EO_COMMON_IPV4ADDR(ip1, ip2, ip3, ip4));

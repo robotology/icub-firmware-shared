@@ -571,6 +571,16 @@ typedef struct
     uint8_t         val0;    
 } eOmap_str_str_u08_t;
 
+/** @typedef    typedef struct eOmap_str_str_i08_t
+    @brief      it can be used to build a map containing two strings and a value. 
+ **/
+typedef struct
+{
+    const char *    str0;
+    const char *    str1;
+    int8_t          val0;
+} eOmap_str_str_i08_t;
+
 
 /** @typedef    typedef struct eOmap_str_str_u08_u08_t
     @brief      it can be used to build a map containing two strings and two values. 
@@ -798,6 +808,10 @@ extern eObool_t eo_common_compiler_string_to_date(const char *str, eOdate_t *dat
 extern const char * eo_common_map_str_str_u08__value2string(const eOmap_str_str_u08_t * map, uint8_t size, uint8_t value, eObool_t usestr0);
 
 extern uint8_t eo_common_map_str_str_u08__string2value(const eOmap_str_str_u08_t * map, uint8_t size, const char * string, eObool_t usestr0, uint8_t defvalue);
+
+extern const char * eo_common_map_str_str_i08__value2string(const eOmap_str_str_i08_t * map, uint8_t size, int8_t value, eObool_t usestr0);
+
+extern int8_t eo_common_map_str_str_i08__string2value(const eOmap_str_str_i08_t * map, uint8_t size, const char * string, eObool_t usestr0, int8_t defvalue);
 
 
 extern eOipv4addr_t eo_common_ipv4addr(uint8_t ip1, uint8_t ip2, uint8_t ip3, uint8_t ip4);
