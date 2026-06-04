@@ -182,7 +182,7 @@ const eoerror_valuestring_t eoerror_valuestrings_HW[] =
     {eoerror_value_HW_encoder_close_to_limits, "HW - encoder: the position data is valid, but some operating conditions are close to limits.", ""},
     {eoerror_value_HW_encoder_crc,             "HW - encoder: inverted CRC is invalid", ""},
     {eoerror_value_HW_encoder_not_connected,   "HW - encoder: not connected"},
-    {eoerror_value_HW_amo_encoder_status0,     "HW - amo encoder status0 error: poor-level or clipping in the signal of master and/or nonius track.", "In par64 counts for the number of errors in 10 seconds (lower: LS 32bits nonius_max|nonius_min, upper: MS 32bits master_max|master_min)"},
+    {eoerror_value_HW_amo_encoder_status0,     "HW - amo encoder status0 error: poor-level or clipping in the signal of master and/or nonius track.", "In par64 counts for the number of errors in 10 seconds (upper: MS 32bits nonius, lower: LS 32bits master)"},
     {eoerror_value_HW_amo_encoder_status1,     "HW - amo encoder status1 error: errors on reading on master and/or nonius track.", "In par64 counts for the number of errors in 10 seconds masked as: crc error 0xffff000000000000, i2c comm error 0x0000ffff00000000, nonius track period consistency error 0x00000000ffff0000, eccessive input signal frequency for converters error 0x000000000000ffff "}
 };  EO_VERIFYsizeof(eoerror_valuestrings_HW, eoerror_value_HW_numberof*sizeof(const eoerror_valuestring_t)) 
 
