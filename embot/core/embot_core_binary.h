@@ -118,12 +118,15 @@ namespace embot { namespace core { namespace binary { namespace mask {
 //        dst |= (msk << shift);
 //    }    
     
-    // it creates a mask which has `1` value in positions specified by posofonbits
+    // it creates a mask which has `1` value in positions specified by posofonbits. 
+    // T can be an int or also an enum class
+    // auto mask1 = generate<uint32_t>([1, 2, 3}) 
+    // auto mask2 = generate<uint32_t>({embot::hw::MOTOR::one, embot::hw::MOTOR::two})
     template<typename M, typename T>
     constexpr M generate(const std::initializer_list<T> &posofonbits)
     {
         M mask = 0;
-        for(auto a : posofonbits) embot::core::binary::bit::set(mask, a);
+        for(auto a : posofonbits) embot::core::binary::bit::set(mask, static_cast<uint8_t>(a));
         return mask;
     } 
              
