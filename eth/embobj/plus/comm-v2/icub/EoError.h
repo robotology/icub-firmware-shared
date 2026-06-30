@@ -252,13 +252,14 @@ enum { eoerror_value_MC_numberof = 22 };
  **/
 typedef enum
 {
-    eoerror_value_MC_ref_timeout_unknown = 0,
-    eoerror_value_MC_ref_timeout_torque  = 1,
-    eoerror_value_MC_ref_timeout_current = 2,
-    eoerror_value_MC_ref_timeout_pwm     = 3
+    eoerror_value_MC_ref_timeout_unknown  = 0,
+    eoerror_value_MC_ref_timeout_torque   = 1,
+    eoerror_value_MC_ref_timeout_current  = 2,
+    eoerror_value_MC_ref_timeout_pwm      = 3,
+    eoerror_value_MC_ref_timeout_velocity = 4
 } eOerror_value_MC_ref_timeout_t;
 
-enum { eOerror_value_MC_ref_timeout_numberof = 4 };
+enum { eOerror_value_MC_ref_timeout_numberof = 5 };
 
 
 /** @typedef    typedef enum eOerror_value_SK_t
