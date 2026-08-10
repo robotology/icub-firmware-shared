@@ -128,18 +128,18 @@ EO_weak extern void eoprot_fun_INIT_mc_joint_config(const EOnv* nv)  {}
 EO_weak extern void eoprot_fun_UPDT_mc_joint_config(const EOnv* nv, const eOropdescriptor_t* rd)  {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidposition)
-EO_weak extern void eoprot_fun_INIT_mc_joint_config_pidposition(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidtrajectory)
+EO_weak extern void eoprot_fun_INIT_mc_joint_config_pidtrajectory(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidposition)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_config_pidposition(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidtrajectory)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_config_pidtrajectory(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
-#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidvelocity)
-EO_weak extern void eoprot_fun_INIT_mc_joint_config_pidvelocity(const EOnv* nv) {}
+#if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidposdirect)
+EO_weak extern void eoprot_fun_INIT_mc_joint_config_pidposdirect(const EOnv* nv) {}
 #endif
-#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidvelocity)
-EO_weak extern void eoprot_fun_UPDT_mc_joint_config_pidvelocity(const EOnv* nv, const eOropdescriptor_t* rd) {}
+#if !defined(OVERRIDE_eoprot_fun_UPDT_mc_joint_config_pidposdirect)
+EO_weak extern void eoprot_fun_UPDT_mc_joint_config_pidposdirect(const EOnv* nv, const eOropdescriptor_t* rd) {}
 #endif
 
 #if !defined(OVERRIDE_eoprot_fun_INIT_mc_joint_config_pidtorque)
