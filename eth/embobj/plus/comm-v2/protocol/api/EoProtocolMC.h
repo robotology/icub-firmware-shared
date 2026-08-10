@@ -71,9 +71,7 @@ typedef enum
 {
     eoprot_tag_mc_joint_wholeitem                                   =  0,
     eoprot_tag_mc_joint_config                                      =  1,
-    eoprot_tag_mc_joint_config_pidposition                          =  2,
     eoprot_tag_mc_joint_config_pidtrajectory                        =  2,
-    eoprot_tag_mc_joint_config_pidvelocity                          =  3,
     eoprot_tag_mc_joint_config_piddirect                            =  3,
     eoprot_tag_mc_joint_config_pidtorque                            =  4,
     eoprot_tag_mc_joint_config_userlimits                           =  5,
@@ -110,7 +108,7 @@ typedef enum
     eoprot_rwm_mc_joint_wholeitem                                   = eo_nv_rwmode_RO,
     eoprot_rwm_mc_joint_config                                      = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidtrajectory                        = eo_nv_rwmode_RW,
-    eoprot_rwm_mc_joint_config_piddirect                            = eo_nv_rwmode_RW,
+    eoprot_rwm_mc_joint_config_pidposdirect                         = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_pidtorque                            = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_userlimits                           = eo_nv_rwmode_RW,
     eoprot_rwm_mc_joint_config_impedance                            = eo_nv_rwmode_RW,
@@ -259,11 +257,11 @@ extern void eoprot_fun_UPDT_mc_joint_wholeitem(const EOnv* nv, const eOropdescri
 extern void eoprot_fun_INIT_mc_joint_config(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_config_pidposition(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_config_pidposition(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_config_pidtrajectory(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_pidtrajectory(const EOnv* nv, const eOropdescriptor_t* rd);
 
-extern void eoprot_fun_INIT_mc_joint_config_pidvelocity(const EOnv* nv);
-extern void eoprot_fun_UPDT_mc_joint_config_pidvelocity(const EOnv* nv, const eOropdescriptor_t* rd);
+extern void eoprot_fun_INIT_mc_joint_config_pidposdirect(const EOnv* nv);
+extern void eoprot_fun_UPDT_mc_joint_config_pidposdirect(const EOnv* nv, const eOropdescriptor_t* rd);
    
 extern void eoprot_fun_INIT_mc_joint_config_pidtorque(const EOnv* nv);
 extern void eoprot_fun_UPDT_mc_joint_config_pidtorque(const EOnv* nv, const eOropdescriptor_t* rd);
