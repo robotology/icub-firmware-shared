@@ -130,7 +130,7 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config =
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidposition =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidtrajectory =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.pidtrajectory),
     EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_pidtrajectory,
@@ -140,27 +140,26 @@ static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidpositio
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_pidposition,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_pidposition
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_pidtrajectory,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_pidtrajectory
 #endif
 };
 
 
-static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidvelocity =
+static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidposdirect =
 {   
     EO_INIT(.capacity)  sizeof(eoprot_mc_rom_joint_defaultvalue.config.piddirect),
-    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_piddirect,
+    EO_INIT(.rwmode)    eoprot_rwm_mc_joint_config_pidposdirect,
     EO_INIT(.dummy)     0,    
     EO_INIT(.resetval)  (const void*)&eoprot_mc_rom_joint_defaultvalue.config.piddirect,
 #ifdef EOPROT_CFG_OVERRIDE_CALLBACKS_IN_RUNTIME
     EO_INIT(.init)      NULL,
     EO_INIT(.update)    NULL
 #else       
-    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_pidvelocity,
-    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_pidvelocity
+    EO_INIT(.init)      eoprot_fun_INIT_mc_joint_config_pidposdirect,
+    EO_INIT(.update)    eoprot_fun_UPDT_mc_joint_config_pidposdirect
 #endif
 };
-
 
 static EOPROT_ROMmap EOnv_rom_t eoprot_mc_rom_descriptor_joint_config_pidtorque =
 {   
@@ -732,8 +731,8 @@ static EOPROT_ROMmap EOnv_rom_t * const s_eoprot_mc_rom_joint_descriptors[] =
 {   // here are eoprot_tags_mc_joint_numberof descriptors for the joint entity
     &eoprot_mc_rom_descriptor_joint_wholeitem,
     &eoprot_mc_rom_descriptor_joint_config,
-    &eoprot_mc_rom_descriptor_joint_config_pidposition,
-    &eoprot_mc_rom_descriptor_joint_config_pidvelocity,
+    &eoprot_mc_rom_descriptor_joint_config_pidtrajectory,
+    &eoprot_mc_rom_descriptor_joint_config_pidposdirect,
     &eoprot_mc_rom_descriptor_joint_config_pidtorque,
     &eoprot_mc_rom_descriptor_joint_config_userlimits,
     &eoprot_mc_rom_descriptor_joint_config_impedance,
@@ -830,8 +829,8 @@ static const char * const s_eoprot_mc_strings_tags_joint[] =
 {
     "eoprot_tag_mc_joint_wholeitem",
     "eoprot_tag_mc_joint_config",
-    "eoprot_tag_mc_joint_config_pidposition",
-    "eoprot_tag_mc_joint_config_pidvelocity",
+    "eoprot_tag_mc_joint_config_pidtrajectory",
+    "eoprot_tag_mc_joint_config_piddirect",
     "eoprot_tag_mc_joint_config_pidtorque",
     "eoprot_tag_mc_joint_config_userlimits",
     "eoprot_tag_mc_joint_config_impedance",

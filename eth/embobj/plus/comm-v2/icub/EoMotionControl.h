@@ -770,7 +770,7 @@ typedef struct                  // size is: 1+3+12+12+4+4= 36
 typedef struct                  // size is: 40+40+40+8+8+12+4+4+28+2+2+2+2+2+1+1+4+4+4+36= 236
 {
     eOmc_PID_t                  pidtrajectory;              /**< the pid for trajectory control */
-    eOmc_PID_t                  piddirect;                  /**< the pid for direct control */
+    eOmc_PID_t                  piddirect;                  /**< the pid for position direct control (without trajectory calculation)*/
     eOmc_PID_t                  pidtorque;                  /**< the pid for torque control */
     eOmeas_position_limits_t    userlimits;                 /**< the minimum and maximum position of the joint */
     eOmeas_position_limits_t    hardwarelimits;
