@@ -228,6 +228,17 @@ extern uint16_t eo_packet_Payload_Pad(EOpacket *p, uint16_t finalsize, uint8_t v
 
 extern eOresult_t eo_packet_Copy(EOpacket *p, const EOpacket *source);
 
+// these functions are added so that new code does do not need to include EOpacket_hid.h anymore
+// legacy code may includes EOpacket_hid.h so it can directly access the internals of struct EOpacket_hid
+// and not using these variables
+
+extern uint8_t * eo_packet_data(EOpacket *p);
+extern eOipv4addr_t eo_packet_remoteaddress(EOpacket *p);
+extern eOipv4port_t eo_packet_remoteport(EOpacket *p);
+extern size_t eo_packet_sizeof();
+extern eOresult_t eo_packet_default_init(void *p, uint32_t a);
+extern eOresult_t eo_packet_default_copy(void *dest, void *src);
+extern eOresult_t eo_packet_default_clear(void *p);
 
 
 /** @}            
