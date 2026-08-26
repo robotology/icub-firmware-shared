@@ -421,6 +421,43 @@ extern eOresult_t eo_packet_Copy(EOpacket *p, const EOpacket *source)
     return(eo_packet_hid_DefCopy(p, (void*)source));
 }
 
+// other functions
+
+extern size_t eo_packet_sizeof()
+{
+    return sizeof(EOpacket);
+}
+
+extern uint8_t * eo_packet_data(EOpacket *p)
+{  
+    return p->data;  
+}
+
+extern eOipv4addr_t eo_packet_remoteaddress(EOpacket *p)
+{
+    return p->remoteaddr;
+}
+
+extern eOipv4port_t eo_packet_remoteport(EOpacket *p)
+{
+    return p->remoteport;
+}
+
+extern eOresult_t eo_packet_default_init(void *p, uint32_t capacity) 
+{ 
+    return eo_packet_hid_DefInit(p, capacity); 
+}
+
+extern eOresult_t eo_packet_default_copy(void *dest, void *src)
+{ 
+    return eo_packet_hid_DefCopy(dest, src); 
+}
+
+extern eOresult_t eo_packet_default_clear(void *p)
+{ 
+    return eo_packet_hid_DefClear(p); 
+}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // - definition of extern hidden functions 
