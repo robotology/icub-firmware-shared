@@ -269,6 +269,8 @@ static const eOmap_str_str_u08_u08_u08_t s_eoboards_map_of_ports[] =
 
     {"amcfocJ11", "eobrd_port_amcfoc_J11", eobrd_port_amcfoc_J11, eobrd_amcfoc, eobrd_conn_J11},
     {"amcfocJ12", "eobrd_port_amcfoc_J12", eobrd_port_amcfoc_J12, eobrd_amcfoc, eobrd_conn_J12},
+
+    {"amcmj1_J4", "eobrd_port_amcmj1_J4", eobrd_port_amcmj1_J4, eobrd_amcmj1, eobrd_conn_J4},
     
     {"none", "eobrd_port_none", eobrd_port_none, eobrd_none, eobrd_conn_none},
     {"unknown", "eobrd_port_unknown", eobrd_port_unknown, eobrd_unknown, eobrd_conn_unknown}

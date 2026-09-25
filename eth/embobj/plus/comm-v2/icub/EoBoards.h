@@ -408,10 +408,12 @@ typedef enum
 
     eobrd_port_amcfoc_J11           = 0,        // SPI encoder: embot::hw::encoder1
     eobrd_port_amcfoc_J12           = 1,        // SPI encoder: embot::hw::encoder2
+
+    eobrd_port_amcmj1_J4            = 0,        // SPI encoder: embot::hw::encoder1
        
 } eObrd_port_t;
 
-enum { eobrd_ports_numberof = 51 };
+enum { eobrd_ports_numberof = 52 };
 
 
 typedef enum
