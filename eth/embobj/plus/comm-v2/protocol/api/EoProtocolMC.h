@@ -225,12 +225,12 @@ enum { eoprot_rwms_mc_controller_numberof = 3 };  // it MUST be equal to the num
     @brief      It is a template for the organisation of joint, motor, controller entities in the motion control endpoint.
                 The effective number depends on the board.
  **/
-typedef struct                  // 188*1+48*1+80 = 316              
+typedef struct                  // 368*1+200*1+24 = 592
 {
     eOmc_joint_t                joints[1]; 
     eOmc_motor_t                motors[1];
     eOmc_controller_t           thecontroller;
-} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 316)
+} eOprot_template_mc_t;         //EO_VERIFYsizeof(eOprot_template_mc_t, 592)
 
 
   
