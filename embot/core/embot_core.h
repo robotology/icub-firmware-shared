@@ -219,6 +219,11 @@ namespace embot { namespace core {
     void wait(embot::core::relTime t);
 
     int print(const std::string &str);
+
+    // it changes the function used by print() and returns the previous one, so that the caller can keep using it.
+    // e.g. embot::net::theLogger sends the lines to an IP address and, if asked, also to the previous output (ITM).
+    // nullptr is allowed: print() then discards everything
+    fpPrint setprint(fpPrint p);
     
 }} // namespace embot { namespace core {
 

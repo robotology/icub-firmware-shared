@@ -29,7 +29,10 @@ namespace embot { namespace core {
     static embot::core::Time s_faketimenow()
     {
         static volatile uint64_t tt = 0;
-        return tt++;
+        // read and write of the volatile written as two operations: ++ on a volatile is deprecated since C++20
+        const uint64_t t = tt;
+        tt = t + 1;
+        return t;
     }
     
     static bool s_initted = false;    
@@ -97,6 +100,13 @@ namespace embot { namespace core {
         }
         return s_print(str);
     }        
+
+    fpPrint setprint(fpPrint p)
+    {
+        fpPrint previous {s_print};
+        s_print = p;
+        return previous;
+    }
     
 }} // namespace embot { namespace core {
 
