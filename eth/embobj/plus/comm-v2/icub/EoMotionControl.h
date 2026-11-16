@@ -1458,7 +1458,7 @@ typedef struct
     uint8_t                         candotorquecontrol          : 1;        // use eobool_true / eobool_false
     uint8_t                         usespeedfeedbackfrommotors  : 1;        // use eobool_true / eobool_false
     uint8_t                         dummy                       : 3;        // for alignment
-    uint8_t                         pidoutputtype               : 3;        // use eOmc_pidoutputtype_t
+    uint8_t                         unused                      : 3;        // use eOmc_pidoutputtype_t
     eOmc_pid_output_types_t         pid_output_types;
     uint8_t                         filler[3];
 
