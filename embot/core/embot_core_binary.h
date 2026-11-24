@@ -26,6 +26,10 @@
 #include <cstring>
 #include <initializer_list>
 #include <climits>
+#include <type_traits>
+#if __cplusplus >= 202002L
+#include <bit>
+#endif
 
 #include "embot_core.h"
 
@@ -195,22 +199,22 @@ namespace embot { namespace core { namespace binary { namespace mask {
         constexpr Mask(T b) : bits(b) {}
         constexpr Mask() = default;
         
-        void load(const T &b) 
+        constexpr void load(const T &b) 
         { 
             bits = b; 
         }
         
-        T get() const 
+        constexpr T get() const 
         { 
             return bits; 
         }
                 
-        void set(uint8_t pos)
+        constexpr void set(uint8_t pos)
         {
             embot::core::binary::bit::set(bits, pos);
         }
         
-        bool check(uint8_t pos)
+        constexpr bool check(uint8_t pos) const
         {
             return embot::core::binary::bit::check(bits, pos);
         }                 
@@ -308,41 +312,63 @@ namespace embot::core::binary::word {
     
     enum class Endianess: uint8_t { Little = 0, Big = 1 };
     
-    // usable for for u8, u16, u32, u64 (and i8 ....)
+    // the byte order of the platform we run on. 
+    // w/ C++20 we use std::endian, w/ C++17 the byte order that the compiler declares
+#if defined(__cpp_lib_endian)
+    constexpr bool platformislittle {std::endian::native == std::endian::little};
+    constexpr bool platformisbig {std::endian::native == std::endian::big};
+#elif defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && defined(__ORDER_BIG_ENDIAN__)
+    // gcc, clang, armclang
+    constexpr bool platformislittle {__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__};
+    constexpr bool platformisbig {__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__};
+#elif defined(_MSC_VER)
+    // msvc targets are all little endian
+    constexpr bool platformislittle {true};
+    constexpr bool platformisbig {false};
+#else
+    #error embot::core::binary::word: cannot detect the byte order of the platform
+#endif
+    static_assert(platformislittle || platformisbig, "embot::core::binary::word: mixed endianess is not supported");
+    
+    constexpr Endianess platform {platformislittle ? Endianess::Little : Endianess::Big};
+    
+    // these functions move a value from / to memory w/ the requested byte order, whatever the byte order of the platform.
+    // they are usable for any trivially copyable type: u8, u16, u32, u64 (and i8 ....) but also float, double, etc.
+    // they are not constexpr because they access memory through a void* 
+    
     template<typename T>
-    constexpr void load2memory(const T value, void *memory, Endianess e = embot::core::binary::word::Endianess::Little)
+    void load2memory(const T value, void *memory, Endianess e = embot::core::binary::word::Endianess::Little)
     {
-        constexpr auto size = sizeof(T);
-        for(auto i=0; i<size; i++)
+        static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
+        constexpr size_t size = sizeof(T);
+        const uint8_t *src = reinterpret_cast<const uint8_t*>(&value);
+        uint8_t *dst = reinterpret_cast<uint8_t*>(memory);
+        const bool reverse = (e != platform);
+        for(size_t i=0; i<size; i++)
         {
-            //uint8_t vx = (Endianess::Little == e) ? ( (value >> (8*(i))) & 0xff ) : ( (value >> (8*(size-1-i))) & 0xff );
-            uint8_t v = (Endianess::Little == e) ? reinterpret_cast<const uint8_t*>(&value)[i] : reinterpret_cast<const uint8_t*>(&value)[size-1-i];
-            reinterpret_cast<uint8_t*>(memory)[i] = v;
+            dst[i] = reverse ? src[size-1-i] : src[i];
         }
     }       
 
     template<typename T>
-    constexpr void load2value(const void *memory, T &value, Endianess e = embot::core::binary::word::Endianess::Little)
+    void load2value(const void *memory, T &value, Endianess e = embot::core::binary::word::Endianess::Little)
     {
-        constexpr auto size = sizeof(T);
-        for(auto i=0; i<size; i++)
+        static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
+        constexpr size_t size = sizeof(T);
+        const uint8_t *src = reinterpret_cast<const uint8_t*>(memory);
+        uint8_t *dst = reinterpret_cast<uint8_t*>(&value);
+        const bool reverse = (e != platform);
+        for(size_t i=0; i<size; i++)
         {
-            uint8_t v = (Endianess::Little == e) ? reinterpret_cast<const uint8_t*>(memory)[i] : reinterpret_cast<const uint8_t*>(memory)[size-1-i];
-            reinterpret_cast<uint8_t*>(&value)[i] = v;
+            dst[i] = reverse ? src[size-1-i] : src[i];
         }
     }  
 
-
     template<typename T>
-    constexpr T memory2value(const void *memory, Endianess e = embot::core::binary::word::Endianess::Little)
+    T memory2value(const void *memory, Endianess e = embot::core::binary::word::Endianess::Little)
     {
-        T value {0};
-        constexpr auto size = sizeof(T);
-        for(auto i=0; i<size; i++)
-        {
-            uint8_t v = (Endianess::Little == e) ? reinterpret_cast<const uint8_t*>(memory)[i] : reinterpret_cast<const uint8_t*>(memory)[size-1-i];
-            reinterpret_cast<uint8_t*>(&value)[i] = v;
-        }
+        T value {};
+        load2value(memory, value, e);
         return value;
     }      
 }
